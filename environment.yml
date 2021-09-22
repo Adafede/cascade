@@ -11,8 +11,6 @@ dependencies:
   - r-dplyr
   - r-forcats
   - r-ggplot2
-  - r-MSnbase
-  - r-nucleR
   - r-plotly
   - r-purrr
   - r-readr
