@@ -1,0 +1,25 @@
+base_dir: ./
+config:
+  path: config
+  default:
+    path: config/default
+  params:
+    path: config/params
+data:
+  path: data
+  interim:
+    path: data/interim
+    config:
+      path: data/interim/config
+  processed:
+    path: data/processed
+    config:
+      path: data/processed/config
+  source:
+    path: data/source
+src:
+  path: src
+  docopt:
+    path: src/docopt
+tests:
+  path: tests

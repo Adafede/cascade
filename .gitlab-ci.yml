@@ -1,0 +1,10 @@
+image: continuumio/miniconda3:latest
+
+stages:
+  - integration-test
+
+integration-test-job:
+  stage: integration-test
+  script:
+    - conda env create -f environment.yml
+    - bash tests/integration_test.sh
