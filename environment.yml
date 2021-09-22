@@ -1,0 +1,21 @@
+name: cascade
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - r-base>=4.1.0
+  - r-baseline
+  - r-data.table
+  - r-docopt
+  - r-dplyr
+  - r-forcats
+  - r-ggplot2
+  - r-MSnbase
+  - r-nucleR
+  - r-plotly
+  - r-purrr
+  - r-readr
+  - r-splitstackshape
+  - r-tidyr
+  - r-yaml
