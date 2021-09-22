@@ -1,0 +1,11 @@
+param1: foo
+param2: bar
+param3:
+  subparam1: 50
+  subparam2: 3
+param4:
+  subparam1:
+    subsubparam1:
+      - list1
+      - list2
+force: FALSE
