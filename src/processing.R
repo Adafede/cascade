@@ -13,6 +13,7 @@ library(package = zoo, quietly = TRUE)
 source(file = "src/R/colors.R")
 source(file = "src/R/get_gnps.R")
 source(file = "src/R/get_params.R")
+source(file = "src/R/improve_signal.R")
 source(file = "src/R/log_debug.R")
 source(file = "src/R/parse_cli_params.R")
 source(file = "src/R/parse_yaml_params.R")
@@ -21,6 +22,7 @@ source(file = "src/R/plot_histograms.R")
 source(file = "src/R/prepare_plot.R")
 source(file = "src/R/prepare-hierarchy-cad.R")
 source(file = "src/R/prepare-hierarchy.R")
+source(file = "src/R/signal_sharpening.R")
 source(file = "src/R/y_as_na.R")
 
 step <- "processing"
@@ -104,132 +106,6 @@ chromatograms_bpi <- chromatograms_all[c(TRUE, FALSE, FALSE)]
 chromatograms_pda <- chromatograms_all[c(FALSE, TRUE, FALSE)]
 
 chromatograms_cad <- chromatograms_all[c(FALSE, FALSE, TRUE)]
-
-#' Title
-#'
-#' @param df
-#' @param fourier_components
-#' @param time_min
-#' @param time_max
-#' @param frequency
-#' @param resample
-#'
-#' @return
-#' @export
-#'
-#' @examples
-improve_signal <-
-  function(df,
-           fourier_components = FOURRIER_COMPONENTS,
-           time_min = TIME_MIN,
-           time_max = TIME_MAX,
-           frequency = FREQUENCY,
-           resample = RESAMPLE) {
-    df_fourier <- df |>
-      dplyr::mutate(intensity = intensity - (min(intensity))) |>
-      dplyr::mutate(
-        intensity_fourier = nucleR::filterFFT(
-          intensity,
-          pcKeepComp = fourier_components,
-          ## 0.01
-          showPowerSpec = FALSE,
-          useOptim = TRUE
-        )
-      )
-
-    f <- approxfun(
-      x = df_fourier$time,
-      y = df_fourier$intensity_fourier
-    )
-
-    time <- seq(
-      from = time_min,
-      to = time_max,
-      by = 1 / (frequency * 60 * resample)
-    )
-
-    intensity <- f(seq(
-      from = time_min,
-      to = time_max,
-      by = 1 / (frequency * 60 * resample)
-    ))
-
-    #' Title
-    #'
-    #' @param Time
-    #' @param Intensity
-    #' @param K2
-    #' @param K4
-    #' @param Smoothing_width
-    #' @param Baseline_adjust
-    #'
-    #' @return
-    #' @export
-    #'
-    #' @examples
-    signal_sharpening <- function(Time = time,
-                                  Intensity = intensity,
-                                  K2 = k2,
-                                  K4 = k4,
-                                  Smoothing_width = smoothing_width,
-                                  Baseline_adjust = baseline_adjust) {
-      smooth_1 <- zoo::rollmean(
-        x = Intensity,
-        k = Smoothing_width,
-        align = "center",
-        fill = 0
-      ) + Baseline_adjust
-
-      smooth_2 <- zoo::rollmean(
-        x = smooth_1,
-        k = Smoothing_width,
-        align = "center",
-        fill = 0
-      )
-
-      deriv <- function(x, y) {
-        diff(y) / diff(x)
-      }
-
-      second_der <- function(x, y) {
-        (y[+1] - 2 * y + y[-1]) / (x - x[-1])^2
-      }
-
-      deriv_2 <- second_der(
-        x = Time,
-        y = smooth_2
-      )
-
-      smooth_3 <- zoo::rollmean(
-        x = deriv_2,
-        k = Smoothing_width,
-        align = "center",
-        fill = 0
-      )
-
-      deriv_4 <- second_der(
-        x = Time,
-        y = smooth_3
-      )
-
-      smooth_4 <- zoo::rollmean(
-        x = deriv_4,
-        k = smoothing_width,
-        align = "center",
-        fill = 0
-      )
-
-      sharpened <- smooth_1 - (k2 * smooth_3) + (k4 * smooth_4)
-      sharpened[is.na(sharpened)] <- 0
-      sharpened <- sharpened / max(sharpened)
-
-      return(sharpened)
-    }
-
-    intensity <- signal_sharpening(Intensity = intensity)
-
-    df_sharpened <- data.frame(time, intensity)
-  }
 
 chromatograms_bpi_improved <- list()
 
@@ -406,7 +282,6 @@ comparison_2 <-
   )
 
 comparison_2
-
 
 # Not run:
 plot(cads_baselined$intensity, type = "l", col = "navy")
@@ -604,7 +479,6 @@ final_table_taxed_with <-
 final_table_taxed_without <-
   prepare_hierarchy_cad(dataframe = df_new_without) |>
   dplyr::mutate(species = "Swertia chirayita")
-
 
 nice_colors <- rev(
   list(
