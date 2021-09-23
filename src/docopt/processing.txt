@@ -1,0 +1,13 @@
+You can use this script with the following example:
+Rscript processing.R
+
+Usage: prepare_gnps.R [--arg1=<arg1>] [--param2=<param2>] [--step3=<step3>]
+
+Arguments:
+  -a --arg1=<arg1>      Foo Bar
+  -p --param2=<param2>  Foo Bar
+  -s --step3=<step3>    Foo Bar
+
+Options:
+  -h --help             Show this screen.
+  -v --version          Show version.

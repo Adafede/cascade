@@ -1,23 +1,39 @@
-library(baseline)
-library(data.table)
-library(dplyr)
-library(microshades)
-library(MSnbase)
-library(nucleR)
-library(plotly)
-library(pracma)
-library(purrr)
-library(readr)
-library(zoo)
+library(package = baseline, quietly = TRUE)
+library(package = data.table, quietly = TRUE)
+library(package = dplyr, quietly = TRUE)
+library(package = microshades, quietly = TRUE)
+library(package = MSnbase, quietly = TRUE)
+library(package = nucleR, quietly = TRUE)
+library(package = plotly, quietly = TRUE)
+library(package = pracma, quietly = TRUE)
+library(package = purrr, quietly = TRUE)
+library(package = readr, quietly = TRUE)
+library(package = zoo, quietly = TRUE)
 
-source("r/colors.R")
-source("r/get_gnps.R")
-source("r/log_debug.R")
-source("r/plot_histograms.R")
-source("r/prepare_plot.R")
-source("r/prepare-hierarchy-cad.R")
-source("r/prepare-hierarchy.R")
-source("r/y_as_na.R")
+source(file = "src/R/colors.R")
+source(file = "src/R/get_gnps.R")
+source(file = "src/R/get_params.R")
+source(file = "src/R/log_debug.R")
+source(file = "src/R/parse_cli_params.R")
+source(file = "src/R/parse_yaml_params.R")
+source(file = "src/R/parse_yaml_paths.R")
+source(file = "src/R/plot_histograms.R")
+source(file = "src/R/prepare_plot.R")
+source(file = "src/R/prepare-hierarchy-cad.R")
+source(file = "src/R/prepare-hierarchy.R")
+source(file = "src/R/y_as_na.R")
+
+step <- "processing"
+paths <- parse_yaml_paths()
+params <- get_params(step = step)
+
+log_debug(
+  "This program performs",
+  "Quantitative and Qualitative Contextualization",
+  "of in depth annotated extracts"
+)
+log_debug("Authors: \n", "AR")
+log_debug("Contributors: \n", "...")
 
 FOURRIER_COMPONENTS <- 0.05 ## of total
 
@@ -392,7 +408,6 @@ comparison_2 <-
 comparison_2
 
 
-
 # Not run:
 plot(cads_baselined$intensity, type = "l", col = "navy")
 grid()
@@ -582,12 +597,13 @@ df_new_without <- df_new |>
 final_table_taxed <- prepare_hierarchy(annotations) |>
   dplyr::mutate(species = "Swertia chirayita")
 
-final_table_taxed_with <- prepare_hierarchy_cad(dataframe = df_new_with) |>
+final_table_taxed_with <-
+  prepare_hierarchy_cad(dataframe = df_new_with) |>
   dplyr::mutate(species = "Swertia chirayita")
 
-final_table_taxed_without <- prepare_hierarchy_cad(dataframe = df_new_without) |>
+final_table_taxed_without <-
+  prepare_hierarchy_cad(dataframe = df_new_without) |>
   dplyr::mutate(species = "Swertia chirayita")
-
 
 
 nice_colors <- rev(
@@ -611,7 +627,8 @@ for (i in seq_len(length(nice_colors))) {
 
 samples <- prepare_plot(dataframe = final_table_taxed)
 samples_with <- prepare_plot(dataframe = final_table_taxed_with)
-samples_without <- prepare_plot(dataframe = final_table_taxed_without)
+samples_without <-
+  prepare_plot(dataframe = final_table_taxed_without)
 
 absolute <-
   plot_histograms(dataframe = samples, label = "Based on MS intensity only")
