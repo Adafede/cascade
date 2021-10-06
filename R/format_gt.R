@@ -6,7 +6,7 @@
 #' @export
 #'
 #' @examples
-temp_gt_function <- function(table) {
+temp_gt_function <- function(table, title, subtitle) {
   prettyTable <- table %>%
     mutate(
       structure = map(structure, ~ htmltools::a(href = .x, .x)),
@@ -24,6 +24,10 @@ temp_gt_function <- function(table) {
     # cols_width(
     #   everything() ~ px(200)
     # ) %>%
+    tab_header(
+      title = md(title),
+      subtitle = md(subtitle)
+    ) %>%
     text_transform(
       locations = cells_body(columns = structureImage),
       fn = molinfo
