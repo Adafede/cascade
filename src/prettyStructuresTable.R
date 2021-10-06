@@ -24,7 +24,9 @@ export_dir <- "data"
 ## really corresponds to what you want
 qids <- c(
   "Actinobacteria" = "Q26262282",
-  "Simaroubaceae" = "Q156679"
+  "Simaroubaceae" = "Q156679",
+  "Swertia" = "Q163970",
+  "Gentiana lutea" = "Q158572"
 )
 
 start_date <- 1900
@@ -67,7 +69,6 @@ for (i in names(queries)) {
 tables <- list()
 for (i in names(results)) {
   tables[[i]] <- results[[i]] %>%
-    sample_n(100) %>%
     left_join(classified) %>%
     mutate(structureImage = curlEscape(structureSmiles)) %>%
     relocate(structureImage, .after = structure) %>%
@@ -128,9 +129,25 @@ for (i in names(subtables)) {
 }
 
 for (i in names(prettyTables)) {
-  gtsave(data = prettyTables[[i]], filename = file.path(export_dir, paste0("prettyTable_", i, ".html")))
+  gtsave(data = prettyTables[[i]], filename = file.path(export_dir, paste0(
+    "prettyTable_",
+    gsub(
+      pattern = " ",
+      replacement = "_",
+      x = i
+    ),
+    ".html"
+  )))
 }
 
 for (i in names(prettySubtables)) {
-  gtsave(data = prettySubtables[[i]], filename = file.path(export_dir, paste0("prettySubtable_", i, ".html")))
+  gtsave(data = prettySubtables[[i]], filename = file.path(export_dir, paste0(
+    "prettySubtable_",
+    gsub(
+      pattern = " ",
+      replacement = "_",
+      x = i
+    ),
+    ".html"
+  )))
 }
