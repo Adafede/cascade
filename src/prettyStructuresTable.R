@@ -2,6 +2,7 @@ library(package = dplyr, quietly = TRUE)
 library(package = gt, quietly = TRUE)
 library(package = purrr, quietly = TRUE)
 library(package = RCurl, quietly = TRUE)
+library(package = readr, quietly = TRUE)
 library(package = splitstackshape, quietly = TRUE)
 library(package = tidyr, quietly = TRUE)
 library(package = WikidataQueryServiceR, quietly = TRUE)
@@ -17,27 +18,22 @@ query_path_2 <- "src/sparql/get_review_table_part_2.sql"
 query_path_3 <- "src/sparql/get_review_table_part_3.sql"
 query_path_4 <- "src/sparql/get_review_table_part_4.sql"
 
-export_table_1_path <- "data/prettyTable.html"
-export_subtable_1_path <- "data/prettySubtable.html"
+export_dir <- "data"
 
+## As there is no better way than to manually assess if the QID
+## really corresponds to what you want
+qids <- c(
+  "Actinobacteria" = "Q26262282",
+  "Simaroubaceae" = "Q156679"
+)
+
+start_date <- 1900
+end_date <- 2021
 
 query_part_1 <- read_file(query_path_1)
 query_part_2 <- read_file(query_path_2)
 query_part_3 <- read_file(query_path_3)
 query_part_4 <- read_file(query_path_4)
-qid <- "Q26262282"
-start_date <- 1900
-end_date <- 2021
-
-myquery <- paste0(query_part_1,
-                  qid,
-                  query_part_2,
-                  start_date,
-                  query_part_3,
-                  end_date,
-                  query_part_4)
-
-results <- query_wikidata(sparql_query = myquery)
 
 classified <- read_delim(
   file = classified_path,
@@ -50,36 +46,81 @@ classified <- read_delim(
 ) %>%
   distinct()
 
-table <- results %>%
-  sample_n(100) %>%
-  left_join(classified) %>%
-  mutate(structureImage = curlEscape(structureSmiles)) %>%
-  relocate(structureImage, .after = structure) %>%
-  relocate(structureLabel, .before = structure) %>%
-  select(-references_ids, -structure_id, -structureSmiles) %>%
-  cSplit(
-    c("taxa", "taxaLabels", "references", "referencesLabels"),
-    sep = "|",
-    direction = "long"
-  ) %>%
-  group_by(structure) %>%
-  fill(c("taxa", "taxaLabels", "references", "referencesLabels"),
-       .direction = "downup") %>%
-  group_by(chemical_pathway) %>%
-  add_count(sort = TRUE) %>%
-  select(-n) %>%
-  distinct()
+queries <- character()
+for (i in names(qids)) {
+  queries[[i]] <- paste0(
+    query_part_1,
+    qids[i],
+    query_part_2,
+    start_date,
+    query_part_3,
+    end_date,
+    query_part_4
+  )
+}
 
-subtable_chemical <- table %>%
-  filter(chemical_pathway == .[1, "chemical_pathway"]) %>%
-  group_by(chemical_superclass) %>%
-  add_count(sort = TRUE) %>%
-  select(-n, -chemical_pathway) %>%
-  distinct()
+results <- list()
+for (i in names(queries)) {
+  results[[i]] <- query_wikidata(sparql_query = queries[i])
+}
 
-prettyTable <- temp_gt_function(table = table)
+tables <- list()
+for (i in names(results)) {
+  tables[[i]] <- results[[i]] %>%
+    sample_n(100) %>%
+    left_join(classified) %>%
+    mutate(structureImage = curlEscape(structureSmiles)) %>%
+    relocate(structureImage, .after = structure) %>%
+    relocate(structureLabel, .before = structure) %>%
+    select(-references_ids, -structure_id, -structureSmiles) %>%
+    cSplit(
+      c("taxa", "taxaLabels", "references", "referencesLabels"),
+      sep = "|",
+      direction = "long"
+    ) %>%
+    group_by(structure) %>%
+    fill(c("taxa", "taxaLabels", "references", "referencesLabels"),
+      .direction = "downup"
+    ) %>%
+    group_by(chemical_class) %>%
+    add_count(sort = TRUE) %>%
+    select(-n) %>%
+    group_by(chemical_superclass) %>%
+    add_count(sort = TRUE) %>%
+    select(-n) %>%
+    group_by(chemical_pathway) %>%
+    add_count(sort = TRUE) %>%
+    select(-n) %>%
+    distinct()
+}
 
-prettySubtable <- temp_gt_function(table = subtable_chemical)
+subtables <- list()
+for (i in names(tables)) {
+  subtables[[i]] <- tables[[i]] %>%
+    filter(chemical_pathway == .[1, "chemical_pathway"]) %>%
+    group_by(chemical_class) %>%
+    add_count(sort = TRUE) %>%
+    select(-n) %>%
+    group_by(chemical_superclass) %>%
+    add_count(sort = TRUE) %>%
+    select(-n, -chemical_pathway) %>%
+    distinct()
+}
 
-gtsave(data = prettyTable, filename = export_table_1_path)
-gtsave(data = prettySubtable, filename = export_subtable_1_path)
+prettyTables <- list()
+for (i in names(tables)) {
+  prettyTables[[i]] <- temp_gt_function(table = tables[[i]])
+}
+
+prettySubtables <- list()
+for (i in names(subtables)) {
+  prettySubtables[[i]] <- temp_gt_function(table = subtables[[i]])
+}
+
+for (i in names(prettyTables)) {
+  gtsave(data = prettyTables[[i]], filename = file.path(export_dir, paste0("prettyTable_", i, ".html")))
+}
+
+for (i in names(prettySubtables)) {
+  gtsave(data = prettySubtables[[i]], filename = file.path(export_dir, paste0("prettySubtable_", i, ".html")))
+}
