@@ -109,12 +109,22 @@ for (i in names(tables)) {
 
 prettyTables <- list()
 for (i in names(tables)) {
-  prettyTables[[i]] <- temp_gt_function(table = tables[[i]])
+  prettyTables[[i]] <-
+    temp_gt_function(
+      table = tables[[i]],
+      title = i,
+      subtitle = "All compounds"
+    )
 }
 
 prettySubtables <- list()
 for (i in names(subtables)) {
-  prettySubtables[[i]] <- temp_gt_function(table = subtables[[i]])
+  prettySubtables[[i]] <-
+    temp_gt_function(
+      table = subtables[[i]],
+      title = i,
+      subtitle = tables[[i]][1, "chemical_pathway"]
+    )
 }
 
 for (i in names(prettyTables)) {
