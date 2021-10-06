@@ -11,9 +11,12 @@ dependencies:
   - r-dplyr
   - r-forcats
   - r-ggplot2
+  - r-gt
   - r-plotly
   - r-purrr
+  - r-RCurl
   - r-readr
   - r-splitstackshape
   - r-tidyr
   - r-yaml
+  - r-WikidataQueryServiceR
