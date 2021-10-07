@@ -12,6 +12,7 @@ dependencies:
   - r-forcats
   - r-ggplot2
   - r-gt
+  - r-htmltools
   - r-plotly
   - r-purrr
   - r-RCurl

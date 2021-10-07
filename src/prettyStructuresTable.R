@@ -1,5 +1,6 @@
 library(package = dplyr, quietly = TRUE)
 library(package = gt, quietly = TRUE)
+library(package = htmltools, quietly = TRUE)
 library(package = purrr, quietly = TRUE)
 library(package = RCurl, quietly = TRUE)
 library(package = readr, quietly = TRUE)
@@ -33,12 +34,12 @@ limit <- 1000
 start_date <- 1900
 end_date <- 2021
 
-query_part_1 <- read_file(query_path_1)
-query_part_2 <- read_file(query_path_2)
-query_part_3 <- read_file(query_path_3)
-query_part_4 <- read_file(query_path_4)
+query_part_1 <- readr::read_file(query_path_1)
+query_part_2 <- readr::read_file(query_path_2)
+query_part_3 <- readr::read_file(query_path_3)
+query_part_4 <- readr::read_file(query_path_4)
 
-classified <- read_delim(
+classified <- readr::read_delim(
   file = classified_path,
   col_select = c(
     "structure_id" = "structure_inchikey",
@@ -47,7 +48,7 @@ classified <- read_delim(
     "chemical_class" = "structure_taxonomy_npclassifier_03class"
   )
 ) %>%
-  distinct()
+  dplyr::distinct()
 
 queries <- character()
 for (i in names(qids)) {
@@ -65,49 +66,50 @@ for (i in names(qids)) {
 
 results <- list()
 for (i in names(queries)) {
-  results[[i]] <- query_wikidata(sparql_query = queries[i])
+  results[[i]] <-
+    WikidataQueryServiceR::query_wikidata(sparql_query = queries[i])
 }
 
 tables <- list()
 for (i in names(results)) {
   tables[[i]] <- results[[i]] %>%
-    left_join(classified) %>%
-    mutate(structureImage = curlEscape(structureSmiles)) %>%
-    relocate(structureImage, .after = structure) %>%
-    relocate(structureLabel, .before = structure) %>%
-    select(-references_ids, -structure_id, -structureSmiles) %>%
-    cSplit(
+    dplyr::left_join(classified) %>%
+    dplyr::mutate(structureImage = RCurl::curlEscape(structureSmiles)) %>%
+    dplyr::relocate(structureImage, .after = structure) %>%
+    dplyr::relocate(structureLabel, .before = structure) %>%
+    dplyr::select(-references_ids, -structure_id, -structureSmiles) %>%
+    splitstackshape::cSplit(
       c("taxa", "taxaLabels", "references", "referencesLabels"),
       sep = "|",
       direction = "long"
     ) %>%
-    group_by(structure) %>%
-    fill(c("taxa", "taxaLabels", "references", "referencesLabels"),
+    dplyr::group_by(structure) %>%
+    tidyr::fill(c("taxa", "taxaLabels", "references", "referencesLabels"),
       .direction = "downup"
     ) %>%
-    group_by(chemical_class) %>%
-    add_count(sort = TRUE) %>%
-    select(-n) %>%
-    group_by(chemical_superclass) %>%
-    add_count(sort = TRUE) %>%
-    select(-n) %>%
-    group_by(chemical_pathway) %>%
-    add_count(sort = TRUE) %>%
-    select(-n) %>%
-    distinct()
+    dplyr::group_by(chemical_class) %>%
+    dplyr::add_count(sort = TRUE) %>%
+    dplyr::select(-n) %>%
+    dplyr::group_by(chemical_superclass) %>%
+    dplyr::add_count(sort = TRUE) %>%
+    dplyr::select(-n) %>%
+    dplyr::group_by(chemical_pathway) %>%
+    dplyr::add_count(sort = TRUE) %>%
+    dplyr::select(-n) %>%
+    dplyr::distinct()
 }
 
 subtables <- list()
 for (i in names(tables)) {
   subtables[[i]] <- tables[[i]] %>%
-    filter(chemical_pathway == .[1, "chemical_pathway"]) %>%
-    group_by(chemical_class) %>%
-    add_count(sort = TRUE) %>%
-    select(-n) %>%
-    group_by(chemical_superclass) %>%
-    add_count(sort = TRUE) %>%
-    select(-n, -chemical_pathway) %>%
-    distinct()
+    dplyr::filter(chemical_pathway == .[1, "chemical_pathway"]) %>%
+    dplyr::group_by(chemical_class) %>%
+    dplyr::add_count(sort = TRUE) %>%
+    dplyr::select(-n) %>%
+    dplyr::group_by(chemical_superclass) %>%
+    dplyr::add_count(sort = TRUE) %>%
+    dplyr::select(-n, -chemical_pathway) %>%
+    dplyr::distinct()
 }
 
 prettyTables <- list()
@@ -131,7 +133,7 @@ for (i in names(subtables)) {
 }
 
 for (i in names(prettyTables)) {
-  gtsave(data = prettyTables[[i]], filename = file.path(export_dir, paste0(
+  gt::gtsave(data = prettyTables[[i]], filename = file.path(export_dir, paste0(
     "prettyTable_",
     gsub(
       pattern = " ",
@@ -143,7 +145,7 @@ for (i in names(prettyTables)) {
 }
 
 for (i in names(prettySubtables)) {
-  gtsave(data = prettySubtables[[i]], filename = file.path(export_dir, paste0(
+  gt::gtsave(data = prettySubtables[[i]], filename = file.path(export_dir, paste0(
     "prettySubtable_",
     gsub(
       pattern = " ",
