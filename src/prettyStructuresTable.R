@@ -29,6 +29,7 @@ qids <- c(
   "Gentiana lutea" = "Q158572"
 )
 
+limit <- 1000
 start_date <- 1900
 end_date <- 2021
 
@@ -57,7 +58,8 @@ for (i in names(qids)) {
     start_date,
     query_part_3,
     end_date,
-    query_part_4
+    query_part_4,
+    paste("\nLIMIT", limit)
   )
 }
 
