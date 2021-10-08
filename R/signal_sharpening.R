@@ -1,3 +1,5 @@
+source(file = "R/second_der.R")
+
 #' Title
 #'
 #' @param Time
@@ -11,8 +13,8 @@
 #' @export
 #'
 #' @examples
-signal_sharpening <- function(Time = time,
-                              Intensity = intensity,
+signal_sharpening <- function(Time = timeow,
+                              Intensity = intensityeah,
                               K2 = k2,
                               K4 = k4,
                               Smoothing_width = smoothing_width,
@@ -31,14 +33,6 @@ signal_sharpening <- function(Time = time,
     fill = 0
   )
 
-  deriv <- function(x, y) {
-    diff(y) / diff(x)
-  }
-
-  second_der <- function(x, y) {
-    (y[+1] - 2 * y + y[-1]) / (x - x[-1])^2
-  }
-
   deriv_2 <- second_der(
     x = Time,
     y = smooth_2
@@ -52,7 +46,7 @@ signal_sharpening <- function(Time = time,
   )
 
   deriv_4 <- second_der(
-    x = Time,
+    x = Time[3:length(Time)],
     y = smooth_3
   )
 
@@ -63,7 +57,7 @@ signal_sharpening <- function(Time = time,
     fill = 0
   )
 
-  sharpened <- smooth_1 - (k2 * smooth_3) + (k4 * smooth_4)
+  sharpened <- smooth_1[5:length(smooth_1)] - (k2 * smooth_3[3:length(smooth_3)]) + (k4 * smooth_4)
   sharpened[is.na(sharpened)] <- 0
   sharpened <- sharpened / max(sharpened)
 

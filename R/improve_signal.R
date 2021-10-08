@@ -1,4 +1,4 @@
-source(file = "src/R/signal_sharpening.R")
+source(file = "R/signal_sharpening.R")
 
 #' Title
 #'
@@ -37,21 +37,25 @@ improve_signal <-
       y = df_fourier$intensity_fourier
     )
 
-    time <- seq(
+    timeow <<- seq(
       from = time_min,
       to = time_max,
       by = 1 / (frequency * 60 * resample)
     )
 
-    intensity <- f(seq(
+    intensityeah <<- f(seq(
       from = time_min,
       to = time_max,
       by = 1 / (frequency * 60 * resample)
     ))
 
-    intensity <- signal_sharpening(Intensity = intensity)
+    intensity_sharpened <- signal_sharpening()
 
-    df_sharpened <- data.frame(time, intensity)
+    df_sharpened <-
+      data.frame(
+        "time" = timeow[5:length(timeow)],
+        "intensity" = intensity_sharpened
+      )
 
     return(df_sharpened)
   }

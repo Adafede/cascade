@@ -1,3 +1,5 @@
+require(package = docopt, quietly = TRUE)
+
 #' Title
 #'
 #' @param step
