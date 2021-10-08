@@ -9,76 +9,10 @@ require(package = splitstackshape, quietly = TRUE)
 #' @export
 #'
 #' @examples
-prepare_hierarchy <- function(dataframe) {
-  ms1_best_candidate <- dataframe |>
-    dplyr::mutate_all(list(~ gsub(
-      pattern = "\\|.*",
-      replacement = "",
-      x = .
-    ))) |>
-    splitstackshape::cSplit("best_candidate", sep = "§") |>
-    dplyr::distinct(
-      feature_id,
-      smiles_2D,
-      inchikey_2D,
-      score_biological,
-      score_chemical,
-      score_final,
-      # best_candidate_organism,
-      # consensus_1 = consensus_pat,
-      # consensus_2 = consensus_sup,
-      # consensus_3 = consensus_cla,
-      # consistency_1 = consistency_pat,
-      # consistency_2 = consistency_sup,
-      # consistency_3 = consistency_cla,
-      best_candidate_1,
-      best_candidate_2,
-      best_candidate_3
-    ) |>
-    dplyr::mutate_all(list(~ y_as_na(x = ., y = ""))) |>
-    dplyr::mutate(
-      best_candidate_1 = if_else(
-        condition = is.na(smiles_2D),
-        true = "notAnnotated",
-        false = best_candidate_1
-      ),
-      best_candidate_2 = if_else(
-        condition = is.na(smiles_2D),
-        true = paste(best_candidate_1, "notAnnotated"),
-        false = best_candidate_2
-      ),
-      best_candidate_3 = if_else(
-        condition = is.na(smiles_2D),
-        true = paste(best_candidate_2, "notAnnotated"),
-        false = best_candidate_3
-      ),
-      best_candidate_1 = if_else(
-        condition = !is.na(smiles_2D) &
-          is.na(best_candidate_1),
-        true = "notClassified",
-        false = best_candidate_1
-      ),
-      best_candidate_2 = if_else(
-        condition = !is.na(smiles_2D) &
-          is.na(best_candidate_2),
-        true = paste(best_candidate_1, "notClassified"),
-        false = best_candidate_2
-      ),
-      best_candidate_3 = if_else(
-        condition = !is.na(smiles_2D) &
-          is.na(best_candidate_3),
-        true = paste(best_candidate_2, "notClassified"),
-        false = best_candidate_3
-      )
-    )
+prepare_hierarchy <- function(dataframe, type = "analysis") {
+  stopifnot("'type' must be either 'analysis' or 'literature'" = type %in% c("analysis", "literature"))
 
-  ms1_multiple <- ms1_best_candidate |>
-    dplyr::left_join(top_m) |>
-    ## add this step
-    dplyr::filter(!is.na(species)) |>
-    dplyr::filter(intensity != 0)
-
-  parents <- ms1_multiple |>
+  parents <- dataframe |>
     dplyr::distinct(labels = best_candidate_1, ids = best_candidate_1) |>
     dplyr::mutate(parents = "") |>
     dplyr::distinct() |>
@@ -112,7 +46,7 @@ prepare_hierarchy <- function(dataframe) {
     ) |>
     dplyr::distinct()
 
-  children_1 <- ms1_multiple |>
+  children_1 <- dataframe |>
     dplyr::distinct(best_candidate_1, best_candidate_2) |>
     dplyr::mutate(ids = paste(best_candidate_1, best_candidate_2, sep = "-")) |>
     dplyr::distinct(labels = best_candidate_2, ids) |>
@@ -165,7 +99,8 @@ prepare_hierarchy <- function(dataframe) {
     children_1 <- children_1 |>
       dplyr::filter(ids != "Polyketides-Xanthones")
   }
-  children_2 <- ms1_multiple |>
+
+  children_2 <- dataframe |>
     dplyr::distinct(best_candidate_2, best_candidate_3) |>
     dplyr::mutate(ids = paste(best_candidate_2, best_candidate_3, sep = "-")) |>
     dplyr::distinct(labels = best_candidate_3, ids, join = best_candidate_2) |>
@@ -226,7 +161,7 @@ prepare_hierarchy <- function(dataframe) {
     dplyr::select(parents, ids, labels) |>
     dplyr::distinct()
 
-  table <- ms1_multiple |>
+  table <- dataframe |>
     dplyr::mutate(
       best_candidate_3 = gsub(
         pattern = "notAnnotated notAnnotated notAnnotated",
@@ -241,33 +176,46 @@ prepare_hierarchy <- function(dataframe) {
         x = best_candidate_3
       )
     ) |>
-    dplyr::full_join(genealogy, by = c("best_candidate_3" = "labels")) |>
-    dplyr::distinct(
-      feature_id,
-      smiles_2D,
-      inchikey_2D,
-      score_biological,
-      score_chemical,
-      score_final,
-      # best_candidate_organism,
-      labels = best_candidate_3,
-      ids,
-      parents,
-      sample,
-      intensity,
-      species
-    ) |>
-    dplyr::distinct()
+    dplyr::full_join(genealogy, by = c("best_candidate_3" = "labels"))
 
-  table_1 <- table |>
-    dplyr::group_by(labels, sample) |>
-    dplyr::add_count(name = "values") |>
-    dplyr::select(parents, ids, labels, values, sample, intensity, species) |>
-    dplyr::distinct()
+  if (type == "analysis") {
+    table <- table |>
+      dplyr::distinct(
+        feature_id,
+        smiles_2D,
+        inchikey_2D,
+        score_biological,
+        score_chemical,
+        score_final,
+        best_candidate_organism,
+        labels = best_candidate_3,
+        ids,
+        parents,
+        sample,
+        intensity,
+        species
+      )
 
-  table_1_1 <- table_1 |>
-    dplyr::group_by(parents, sample) |>
-    dplyr::mutate(values_2 = sum(values))
+    table_1 <- table |>
+      dplyr::group_by(labels, sample) |>
+      dplyr::add_count(name = "values") |>
+      dplyr::select(parents, ids, labels, values, sample, intensity, species) |>
+      dplyr::distinct()
+
+    table_1_1 <- table_1 |>
+      dplyr::group_by(parents, sample) |>
+      dplyr::mutate(values_2 = sum(values))
+  } else {
+    table_1 <- table |>
+      dplyr::group_by(labels, organism) |>
+      dplyr::add_count(name = "values") |>
+      dplyr::select(parents, ids, labels, values, organism) |>
+      dplyr::distinct()
+
+    table_1_1 <- table_1 |>
+      dplyr::group_by(parents, organism) |>
+      dplyr::mutate(values_2 = sum(values))
+  }
 
   top_parents_table <-
     dplyr::left_join(table_1_1, table_1_1, by = c("ids" = "parents")) |>
@@ -443,7 +391,7 @@ prepare_hierarchy <- function(dataframe) {
   missing_children <- genealogy_new_med_3 |>
     dplyr::filter(grepl(pattern = " Other$", x = parents)) |>
     dplyr::distinct(parents = ids, best_candidate_2 = labels) |>
-    dplyr::left_join(ms1_multiple |>
+    dplyr::left_join(dataframe |>
       distinct(best_candidate_3, best_candidate_2)) |>
     dplyr::mutate(
       ids = paste(best_candidate_2,
@@ -458,7 +406,7 @@ prepare_hierarchy <- function(dataframe) {
   genealogy_new_med_4 <-
     dplyr::bind_rows(genealogy_new_med_3, missing_children)
 
-  table_new <- ms1_multiple |>
+  table_new <- dataframe |>
     dplyr::filter(!is.na(species)) |>
     dplyr::mutate(
       best_candidate_3 = gsub(
@@ -474,29 +422,40 @@ prepare_hierarchy <- function(dataframe) {
         x = best_candidate_3
       )
     ) |>
-    dplyr::full_join(genealogy_new_med_4, by = c("best_candidate_3" = "labels")) |>
-    dplyr::distinct(
-      feature_id,
-      smiles_2D,
-      inchikey_2D,
-      score_biological,
-      score_chemical,
-      score_final,
-      # best_candidate_organism,
-      labels = new_labels,
-      ids,
-      parents,
-      sample,
-      intensity,
-      species
-    )
+    dplyr::full_join(genealogy_new_med_4, by = c("best_candidate_3" = "labels"))
 
-  table_1_new <- table_new |>
-    dplyr::group_by(labels, sample, intensity) |>
-    dplyr::add_count(name = "values") |>
-    dplyr::select(parents, ids, labels, values, sample, intensity, species) |>
-    dplyr::distinct() |>
-    dplyr::filter(!is.na(ids))
+  if (type == "analysis") {
+    table_new <- table_new |>
+      dplyr::distinct(
+        feature_id,
+        smiles_2D,
+        inchikey_2D,
+        score_biological,
+        score_chemical,
+        score_final,
+        best_candidate_organism,
+        labels = new_labels,
+        ids,
+        parents,
+        sample,
+        intensity,
+        species
+      )
+
+    table_1_new <- table_new |>
+      dplyr::group_by(labels, sample, intensity) |>
+      dplyr::add_count(name = "values") |>
+      dplyr::select(parents, ids, labels, values, sample, intensity, species) |>
+      dplyr::distinct() |>
+      dplyr::filter(!is.na(ids))
+  } else {
+    table_1_new <- table_new |>
+      dplyr::group_by(labels, organism) |>
+      dplyr::add_count(name = "values") |>
+      dplyr::select(parents, ids, labels, values, organism) |>
+      dplyr::distinct() |>
+      dplyr::filter(!is.na(ids))
+  }
 
   additional_row <- table_1_new |>
     dplyr::filter(labels == "Other other") |>
@@ -513,7 +472,10 @@ prepare_hierarchy <- function(dataframe) {
     dplyr::filter(grepl(pattern = "-", x = parents) &
       parents %in% missing_children$parents) |>
     dplyr::group_by(parents, ids, labels, sample) |>
-    dplyr::summarise(values = sum(intensity)) |>
+    dplyr::summarise(values = sum(switch(type,
+      "analysis" = intensity,
+      "literature" = values
+    ))) |>
     dplyr::ungroup()
 
   final_children_table_1 <- table_1_1_new |>
@@ -523,7 +485,10 @@ prepare_hierarchy <- function(dataframe) {
         !is.na(species)
     ) |>
     dplyr::group_by(parents, ids, labels, sample) |>
-    dplyr::summarise(values = sum(intensity)) |>
+    dplyr::summarise(values = sum(switch(type,
+      "analysis" = intensity,
+      "literature" = values
+    ))) |>
     dplyr::ungroup()
 
   final_children_table_2 <- table_1_1_new |>

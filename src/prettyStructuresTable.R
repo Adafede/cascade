@@ -39,7 +39,7 @@ query_part_2 <- readr::read_file(query_path_2)
 query_part_3 <- readr::read_file(query_path_3)
 query_part_4 <- readr::read_file(query_path_4)
 
-classified <- readr::read_delim(
+structures_classified <- readr::read_delim(
   file = classified_path,
   col_select = c(
     "structure_id" = "structure_inchikey",
@@ -49,6 +49,26 @@ classified <- readr::read_delim(
   )
 ) %>%
   dplyr::distinct()
+
+# organisms_classified <- readr::read_delim(
+#   file = classified_path,
+#   col_select = c(
+#     "organism" = "organism_wikidata",
+#     "taxonLabel" = "organism_name",
+#     "taxonId" = "organism_taxonomy_ottid",
+#     "taxon_01domain" = "organism_taxonomy_01domain",
+#     "taxon_02kingdom" = "organism_taxonomy_02kingdom",
+#     "taxon_03phylum" = "organism_taxonomy_03phylum",
+#     "taxon_04class" = "organism_taxonomy_04class",
+#     "taxon_05order" = "organism_taxonomy_05order",
+#     "taxon_06family" = "organism_taxonomy_06family",
+#     "taxon_07tribe" = "organism_taxonomy_07tribe",
+#     "taxon_08genus" = "organism_taxonomy_08genus",
+#     "taxon_09species" = "organism_taxonomy_09species",
+#     "taxon_10varietas" = "organism_taxonomy_10varietas"
+#   )
+# ) %>%
+#   dplyr::distinct()
 
 queries <- character()
 for (i in names(qids)) {
@@ -73,7 +93,7 @@ for (i in names(queries)) {
 tables <- list()
 for (i in names(results)) {
   tables[[i]] <- results[[i]] %>%
-    dplyr::left_join(classified) %>%
+    dplyr::left_join(structures_classified) %>%
     dplyr::mutate(structureImage = RCurl::curlEscape(structureSmiles)) %>%
     dplyr::relocate(structureImage, .after = structure) %>%
     dplyr::relocate(structureLabel, .before = structure) %>%

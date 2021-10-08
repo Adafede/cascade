@@ -1,6 +1,9 @@
+start <- Sys.time()
+
 library(package = baseline, quietly = TRUE)
 library(package = data.table, quietly = TRUE)
 library(package = dplyr, quietly = TRUE)
+library(package = docopt, quietly = TRUE)
 library(package = microshades, quietly = TRUE)
 library(package = MSnbase, quietly = TRUE)
 library(package = nucleR, quietly = TRUE)
@@ -8,7 +11,6 @@ library(package = plotly, quietly = TRUE)
 library(package = pracma, quietly = TRUE)
 library(package = purrr, quietly = TRUE)
 library(package = readr, quietly = TRUE)
-library(package = zoo, quietly = TRUE)
 
 source(file = "R/colors.R")
 source(file = "R/get_gnps.R")
@@ -20,13 +22,13 @@ source(file = "R/parse_yaml_params.R")
 source(file = "R/parse_yaml_paths.R")
 source(file = "R/plot_histograms.R")
 source(file = "R/prepare_plot.R")
-source(file = "R/prepare-hierarchy-cad.R")
-source(file = "R/prepare-hierarchy.R")
-source(file = "R/signal_sharpening.R")
+source(file = "R/prepare_hierarchy.R")
+source(file = "R/prepare_hierarchy_preparation.R")
 source(file = "R/y_as_na.R")
 
 step <- "processing"
 paths <- parse_yaml_paths()
+params <- ""
 params <- get_params(step = step)
 
 log_debug(
@@ -469,15 +471,17 @@ df_new_with <- df_new |>
 df_new_without <- df_new |>
   filter(is.na(peak_id))
 
-final_table_taxed <- prepare_hierarchy(annotations) |>
+final_table_taxed <- annotations |>
+  prepare_hierarchy_preparation() |>
+  prepare_hierarchy() |>
   dplyr::mutate(species = "Swertia chirayita")
 
-final_table_taxed_with <-
-  prepare_hierarchy_cad(dataframe = df_new_with) |>
+final_table_taxed_with <- df_new_with |>
+  prepare_hierarchy() |>
   dplyr::mutate(species = "Swertia chirayita")
 
-final_table_taxed_without <-
-  prepare_hierarchy_cad(dataframe = df_new_without) |>
+final_table_taxed_without <- df_new_without |>
+  prepare_hierarchy() |>
   dplyr::mutate(species = "Swertia chirayita")
 
 nice_colors <- rev(
@@ -568,3 +572,5 @@ plotly::plot_ly(
   plotly::layout(colorway = sunburst_colors)
 
 end <- Sys.time()
+
+log_debug("Script finished in", format(end - start))
