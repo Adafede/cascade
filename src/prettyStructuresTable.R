@@ -1,6 +1,9 @@
+start <- Sys.time()
+
 library(package = dplyr, quietly = TRUE)
 library(package = gt, quietly = TRUE)
 library(package = htmltools, quietly = TRUE)
+library(package = microshades, quietly = TRUE)
 library(package = purrr, quietly = TRUE)
 library(package = RCurl, quietly = TRUE)
 library(package = readr, quietly = TRUE)
@@ -8,8 +11,11 @@ library(package = splitstackshape, quietly = TRUE)
 library(package = tidyr, quietly = TRUE)
 library(package = WikidataQueryServiceR, quietly = TRUE)
 
-source(file = "R/molinfo.R")
+source(file = "R/colors.R")
 source(file = "R/format_gt.R")
+source(file = "R/prepare_hierarchy.R")
+source(file = "R/log_debug.R")
+source(file = "R/molinfo.R")
 
 classified_path <-
   "~/Git/lotus-processor/data/processed/210715_frozen_metadata.csv.gz"
@@ -23,16 +29,17 @@ export_dir <- "data"
 
 ## As there is no better way than to manually assess if the QID
 ## really corresponds to what you want
-qids <- c(
-  "Actinobacteria" = "Q26262282",
-  "Simaroubaceae" = "Q156679",
-  "Swertia" = "Q163970",
+qids <- c( # "Actinobacteria" = "Q26262282",
+  # "Simaroubaceae" = "Q156679",
+  # "Swertia" = "Q163970",
   "Gentiana lutea" = "Q158572"
 )
 
 limit <- 1000
 start_date <- 1900
 end_date <- 2021
+
+clean_xanthones <- TRUE
 
 query_part_1 <- readr::read_file(query_path_1)
 query_part_2 <- readr::read_file(query_path_2)
@@ -175,3 +182,31 @@ for (i in names(prettySubtables)) {
     ".html"
   )))
 }
+
+dataframe <- tables$`Gentiana lutea` |>
+  mutate(
+    best_candidate_1 = chemical_pathway,
+    best_candidate_2 = chemical_superclass,
+    best_candidate_3 = chemical_class,
+    organism = taxaLabels,
+    sample = taxaLabels
+  )
+
+test <- dataframe |>
+  prepare_hierarchy(type = "literature")
+
+plotly::plot_ly(
+  data = test,
+  ids = ~ids,
+  labels = ~labels,
+  parents = ~parents,
+  values = ~values,
+  maxdepth = 3,
+  type = "sunburst",
+  branchvalues = "total"
+) |>
+  plotly::layout(colorway = sunburst_colors)
+
+end <- Sys.time()
+
+log_debug("Script finished in", format(end - start))

@@ -180,6 +180,7 @@ prepare_hierarchy <- function(dataframe, type = "analysis") {
 
   if (type == "analysis") {
     table <- table |>
+      dplyr::mutate(intensity = round(intensity)) |>
       dplyr::distinct(
         feature_id,
         smiles_2D,
@@ -207,6 +208,7 @@ prepare_hierarchy <- function(dataframe, type = "analysis") {
       dplyr::mutate(values_2 = sum(values))
   } else {
     table_1 <- table |>
+      dplyr::mutate(labels = best_candidate_3) |>
       dplyr::group_by(labels, organism) |>
       dplyr::add_count(name = "values") |>
       dplyr::select(parents, ids, labels, values, organism) |>
@@ -406,8 +408,14 @@ prepare_hierarchy <- function(dataframe, type = "analysis") {
   genealogy_new_med_4 <-
     dplyr::bind_rows(genealogy_new_med_3, missing_children)
 
-  table_new <- dataframe |>
-    dplyr::filter(!is.na(species)) |>
+  if (type == "analysis") {
+    table_new <- dataframe |>
+      dplyr::filter(!is.na(species))
+  } else {
+    table_new <- dataframe
+  }
+
+  table_new <- table_new |>
     dplyr::mutate(
       best_candidate_3 = gsub(
         pattern = "notAnnotated notAnnotated notAnnotated",
@@ -450,6 +458,7 @@ prepare_hierarchy <- function(dataframe, type = "analysis") {
       dplyr::filter(!is.na(ids))
   } else {
     table_1_new <- table_new |>
+      dplyr::mutate(labels = best_candidate_3) |>
       dplyr::group_by(labels, organism) |>
       dplyr::add_count(name = "values") |>
       dplyr::select(parents, ids, labels, values, organism) |>
@@ -471,67 +480,91 @@ prepare_hierarchy <- function(dataframe, type = "analysis") {
   final_grandchildren_table <- table_1_1_new |>
     dplyr::filter(grepl(pattern = "-", x = parents) &
       parents %in% missing_children$parents) |>
-    dplyr::group_by(parents, ids, labels, sample) |>
+    dplyr::group_by(across(any_of(c(
+      "parents", "ids", "labels", "sample"
+    )))) |>
     dplyr::summarise(values = sum(switch(type,
       "analysis" = intensity,
       "literature" = values
     ))) |>
     dplyr::ungroup()
 
-  final_children_table_1 <- table_1_1_new |>
-    dplyr::filter(
-      grepl(pattern = "-", x = parents) &
-        !parents %in% missing_children$parents &
-        !is.na(species)
-    ) |>
-    dplyr::group_by(parents, ids, labels, sample) |>
+  final_children_table_1 <- table_1_1_new
+
+  if (type == "analysis") {
+    final_children_table_1 <- final_children_table_1 |>
+      dplyr::filter(!is.na(species))
+  }
+
+  final_children_table_1 <- final_children_table_1 |>
+    dplyr::filter(grepl(
+      pattern = "-",
+      x = parents
+    ) &
+      !parents %in% missing_children$parents) |>
+    dplyr::group_by(across(any_of(c(
+      "parents", "ids", "labels", "sample"
+    )))) |>
     dplyr::summarise(values = sum(switch(type,
       "analysis" = intensity,
       "literature" = values
     ))) |>
     dplyr::ungroup()
 
-  final_children_table_2 <- table_1_1_new |>
-    dplyr::filter(
-      grepl(pattern = "-", x = parents) &
-        !parents %in% missing_children$parents &
-        is.na(species)
-    ) |>
-    dplyr::select(-values, -sample, -species) |>
-    dplyr::left_join(
-      final_grandchildren_table |>
-        dplyr::select(parents, values, sample),
+  if (type == "analysis") {
+    final_children_table_2 <- table_1_1_new |>
+      dplyr::filter(
+        grepl(pattern = "-", x = parents) &
+          !parents %in% missing_children$parents &
+          is.na(species)
+      ) |>
+      dplyr::select(-any_of(c("values", "sample", "species"))) |>
+      dplyr::left_join(final_grandchildren_table |>
+        dplyr::select(any_of(c(
+          "parents", "values", "sample"
+        ))),
       by = c("ids" = "parents")
-    ) |>
-    dplyr::group_by(parents, ids, labels, sample) |>
-    dplyr::summarise(values = sum(values)) |>
-    dplyr::ungroup()
+      ) |>
+      dplyr::group_by(parents, ids, labels, sample) |>
+      dplyr::summarise(values = sum(values)) |>
+      dplyr::ungroup()
 
-  final_children_table <-
-    dplyr::bind_rows(final_children_table_1, final_children_table_2)
+    final_children_table <-
+      dplyr::bind_rows(final_children_table_1, final_children_table_2)
+  } else {
+    final_children_table <- final_children_table_1
+  }
 
   final_interim_table <- table_1_1_new |>
     dplyr::filter(!grepl(pattern = "-", x = parents) &
       (parents != "")) |>
-    dplyr::select(-values, -sample) |>
-    dplyr::left_join(
-      final_children_table |>
-        dplyr::select(parents, values, sample),
-      by = c("ids" = "parents")
+    dplyr::select(-any_of(c("values", "sample", "species"))) |>
+    dplyr::left_join(final_children_table |>
+      dplyr::select(any_of(c(
+        "values", "sample", "parents"
+      ))),
+    by = c("ids" = "parents")
     ) |>
-    dplyr::group_by(parents, ids, labels, sample) |>
+    dplyr::group_by(across(any_of(c(
+      "parents", "ids", "labels", "sample"
+    )))) |>
     dplyr::summarise(values = sum(values)) |>
     dplyr::ungroup()
 
   final_parents_table <- table_1_1_new |>
     dplyr::filter(parents == "") |>
-    dplyr::select(-values, -sample, -intensity, -species) |>
-    dplyr::left_join(
-      final_interim_table |>
-        dplyr::select(parents, values, sample),
-      by = c("ids" = "parents")
+    dplyr::select(-any_of(c(
+      "values", "sample", "intensity", "species"
+    ))) |>
+    dplyr::left_join(final_interim_table |>
+      dplyr::select(any_of(c(
+        "values", "sample", "parents"
+      ))),
+    by = c("ids" = "parents")
     ) |>
-    dplyr::group_by(parents, ids, labels, sample) |>
+    dplyr::group_by(across(any_of(c(
+      "parents", "ids", "labels", "sample"
+    )))) |>
     dplyr::summarise(values = sum(values)) |>
     dplyr::ungroup()
 
@@ -541,8 +574,12 @@ prepare_hierarchy <- function(dataframe, type = "analysis") {
       final_interim_table,
       final_children_table,
       final_grandchildren_table
-    ) |>
-    dplyr::filter(!is.na(sample))
+    )
+
+  if (type == "analysis") {
+    final_table <- final_table |>
+      dplyr::filter(!is.na(sample))
+  }
 
   return(final_table)
 }
