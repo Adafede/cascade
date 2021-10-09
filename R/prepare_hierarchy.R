@@ -211,7 +211,7 @@ prepare_hierarchy <- function(dataframe, type = "analysis") {
       dplyr::mutate(labels = best_candidate_3) |>
       dplyr::group_by(labels, organism) |>
       dplyr::add_count(name = "values") |>
-      dplyr::select(parents, ids, labels, values, organism) |>
+      dplyr::select(parents, ids, labels, values, organism, sample) |>
       dplyr::distinct()
 
     table_1_1 <- table_1 |>
@@ -461,7 +461,7 @@ prepare_hierarchy <- function(dataframe, type = "analysis") {
       dplyr::mutate(labels = best_candidate_3) |>
       dplyr::group_by(labels, organism) |>
       dplyr::add_count(name = "values") |>
-      dplyr::select(parents, ids, labels, values, organism) |>
+      dplyr::select(parents, ids, labels, values, organism, sample) |>
       dplyr::distinct() |>
       dplyr::filter(!is.na(ids))
   }
