@@ -25,7 +25,7 @@ plot_histograms <- function(dataframe, label, y = "values") {
         as.character(),
       guide = ggplot2::guide_legend(reverse = TRUE, ncol = 1)
     ) +
-    ggplot2::scale_x_discrete(labels = levels(dataframe$species)) +
+    ggplot2::scale_x_discrete(labels = levels(dataframe$sample)) +
     ggplot2::labs(fill = "Chemical class") +
     ggplot2::theme_bw() +
     ggplot2::theme(

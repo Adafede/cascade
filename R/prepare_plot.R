@@ -60,9 +60,9 @@ prepare_plot <- function(dataframe, organism = "species") {
       .desc = FALSE
     )
 
-  samples$species <-
+  samples$sample <-
     forcats::fct_reorder2(
-      .f = samples$species,
+      .f = samples$sample,
       .x = samples$values,
       .y = samples$sample,
       .desc = FALSE
