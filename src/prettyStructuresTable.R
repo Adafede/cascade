@@ -31,10 +31,12 @@ export_dir <- "data"
 
 ## As there is no better way than to manually assess if the QID
 ## really corresponds to what you want
-qids <- c(# "Actinobacteria" = "Q26262282",
+qids <- c(
+  # "Actinobacteria" = "Q26262282",
   # "Simaroubaceae" = "Q156679",
-  # "Swertia" = "Q163970",
-  "Gentiana lutea" = "Q158572")
+  "Swertia" = "Q163970",
+  "Gentiana lutea" = "Q158572"
+)
 
 limit <- 1000
 start_date <- 1900
@@ -113,7 +115,8 @@ for (i in names(results)) {
     ) %>%
     dplyr::group_by(structure) %>%
     tidyr::fill(c("taxa", "taxaLabels", "references", "referencesLabels"),
-                .direction = "downup") %>%
+      .direction = "downup"
+    ) %>%
     dplyr::group_by(chemical_class) %>%
     dplyr::add_count(sort = TRUE) %>%
     dplyr::select(-n) %>%
@@ -142,17 +145,21 @@ for (i in names(tables)) {
 prettyTables <- list()
 for (i in names(tables)) {
   prettyTables[[i]] <-
-    temp_gt_function(table = tables[[i]],
-                     title = i,
-                     subtitle = "All compounds")
+    temp_gt_function(
+      table = tables[[i]],
+      title = i,
+      subtitle = "All compounds"
+    )
 }
 
 prettySubtables <- list()
 for (i in names(subtables)) {
   prettySubtables[[i]] <-
-    temp_gt_function(table = subtables[[i]],
-                     title = i,
-                     subtitle = tables[[i]][1, "chemical_pathway"])
+    temp_gt_function(
+      table = subtables[[i]],
+      title = i,
+      subtitle = tables[[i]][1, "chemical_pathway"]
+    )
 }
 
 for (i in names(prettyTables)) {
@@ -179,31 +186,67 @@ for (i in names(prettySubtables)) {
   )))
 }
 
-dataframe <- tables$`Gentiana lutea` |>
+dataframe_genus <- tables$`Swertia` |>
   mutate(
     best_candidate_1 = chemical_pathway,
     best_candidate_2 = chemical_superclass,
     best_candidate_3 = chemical_class,
     organism = taxaLabels,
-    sample = taxaLabels
+    sample = taxaLabels,
+    species = taxaLabels
   )
 
-test <- dataframe |>
-  prepare_hierarchy(type = "literature") |>
-  mutate(species = "Gentiana lutea")
+dataframe_species <- tables$`Gentiana lutea` |>
+  mutate(
+    best_candidate_1 = chemical_pathway,
+    best_candidate_2 = chemical_superclass,
+    best_candidate_3 = chemical_class,
+    organism = taxaLabels,
+    sample = taxaLabels,
+    species = taxaLabels
+  )
 
-test_2 <-
-  prepare_plot(dataframe = test)
+test_genus <- dataframe_genus |>
+  prepare_hierarchy(type = "literature")
 
-plot_histograms(dataframe = test_2,
-                          label = "Based on literature")
+test_species <- dataframe_species |>
+  prepare_hierarchy(type = "literature")
+
+test_genus_2 <-
+  prepare_plot(dataframe = test_genus)
+
+test_species_2 <-
+  prepare_plot(dataframe = test_species)
+
+plot_histograms(
+  dataframe = test_genus_2,
+  label = "Based on literature"
+)
+
+plot_histograms(
+  dataframe = test_species_2,
+  label = "Based on literature"
+)
 
 plotly::plot_ly(
-  data = test,
-  ids = ~ ids,
-  labels = ~ labels,
-  parents = ~ parents,
-  values = ~ values,
+  data = test_genus |>
+    filter(sample == "Swertia japonica"),
+  ids = ~ids,
+  labels = ~labels,
+  parents = ~parents,
+  values = ~values,
+  maxdepth = 3,
+  type = "sunburst",
+  branchvalues = "total"
+) |>
+  plotly::layout(colorway = sunburst_colors)
+
+plotly::plot_ly(
+  data = test_species,
+  ids = ~ids,
+  labels = ~labels,
+  parents = ~parents,
+  values = ~values,
   maxdepth = 3,
   type = "sunburst",
   branchvalues = "total"
