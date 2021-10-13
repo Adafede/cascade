@@ -434,6 +434,10 @@ prepare_hierarchy <-
 
     if (type == "analysis") {
       table_new <- table_new |>
+        dplyr::rowwise() |>
+        dplyr::filter(grepl(pattern = id, x = sample) |
+          is.na(id)) |>
+        dplyr::ungroup() |>
         dplyr::mutate(intensity = switch(detector,
           "ms" = intensity,
           "cad" = integral
