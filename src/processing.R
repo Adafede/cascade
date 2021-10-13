@@ -64,7 +64,7 @@ k4 <- sigma / 1250000 # 200
 smoothing_width <- 5
 baseline_adjust <- 0
 
-toyset <- "~/data/20210701_10043/test"
+toyset <- "~/data/20210701_10043/fractions/"
 
 future::plan(strategy = future::multiprocess(workers = WORKERS))
 
@@ -103,39 +103,39 @@ for (i in seq_along(objects)) {
 
 chromatograms_all <- purrr::flatten(chromatograms)
 
-chromatograms_bpi <- chromatograms_all[c(TRUE, FALSE, FALSE)]
+# chromatograms_bpi <- chromatograms_all[c(TRUE, FALSE, FALSE)]
 
-chromatograms_pda <- chromatograms_all[c(FALSE, TRUE, FALSE)]
+# chromatograms_pda <- chromatograms_all[c(FALSE, TRUE, FALSE)]
 
 chromatograms_cad <- chromatograms_all[c(FALSE, FALSE, TRUE)]
 
-chromatograms_bpi_improved <- list()
+# chromatograms_bpi_improved <- list()
 
-for (i in seq_along(1:length(chromatograms_bpi))) {
-  chromatograms_bpi_improved[[i]] <-
-    improve_signal(df = chromatograms_bpi[[i]] |>
-      dplyr::select(time, intensity = BasePeak_0))
-}
+# for (i in seq_along(1:length(chromatograms_bpi))) {
+#   chromatograms_bpi_improved[[i]] <-
+#     improve_signal(df = chromatograms_bpi[[i]] |>
+#       dplyr::select(time, intensity = BasePeak_0))
+# }
 
-names(chromatograms_bpi_improved) <- names
+# names(chromatograms_bpi_improved) <- names
 
-bpis_improved <-
-  dplyr::bind_rows(chromatograms_bpi_improved, .id = "id") |>
-  dplyr::mutate(time = time)
+# bpis_improved <-
+#   dplyr::bind_rows(chromatograms_bpi_improved, .id = "id") |>
+#   dplyr::mutate(time = time)
 
-chromatograms_pda_improved <- list()
+# chromatograms_pda_improved <- list()
 
-for (i in seq_along(1:length(chromatograms_pda))) {
-  chromatograms_pda_improved[[i]] <-
-    improve_signal(df = chromatograms_pda[[i]] |>
-      dplyr::select(time, intensity = PDA.1_TotalAbsorbance_0))
-}
+# for (i in seq_along(1:length(chromatograms_pda))) {
+#   chromatograms_pda_improved[[i]] <-
+#     improve_signal(df = chromatograms_pda[[i]] |>
+#       dplyr::select(time, intensity = PDA.1_TotalAbsorbance_0))
+# }
 
-names(chromatograms_pda_improved) <- names
+# names(chromatograms_pda_improved) <- names
 
-pdas_improved <-
-  dplyr::bind_rows(chromatograms_pda_improved, .id = "id") |>
-  dplyr::mutate(time = time + PDA_SHIFT)
+# pdas_improved <-
+#   dplyr::bind_rows(chromatograms_pda_improved, .id = "id") |>
+#   dplyr::mutate(time = time + PDA_SHIFT)
 
 chromatograms_cad_improved <- list()
 
@@ -151,51 +151,51 @@ cads_improved <-
   dplyr::bind_rows(chromatograms_cad_improved, .id = "id") |>
   dplyr::mutate(time = time + CAD_SHIFT)
 
-bpi_plot <- plotly::plot_ly(
-  data = bpis_improved,
-  # |> dplyr::filter(grepl(pattern = "M", x = id)),
-  x = ~time,
-  y = ~intensity,
-  color = ~id,
-  colors = "Spectral",
-  type = "scatter",
-  mode = "lines",
-  line = list(width = 0.5),
-  legendgroup = ~id
-) |>
-  plotly::layout(
-    annotations = list(
-      x = 0.95,
-      y = 0.95,
-      xref = "paper",
-      yref = "paper",
-      text = "MS (POS)",
-      showarrow = FALSE
-    )
-  )
+# bpi_plot <- plotly::plot_ly(
+#   data = bpis_improved,
+#   # |> dplyr::filter(grepl(pattern = "M", x = id)),
+#   x = ~time,
+#   y = ~intensity,
+#   color = ~id,
+#   colors = "Spectral",
+#   type = "scatter",
+#   mode = "lines",
+#   line = list(width = 0.5),
+#   legendgroup = ~id
+# ) |>
+#   plotly::layout(
+#     annotations = list(
+#       x = 0.95,
+#       y = 0.95,
+#       xref = "paper",
+#       yref = "paper",
+#       text = "MS (POS)",
+#       showarrow = FALSE
+#     )
+#   )
 
-pda_plot <- plotly::plot_ly(
-  data = pdas_improved,
-  # |> dplyr::filter(grepl(pattern = "M", x = id)),
-  x = ~time,
-  y = ~intensity,
-  color = ~id,
-  colors = "Spectral",
-  type = "scatter",
-  mode = "lines",
-  line = list(width = 0.5),
-  legendgroup = ~id
-) |>
-  plotly::layout(
-    annotations = list(
-      x = 0.95,
-      y = 0.95,
-      xref = "paper",
-      yref = "paper",
-      text = "UV (200-500nm)",
-      showarrow = FALSE
-    )
-  )
+# pda_plot <- plotly::plot_ly(
+#   data = pdas_improved,
+#   # |> dplyr::filter(grepl(pattern = "M", x = id)),
+#   x = ~time,
+#   y = ~intensity,
+#   color = ~id,
+#   colors = "Spectral",
+#   type = "scatter",
+#   mode = "lines",
+#   line = list(width = 0.5),
+#   legendgroup = ~id
+# ) |>
+#   plotly::layout(
+#     annotations = list(
+#       x = 0.95,
+#       y = 0.95,
+#       xref = "paper",
+#       yref = "paper",
+#       text = "UV (200-500nm)",
+#       showarrow = FALSE
+#     )
+#   )
 
 cad_plot <- plotly::plot_ly(
   data = cads_improved,
@@ -220,15 +220,15 @@ cad_plot <- plotly::plot_ly(
     )
   )
 
-comparison <-
-  plotly::subplot(bpi_plot,
-    pda_plot,
-    cad_plot,
-    nrows = 3,
-    shareX = TRUE
-  )
-
-comparison
+# comparison <-
+#   plotly::subplot(bpi_plot,
+#     pda_plot,
+#     cad_plot,
+#     nrows = 3,
+#     shareX = TRUE
+#   )
+#
+# comparison
 
 chromatograms_cad_baselined <- chromatograms_cad_improved
 
@@ -275,53 +275,63 @@ new_new <- plotly::plot_ly(
     )
   )
 
-comparison_2 <-
-  plotly::subplot(bpi_plot,
-    pda_plot,
-    new_new,
-    nrows = 3,
-    shareX = TRUE
-  )
+# comparison_2 <-
+#   plotly::subplot(bpi_plot,
+#     pda_plot,
+#     new_new,
+#     nrows = 3,
+#     shareX = TRUE
+#   )
+#
+# comparison_2
 
-comparison_2
+peaks_cad <- list()
 
-# Not run:
-plot(cads_baselined$intensity, type = "l", col = "navy")
-grid()
-x <-
-  findpeaks(
-    cads_baselined$intensity,
-    npeaks = 2000,
-    threshold = 0.01,
-    sortstr = TRUE
-  )
-points(x[, 2], x[, 1], pch = 20, col = "maroon") ## End(Not run)
+for (i in seq_along(seq_len(length(chromatograms_cad_baselined)))) {
+  # plot(cads_baselined$intensity, type = "l", col = "navy")
+  # grid()
+  x <-
+    findpeaks(
+      chromatograms_cad_baselined[[i]]$intensity,
+      npeaks = 2000,
+      threshold = 0.01,
+      sortstr = TRUE
+    )
+  # points(x[, 2], x[, 1], pch = 20, col = "maroon") ## End(Not run)
 
-peaks <- data.frame(x) |>
-  mutate(
-    peak_id = row_number(),
-    peak_max = X1,
-    rt_apex = cads_baselined$time[X2],
-    rt_min = cads_baselined$time[X3],
-    rt_max = cads_baselined$time[X4]
-  ) |>
-  data.table()
+  peaks <- data.frame(x) |>
+    mutate(
+      peak_id = row_number(),
+      peak_max = X1,
+      rt_apex = chromatograms_cad_baselined[[i]]$time[X2],
+      rt_min = chromatograms_cad_baselined[[i]]$time[X3],
+      rt_max = chromatograms_cad_baselined[[i]]$time[X4]
+    ) |>
+    data.table()
+
+  peaks_cad[[i]] <- peaks
+}
+
+names(peaks_cad) <- names
+
+peaks_all <- dplyr::bind_rows(peaks_cad, .id = "id")
 
 cads_baselined <- cads_baselined |>
   mutate(rt_1 = time, rt_2 = time) |>
   data.table()
 
 cat("setting joining keys \n")
-setkey(peaks, rt_min, rt_max)
+setkey(peaks_all, rt_min, rt_max)
 setkey(cads_baselined, rt_1, rt_2)
 
 cat("joining within given rt tolerance \n")
-df <- foverlaps(peaks, cads_baselined) |>
-  group_by(peak_id) |>
+df <- foverlaps(peaks_all, cads_baselined) |>
+  filter(id == i.id) |>
+  group_by(peak_id, id) |>
   mutate(integral = sum(intensity)) |>
   ungroup() |>
-  select(peak_id, peak_max, rt_apex, rt_min, rt_max, integral) |>
-  distinct() |>
+  distinct(peak_id, id, peak_max, rt_apex, rt_min, rt_max, integral) |>
+  group_by(id) |>
   mutate(integral = integral / sum(integral)) |>
   filter(integral >= 0.01) |>
   data.table()
@@ -447,7 +457,6 @@ top_m <- top_n |>
 
 ms1_multiple <- ms1_best_candidate |>
   dplyr::left_join(top_m) |>
-  ## add this step
   dplyr::filter(!is.na(species)) |>
   dplyr::filter(intensity != 0)
 
@@ -463,13 +472,15 @@ setkey(df, rt_min, rt_max)
 setkey(new_step, rt_1, rt_2)
 
 cat("joining within given rt tolerance \n")
-df_new <- foverlaps(new_step, df)
+df_new <- foverlaps(new_step, df) |>
+  rowwise() |>
+  filter(grepl(pattern = id, x = sample))
 
 df_new_with <- df_new |>
   filter(!is.na(peak_id))
 
-df_new_without <- df_new |>
-  filter(is.na(peak_id))
+# df_new_without <- df_new |>
+#   filter(is.na(peak_id))
 
 final_table_taxed <- annotations |>
   prepare_hierarchy_preparation() |>
@@ -480,9 +491,9 @@ final_table_taxed_with <- df_new_with |>
   prepare_hierarchy(detector = "ms") |>
   dplyr::mutate(species = "Swertia chirayita")
 
-final_table_taxed_without <- df_new_without |>
-  prepare_hierarchy() |>
-  dplyr::mutate(species = "Swertia chirayita")
+# final_table_taxed_without <- df_new_without |>
+#   prepare_hierarchy() |>
+#   dplyr::mutate(species = "Swertia chirayita")
 
 final_table_taxed_with_new <- df_new_with |>
   prepare_hierarchy(detector = "cad") |>
@@ -490,10 +501,10 @@ final_table_taxed_with_new <- df_new_with |>
 
 samples <- prepare_plot(dataframe = final_table_taxed)
 samples_with <- prepare_plot(dataframe = final_table_taxed_with)
-samples_without <-
-  prepare_plot(dataframe = final_table_taxed_without)
-samples_with_new <- prepare_plot(dataframe = final_table_taxed_with_new)
-
+# samples_without <-
+#   prepare_plot(dataframe = final_table_taxed_without)
+samples_with_new <-
+  prepare_plot(dataframe = final_table_taxed_with_new)
 
 absolute <-
   plot_histograms(dataframe = samples, label = "Based on MS intensity only")
@@ -501,8 +512,8 @@ absolute <-
 absolute_with <-
   plot_histograms(dataframe = samples_with, label = "MS intensity within CAD peak")
 
-absolute_without <-
-  plot_histograms(dataframe = samples_without, label = "MS intensity outside CAD peak")
+# absolute_without <-
+#   plot_histograms(dataframe = samples_without, label = "MS intensity outside CAD peak")
 
 absolute_with_new <-
   plot_histograms(dataframe = samples_with_new, label = "CAD intensity within CAD peak")
@@ -510,9 +521,9 @@ absolute_with_new <-
 ggpubr::ggarrange(
   absolute,
   absolute_with,
-  absolute_without,
+  # absolute_without,
   absolute_with_new,
-  nrow = 4,
+  nrow = 3,
   align = "v",
   common.legend = TRUE,
   legend = "right"
@@ -547,19 +558,19 @@ plotly::plot_ly(
 ) |>
   plotly::layout(colorway = sunburst_colors)
 
-plotly::plot_ly(
-  data = final_table_taxed_without |>
-    dplyr::filter(species == "Swertia chirayita") |>
-    dplyr::filter(sample == "210619_AR_31_M_36_01"),
-  ids = ~ids,
-  labels = ~labels,
-  parents = ~parents,
-  values = ~values,
-  maxdepth = 3,
-  type = "sunburst",
-  branchvalues = "total"
-) |>
-  plotly::layout(colorway = sunburst_colors)
+# plotly::plot_ly(
+#   data = final_table_taxed_without |>
+#     dplyr::filter(species == "Swertia chirayita") |>
+#     dplyr::filter(sample == "210619_AR_31_M_36_01"),
+#   ids = ~ids,
+#   labels = ~labels,
+#   parents = ~parents,
+#   values = ~values,
+#   maxdepth = 3,
+#   type = "sunburst",
+#   branchvalues = "total"
+# ) |>
+#   plotly::layout(colorway = sunburst_colors)
 
 plotly::plot_ly(
   data = final_table_taxed_with_new |>
