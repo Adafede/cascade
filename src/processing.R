@@ -332,8 +332,7 @@ df <- foverlaps(peaks_all, cads_baselined) |>
   ungroup() |>
   distinct(peak_id, id, peak_max, rt_apex, rt_min, rt_max, integral) |>
   group_by(id) |>
-  mutate(integral = integral / sum(integral)) |>
-  filter(integral >= 0.01) |>
+  filter(integral >= 0.01 * integral / sum(integral)) |>
   data.table()
 
 annotations <-
