@@ -16,7 +16,9 @@ prepare_hierarchy_preparation <- function(dataframe) {
       x = .
     ))) |>
     splitstackshape::cSplit("best_candidate", sep = "§") |>
+    dplyr::mutate(id = 1) |>
     dplyr::distinct(
+      id,
       feature_id,
       smiles_2D,
       inchikey_2D,
