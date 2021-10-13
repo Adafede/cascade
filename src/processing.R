@@ -477,17 +477,23 @@ final_table_taxed <- annotations |>
   dplyr::mutate(species = "Swertia chirayita")
 
 final_table_taxed_with <- df_new_with |>
-  prepare_hierarchy() |>
+  prepare_hierarchy(detector = "ms") |>
   dplyr::mutate(species = "Swertia chirayita")
 
 final_table_taxed_without <- df_new_without |>
   prepare_hierarchy() |>
   dplyr::mutate(species = "Swertia chirayita")
 
+final_table_taxed_with_new <- df_new_with |>
+  prepare_hierarchy(detector = "cad") |>
+  dplyr::mutate(species = "Swertia chirayita")
+
 samples <- prepare_plot(dataframe = final_table_taxed)
 samples_with <- prepare_plot(dataframe = final_table_taxed_with)
 samples_without <-
   prepare_plot(dataframe = final_table_taxed_without)
+samples_with_new <- prepare_plot(dataframe = final_table_taxed_with_new)
+
 
 absolute <-
   plot_histograms(dataframe = samples, label = "Based on MS intensity only")
@@ -498,11 +504,15 @@ absolute_with <-
 absolute_without <-
   plot_histograms(dataframe = samples_without, label = "MS intensity outside CAD peak")
 
+absolute_with_new <-
+  plot_histograms(dataframe = samples_with_new, label = "CAD intensity within CAD peak")
+
 ggpubr::ggarrange(
   absolute,
   absolute_with,
   absolute_without,
-  nrow = 3,
+  absolute_with_new,
+  nrow = 4,
   align = "v",
   common.legend = TRUE,
   legend = "right"
@@ -539,6 +549,20 @@ plotly::plot_ly(
 
 plotly::plot_ly(
   data = final_table_taxed_without |>
+    dplyr::filter(species == "Swertia chirayita") |>
+    dplyr::filter(sample == "210619_AR_31_M_36_01"),
+  ids = ~ids,
+  labels = ~labels,
+  parents = ~parents,
+  values = ~values,
+  maxdepth = 3,
+  type = "sunburst",
+  branchvalues = "total"
+) |>
+  plotly::layout(colorway = sunburst_colors)
+
+plotly::plot_ly(
+  data = final_table_taxed_with_new |>
     dplyr::filter(species == "Swertia chirayita") |>
     dplyr::filter(sample == "210619_AR_31_M_36_01"),
   ids = ~ids,
