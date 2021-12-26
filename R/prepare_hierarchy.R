@@ -102,7 +102,8 @@ prepare_hierarchy <-
 
     if (clean_xanthones == TRUE) {
       children_1 <- children_1 |>
-        dplyr::filter(ids != "Polyketides-Xanthones")
+        dplyr::filter(ids != "Polyketides-Xanthones") |>
+        dplyr::filter(ids != "Shikimates and Phenylpropanoids-Xanthones")
     }
 
     children_2 <- dataframe |>

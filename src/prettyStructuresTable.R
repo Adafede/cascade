@@ -20,7 +20,7 @@ source(file = "R/log_debug.R")
 source(file = "R/molinfo.R")
 
 classified_path <-
-  "~/Git/lotus-processor/data/processed/210715_frozen_metadata.csv.gz"
+  "~/Git/lotus-processor/data/processed/211220_frozen_metadata.csv.gz"
 
 query_path_1 <- "src/sparql/get_review_table_part_1.sql"
 query_path_2 <- "src/sparql/get_review_table_part_2.sql"
