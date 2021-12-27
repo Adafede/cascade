@@ -492,8 +492,7 @@ final_table_taxed_with <- df_new_with |>
 #   prepare_hierarchy()
 
 final_table_taxed_with_new <- df_new_with |>
-  prepare_hierarchy(detector = "cad") |>
-  dplyr::mutate(species = "Swertia chirayita")
+  prepare_hierarchy(detector = "cad")
 
 samples <- prepare_plot(dataframe = final_table_taxed)
 samples_with <- prepare_plot(dataframe = final_table_taxed_with)

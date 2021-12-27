@@ -582,7 +582,10 @@ prepare_hierarchy <-
         final_children_table,
         final_grandchildren_table
       ) |>
-      dplyr::filter(!is.na(sample))
+      dplyr::filter(!is.na(sample)) |>
+      dplyr::group_by(sample) |>
+      dplyr::mutate(values = values / (sum(values) / 3)) |> ## because 3 levels
+      dplyr::ungroup()
 
     return(final_table)
   }
