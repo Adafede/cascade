@@ -210,7 +210,8 @@ prepare_hierarchy <-
 
       table_1_1 <- table_1 |>
         dplyr::group_by(parents, sample) |>
-        dplyr::mutate(values_2 = sum(values))
+        dplyr::mutate(values_2 = sum(values)) |>
+        dplyr::ungroup()
     } else {
       table_1 <- table |>
         dplyr::mutate(labels = best_candidate_3) |>
@@ -221,11 +222,16 @@ prepare_hierarchy <-
 
       table_1_1 <- table_1 |>
         dplyr::group_by(parents, organism) |>
-        dplyr::mutate(values_2 = sum(values))
+        dplyr::mutate(values_2 = sum(values)) |>
+        dplyr::ungroup()
     }
 
     top_parents_table <-
-      dplyr::left_join(table_1_1, table_1_1, by = c("ids" = "parents")) |>
+      dplyr::left_join(
+        table_1_1 |> distinct(parents, ids, labels, values_2),
+        table_1_1 |> distinct(parents, ids, labels, values_2),
+        by = c("ids" = "parents")
+      ) |>
       dplyr::filter(!grepl(pattern = "-", x = parents)) |>
       dplyr::distinct(parents, ids, labels = labels.x, values_2 = values_2.y) |>
       dplyr::group_by(parents) |>

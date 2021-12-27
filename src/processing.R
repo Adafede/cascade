@@ -336,7 +336,7 @@ df <- foverlaps(peaks_all, cads_baselined) |>
   data.table()
 
 annotations <-
-  readr::read_delim(file = "~/git/tima-r/data/processed/210718_163140/yourFinalFile.tsv.gz")
+  readr::read_delim(file = "~/git/tima-r/inst/extdata/processed/211227_082548/20211227_10043.tsv.gz")
 
 clean_xanthones <- TRUE
 
@@ -483,16 +483,13 @@ df_new_with <- df_new |>
 
 final_table_taxed <- annotations |>
   prepare_hierarchy_preparation() |>
-  prepare_hierarchy() |>
-  dplyr::mutate(species = "Swertia chirayita")
+  prepare_hierarchy()
 
 final_table_taxed_with <- df_new_with |>
-  prepare_hierarchy(detector = "ms") |>
-  dplyr::mutate(species = "Swertia chirayita")
+  prepare_hierarchy(detector = "ms")
 
 # final_table_taxed_without <- df_new_without |>
-#   prepare_hierarchy() |>
-#   dplyr::mutate(species = "Swertia chirayita")
+#   prepare_hierarchy()
 
 final_table_taxed_with_new <- df_new_with |>
   prepare_hierarchy(detector = "cad") |>
