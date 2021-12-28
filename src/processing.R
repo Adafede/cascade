@@ -64,20 +64,24 @@ k4 <- sigma / 1250000 # 200
 smoothing_width <- 5
 baseline_adjust <- 0
 
-toyset <- "~/data/20210701_10043/fractions/"
+clean_xanthones <- TRUE
+
+toyset <- "~/data/20210701_10043/fractions"
 
 future::plan(strategy = future::multiprocess(workers = WORKERS))
 
 files <- list.files(
   path = toyset,
-  pattern = ".mzML.gz",
+  # pattern = ".mzML.gz",
+  pattern = "210619_AR_31_M_36_01.mzML.gz",
   full.names = TRUE,
   recursive = TRUE
 )
 
 names <- list.files(
   path = toyset,
-  pattern = ".mzML.gz",
+  # pattern = ".mzML.gz",
+  pattern = "210619_AR_31_M_36_01.mzML.gz",
   recursive = TRUE
 ) |>
   gsub(pattern = "[0-9]{6}_AR_[0-9]{2}_", replacement = "") |>
@@ -86,6 +90,12 @@ names <- list.files(
     replacement = "",
     fixed = TRUE
   )
+
+annotations <-
+  readr::read_delim(file = "~/git/tima-r/inst/extdata/processed/211227_082548/20211227_10043.tsv.gz")
+
+feature_table <-
+  read_features(id = "97d7c50031a84b9ba2747e883a5907cd")
 
 objects <- list()
 
@@ -335,11 +345,6 @@ df <- foverlaps(peaks_all, cads_baselined) |>
   filter(integral >= 0.01 * integral / sum(integral)) |>
   data.table()
 
-annotations <-
-  readr::read_delim(file = "~/git/tima-r/inst/extdata/processed/211227_082548/20211227_10043.tsv.gz")
-
-clean_xanthones <- TRUE
-
 ms1_best_candidate <- annotations |>
   dplyr::mutate_all(list(~ gsub(
     pattern = "\\|.*",
@@ -349,6 +354,7 @@ ms1_best_candidate <- annotations |>
   splitstackshape::cSplit("best_candidate", sep = "§") |>
   dplyr::distinct(
     feature_id,
+    mz,
     rt,
     smiles_2D,
     inchikey_2D,
@@ -404,9 +410,6 @@ ms1_best_candidate <- annotations |>
   )
 
 ## dirty TODO
-feature_table <-
-  read_features(id = "97d7c50031a84b9ba2747e883a5907cd")
-
 colnames(feature_table) <-
   gsub(
     pattern = ".Peak.area",
@@ -472,14 +475,13 @@ setkey(new_step, rt_1, rt_2)
 
 cat("joining within given rt tolerance \n")
 df_new <- foverlaps(new_step, df) |>
-  rowwise() |>
   filter(grepl(pattern = id, x = sample))
 
 df_new_with <- df_new |>
   filter(!is.na(peak_id))
 
-# df_new_without <- df_new |>
-#   filter(is.na(peak_id))
+df_new_without <- df_new |>
+  filter(is.na(peak_id))
 
 final_table_taxed <- annotations |>
   prepare_hierarchy_preparation() |>
@@ -488,16 +490,16 @@ final_table_taxed <- annotations |>
 final_table_taxed_with <- df_new_with |>
   prepare_hierarchy(detector = "ms")
 
-# final_table_taxed_without <- df_new_without |>
-#   prepare_hierarchy()
+final_table_taxed_without <- df_new_without |>
+  prepare_hierarchy()
 
 final_table_taxed_with_new <- df_new_with |>
   prepare_hierarchy(detector = "cad")
 
 samples <- prepare_plot(dataframe = final_table_taxed)
 samples_with <- prepare_plot(dataframe = final_table_taxed_with)
-# samples_without <-
-#   prepare_plot(dataframe = final_table_taxed_without)
+samples_without <-
+  prepare_plot(dataframe = final_table_taxed_without)
 samples_with_new <-
   prepare_plot(dataframe = final_table_taxed_with_new)
 
@@ -507,8 +509,8 @@ absolute <-
 absolute_with <-
   plot_histograms(dataframe = samples_with, label = "MS intensity within CAD peak")
 
-# absolute_without <-
-#   plot_histograms(dataframe = samples_without, label = "MS intensity outside CAD peak")
+absolute_without <-
+  plot_histograms(dataframe = samples_without, label = "MS intensity outside CAD peak")
 
 absolute_with_new <-
   plot_histograms(dataframe = samples_with_new, label = "CAD intensity within CAD peak")
@@ -516,9 +518,9 @@ absolute_with_new <-
 ggpubr::ggarrange(
   absolute,
   absolute_with,
-  # absolute_without,
+  absolute_without,
   absolute_with_new,
-  nrow = 3,
+  nrow = 4,
   align = "v",
   common.legend = TRUE,
   legend = "right"
@@ -553,19 +555,19 @@ plotly::plot_ly(
 ) |>
   plotly::layout(colorway = sunburst_colors)
 
-# plotly::plot_ly(
-#   data = final_table_taxed_without |>
-#     dplyr::filter(species == "Swertia chirayita") |>
-#     dplyr::filter(sample == "210619_AR_31_M_36_01"),
-#   ids = ~ids,
-#   labels = ~labels,
-#   parents = ~parents,
-#   values = ~values,
-#   maxdepth = 3,
-#   type = "sunburst",
-#   branchvalues = "total"
-# ) |>
-#   plotly::layout(colorway = sunburst_colors)
+plotly::plot_ly(
+  data = final_table_taxed_without |>
+    dplyr::filter(species == "Swertia chirayita") |>
+    dplyr::filter(sample == "210619_AR_31_M_36_01"),
+  ids = ~ids,
+  labels = ~labels,
+  parents = ~parents,
+  values = ~values,
+  maxdepth = 3,
+  type = "sunburst",
+  branchvalues = "total"
+) |>
+  plotly::layout(colorway = sunburst_colors)
 
 plotly::plot_ly(
   data = final_table_taxed_with_new |>
