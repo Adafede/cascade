@@ -11,6 +11,7 @@ library(package = plotly, quietly = TRUE)
 library(package = pracma, quietly = TRUE)
 library(package = purrr, quietly = TRUE)
 library(package = readr, quietly = TRUE)
+library(package = xcms, quietly = TRUE)
 
 source(file = "R/colors.R")
 source(file = "R/get_gnps.R")
@@ -66,6 +67,8 @@ baseline_adjust <- 0
 
 clean_xanthones <- TRUE
 
+PPM <- 10
+
 toyset <- "~/data/20210701_10043/fractions"
 
 future::plan(strategy = future::multiprocess(workers = WORKERS))
@@ -96,6 +99,13 @@ annotations <-
 
 feature_table <-
   read_features(id = "97d7c50031a84b9ba2747e883a5907cd")
+
+### work in progress
+dda_file <-
+  "~/data/20210701_10043/fractions/210619_AR_31_M_36_01.mzML.gz"
+dda_data <-
+  MSnbase::readMSData(dda_file, mode = "onDisk", msLevel. = 1)
+###
 
 objects <- list()
 
@@ -301,7 +311,7 @@ for (i in seq_along(seq_len(length(chromatograms_cad_baselined)))) {
   # plot(cads_baselined$intensity, type = "l", col = "navy")
   # grid()
   x <-
-    findpeaks(
+    pracma::findpeaks(
       chromatograms_cad_baselined[[i]]$intensity,
       npeaks = 2000,
       threshold = 0.01,
@@ -310,14 +320,14 @@ for (i in seq_along(seq_len(length(chromatograms_cad_baselined)))) {
   # points(x[, 2], x[, 1], pch = 20, col = "maroon") ## End(Not run)
 
   peaks <- data.frame(x) |>
-    mutate(
-      peak_id = row_number(),
+    dplyr::mutate(
+      peak_id = dplyr::row_number(),
       peak_max = X1,
       rt_apex = chromatograms_cad_baselined[[i]]$time[X2],
       rt_min = chromatograms_cad_baselined[[i]]$time[X3],
       rt_max = chromatograms_cad_baselined[[i]]$time[X4]
     ) |>
-    data.table()
+    data.table::data.table()
 
   peaks_cad[[i]] <- peaks
 }
@@ -327,23 +337,23 @@ names(peaks_cad) <- names
 peaks_all <- dplyr::bind_rows(peaks_cad, .id = "id")
 
 cads_baselined <- cads_baselined |>
-  mutate(rt_1 = time, rt_2 = time) |>
-  data.table()
+  dplyr::mutate(rt_1 = time, rt_2 = time) |>
+  data.table::data.table()
 
 cat("setting joining keys \n")
-setkey(peaks_all, rt_min, rt_max)
-setkey(cads_baselined, rt_1, rt_2)
+data.table::setkey(peaks_all, rt_min, rt_max)
+data.table::setkey(cads_baselined, rt_1, rt_2)
 
 cat("joining within given rt tolerance \n")
-df <- foverlaps(peaks_all, cads_baselined) |>
-  filter(id == i.id) |>
-  group_by(peak_id, id) |>
-  mutate(integral = sum(intensity)) |>
-  ungroup() |>
-  distinct(peak_id, id, peak_max, rt_apex, rt_min, rt_max, integral) |>
-  group_by(id) |>
-  filter(integral >= 0.01 * integral / sum(integral)) |>
-  data.table()
+df <- data.table::foverlaps(peaks_all, cads_baselined) |>
+  dplyr::filter(id == i.id) |>
+  dplyr::group_by(peak_id, id) |>
+  dplyr::mutate(integral = sum(intensity)) |>
+  dplyr::ungroup() |>
+  dplyr::distinct(peak_id, id, peak_max, rt_apex, rt_min, rt_max, integral) |>
+  dplyr::group_by(id) |>
+  dplyr::filter(integral >= 0.01 * integral / sum(integral)) |>
+  data.table::data.table()
 
 ms1_best_candidate <- annotations |>
   dplyr::mutate_all(list(~ gsub(
@@ -418,7 +428,7 @@ colnames(feature_table) <-
   )
 
 log_debug(x = "removing \"row m/z\" and from \"row retention time\" columns")
-feature_table <- feature_table %>%
+feature_table <- feature_table |> 
   dplyr::select(
     -"row m/z",
     -"row retention time",
@@ -463,25 +473,172 @@ ms1_multiple <- ms1_best_candidate |>
   dplyr::filter(intensity != 0)
 
 new_step <- ms1_multiple |>
-  mutate(
+  dplyr::mutate(
     rt_1 = as.numeric(rt),
     rt_2 = as.numeric(rt)
   ) |>
-  data.table()
+  data.table::data.table()
 
 cat("setting joining keys \n")
-setkey(df, rt_min, rt_max)
-setkey(new_step, rt_1, rt_2)
+data.table::setkey(df, rt_min, rt_max)
+data.table::setkey(new_step, rt_1, rt_2)
 
 cat("joining within given rt tolerance \n")
-df_new <- foverlaps(new_step, df) |>
-  filter(grepl(pattern = id, x = sample))
+df_new <- data.table::foverlaps(new_step, df) |>
+  # dplyr::rowwise() |> ## check with multiple ones
+  dplyr::filter(grepl(pattern = id, x = sample)) |>
+  dplyr::mutate(
+    mz_min = (1 - (1E-6 * PPM)) * as.numeric(mz),
+    mz_max = (1 + (1E-6 * PPM)) * as.numeric(mz)
+  ) |>
+  dplyr::select(-rt_1, -rt_2)
 
 df_new_with <- df_new |>
-  filter(!is.na(peak_id))
+  dplyr::filter(!is.na(peak_id))
 
 df_new_without <- df_new |>
-  filter(is.na(peak_id))
+  dplyr::filter(is.na(peak_id))
+
+#' Silently sub-setting the object to speed-up analysis
+dda_data <- MSnbase::filterRt(dda_data, rt = c(450, 550))
+
+df_test <- df_new |>
+  dplyr::filter(peak_id == 1) |>
+  dplyr::arrange(desc(intensity))
+
+rtr <- df_test |>
+  mutate(rtmin = rt_min * 60, rtmax = rt_max * 60) |>
+  select(rtmin, rtmax) |>
+  as.matrix()
+
+mzr <- df_test |>
+  select(mzmin = mz_min, mzmax = mz_max) |>
+  as.matrix()
+
+test_ms1_chr <- chromatogram(object = dda_data, rt = rtr, mz = mzr)
+
+## CAD part
+fake <- test_ms1_chr[1, 1]
+fake@rtime <-
+  chromatograms_cad_improved[[1]][["time"]][which(
+    chromatograms_cad_improved[[1]][["time"]] >= df_test$rt_min[1] &
+      chromatograms_cad_improved[[1]][["time"]] <= df_test$rt_max[1]
+  )] * 60
+fake@intensity <-
+  chromatograms_cad_improved[[1]][["intensity"]][which(
+    chromatograms_cad_improved[[1]][["time"]] >= df_test$rt_min[1] &
+      chromatograms_cad_improved[[1]][["time"]] <= df_test$rt_max[1]
+  )]
+
+test <-
+  data.frame(intensity = fake@intensity, rtime = fake@rtime) |>
+  dplyr::filter(!is.na(intensity)) |>
+  dplyr::mutate(intensity = (intensity - min(intensity)) / (max(intensity) -
+    min(intensity))) |>
+  dplyr::filter(intensity >= 0.1) |>
+  dplyr::mutate(rtime = (rtime - min(rtime)) / (max(rtime) -
+    min(rtime))) |> # see https://github.com/sneumann/xcms/issues/593
+  dplyr::arrange(rtime)
+
+fake_2 <- fake
+fake_2@intensity <- test$intensity
+fake_2@rtime <- test$rtime
+
+test_2 <-
+  data.frame(intensity = test_ms1_chr[1, 1]@intensity, time = test_ms1_chr[1, 1]@rtime) |>
+  dplyr::filter(!is.na(intensity))
+
+f <- approxfun(
+  x = test_2$time,
+  y = test_2$intensity
+)
+
+timeow <- seq(
+  from = min(test_2$time),
+  to = max(test_2$time),
+  by = (max(test_2$time) - min(test_2$time)) / 100
+)
+
+intensityeah <- f(seq(
+  from = min(test_2$time),
+  to = max(test_2$time),
+  by = (max(test_2$time) - min(test_2$time)) / 100
+))
+
+test_2_extrapolated <-
+  data.frame(time = timeow, intensity = intensityeah)
+
+plot(test_2_extrapolated)
+test_2_improved <-
+  improve_signal(
+    df = test_2_extrapolated,
+    time_min = min(test_2$time),
+    time_max = max(test_2$time)
+  )
+plot(test_2_improved)
+
+f <- approxfun(
+  x = test_2_improved$time,
+  y = test_2_improved$intensity
+)
+
+timeow <- seq(
+  from = min(test_2$time),
+  to = max(test_2$time),
+  by = (max(test_2$time) - min(test_2$time)) / length(test$rtime)
+)
+
+intensityeah <- f(seq(
+  from = min(test_2$time),
+  to = max(test_2$time),
+  by = (max(test_2$time) - min(test_2$time)) / length(test$rtime)
+))
+
+test_3 <- data.frame(rtime = timeow, intensity = intensityeah) |>
+  dplyr::filter(!is.na(intensity)) |>
+  dplyr::mutate(intensity = (intensity - min(intensity)) / (max(intensity) -
+    min(intensity))) |>
+  dplyr::filter(intensity >= 0.1) |>
+  dplyr::mutate(rtime = (rtime - min(rtime)) / (max(rtime) -
+    min(rtime))) |> # see https://github.com/sneumann/xcms/issues/593
+  dplyr::arrange(rtime)
+
+fake_3 <- fake
+fake_3@intensity <- test_3$intensity
+fake_3@rtime <- test_3$rtime
+
+compareChromatograms(
+  test_ms1_chr[1, 1],
+  test_ms1_chr[2, 1]
+)
+
+plot(test_ms1_chr[1, 1])
+plot(test_ms1_chr[2, 1])
+plot(fake)
+plot(fake_2)
+plot(fake_3)
+compareChromatograms(test_ms1_chr[1, 1],
+  fake,
+  ALIGNFUNARGS = list(method = "approx")
+)
+compareChromatograms(test_ms1_chr[1, 1],
+  fake_2,
+  ALIGNFUNARGS = list(method = "approx")
+)
+compareChromatograms(test_ms1_chr[2, 1],
+  fake,
+  ALIGNFUNARGS = list(method = "approx")
+)
+compareChromatograms(test_ms1_chr[2, 1],
+  fake_2,
+  ALIGNFUNARGS = list(method = "approx")
+)
+compareChromatograms(fake_2,
+  fake_3,
+  ALIGNFUNARGS = list(method = "approx")
+)
+
+###
 
 final_table_taxed <- annotations |>
   prepare_hierarchy_preparation() |>
