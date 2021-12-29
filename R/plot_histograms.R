@@ -9,7 +9,7 @@ require(package = ggplot2, quietly = TRUE)
 #' @export
 #'
 #' @examples
-plot_histograms <- function(dataframe, label, y = "values") {
+plot_histograms <- function(dataframe, label, y = "values", xlab = TRUE) {
   absolute <- ggplot2::ggplot(
     dataframe,
     ggplot2::aes(
@@ -25,7 +25,10 @@ plot_histograms <- function(dataframe, label, y = "values") {
         as.character(),
       guide = ggplot2::guide_legend(reverse = TRUE, ncol = 1)
     ) +
-    ggplot2::scale_x_discrete(labels = levels(dataframe$sample)) +
+    ggplot2::scale_x_discrete(labels = ifelse(test = xlab,
+      yes = levels(dataframe$sample),
+      no = ""
+    )) +
     ggplot2::labs(fill = "Chemical class") +
     ggplot2::theme_bw() +
     ggplot2::theme(
