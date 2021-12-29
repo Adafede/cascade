@@ -7,6 +7,7 @@ library(package = docopt, quietly = TRUE)
 library(package = microshades, quietly = TRUE)
 library(package = MSnbase, quietly = TRUE)
 library(package = nucleR, quietly = TRUE)
+library(package = patchwork, quietly = TRUE)
 library(package = plotly, quietly = TRUE)
 library(package = pracma, quietly = TRUE)
 library(package = purrr, quietly = TRUE)
@@ -68,6 +69,8 @@ baseline_adjust <- 0
 clean_xanthones <- TRUE
 
 PPM <- 10
+
+PEAK_SIMILARITY <- 0.9
 
 toyset <- "~/data/20210701_10043/fractions"
 
@@ -428,7 +431,7 @@ colnames(feature_table) <-
   )
 
 log_debug(x = "removing \"row m/z\" and from \"row retention time\" columns")
-feature_table <- feature_table |> 
+feature_table <- feature_table |>
   dplyr::select(
     -"row m/z",
     -"row retention time",
@@ -499,146 +502,155 @@ df_new_with <- df_new |>
 df_new_without <- df_new |>
   dplyr::filter(is.na(peak_id))
 
-#' Silently sub-setting the object to speed-up analysis
-dda_data <- MSnbase::filterRt(dda_data, rt = c(450, 550))
+df_peaks <- list()
+for (i in seq_along(1:max(df_new$peak_id[!is.na(df_new$peak_id)]))) {
+  df_peak <- df_new |>
+    dplyr::filter(peak_id == i) |>
+    dplyr::arrange(desc(intensity))
 
-df_test <- df_new |>
-  dplyr::filter(peak_id == 1) |>
-  dplyr::arrange(desc(intensity))
+  #' Silently sub-setting the object to speed-up analysis
+  dda_data_min <-
+    MSnbase::filterRt(dda_data,
+      rt = c(
+        min(df_peak$rt_min) * 60 - 10,
+        max(df_peak$rt_max) * 60 + 10
+      )
+    )
 
-rtr <- df_test |>
-  mutate(rtmin = rt_min * 60, rtmax = rt_max * 60) |>
-  select(rtmin, rtmax) |>
-  as.matrix()
+  rtr <- df_peak |>
+    mutate(rtmin = rt_min * 60, rtmax = rt_max * 60) |>
+    select(rtmin, rtmax) |>
+    as.matrix()
 
-mzr <- df_test |>
-  select(mzmin = mz_min, mzmax = mz_max) |>
-  as.matrix()
+  mzr <- df_peak |>
+    select(mzmin = mz_min, mzmax = mz_max) |>
+    as.matrix()
 
-test_ms1_chr <- chromatogram(object = dda_data, rt = rtr, mz = mzr)
+  ms_chr <-
+    chromatogram(object = dda_data_min, rt = rtr, mz = mzr)
 
-## CAD part
-fake <- test_ms1_chr[1, 1]
-fake@rtime <-
-  chromatograms_cad_improved[[1]][["time"]][which(
-    chromatograms_cad_improved[[1]][["time"]] >= df_test$rt_min[1] &
-      chromatograms_cad_improved[[1]][["time"]] <= df_test$rt_max[1]
+  ## CAD part
+  cad_time <- chromatograms_cad_improved[[1]][["time"]][which(
+    chromatograms_cad_improved[[1]][["time"]] >= df_peak$rt_min[1] &
+      chromatograms_cad_improved[[1]][["time"]] <= df_peak$rt_max[1]
   )] * 60
-fake@intensity <-
-  chromatograms_cad_improved[[1]][["intensity"]][which(
-    chromatograms_cad_improved[[1]][["time"]] >= df_test$rt_min[1] &
-      chromatograms_cad_improved[[1]][["time"]] <= df_test$rt_max[1]
-  )]
+  cad_intensity <-
+    chromatograms_cad_improved[[1]][["intensity"]][which(
+      chromatograms_cad_improved[[1]][["time"]] >= df_peak$rt_min[1] &
+        chromatograms_cad_improved[[1]][["time"]] <= df_peak$rt_max[1]
+    )]
 
-test <-
-  data.frame(intensity = fake@intensity, rtime = fake@rtime) |>
-  dplyr::filter(!is.na(intensity)) |>
-  dplyr::mutate(intensity = (intensity - min(intensity)) / (max(intensity) -
-    min(intensity))) |>
-  dplyr::filter(intensity >= 0.1) |>
-  dplyr::mutate(rtime = (rtime - min(rtime)) / (max(rtime) -
-    min(rtime))) |> # see https://github.com/sneumann/xcms/issues/593
-  dplyr::arrange(rtime)
+  cad_ready <-
+    data.frame(intensity = cad_intensity, rtime = cad_time) |>
+    dplyr::filter(!is.na(intensity)) |>
+    dplyr::mutate(intensity = (intensity - min(intensity)) / (max(intensity) -
+      min(intensity))) |>
+    dplyr::filter(intensity >= 0.1) |>
+    dplyr::mutate(rtime = (rtime - min(rtime)) / (max(rtime) -
+      min(rtime))) |> # see https://github.com/sneumann/xcms/issues/593
+    dplyr::arrange(rtime)
 
-fake_2 <- fake
-fake_2@intensity <- test$intensity
-fake_2@rtime <- test$rtime
+  cad_peak <-
+    MSnbase::Chromatogram(intensity = cad_ready$intensity, rtime = cad_ready$rtime)
 
-test_2 <-
-  data.frame(intensity = test_ms1_chr[1, 1]@intensity, time = test_ms1_chr[1, 1]@rtime) |>
-  dplyr::filter(!is.na(intensity))
+  ## MS part
+  ms_peaks <- list()
+  for (j in seq_along(1:length(ms_chr))) {
+    df <-
+      data.frame(
+        intensity = ms_chr[j, 1]@intensity,
+        time = ms_chr[j, 1]@rtime
+      ) |>
+      dplyr::filter(!is.na(intensity))
 
-f <- approxfun(
-  x = test_2$time,
-  y = test_2$intensity
-)
+    if (nrow(df) > 1) {
+      f <- approxfun(
+        x = df$time,
+        y = df$intensity
+      )
 
-timeow <- seq(
-  from = min(test_2$time),
-  to = max(test_2$time),
-  by = (max(test_2$time) - min(test_2$time)) / 100
-)
+      timeow <- seq(
+        from = min(df$time),
+        to = max(df$time),
+        by = (max(df$time) - min(df$time)) / 100
+      )
 
-intensityeah <- f(seq(
-  from = min(test_2$time),
-  to = max(test_2$time),
-  by = (max(test_2$time) - min(test_2$time)) / 100
-))
+      intensityeah <- f(seq(
+        from = min(df$time),
+        to = max(df$time),
+        by = (max(df$time) - min(df$time)) / 100
+      ))
 
-test_2_extrapolated <-
-  data.frame(time = timeow, intensity = intensityeah)
+      df_extrapolated <-
+        data.frame(time = timeow, intensity = intensityeah)
 
-plot(test_2_extrapolated)
-test_2_improved <-
-  improve_signal(
-    df = test_2_extrapolated,
-    time_min = min(test_2$time),
-    time_max = max(test_2$time)
-  )
-plot(test_2_improved)
+      # plot(df_extrapolated)
+      df_improved <-
+        improve_signal(
+          df = df_extrapolated,
+          time_min = min(df$time),
+          time_max = max(df$time)
+        )
+      # plot(df_improved)
 
-f <- approxfun(
-  x = test_2_improved$time,
-  y = test_2_improved$intensity
-)
+      f <- approxfun(
+        x = df_improved$time,
+        y = df_improved$intensity
+      )
 
-timeow <- seq(
-  from = min(test_2$time),
-  to = max(test_2$time),
-  by = (max(test_2$time) - min(test_2$time)) / length(test$rtime)
-)
+      timeow <- seq(
+        from = min(df$time),
+        to = max(df$time),
+        by = (max(df$time) - min(df$time)) / length(cad_ready$rtime)
+      )
 
-intensityeah <- f(seq(
-  from = min(test_2$time),
-  to = max(test_2$time),
-  by = (max(test_2$time) - min(test_2$time)) / length(test$rtime)
-))
+      intensityeah <- f(seq(
+        from = min(df$time),
+        to = max(df$time),
+        by = (max(df$time) - min(df$time)) / length(cad_ready$rtime)
+      ))
 
-test_3 <- data.frame(rtime = timeow, intensity = intensityeah) |>
-  dplyr::filter(!is.na(intensity)) |>
-  dplyr::mutate(intensity = (intensity - min(intensity)) / (max(intensity) -
-    min(intensity))) |>
-  dplyr::filter(intensity >= 0.1) |>
-  dplyr::mutate(rtime = (rtime - min(rtime)) / (max(rtime) -
-    min(rtime))) |> # see https://github.com/sneumann/xcms/issues/593
-  dplyr::arrange(rtime)
+      ms_ready <-
+        data.frame(rtime = timeow, intensity = intensityeah) |>
+        dplyr::filter(!is.na(intensity)) |>
+        dplyr::mutate(intensity = (intensity - min(intensity)) / (max(intensity) -
+          min(intensity))) |>
+        dplyr::filter(intensity >= 0.1) |>
+        dplyr::mutate(rtime = (rtime - min(rtime)) / (max(rtime) -
+          min(rtime))) |> # see https://github.com/sneumann/xcms/issues/593
+        dplyr::arrange(rtime)
 
-fake_3 <- fake
-fake_3@intensity <- test_3$intensity
-fake_3@rtime <- test_3$rtime
+      ms_peak <-
+        MSnbase::Chromatogram(
+          intensity = ms_ready$intensity,
+          rtime = ms_ready$rtime
+        )
+    } else {
+      ms_peak <- MSnbase::Chromatogram(intensity = 0, rtime = 0)
+    }
 
-compareChromatograms(
-  test_ms1_chr[1, 1],
-  test_ms1_chr[2, 1]
-)
+    ms_peaks[[j]] <- ms_peak
+  }
 
-plot(test_ms1_chr[1, 1])
-plot(test_ms1_chr[2, 1])
-plot(fake)
-plot(fake_2)
-plot(fake_3)
-compareChromatograms(test_ms1_chr[1, 1],
-  fake,
-  ALIGNFUNARGS = list(method = "approx")
-)
-compareChromatograms(test_ms1_chr[1, 1],
-  fake_2,
-  ALIGNFUNARGS = list(method = "approx")
-)
-compareChromatograms(test_ms1_chr[2, 1],
-  fake,
-  ALIGNFUNARGS = list(method = "approx")
-)
-compareChromatograms(test_ms1_chr[2, 1],
-  fake_2,
-  ALIGNFUNARGS = list(method = "approx")
-)
-compareChromatograms(fake_2,
-  fake_3,
-  ALIGNFUNARGS = list(method = "approx")
-)
+  # plot(cad_peak)
+  # plot(ms_peaks[[1]])
+  comparison_score <- list()
+  for (k in seq_along(1:length(ms_peaks))) {
+    comparison_score[[k]] <- MSnbase::compareChromatograms(cad_peak,
+      ms_peaks[[k]],
+      ALIGNFUNARGS = list(method = "approx")
+    )
+  }
 
-###
+  df_peak$comparison_score <- as.numeric(comparison_score)
+
+  df_peak_new <- df_peak |>
+    filter(comparison_score >= PEAK_SIMILARITY)
+
+  df_peaks[[i]] <- df_peak_new
+}
+
+df_new_with_cor <- bind_rows(df_peaks)
 
 final_table_taxed <- annotations |>
   prepare_hierarchy_preparation() |>
@@ -653,35 +665,50 @@ final_table_taxed_without <- df_new_without |>
 final_table_taxed_with_new <- df_new_with |>
   prepare_hierarchy(detector = "cad")
 
+final_table_taxed_with_new_cor <- df_new_with_cor |>
+  prepare_hierarchy(detector = "cad")
+
 samples <- prepare_plot(dataframe = final_table_taxed)
 samples_with <- prepare_plot(dataframe = final_table_taxed_with)
 samples_without <-
   prepare_plot(dataframe = final_table_taxed_without)
 samples_with_new <-
   prepare_plot(dataframe = final_table_taxed_with_new)
+samples_with_new_cor <-
+  prepare_plot(dataframe = final_table_taxed_with_new_cor)
 
 absolute <-
   plot_histograms(dataframe = samples, label = "Based on MS intensity only")
 
 absolute_with <-
-  plot_histograms(dataframe = samples_with, label = "MS intensity within CAD peak")
+  plot_histograms(
+    dataframe = samples_with,
+    label = "MS intensity within CAD peak",
+    xlab = FALSE
+  )
 
 absolute_without <-
-  plot_histograms(dataframe = samples_without, label = "MS intensity outside CAD peak")
+  plot_histograms(
+    dataframe = samples_without,
+    label = "MS intensity outside CAD peak",
+    xlab = FALSE
+  )
 
 absolute_with_new <-
-  plot_histograms(dataframe = samples_with_new, label = "CAD intensity within CAD peak")
+  plot_histograms(
+    dataframe = samples_with_new,
+    label = "CAD intensity within CAD peak",
+    xlab = FALSE
+  )
 
-ggpubr::ggarrange(
-  absolute,
-  absolute_with,
-  absolute_without,
-  absolute_with_new,
-  nrow = 4,
-  align = "v",
-  common.legend = TRUE,
-  legend = "right"
-)
+absolute_with_new_cor <-
+  plot_histograms(
+    dataframe = samples_with_new_cor,
+    label = "CAD intensity of corelated peaks within CAD peak",
+    xlab = FALSE
+  )
+
+combined <- absolute_with + absolute_without + absolute_with_new + absolute_with_new_cor
 
 ## specific sample exploration
 plotly::plot_ly(
@@ -728,6 +755,20 @@ plotly::plot_ly(
 
 plotly::plot_ly(
   data = final_table_taxed_with_new |>
+    dplyr::filter(species == "Swertia chirayita") |>
+    dplyr::filter(sample == "210619_AR_31_M_36_01"),
+  ids = ~ids,
+  labels = ~labels,
+  parents = ~parents,
+  values = ~values,
+  maxdepth = 3,
+  type = "sunburst",
+  branchvalues = "total"
+) |>
+  plotly::layout(colorway = sunburst_colors)
+
+plotly::plot_ly(
+  data = final_table_taxed_with_new_cor |>
     dplyr::filter(species == "Swertia chirayita") |>
     dplyr::filter(sample == "210619_AR_31_M_36_01"),
   ids = ~ids,
