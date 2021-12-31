@@ -1,4 +1,4 @@
-# colors
+#' Colors
 nice_colors <- rev(
   list(
     microshades_palette("micro_cvd_green", lightest = FALSE),
@@ -18,7 +18,7 @@ for (i in seq_len(length(nice_colors))) {
   sunburst_colors[i] <- rev(nice_colors)[[i]][5]
 }
 
-## qualitative
+#' Qualitative
 paired <- c(
   "#a6cee3",
   "#1f78b4",
@@ -66,7 +66,7 @@ elife <- c(
   "#861450"
 )
 
-## sequential
+#' Sequential
 green_4 <- c(
   "#e5efd9",
   "#b0d08c",

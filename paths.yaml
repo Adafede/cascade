@@ -18,8 +18,8 @@ data:
   source:
     path: data/source
 src:
-  path: src
+  path: intst/scripts
   docopt:
-    path: src/docopt
+    path: inst/scripts/docopt
 tests:
   path: tests

@@ -22,17 +22,16 @@ source(file = "R/molinfo.R")
 classified_path <-
   "~/Git/lotus-processor/data/processed/211220_frozen_metadata.csv.gz"
 
-query_path_1 <- "src/sparql/get_review_table_part_1.sql"
-query_path_2 <- "src/sparql/get_review_table_part_2.sql"
-query_path_3 <- "src/sparql/get_review_table_part_3.sql"
-query_path_4 <- "src/sparql/get_review_table_part_4.sql"
+query_path_1 <- "inst/scripts/sparql/get_review_table_part_1.sql"
+query_path_2 <- "inst/scripts/sparql/get_review_table_part_2.sql"
+query_path_3 <- "inst/scripts/sparql/get_review_table_part_3.sql"
+query_path_4 <- "inst/scripts/sparql/get_review_table_part_4.sql"
 
 export_dir <- "data"
 
-## As there is no better way than to manually assess if the QID
-## really corresponds to what you want
-qids <- c(
-  # "Actinobacteria" = "Q26262282",
+#' As there is no better way than to manually assess if the QID
+#' really corresponds to what you want
+qids <- c( # "Actinobacteria" = "Q26262282",
   # "Simaroubaceae" = "Q156679",
   "Swertia" = "Q163970",
   "Gentiana lutea" = "Q158572"
@@ -41,8 +40,6 @@ qids <- c(
 limit <- 1000
 start_date <- 1900
 end_date <- 2021
-
-clean_xanthones <- TRUE
 
 query_part_1 <- readr::read_file(query_path_1)
 query_part_2 <- readr::read_file(query_path_2)
@@ -77,7 +74,7 @@ structures_classified <- readr::read_delim(
 #     "taxon_09species" = "organism_taxonomy_09species",
 #     "taxon_10varietas" = "organism_taxonomy_10varietas"
 #   )
-# ) %>%
+# ) |>
 #   dplyr::distinct()
 
 queries <- character()
@@ -206,11 +203,15 @@ dataframe_species <- tables$`Gentiana lutea` |>
     species = taxaLabels
   )
 
-test_genus <- dataframe_genus |>
-  prepare_hierarchy(type = "literature")
+test_genus <- prepare_hierarchy(
+  dataframe = dataframe_genus,
+  type = "literature"
+)
 
-test_species <- dataframe_species |>
-  prepare_hierarchy(type = "literature")
+test_species <- prepare_hierarchy(
+  dataframe = dataframe_species,
+  type = "literature"
+)
 
 test_genus_2 <-
   prepare_plot(dataframe = test_genus)
