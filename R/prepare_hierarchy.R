@@ -100,12 +100,6 @@ prepare_hierarchy <-
       )) |>
       dplyr::distinct()
 
-    if (clean_xanthones == TRUE) {
-      children_1 <- children_1 |>
-        dplyr::filter(ids != "Polyketides-Xanthones") |>
-        dplyr::filter(ids != "Shikimates and Phenylpropanoids-Xanthones")
-    }
-
     children_2 <- dataframe |>
       dplyr::distinct(best_candidate_2, best_candidate_3) |>
       dplyr::mutate(ids = paste(best_candidate_2, best_candidate_3, sep = "-")) |>
@@ -165,7 +159,10 @@ prepare_hierarchy <-
     genealogy <- rbind(parents, children_1, children_2) |>
       dplyr::ungroup() |>
       dplyr::select(parents, ids, labels) |>
-      dplyr::distinct()
+      dplyr::distinct() |>
+      dplyr::group_by(ids) |>
+      dplyr::add_count() |> # for ambiguous classes
+      dplyr::ungroup()
 
     table <- dataframe |>
       dplyr::mutate(
@@ -199,13 +196,14 @@ prepare_hierarchy <-
           parents,
           sample,
           intensity,
-          species
+          species,
+          n
         )
 
       table_1 <- table |>
         dplyr::group_by(labels, sample) |>
         dplyr::add_count(name = "values") |>
-        dplyr::select(parents, ids, labels, values, sample, intensity, species) |>
+        dplyr::select(parents, ids, labels, values, sample, intensity, species, n) |>
         dplyr::distinct()
 
       table_1_1 <- table_1 |>
@@ -217,7 +215,7 @@ prepare_hierarchy <-
         dplyr::mutate(labels = best_candidate_3) |>
         dplyr::group_by(labels, organism) |>
         dplyr::add_count(name = "values") |>
-        dplyr::select(parents, ids, labels, values, organism, sample) |>
+        dplyr::select(parents, ids, labels, values, organism, sample, n) |>
         dplyr::distinct()
 
       table_1_1 <- table_1 |>
@@ -228,14 +226,14 @@ prepare_hierarchy <-
 
     top_parents_table <-
       dplyr::left_join(
-        table_1_1 |> distinct(parents, ids, labels, values_2),
-        table_1_1 |> distinct(parents, ids, labels, values_2),
+        table_1_1 |> distinct(parents, ids, labels, values_2, n),
+        table_1_1 |> distinct(parents, ids, labels, values_2, n),
         by = c("ids" = "parents")
       ) |>
       dplyr::filter(!grepl(pattern = "-", x = parents)) |>
-      dplyr::distinct(parents, ids, labels = labels.x, values_2 = values_2.y) |>
+      dplyr::distinct(parents, ids, labels = labels.x, values_2 = values_2.y, n.x) |>
       dplyr::group_by(parents) |>
-      dplyr::mutate(values_3 = sum(values_2)) |>
+      dplyr::mutate(values_3 = sum(values_2) / n.x) |>
       dplyr::filter(parents != "") |>
       dplyr::distinct(parents, values_3) |>
       dplyr::ungroup() |>
