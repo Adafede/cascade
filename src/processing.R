@@ -592,26 +592,58 @@ for (s in unique(df_new_with$id)) {
   df_peaks_samples[[s]] <- df_new_with_cor
 }
 
+#' We got 2556 CAD peaks automatically detected
+#' With peak similarity score > 0.6: 5313 features
 df_new_with_cor_pre <- bind_rows(df_peaks_samples)
 
-df_new_with_cor_full <- df_new_with_cor_pre |>
-  dplyr::filter(comparison_score >= PEAK_SIMILARITY)
+#' With peak similarity score > 0.7: 3421 features
+df_new_with_cor_07 <- df_new_with_cor_pre |>
+  dplyr::filter(comparison_score >= 0.7)
 
-final_table_taxed <- annotations |>
-  prepare_hierarchy_preparation() |>
+#' With peak similarity score > 0.8: 1928 features
+df_new_with_cor_08 <- df_new_with_cor_pre |>
+  dplyr::filter(comparison_score >= 0.8)
+
+#' With peak similarity score > 0.75: 2598 features
+df_new_with_cor_075 <- df_new_with_cor_pre |>
+  dplyr::filter(comparison_score >= 0.75)
+
+final_table_taxed <-
+  prepare_hierarchy_preparation(dataframe = annotations) |>
   prepare_hierarchy()
 
-final_table_taxed_with <- df_new_with |>
-  prepare_hierarchy(detector = "ms")
+final_table_taxed_with <-
+  prepare_hierarchy(dataframe = df_new_with, detector = "ms")
 
-final_table_taxed_without <- df_new_without |>
-  prepare_hierarchy()
+final_table_taxed_without <-
+  prepare_hierarchy(dataframe = df_new_without)
 
-final_table_taxed_with_new <- df_new_with |>
-  prepare_hierarchy(detector = "cad")
+final_table_taxed_with_new <-
+  prepare_hierarchy(
+    dataframe = df_new_with,
+    detector = "cad"
+  )
 
-final_table_taxed_with_new_cor <- df_new_with_cor_full |>
-  prepare_hierarchy(detector = "cad")
+final_table_taxed_with_new_cor_06 <-
+  prepare_hierarchy(
+    dataframe = df_new_with_cor_pre,
+    detector = "cad"
+  )
+final_table_taxed_with_new_cor_07 <-
+  prepare_hierarchy(
+    dataframe = df_new_with_cor_07,
+    detector = "cad"
+  )
+final_table_taxed_with_new_cor_08 <-
+  prepare_hierarchy(
+    dataframe = df_new_with_cor_08,
+    detector = "cad"
+  )
+final_table_taxed_with_new_cor <-
+  prepare_hierarchy(
+    dataframe = df_new_with_cor_075,
+    detector = "cad"
+  )
 
 samples <- prepare_plot(dataframe = final_table_taxed)
 samples_with <- prepare_plot(dataframe = final_table_taxed_with)
@@ -619,38 +651,53 @@ samples_without <-
   prepare_plot(dataframe = final_table_taxed_without)
 samples_with_new <-
   prepare_plot(dataframe = final_table_taxed_with_new)
+samples_with_new_cor_06 <-
+  prepare_plot(dataframe = final_table_taxed_with_new_cor_06)
+samples_with_new_cor_07 <-
+  prepare_plot(dataframe = final_table_taxed_with_new_cor_07)
+samples_with_new_cor_08 <-
+  prepare_plot(dataframe = final_table_taxed_with_new_cor_08)
 samples_with_new_cor <-
   prepare_plot(dataframe = final_table_taxed_with_new_cor)
 
 absolute <- plot_histograms(
   dataframe = samples,
-  label = "Based on MS intensity only",
-  xlab = FALSE
+  label = "Based on MS intensity only"
 )
 
 absolute_with <- plot_histograms(
   dataframe = samples_with,
-  label = "MS intensity within CAD peak",
-  xlab = FALSE
+  label = "MS intensity within CAD peak"
 )
 
 absolute_without <- plot_histograms(
   dataframe = samples_without,
-  label = "MS intensity outside CAD peak",
-  xlab = FALSE
+  label = "MS intensity outside CAD peak"
 )
 
 absolute_with_new <- plot_histograms(
   dataframe = samples_with_new,
-  label = "CAD intensity within CAD peak",
-  xlab = FALSE
+  label = "CAD intensity within CAD peak"
 )
 
+absolute_with_new_cor_06 <-
+  plot_histograms(
+    dataframe = samples_with_new_cor_06,
+    label = "CAD intensity of corelated peaks within CAD peak"
+  )
+absolute_with_new_cor_07 <-
+  plot_histograms(
+    dataframe = samples_with_new_cor_07,
+    label = "CAD intensity of corelated peaks within CAD peak"
+  )
+absolute_with_new_cor_08 <-
+  plot_histograms(
+    dataframe = samples_with_new_cor_08,
+    label = "CAD intensity of corelated peaks within CAD peak")
 absolute_with_new_cor <-
   plot_histograms(
     dataframe = samples_with_new_cor,
-    label = "CAD intensity of corelated peaks within CAD peak",
-    xlab = FALSE
+    label = "CAD intensity of corelated peaks within CAD peak"
   )
 
 combined <-
