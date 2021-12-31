@@ -44,32 +44,39 @@ log_debug(
 log_debug("Authors: \n", "AR")
 log_debug("Contributors: \n", "...")
 
-FOURRIER_COMPONENTS <- 0.05 ## of total
-TIME_MIN <- 0 ## Min
-TIME_MAX <- 32 ## Min
-FREQUENCY <- 20 ## Hz
-RESAMPLE <- 1 / 10 ## points
+#' Paths
+ANNOTATIONS <-
+  "~/git/tima-r/inst/extdata/processed/211230_110947/20211227_10043.tsv.gz"
+GNPS_JOB <- "97d7c50031a84b9ba2747e883a5907cd"
+TOYSET <- "~/data/20210701_10043/fractions"
+
+#' Generic parameters
+WORKERS <- 10
+
+#' Parameters for LC alignment
+TIME_MIN <- 0 ## minutes
+TIME_MAX <- 32 ## minutes
 CAD_SHIFT <- 0.055 ## minutes
 PDA_SHIFT <- 0.090 ## minutes
 ESTIMATED_SOLUBLITIY_LIMIT <- 58
-WORKERS <- 10
 
-# adapted from Excel sheet from paper shortDOI: 10/ghmvhz
+#' Parameters for signal improvement
+FOURRIER_COMPONENTS <- 0.05 ## of total
+FREQUENCY <- 20 ## Hz
+RESAMPLE <- 1 / 10 ## points
+
+#' Parameters adapted from Excel sheet from paper shortDOI: 10/ghmvhz
 sigma <- 0.05
 k2 <- sigma / 250 # 30
 k4 <- sigma / 1250000 # 200
 smoothing_width <- 5
 baseline_adjust <- 0
 
-ANNOTATIONS <-
-  "~/git/tima-r/inst/extdata/processed/211230_110947/20211227_10043.tsv.gz"
-GNPS_JOB <- "97d7c50031a84b9ba2747e883a5907cd"
+#' Parameters related to MS/CAD
 INTENSITY <- 1E5
 PEAK_SIMILARITY <- 0.9
 PEAK_SIMILARITY_PREFILTER <- 0.6
-
 PPM <- 10
-TOYSET <- "~/data/20210701_10043/fractions"
 
 future::plan(strategy = future::multiprocess(workers = WORKERS))
 
@@ -693,7 +700,8 @@ absolute_with_new_cor_07 <-
 absolute_with_new_cor_08 <-
   plot_histograms(
     dataframe = samples_with_new_cor_08,
-    label = "CAD intensity of corelated peaks within CAD peak")
+    label = "CAD intensity of corelated peaks within CAD peak"
+  )
 absolute_with_new_cor <-
   plot_histograms(
     dataframe = samples_with_new_cor,
@@ -706,7 +714,6 @@ combined <-
 ## specific sample exploration
 plotly::plot_ly(
   data = final_table_taxed |>
-    dplyr::filter(species == "Swertia chirayita") |>
     dplyr::filter(sample == "210619_AR_31_M_36_01"),
   ids = ~ids,
   labels = ~labels,
@@ -720,7 +727,6 @@ plotly::plot_ly(
 
 plotly::plot_ly(
   data = final_table_taxed_with |>
-    dplyr::filter(species == "Swertia chirayita") |>
     dplyr::filter(sample == "210619_AR_31_M_36_01"),
   ids = ~ids,
   labels = ~labels,
@@ -734,7 +740,6 @@ plotly::plot_ly(
 
 plotly::plot_ly(
   data = final_table_taxed_without |>
-    dplyr::filter(species == "Swertia chirayita") |>
     dplyr::filter(sample == "210619_AR_31_M_36_01"),
   ids = ~ids,
   labels = ~labels,
@@ -748,7 +753,6 @@ plotly::plot_ly(
 
 plotly::plot_ly(
   data = final_table_taxed_with_new |>
-    dplyr::filter(species == "Swertia chirayita") |>
     dplyr::filter(sample == "210619_AR_31_M_36_01"),
   ids = ~ids,
   labels = ~labels,
@@ -762,7 +766,6 @@ plotly::plot_ly(
 
 plotly::plot_ly(
   data = final_table_taxed_with_new_cor |>
-    dplyr::filter(species == "Swertia chirayita") |>
     dplyr::filter(sample == "210619_AR_31_M_36_01"),
   ids = ~ids,
   labels = ~labels,

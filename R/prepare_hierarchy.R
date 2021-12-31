@@ -17,6 +17,10 @@ prepare_hierarchy <-
            detector = "ms") {
     stopifnot("'type' must be either 'analysis' or 'literature'" = type %in% c("analysis", "literature"))
 
+    dataframe <- dataframe |>
+      dplyr::mutate(chemical_pathway = best_candidate_1) |>
+      dplyr::group_by(chemical_pathway)
+
     parents <- dataframe |>
       dplyr::distinct(labels = best_candidate_1, ids = best_candidate_1) |>
       dplyr::mutate(parents = "") |>
@@ -98,6 +102,12 @@ prepare_hierarchy <-
         replacement = "Other",
         x = parents
       )) |>
+      dplyr::mutate_all(list(~ gsub(
+        x = .x,
+        pattern = "-NA$",
+        replacement = "",
+      ))) |>
+      dplyr::filter(!is.na(labels)) |>
       dplyr::distinct()
 
     children_2 <- dataframe |>
@@ -151,9 +161,24 @@ prepare_hierarchy <-
           x = join
         )
       ) |>
-      dplyr::full_join(children_1, by = c("join" = "labels")) |>
+      dplyr::mutate_all(list(~ gsub(
+        x = .x,
+        pattern = "-NA$",
+        replacement = "",
+      ))) |>
+      dplyr::mutate_all(list(~ gsub(
+        x = .x,
+        pattern = "^NA$",
+        replacement = NA,
+      ))) |>
+      dplyr::full_join(children_1,
+        by = c(
+          "join" = "labels",
+          "chemical_pathway" = "chemical_pathway"
+        )
+      ) |>
       dplyr::distinct(ids = ids.x, labels, parents = ids.y) |>
-      dplyr::filter(!is.na(parents)) |>
+      dplyr::filter(!is.na(labels)) |>
       dplyr::distinct()
 
     genealogy <- rbind(parents, children_1, children_2) |>
@@ -161,7 +186,9 @@ prepare_hierarchy <-
       dplyr::select(parents, ids, labels) |>
       dplyr::distinct() |>
       dplyr::group_by(ids) |>
-      dplyr::add_count() |> # for ambiguous classes
+      dplyr::add_count() |> #' for ambiguous classes
+      dplyr::filter(!parents == "" |
+        !is.na(ids) | !is.na(labels)) |>
       dplyr::ungroup()
 
     table <- dataframe |>
@@ -179,7 +206,23 @@ prepare_hierarchy <-
           x = best_candidate_3
         )
       ) |>
-      dplyr::full_join(genealogy, by = c("best_candidate_3" = "labels"))
+      dplyr::mutate(ids = paste0(best_candidate_2, "-", best_candidate_3)) |>
+      dplyr::mutate(ids = gsub(
+        x = ids,
+        pattern = "-NA$",
+        replacement = "",
+      )) |>
+      dplyr::mutate(ids = gsub(
+        x = ids,
+        pattern = "^NA$",
+        replacement = NA,
+      )) |>
+      dplyr::full_join(genealogy) |>
+      dplyr::mutate(best_candidate_3 = ifelse(
+        test = is.na(best_candidate_3) & !is.na(best_candidate_2),
+        no = best_candidate_3,
+        yes = paste0(best_candidate_1, "-", best_candidate_2)
+      ))
 
     if (type == "analysis") {
       table <- table |>
@@ -191,7 +234,7 @@ prepare_hierarchy <-
           score_chemical,
           score_final,
           best_candidate_organism,
-          labels = best_candidate_3,
+          labels,
           ids,
           parents,
           sample,
@@ -212,7 +255,6 @@ prepare_hierarchy <-
         dplyr::ungroup()
     } else {
       table_1 <- table |>
-        dplyr::mutate(labels = best_candidate_3) |>
         dplyr::group_by(labels, organism) |>
         dplyr::add_count(name = "values") |>
         dplyr::select(parents, ids, labels, values, organism, sample, n) |>
@@ -233,15 +275,21 @@ prepare_hierarchy <-
       dplyr::filter(!grepl(pattern = "-", x = parents)) |>
       dplyr::distinct(parents, ids, labels = labels.x, values_2 = values_2.y, n.x) |>
       dplyr::group_by(parents) |>
-      dplyr::mutate(values_3 = sum(values_2) / n.x) |>
+      dplyr::mutate(values_3 = sum(values_2) / as.numeric(n.x)) |>
       dplyr::filter(parents != "") |>
       dplyr::distinct(parents, values_3) |>
       dplyr::ungroup() |>
-      dplyr::top_n(n = 8) |>
+      dplyr::top_n(n = 8, wt = values_3) |>
+      dplyr::arrange(desc(values_3)) |>
       dplyr::select(-values_3) |>
       dplyr::mutate(ids = parents, labels = parents) |>
       dplyr::mutate(parents = "", new_labels = labels) |>
       dplyr::distinct()
+
+    if (nrow(top_parents_table > 8)) {
+      top_parents_table <- top_parents_table |>
+        head(8) #' in case of equal numbers among classes
+    }
 
     top_parents <- top_parents_table$labels
 
@@ -582,7 +630,7 @@ prepare_hierarchy <-
       ) |>
       dplyr::filter(!is.na(sample)) |>
       dplyr::group_by(sample) |>
-      dplyr::mutate(values = values / (sum(values) / 3)) |> ## because 3 levels
+      dplyr::mutate(values = values / (sum(values) / 3)) |> #' because 3 levels
       dplyr::ungroup()
 
     return(final_table)
