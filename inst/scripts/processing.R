@@ -709,7 +709,10 @@ absolute_with_new_cor <-
   )
 
 combined <-
-  absolute_with + absolute_without + absolute_with_new + absolute_with_new_cor
+  absolute_with +
+  absolute_without +
+  absolute_with_new +
+  absolute_with_new_cor
 
 ## specific sample exploration
 plotly::plot_ly(

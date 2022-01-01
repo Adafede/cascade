@@ -188,7 +188,8 @@ prepare_hierarchy <-
       dplyr::group_by(ids) |>
       dplyr::add_count() |> #' for ambiguous classes
       dplyr::filter(!parents == "" |
-        !is.na(ids) | !is.na(labels)) |>
+        !is.na(ids) |
+        !is.na(labels)) |>
       dplyr::ungroup()
 
     table <- dataframe |>
