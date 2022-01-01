@@ -73,7 +73,7 @@ require(package = readr, quietly = TRUE)
 read_features <- function(id) {
   file <-
     paste0(
-      "http://gnps.ucsd.edu/ProteoSAFe/DownloadResultFile?task=",
+      "https://gnps.ucsd.edu/ProteoSAFe/DownloadResultFile?task=",
       id,
       "&block=main&file=quantification_table_reformatted/"
     )
@@ -94,7 +94,7 @@ read_metadata <-
   function(id) {
     file <-
       paste0(
-        "http://gnps.ucsd.edu/ProteoSAFe/DownloadResultFile?task=",
+        "https://gnps.ucsd.edu/ProteoSAFe/DownloadResultFile?task=",
         id,
         "&block=main&file=metadata_table/"
       )
@@ -114,7 +114,7 @@ read_metadata <-
 read_results <- function(id) {
   file <-
     paste0(
-      "http://gnps.ucsd.edu/ProteoSAFe/DownloadResultFile?task=",
+      "https://gnps.ucsd.edu/ProteoSAFe/DownloadResultFile?task=",
       id,
       "&block=main&file=DB_result/"
     )
@@ -136,7 +136,7 @@ read_results <- function(id) {
 read_clusters <- function(id) {
   file <-
     paste0(
-      "http://gnps.ucsd.edu/ProteoSAFe/DownloadResultFile?task=",
+      "https://gnps.ucsd.edu/ProteoSAFe/DownloadResultFile?task=",
       id,
       "&block=main&file=clusterinfo_summary/"
     )
@@ -176,7 +176,7 @@ read_nap <- function(id) {
 read_edges <- function(id) {
   file <-
     paste0(
-      "http://gnps.ucsd.edu/ProteoSAFe/DownloadResultFile?task=",
+      "https://gnps.ucsd.edu/ProteoSAFe/DownloadResultFile?task=",
       id,
       "&block=main&file=networkedges_selfloop/"
     )
