@@ -78,6 +78,9 @@ PEAK_SIMILARITY <- 0.9
 PEAK_SIMILARITY_PREFILTER <- 0.6
 PPM <- 10
 
+#' Parameters for annotation
+CONFIDENCE_SCORE_MIN <- 0.5
+
 future::plan(strategy = future::multiprocess(workers = WORKERS))
 
 files <- list.files(
@@ -360,6 +363,13 @@ df <- data.table::foverlaps(peaks_all, cads_baselined) |>
   data.table::data.table()
 
 ms1_best_candidate <- annotations |>
+  dplyr::mutate(
+    smiles_2D = ifelse(
+      test = score_final >= CONFIDENCE_SCORE_MIN,
+      yes = smiles_2D,
+      no = NA
+    )
+  ) |>
   dplyr::mutate_all(list(~ gsub(
     pattern = "\\|.*",
     replacement = "",
