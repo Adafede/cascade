@@ -17,11 +17,48 @@ prepare_hierarchy <-
            detector = "ms") {
     stopifnot("'type' must be either 'analysis' or 'literature'" = type %in% c("analysis", "literature"))
 
-    dataframe <- dataframe |>
-      dplyr::mutate(chemical_pathway = best_candidate_1) |>
+    df <- dataframe |>
+      dplyr::mutate(
+        best_candidate_1 = ifelse(
+          test = !is.na(smiles_2D),
+          yes = best_candidate_1,
+          no = "notAnnotated"
+        ),
+        best_candidate_2 = ifelse(
+          test = !is.na(smiles_2D),
+          yes = best_candidate_2,
+          no = "notAnnotated"
+        ),
+        best_candidate_3 = ifelse(
+          test = !is.na(smiles_2D),
+          yes = best_candidate_3,
+          no = "notAnnotated"
+        )
+      ) |>
+      dplyr::mutate(chemical_pathway = ifelse(
+        test = grepl(pattern = "not", x = best_candidate_1),
+        yes = "Other",
+        no = best_candidate_1
+      ))
+
+    df_notConfident <- df |>
+      dplyr::filter(grepl(pattern = "not", x = best_candidate_1)) |>
+      dplyr::mutate(
+        smiles_2D = NA,
+        inchikey_2D = NA
+      ) |>
+      dplyr::arrange(desc(across(any_of(
+        c("intensity", "comparison_score")
+      )))) |>
+      dplyr::distinct(id, peak_id, sample, .keep_all = TRUE)
+
+    df_confident <- df |>
+      dplyr::filter(!grepl(pattern = "notConfident", x = best_candidate_1))
+
+    dataframe2 <- rbind(df_confident, df_notConfident) |>
       dplyr::group_by(chemical_pathway)
 
-    parents <- dataframe |>
+    parents <- dataframe2 |>
       dplyr::distinct(labels = best_candidate_1, ids = best_candidate_1) |>
       dplyr::mutate(parents = "") |>
       dplyr::distinct() |>
@@ -53,9 +90,23 @@ prepare_hierarchy <-
           fixed = TRUE
         )
       ) |>
+      dplyr::mutate(
+        labels = gsub(
+          pattern = "notConfident",
+          replacement = "Other",
+          x = labels,
+          fixed = TRUE
+        ),
+        ids = gsub(
+          pattern = "notConfident",
+          replacement = "Other",
+          x = ids,
+          fixed = TRUE
+        )
+      ) |>
       dplyr::distinct()
 
-    children_1 <- dataframe |>
+    children_1 <- dataframe2 |>
       dplyr::distinct(best_candidate_1, best_candidate_2) |>
       dplyr::mutate(ids = paste(best_candidate_1, best_candidate_2, sep = "-")) |>
       dplyr::distinct(labels = best_candidate_2, ids) |>
@@ -72,7 +123,7 @@ prepare_hierarchy <-
           fixed = TRUE
         ),
         ids = gsub(
-          pattern = "notAnnotated-notAnnotated notAnnotated",
+          pattern = "notAnnotated-notAnnotated",
           replacement = "Other-notAnnotated",
           x = ids,
           fixed = TRUE
@@ -86,8 +137,22 @@ prepare_hierarchy <-
           fixed = TRUE
         ),
         ids = gsub(
-          pattern = "notClassified-notClassified notClassified",
+          pattern = "notClassified-notClassified",
           replacement = "Other-notClassified",
+          x = ids,
+          fixed = TRUE
+        )
+      ) |>
+      dplyr::mutate(
+        labels = gsub(
+          pattern = "notConfident notConfident$",
+          replacement = "notConfident",
+          x = labels,
+          fixed = TRUE
+        ),
+        ids = gsub(
+          pattern = "notConfident-notConfident",
+          replacement = "Other-notConfident",
           x = ids,
           fixed = TRUE
         )
@@ -102,6 +167,11 @@ prepare_hierarchy <-
         replacement = "Other",
         x = parents
       )) |>
+      dplyr::mutate(parents = gsub(
+        pattern = "^notConfident$",
+        replacement = "Other",
+        x = parents
+      )) |>
       dplyr::mutate_all(list(~ gsub(
         x = .x,
         pattern = "-NA$",
@@ -110,7 +180,7 @@ prepare_hierarchy <-
       dplyr::filter(!is.na(labels)) |>
       dplyr::distinct()
 
-    children_2 <- dataframe |>
+    children_2 <- dataframe2 |>
       dplyr::distinct(best_candidate_2, best_candidate_3) |>
       dplyr::mutate(ids = paste(best_candidate_2, best_candidate_3, sep = "-")) |>
       dplyr::distinct(labels = best_candidate_3, ids, join = best_candidate_2) |>
@@ -155,6 +225,26 @@ prepare_hierarchy <-
         )
       ) |>
       dplyr::mutate(
+        labels = gsub(
+          pattern = "notConfident notConfident notConfident",
+          replacement = "notConfident notConfident",
+          x = labels,
+          fixed = TRUE
+        ),
+        ids = gsub(
+          pattern = "notConfident notConfident-notConfident notConfident notConfident",
+          replacement = "notConfident-notConfident notConfident",
+          x = ids,
+          fixed = TRUE
+        ),
+        join = gsub(
+          pattern = "notConfident notConfident",
+          replacement = "notConfident",
+          x = join,
+          fixed = TRUE
+        )
+      ) |>
+      dplyr::mutate(
         join = gsub(
           pattern = "([a-zA-Z]|\\))(-)([a-zA-Z]|[0-9])(.*)",
           replacement = "\\1",
@@ -192,7 +282,7 @@ prepare_hierarchy <-
         !is.na(labels)) |>
       dplyr::ungroup()
 
-    table <- dataframe |>
+    table <- dataframe2 |>
       dplyr::mutate(
         best_candidate_3 = gsub(
           pattern = "notAnnotated notAnnotated notAnnotated",
@@ -204,6 +294,13 @@ prepare_hierarchy <-
         best_candidate_3 = gsub(
           pattern = "notClassified notClassified notClassified",
           replacement = "notClassified notClassified",
+          x = best_candidate_3
+        )
+      ) |>
+      dplyr::mutate(
+        best_candidate_3 = gsub(
+          pattern = "notConfident notConfident notConfident",
+          replacement = "notConfident notConfident",
           x = best_candidate_3
         )
       ) |>
@@ -451,8 +548,8 @@ prepare_hierarchy <-
     missing_children <- genealogy_new_med_3 |>
       dplyr::filter(grepl(pattern = " Other$", x = parents)) |>
       dplyr::distinct(parents = ids, best_candidate_2 = labels) |>
-      dplyr::left_join(dataframe |>
-        distinct(best_candidate_3, best_candidate_2)) |>
+      dplyr::left_join(dataframe2 |>
+        dplyr::distinct(best_candidate_3, best_candidate_2)) |>
       dplyr::mutate(
         ids = paste(best_candidate_2,
           best_candidate_3,
@@ -463,27 +560,27 @@ prepare_hierarchy <-
       ) |>
       dplyr::select(parents, ids, labels, new_labels)
 
+    missing_children_2 <- genealogy_new_med_3 |>
+      dplyr::filter(grepl(pattern = "^Other", x = parents)) |>
+      dplyr::distinct(parents = ids, best_candidate_2 = labels) |>
+      dplyr::left_join(dataframe2 |>
+        dplyr::distinct(best_candidate_3, best_candidate_2)) |>
+      dplyr::mutate(
+        ids = paste(best_candidate_2,
+          best_candidate_3,
+          sep = "-"
+        ),
+        labels = best_candidate_3,
+        new_labels = best_candidate_3
+      ) |>
+      dplyr::select(parents, ids, labels, new_labels) |>
+      dplyr::distinct()
+
     genealogy_new_med_4 <-
-      dplyr::bind_rows(genealogy_new_med_3, missing_children)
+      dplyr::bind_rows(genealogy_new_med_3, missing_children, missing_children_2)
 
-    table_new <- dataframe |>
-      dplyr::filter(!is.na(species))
-
-    table_new <- table_new |>
-      dplyr::mutate(
-        best_candidate_3 = gsub(
-          pattern = "notAnnotated notAnnotated notAnnotated",
-          replacement = "notAnnotated notAnnotated",
-          x = best_candidate_3
-        )
-      ) |>
-      dplyr::mutate(
-        best_candidate_3 = gsub(
-          pattern = "notClassified notClassified notClassified",
-          replacement = "notClassified notClassified",
-          x = best_candidate_3
-        )
-      ) |>
+    table_new <- dataframe2 |>
+      dplyr::filter(!is.na(species)) |>
       dplyr::full_join(genealogy_new_med_4, by = c("best_candidate_3" = "labels"))
 
     if (type == "analysis") {
@@ -592,13 +689,16 @@ prepare_hierarchy <-
     final_interim_table <- table_1_1_new |>
       dplyr::filter(!grepl(pattern = "-", x = parents) &
         (parents != "")) |>
-      dplyr::select(-any_of(c("values", "sample", "species"))) |>
+      dplyr::select(-any_of(c(
+        "values", "sample", "intensity", "species"
+      ))) |>
       dplyr::left_join(final_children_table |>
         dplyr::select(any_of(
           c("values", "sample", "parents", "species")
         )),
       by = c("ids" = "parents")
       ) |>
+      dplyr::distinct() |>
       dplyr::group_by(across(any_of(
         c("parents", "ids", "labels", "sample", "species")
       ))) |>
@@ -616,6 +716,7 @@ prepare_hierarchy <-
         )),
       by = c("ids" = "parents")
       ) |>
+      dplyr::distinct() |>
       dplyr::group_by(across(any_of(
         c("parents", "ids", "labels", "sample", "species")
       ))) |>
