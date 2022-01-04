@@ -796,6 +796,150 @@ plotly::plot_ly(
 ) |>
   plotly::layout(colorway = sunburst_colors)
 
+
+#' Work in progress
+#' Add some metadata per peak
+df_meta <- df_new_with_cor_pre |>
+  dplyr::arrange(desc(intensity)) |>
+  dplyr::distinct(
+    id,
+    peak_id,
+    integral,
+    feature_id,
+    rt,
+    mz,
+    smiles_2D,
+    inchikey_2D,
+    best_candidate_1,
+    best_candidate_2,
+    best_candidate_3,
+    score_biological,
+    score_chemical,
+    score_final,
+    #' add consensus
+    sample,
+    species
+  ) |>
+  dplyr::group_by(id, peak_id) |>
+  dplyr::distinct(
+    feature_id,
+    smiles_2D,
+    inchikey_2D,
+    best_candidate_1,
+    best_candidate_2,
+    best_candidate_3,
+    .keep_all = TRUE
+  ) |>
+  dplyr::add_count(name = "featuresPerPeak") |>
+  dplyr::distinct(
+    smiles_2D,
+    inchikey_2D,
+    best_candidate_1,
+    best_candidate_2,
+    best_candidate_3,
+    .keep_all = TRUE
+  ) |>
+  dplyr::add_count(name = "structuresPerPeak") |>
+  dplyr::distinct(best_candidate_1,
+    best_candidate_2,
+    best_candidate_3,
+    .keep_all = TRUE
+  ) |>
+  dplyr::add_count(name = "chemicalClassesPerPeak") |>
+  dplyr::distinct(best_candidate_1,
+    best_candidate_2,
+    .keep_all = TRUE
+  ) |>
+  dplyr::add_count(name = "chemicalSuperclassesPerPeak") |>
+  dplyr::distinct(best_candidate_1,
+    .keep_all = TRUE
+  ) |>
+  dplyr::add_count(name = "chemicalPathwaysPerPeak") |>
+  dplyr::ungroup() |>
+  dplyr::distinct(
+    id,
+    peak_id,
+    featuresPerPeak,
+    structuresPerPeak,
+    chemicalClassesPerPeak,
+    chemicalSuperclassesPerPeak,
+    chemicalPathwaysPerPeak
+  )
+
+test_features <- df_meta |>
+  group_by(featuresPerPeak) |>
+  count()
+test_structures <- df_meta |>
+  group_by(structuresPerPeak) |>
+  count()
+test_classes <- df_meta |>
+  group_by(chemicalClassesPerPeak) |>
+  count()
+test_superclasses <- df_meta |>
+  group_by(chemicalSuperclassesPerPeak) |>
+  count()
+test_pathways <- df_meta |>
+  group_by(chemicalPathwaysPerPeak) |>
+  count()
+
+plotly::plot_ly() |>
+  add_pie(
+    data = test_features,
+    name = "Features",
+    labels = ~featuresPerPeak,
+    values = ~n,
+    type = "pie",
+    textposition = "inside",
+    domain = list(row = 0, column = 0)
+  ) |>
+  add_pie(
+    data = test_structures,
+    name = "Structures",
+    labels = ~structuresPerPeak,
+    values = ~n,
+    type = "pie",
+    textposition = "inside",
+    domain = list(row = 0, column = 1)
+  ) |>
+  add_pie(
+    data = test_classes,
+    name = "Classes",
+    labels = ~chemicalClassesPerPeak,
+    values = ~n,
+    type = "pie",
+    textposition = "inside",
+    domain = list(row = 0, column = 2)
+  ) |>
+  add_pie(
+    data = test_superclasses,
+    name = "Superclasses",
+    labels = ~chemicalSuperclassesPerPeak,
+    values = ~n,
+    type = "pie",
+    textposition = "inside",
+    domain = list(row = 1, column = 0)
+  ) |>
+  add_pie(
+    data = test_pathways,
+    name = "Pathways",
+    labels = ~chemicalPathwaysPerPeak,
+    values = ~n,
+    type = "pie",
+    textposition = "inside",
+    domain = list(row = 1, column = 1)
+  ) |>
+  layout(
+    title = "Peak analysis \n Features > Structures > Chemical classes > \n Superclasses > Pathways",
+    colorway = viridis::cividis(max(
+      nrow(test_features),
+      nrow(test_structures),
+      nrow(test_classes),
+      nrow(test_superclasses),
+      nrow(test_pathways)
+    )),
+    grid = list(rows = 2, columns = 3)
+  )
+
 end <- Sys.time()
 
 log_debug("Script finished in", format(end - start))
