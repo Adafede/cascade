@@ -363,13 +363,6 @@ df <- data.table::foverlaps(peaks_all, cads_baselined) |>
   data.table::data.table()
 
 ms1_best_candidate <- annotations |>
-  dplyr::mutate(
-    smiles_2D = ifelse(
-      test = score_final >= CONFIDENCE_SCORE_MIN,
-      yes = smiles_2D,
-      no = NA
-    )
-  ) |>
   dplyr::mutate_all(list(~ gsub(
     pattern = "\\|.*",
     replacement = "",
@@ -508,12 +501,15 @@ df_new_with <- df_new_pre |>
     mz_min = (1 - (1E-6 * PPM)) * as.numeric(mz),
     mz_max = (1 + (1E-6 * PPM)) * as.numeric(mz)
   ) |>
+  dplyr::ungroup() |>
   dplyr::select(-rt_1, -rt_2) |>
-  dplyr::filter(!is.na(peak_id))
+  dplyr::filter(!is.na(peak_id)) |>
+  make_confident(score = CONFIDENCE_SCORE_MIN)
 
 df_new_without <- df_new_pre |>
   dplyr::filter(is.na(peak_id)) |>
-  dplyr::filter(sample %in% df_new_with$sample)
+  dplyr::filter(sample %in% df_new_with$sample) |>
+  make_confident(score = CONFIDENCE_SCORE_MIN)
 
 df_peaks_samples <- list()
 
@@ -615,14 +611,17 @@ df_new_with_cor_pre <- bind_rows(df_peaks_samples)
 
 #' With peak similarity score > 0.7: 3421 features
 df_new_with_cor_07 <- df_new_with_cor_pre |>
+  make_confident(score = CONFIDENCE_SCORE_MIN) |>
   dplyr::filter(comparison_score >= 0.7)
 
 #' With peak similarity score > 0.8: 1928 features
 df_new_with_cor_08 <- df_new_with_cor_pre |>
+  make_confident(score = CONFIDENCE_SCORE_MIN) |>
   dplyr::filter(comparison_score >= 0.8)
 
 #' With peak similarity score > 0.75: 2598 features
 df_new_with_cor_075 <- df_new_with_cor_pre |>
+  make_confident(score = CONFIDENCE_SCORE_MIN) |>
   dplyr::filter(comparison_score >= 0.75)
 
 final_table_taxed <-
@@ -679,43 +678,51 @@ samples_with_new_cor <-
 
 absolute <- plot_histograms(
   dataframe = samples,
-  label = "Based on MS intensity only"
+  label = "Based on MS intensity only",
+  xlab = FALSE
 )
 
 absolute_with <- plot_histograms(
   dataframe = samples_with,
-  label = "MS intensity within CAD peak"
+  label = "MS intensity within CAD peak",
+  xlab = FALSE
 )
 
 absolute_without <- plot_histograms(
   dataframe = samples_without,
-  label = "MS intensity outside CAD peak"
+  label = "MS intensity outside CAD peak",
+  xlab = FALSE
 )
 
 absolute_with_new <- plot_histograms(
   dataframe = samples_with_new,
-  label = "CAD intensity within CAD peak"
+  label = "CAD intensity within CAD peak",
+  xlab = FALSE
 )
 
 absolute_with_new_cor_06 <-
   plot_histograms(
     dataframe = samples_with_new_cor_06,
-    label = "CAD intensity of corelated peaks within CAD peak"
+    label = "CAD intensity of corelated peaks within CAD peak",
+    xlab = FALSE
   )
 absolute_with_new_cor_07 <-
   plot_histograms(
     dataframe = samples_with_new_cor_07,
-    label = "CAD intensity of corelated peaks within CAD peak"
+    label = "CAD intensity of corelated peaks within CAD peak",
+    xlab = FALSE
   )
 absolute_with_new_cor_08 <-
   plot_histograms(
     dataframe = samples_with_new_cor_08,
-    label = "CAD intensity of corelated peaks within CAD peak"
+    label = "CAD intensity of corelated peaks within CAD peak",
+    xlab = FALSE
   )
 absolute_with_new_cor <-
   plot_histograms(
     dataframe = samples_with_new_cor,
-    label = "CAD intensity of corelated peaks within CAD peak"
+    label = "CAD intensity of corelated peaks within CAD peak",
+    xlab = FALSE
   )
 
 combined <-
@@ -733,7 +740,7 @@ plotly::plot_ly(
   parents = ~parents,
   values = ~values,
   maxdepth = 3,
-  type = "sunburst",
+  type = "treemap",
   branchvalues = "total"
 ) |>
   plotly::layout(colorway = sunburst_colors)
@@ -746,7 +753,7 @@ plotly::plot_ly(
   parents = ~parents,
   values = ~values,
   maxdepth = 3,
-  type = "sunburst",
+  type = "treemap",
   branchvalues = "total"
 ) |>
   plotly::layout(colorway = sunburst_colors)
@@ -759,7 +766,7 @@ plotly::plot_ly(
   parents = ~parents,
   values = ~values,
   maxdepth = 3,
-  type = "sunburst",
+  type = "treemap",
   branchvalues = "total"
 ) |>
   plotly::layout(colorway = sunburst_colors)
@@ -772,20 +779,19 @@ plotly::plot_ly(
   parents = ~parents,
   values = ~values,
   maxdepth = 3,
-  type = "sunburst",
-  branchvalues = "total"
+  type = "treemap"
 ) |>
   plotly::layout(colorway = sunburst_colors)
 
 plotly::plot_ly(
-  data = final_table_taxed_with_new_cor |>
+  data = final_table_taxed_with_new_cor_07 |>
     dplyr::filter(sample == "210619_AR_31_M_36_01"),
   ids = ~ids,
   labels = ~labels,
   parents = ~parents,
   values = ~values,
   maxdepth = 3,
-  type = "sunburst",
+  type = "treemap",
   branchvalues = "total"
 ) |>
   plotly::layout(colorway = sunburst_colors)
