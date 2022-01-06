@@ -17,46 +17,50 @@ prepare_hierarchy <-
            detector = "ms") {
     stopifnot("'type' must be either 'analysis' or 'literature'" = type %in% c("analysis", "literature"))
 
-    df <- dataframe |>
-      dplyr::mutate(
-        best_candidate_1 = ifelse(
-          test = !is.na(smiles_2D),
-          yes = best_candidate_1,
-          no = "notAnnotated"
-        ),
-        best_candidate_2 = ifelse(
-          test = !is.na(smiles_2D),
-          yes = best_candidate_2,
-          no = "notAnnotated"
-        ),
-        best_candidate_3 = ifelse(
-          test = !is.na(smiles_2D),
-          yes = best_candidate_3,
-          no = "notAnnotated"
-        )
-      ) |>
-      dplyr::mutate(chemical_pathway = ifelse(
-        test = grepl(pattern = "not", x = best_candidate_1),
-        yes = "Other",
-        no = best_candidate_1
-      ))
+    if (type == "analysis") {
+      df <- dataframe |>
+        dplyr::mutate(
+          best_candidate_1 = ifelse(
+            test = !is.na(smiles_2D),
+            yes = best_candidate_1,
+            no = "notAnnotated"
+          ),
+          best_candidate_2 = ifelse(
+            test = !is.na(smiles_2D),
+            yes = best_candidate_2,
+            no = "notAnnotated"
+          ),
+          best_candidate_3 = ifelse(
+            test = !is.na(smiles_2D),
+            yes = best_candidate_3,
+            no = "notAnnotated"
+          )
+        ) |>
+        dplyr::mutate(chemical_pathway = ifelse(
+          test = grepl(pattern = "not", x = best_candidate_1),
+          yes = "Other",
+          no = best_candidate_1
+        ))
 
-    df_notConfident <- df |>
-      dplyr::filter(grepl(pattern = "not", x = best_candidate_1)) |>
-      dplyr::mutate(
-        smiles_2D = NA,
-        inchikey_2D = NA
-      ) |>
-      dplyr::arrange(desc(across(any_of(
-        c("intensity", "comparison_score")
-      )))) |>
-      dplyr::distinct(id, peak_id, sample, .keep_all = TRUE)
+      df_notConfident <- df |>
+        dplyr::filter(grepl(pattern = "not", x = best_candidate_1)) |>
+        dplyr::mutate(
+          smiles_2D = NA,
+          inchikey_2D = NA
+        ) |>
+        dplyr::arrange(desc(across(any_of(
+          c("intensity", "comparison_score")
+        )))) |>
+        dplyr::distinct(id, peak_id, sample, .keep_all = TRUE)
 
-    df_confident <- df |>
-      dplyr::filter(!grepl(pattern = "notConfident", x = best_candidate_1))
+      df_confident <- df |>
+        dplyr::filter(!grepl(pattern = "notConfident", x = best_candidate_1))
 
-    dataframe2 <- rbind(df_confident, df_notConfident) |>
-      dplyr::group_by(chemical_pathway)
+      dataframe2 <- rbind(df_confident, df_notConfident) |>
+        dplyr::group_by(chemical_pathway)
+    } else {
+      dataframe2 <- dataframe
+    }
 
     parents <- dataframe2 |>
       dplyr::distinct(labels = best_candidate_1, ids = best_candidate_1) |>
@@ -686,8 +690,9 @@ prepare_hierarchy <-
     final_children_table <-
       dplyr::bind_rows(final_children_table_1, final_children_table_2)
 
-    final_interim_table <- table_1_1_new |>
+    final_interim_table_1 <- table_1_1_new |>
       dplyr::filter(!grepl(pattern = "-", x = parents) &
+        !grepl(pattern = "Other", x = labels) &
         (parents != "")) |>
       dplyr::select(-any_of(c(
         "values", "sample", "intensity", "species"
@@ -705,6 +710,28 @@ prepare_hierarchy <-
       dplyr::summarise(values = sum(values)) |>
       dplyr::ungroup()
 
+    final_interim_table_2 <- table_1_1_new |>
+      dplyr::filter(!grepl(pattern = "-", x = parents) &
+        grepl(pattern = "Other", x = labels) &
+        (parents != "")) |>
+      dplyr::select(-any_of(c(
+        "values", "sample", "intensity", "species"
+      ))) |>
+      dplyr::left_join(final_children_table |>
+        dplyr::select(any_of(
+          c("values", "sample", "parents", "species")
+        )),
+      by = c("ids" = "parents")
+      ) |>
+      dplyr::group_by(across(any_of(
+        c("parents", "ids", "labels", "sample", "species")
+      ))) |>
+      dplyr::summarise(values = sum(values)) |>
+      dplyr::ungroup()
+
+    final_interim_table <-
+      rbind(final_interim_table_1, final_interim_table_2)
+
     final_parents_table <- table_1_1_new |>
       dplyr::filter(parents == "") |>
       dplyr::select(-any_of(c(
@@ -716,7 +743,6 @@ prepare_hierarchy <-
         )),
       by = c("ids" = "parents")
       ) |>
-      dplyr::distinct() |>
       dplyr::group_by(across(any_of(
         c("parents", "ids", "labels", "sample", "species")
       ))) |>
@@ -730,10 +756,14 @@ prepare_hierarchy <-
         final_children_table,
         final_grandchildren_table
       ) |>
-      dplyr::filter(!is.na(sample)) |>
-      dplyr::group_by(sample) |>
-      dplyr::mutate(values = values / (sum(values) / 3)) |> #' because 3 levels
-      dplyr::ungroup()
+      dplyr::filter(!is.na(sample))
+
+    if (type == "analysis") {
+      final_table <- final_table |>
+        dplyr::group_by(sample) |>
+        dplyr::mutate(values = values / (sum(values) / 3)) |> #' because 3 levels
+        dplyr::ungroup()
+    }
 
     return(final_table)
   }
