@@ -1,9 +1,11 @@
 start <- Sys.time()
 
 library(package = dplyr, quietly = TRUE)
+library(package = ggplot2, quietly = TRUE)
 library(package = gt, quietly = TRUE)
 library(package = htmltools, quietly = TRUE)
 library(package = microshades, quietly = TRUE)
+library(package = plotly, quietly = TRUE)
 library(package = purrr, quietly = TRUE)
 library(package = RCurl, quietly = TRUE)
 library(package = readr, quietly = TRUE)
@@ -11,6 +13,7 @@ library(package = splitstackshape, quietly = TRUE)
 library(package = tidyr, quietly = TRUE)
 library(package = WikidataQueryServiceR, quietly = TRUE)
 
+source(file = "R/check_export_dir.R")
 source(file = "R/colors.R")
 source(file = "R/format_gt.R")
 source(file = "R/plot_histograms.R")
@@ -28,18 +31,45 @@ query_path_3 <- "inst/scripts/sparql/get_review_table_part_3.sql"
 query_path_4 <- "inst/scripts/sparql/get_review_table_part_4.sql"
 
 export_dir <- "data"
+export_dir_histograms <- file.path(export_dir, "histograms")
+export_dir_sunbursts <- file.path(export_dir, "sunbursts")
+export_dir_tables <- file.path(export_dir, "tables")
+export_dir_treemaps <- file.path(export_dir, "treemaps")
+
+exports <-
+  list(
+    export_dir,
+    export_dir_histograms,
+    export_dir_tables,
+    export_dir_treemaps
+  )
 
 #' As there is no better way than to manually assess if the QID
 #' really corresponds to what you want
-qids <- c( # "Actinobacteria" = "Q26262282",
+qids <- c(
+  # "Actinobacteria" = "Q26262282",
   # "Simaroubaceae" = "Q156679",
-  "Swertia" = "Q163970",
-  "Gentiana lutea" = "Q158572"
+  # "Swertia" = "Q163970",
+  # "Gentiana lutea" = "Q158572"
+  "Dendrobium" = "Q133778",
+  "Dendrobium chrysanthum" = "Q5223343",
+  "Dendrobium fimbriatum" = "Q7990065",
+  "Trichoderma" = "Q135322",
+  "Trichoderma yunnanense" = "Q108442404",
+  "Papiliotrema" = "Q7132982",
+  "Papiliotrema rajasthanensis" = "Q27866418"
 )
 
 limit <- 1000
 start_date <- 1900
-end_date <- 2021
+end_date <- 2022
+
+genera <-
+  names(qids)[!grepl(
+    pattern = " ",
+    x = names(qids),
+    fixed = TRUE
+  )]
 
 query_part_1 <- readr::read_file(query_path_1)
 query_part_2 <- readr::read_file(query_path_2)
@@ -99,31 +129,48 @@ for (i in names(queries)) {
 
 tables <- list()
 for (i in names(results)) {
-  tables[[i]] <- results[[i]] %>%
-    dplyr::left_join(structures_classified) %>%
-    dplyr::mutate(structureImage = RCurl::curlEscape(structureSmiles)) %>%
-    dplyr::relocate(structureImage, .after = structure) %>%
-    dplyr::relocate(structureLabel, .before = structure) %>%
-    dplyr::select(-references_ids, -structure_id, -structureSmiles) %>%
-    splitstackshape::cSplit(
-      c("taxa", "taxaLabels", "references", "referencesLabels"),
-      sep = "|",
-      direction = "long"
-    ) %>%
-    dplyr::group_by(structure) %>%
-    tidyr::fill(c("taxa", "taxaLabels", "references", "referencesLabels"),
-      .direction = "downup"
-    ) %>%
-    dplyr::group_by(chemical_class) %>%
-    dplyr::add_count(sort = TRUE) %>%
-    dplyr::select(-n) %>%
-    dplyr::group_by(chemical_superclass) %>%
-    dplyr::add_count(sort = TRUE) %>%
-    dplyr::select(-n) %>%
-    dplyr::group_by(chemical_pathway) %>%
-    dplyr::add_count(sort = TRUE) %>%
-    dplyr::select(-n) %>%
-    dplyr::distinct()
+  if (nrow(results[[i]] != 0)) {
+    tables[[i]] <- results[[i]] %>%
+      dplyr::left_join(structures_classified) %>%
+      dplyr::mutate(structureImage = RCurl::curlEscape(structureSmiles)) %>%
+      dplyr::relocate(structureImage, .after = structure) %>%
+      dplyr::relocate(structureLabel, .before = structure) %>%
+      dplyr::select(-references_ids, -structure_id, -structureSmiles) %>%
+      splitstackshape::cSplit(
+        c("taxa", "taxaLabels", "references", "referencesLabels"),
+        sep = "|",
+        direction = "long"
+      ) %>%
+      dplyr::group_by(structure) %>%
+      tidyr::fill(c("taxa", "taxaLabels", "references", "referencesLabels"),
+        .direction = "downup"
+      ) %>%
+      dplyr::group_by(chemical_class) %>%
+      dplyr::add_count(sort = TRUE) %>%
+      dplyr::select(-n) %>%
+      dplyr::group_by(chemical_superclass) %>%
+      dplyr::add_count(sort = TRUE) %>%
+      dplyr::select(-n) %>%
+      dplyr::group_by(chemical_pathway) %>%
+      dplyr::add_count(sort = TRUE) %>%
+      dplyr::select(-n) %>%
+      dplyr::distinct()
+  } else {
+    tables[[i]] <- data.frame() |>
+      dplyr::mutate(
+        structureLabel = NA,
+        structure = NA,
+        structureImage = NA,
+        taxaLabels = NA,
+        taxa = NA,
+        referenceLabels = NA,
+        references = NA,
+        chemical_pathway = NA,
+        chemical_superclass = NA,
+        chemical_class = NA
+      ) |>
+      dplyr::group_by(chemical_pathway)
+  }
 }
 
 subtables <- list()
@@ -159,100 +206,200 @@ for (i in names(subtables)) {
     )
 }
 
+hierarchies <- list()
+for (i in names(tables)) {
+  if (nrow(tables[[i]]) != 0) {
+    hierarchies[[i]] <- prepare_hierarchy(
+      dataframe = tables[[i]] |>
+        mutate(
+          best_candidate_1 = chemical_pathway,
+          best_candidate_2 = chemical_superclass,
+          best_candidate_3 = chemical_class,
+          organism = taxaLabels,
+          sample = taxaLabels,
+          species = taxaLabels
+        ),
+      type = "literature"
+    )
+  } else {
+    hierarchies[[i]] <- data.frame() |>
+      dplyr::mutate(
+        parents = NA,
+        ids = NA,
+        labels = NA,
+        sample = NA,
+        species = NA,
+        values = NA
+      )
+  }
+}
+
+prehistograms <- list()
+for (i in names(hierarchies)) {
+  if (nrow(hierarchies[[i]]) != 0) {
+    prehistograms[[i]] <-
+      prepare_plot(dataframe = hierarchies[[i]])
+  } else {
+    prehistograms[[i]] <- data.frame() |>
+      dplyr::mutate(
+        parents = NA,
+        ids = NA,
+        labels = NA,
+        sample = NA,
+        species = NA,
+        values = NA,
+        group = NA,
+        subgroup = NA,
+        tot = NA,
+        color = NA,
+        relative = NA
+      ) |>
+      dplyr::rowwise()
+  }
+}
+
+histograms <- list()
+for (i in genera) {
+  histograms[[i]] <- plot_histograms(
+    dataframe = prehistograms[[i]],
+    label = "Based on literature"
+  )
+}
+
+treemaps <- list()
+for (i in names(hierarchies)) {
+  treemaps[[i]] <- plotly::plot_ly(
+    data = hierarchies[[i]] |>
+      filter(sample == i),
+    ids = ~ids,
+    labels = ~labels,
+    parents = ~parents,
+    values = ~values,
+    maxdepth = 3,
+    type = "treemap",
+    branchvalues = "total"
+  ) |>
+    plotly::layout(
+      colorway = sunburst_colors,
+      title = i,
+      margin = list(t = 40)
+    )
+}
+
+sunbursts <- list()
+for (i in names(hierarchies)) {
+  sunbursts[[i]] <- plotly::plot_ly(
+    data = hierarchies[[i]] |>
+      filter(sample == i),
+    ids = ~ids,
+    labels = ~labels,
+    parents = ~parents,
+    values = ~values,
+    maxdepth = 3,
+    type = "sunburst",
+    branchvalues = "total"
+  ) |>
+    plotly::layout(
+      colorway = sunburst_colors,
+      title = i,
+      margin = list(t = 40)
+    )
+}
+
+lapply(X = exports, FUN = check_export_dir)
+
 for (i in names(prettyTables)) {
-  gt::gtsave(data = prettyTables[[i]], filename = file.path(export_dir, paste0(
-    "prettyTable_",
-    gsub(
-      pattern = " ",
-      replacement = "_",
-      x = i
-    ),
-    ".html"
-  )))
+  gt::gtsave(
+    data = prettyTables[[i]],
+    filename = file.path(export_dir_tables, paste0(
+      "prettyTable_",
+      gsub(
+        pattern = " ",
+        replacement = "_",
+        x = i
+      ),
+      ".html"
+    ))
+  )
 }
 
 for (i in names(prettySubtables)) {
-  gt::gtsave(data = prettySubtables[[i]], filename = file.path(export_dir, paste0(
-    "prettySubtable_",
-    gsub(
-      pattern = " ",
-      replacement = "_",
-      x = i
-    ),
-    ".html"
-  )))
+  gt::gtsave(
+    data = prettySubtables[[i]],
+    filename = file.path(
+      export_dir_tables,
+      paste0(
+        "prettySubtable_",
+        gsub(
+          pattern = " ",
+          replacement = "_",
+          x = i
+        ),
+        ".html"
+      )
+    )
+  )
 }
 
-dataframe_genus <- tables$`Swertia` |>
-  mutate(
-    best_candidate_1 = chemical_pathway,
-    best_candidate_2 = chemical_superclass,
-    best_candidate_3 = chemical_class,
-    organism = taxaLabels,
-    sample = taxaLabels,
-    species = taxaLabels
+for (i in names(histograms)) {
+  ggplot2::ggsave(
+    plot = histograms[[i]],
+    filename = file.path(
+      export_dir_histograms,
+      paste0(
+        "histogram_",
+        gsub(
+          pattern = " ",
+          replacement = "_",
+          x = i
+        ),
+        ".pdf"
+      )
+    ),
+    width = 16,
+    height = 9
   )
+}
 
-dataframe_species <- tables$`Gentiana lutea` |>
-  mutate(
-    best_candidate_1 = chemical_pathway,
-    best_candidate_2 = chemical_superclass,
-    best_candidate_3 = chemical_class,
-    organism = taxaLabels,
-    sample = taxaLabels,
-    species = taxaLabels
+for (i in names(sunbursts)) {
+  plotly::save_image(
+    p = sunbursts[[i]],
+    file = file.path(
+      export_dir_sunbursts,
+      paste0(
+        "sunburst_",
+        gsub(
+          pattern = " ",
+          replacement = "_",
+          x = i
+        ),
+        ".pdf"
+      )
+    ),
+    width = 900,
+    height = 900
   )
+}
 
-test_genus <- prepare_hierarchy(
-  dataframe = dataframe_genus,
-  type = "literature"
-)
-
-test_species <- prepare_hierarchy(
-  dataframe = dataframe_species,
-  type = "literature"
-)
-
-test_genus_2 <-
-  prepare_plot(dataframe = test_genus)
-
-test_species_2 <-
-  prepare_plot(dataframe = test_species)
-
-plot_histograms(
-  dataframe = test_genus_2,
-  label = "Based on literature"
-)
-
-plot_histograms(
-  dataframe = test_species_2,
-  label = "Based on literature"
-)
-
-plotly::plot_ly(
-  data = test_genus |>
-    filter(sample == "Swertia japonica"),
-  ids = ~ids,
-  labels = ~labels,
-  parents = ~parents,
-  values = ~values,
-  maxdepth = 3,
-  type = "sunburst",
-  branchvalues = "total"
-) |>
-  plotly::layout(colorway = sunburst_colors)
-
-plotly::plot_ly(
-  data = test_species,
-  ids = ~ids,
-  labels = ~labels,
-  parents = ~parents,
-  values = ~values,
-  maxdepth = 3,
-  type = "sunburst",
-  branchvalues = "total"
-) |>
-  plotly::layout(colorway = sunburst_colors)
+for (i in names(treemaps)) {
+  plotly::save_image(
+    p = treemaps[[i]],
+    file = file.path(
+      export_dir_treemaps,
+      paste0(
+        "treemap_",
+        gsub(
+          pattern = " ",
+          replacement = "_",
+          x = i
+        ),
+        ".pdf"
+      )
+    ),
+    width = 900,
+    height = 900
+  )
+}
 
 end <- Sys.time()
 
