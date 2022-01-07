@@ -211,14 +211,21 @@ for (i in names(tables)) {
   if (nrow(tables[[i]]) != 0) {
     hierarchies[[i]] <- prepare_hierarchy(
       dataframe = tables[[i]] |>
-        mutate(
+        dplyr::mutate(
           best_candidate_1 = chemical_pathway,
           best_candidate_2 = chemical_superclass,
           best_candidate_3 = chemical_class,
-          organism = taxaLabels,
-          sample = taxaLabels,
-          species = taxaLabels
-        ),
+          organism = ifelse(
+            test = grepl(pattern = "\\W+", x = i),
+            yes = taxaLabels,
+            no = gsub(
+              pattern = " .*",
+              replacement = "",
+              x = taxaLabels
+            )
+          )
+        ) |>
+        dplyr::mutate(sample = organism, species = organism),
       type = "literature"
     )
   } else {
@@ -229,10 +236,18 @@ for (i in names(tables)) {
         labels = NA,
         sample = NA,
         species = NA,
-        values = NA
-      )
+        values = 0
+      ) |>
+      dplyr::mutate_if(is.logical, as.character)
   }
 }
+
+global_hierarchy <- dplyr::bind_rows(hierarchies) |>
+  dplyr::filter(parents == "") |>
+  dplyr::group_by(parents, ids, labels) |>
+  dplyr::summarize(values = sum(values)) |>
+  dplyr::ungroup() |>
+  dplyr::arrange(desc(values))
 
 prehistograms <- list()
 for (i in names(hierarchies)) {
@@ -277,7 +292,8 @@ for (i in names(hierarchies)) {
     values = ~values,
     maxdepth = 3,
     type = "treemap",
-    branchvalues = "total"
+    branchvalues = "total",
+    textinfo = "label+value+percent parent+percent root"
   ) |>
     plotly::layout(
       colorway = sunburst_colors,
