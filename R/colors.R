@@ -8,7 +8,11 @@ nice_colors <- rev(
     microshades_palette("micro_cvd_purple", lightest = FALSE),
     microshades_palette("micro_cvd_gray", lightest = FALSE),
     microshades_palette("micro_orange", lightest = FALSE),
-    microshades_palette("micro_purple", lightest = FALSE)
+    microshades_palette("micro_purple", lightest = FALSE),
+    microshades_palette("micro_blue", lightest = FALSE),
+    microshades_palette("micro_green", lightest = FALSE),
+    microshades_palette("micro_brown", lightest = FALSE),
+    microshades_palette("micro_gray", lightest = FALSE)
   )
 )
 

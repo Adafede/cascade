@@ -703,7 +703,6 @@ prepare_hierarchy <-
         )),
       by = c("ids" = "parents")
       ) |>
-      dplyr::distinct() |>
       dplyr::group_by(across(any_of(
         c("parents", "ids", "labels", "sample", "species")
       ))) |>
