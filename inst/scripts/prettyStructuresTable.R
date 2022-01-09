@@ -40,6 +40,7 @@ exports <-
   list(
     export_dir,
     export_dir_histograms,
+    export_dir_sunbursts,
     export_dir_tables,
     export_dir_treemaps
   )
@@ -60,7 +61,7 @@ qids <- c(
   "Papiliotrema rajasthanensis" = "Q27866418"
 )
 
-limit <- 1000
+limit <- 2000
 start_date <- 1900
 end_date <- 2022
 
@@ -241,13 +242,34 @@ for (i in names(tables)) {
       dplyr::mutate_if(is.logical, as.character)
   }
 }
-
-global_hierarchy <- dplyr::bind_rows(hierarchies) |>
-  dplyr::filter(parents == "") |>
-  dplyr::group_by(parents, ids, labels) |>
-  dplyr::summarize(values = sum(values)) |>
-  dplyr::ungroup() |>
-  dplyr::arrange(desc(values))
+for (i in names(tables)) {
+  if (nrow(tables[[i]]) != 0) {
+    if (!grepl(pattern = "\\W+", x = i)) {
+      hierarchies[[paste0(i, "_grouped")]] <- prepare_hierarchy(
+        dataframe = tables[[i]] |>
+          dplyr::mutate(
+            best_candidate_1 = chemical_pathway,
+            best_candidate_2 = chemical_superclass,
+            best_candidate_3 = chemical_class,
+            organism = taxaLabels
+          ) |>
+          dplyr::mutate(sample = organism, species = organism),
+        type = "literature"
+      )
+    }
+  } else {
+    hierarchies[[i]] <- data.frame() |>
+      dplyr::mutate(
+        parents = NA,
+        ids = NA,
+        labels = NA,
+        sample = NA,
+        species = NA,
+        values = 0
+      ) |>
+      dplyr::mutate_if(is.logical, as.character)
+  }
+}
 
 prehistograms <- list()
 for (i in names(hierarchies)) {
@@ -274,52 +296,166 @@ for (i in names(hierarchies)) {
 }
 
 histograms <- list()
-for (i in genera) {
+for (i in names(prehistograms)[!grepl(pattern = "\\W+", x = names(prehistograms))]) {
   histograms[[i]] <- plot_histograms(
     dataframe = prehistograms[[i]],
     label = "Based on literature"
   )
 }
 
+#' Special requests
+hierarchies[["special"]] <- prepare_hierarchy(
+  dataframe = rbind(tables[["Dendrobium"]], tables[["Trichoderma"]]) |>
+    dplyr::mutate(
+      best_candidate_1 = chemical_pathway,
+      best_candidate_2 = chemical_superclass,
+      best_candidate_3 = chemical_class,
+      organism = ifelse(
+        test = grepl(pattern = "\\W+", x = i),
+        yes = taxaLabels,
+        no = gsub(
+          pattern = " .*",
+          replacement = "",
+          x = taxaLabels
+        )
+      )
+    ) |>
+    dplyr::mutate(sample = organism, species = organism),
+  type = "literature"
+)
+prehistograms[["special"]] <-
+  prepare_plot(dataframe = hierarchies[["special"]])
+histograms[["special"]] <-
+  plot_histograms(
+    dataframe = prehistograms[["special"]],
+    label = "Based on literature"
+  )
+
 treemaps <- list()
-for (i in names(hierarchies)) {
-  treemaps[[i]] <- plotly::plot_ly(
-    data = hierarchies[[i]] |>
-      filter(sample == i),
-    ids = ~ids,
-    labels = ~labels,
-    parents = ~parents,
-    values = ~values,
-    maxdepth = 3,
-    type = "treemap",
-    branchvalues = "total",
-    textinfo = "label+value+percent parent+percent root"
-  ) |>
-    plotly::layout(
-      colorway = sunburst_colors,
-      title = i,
-      margin = list(t = 40)
-    )
+for (i in names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies))]) {
+  if (i != "special") {
+    treemaps[[i]] <- plotly::plot_ly(
+      data = hierarchies[[i]] |>
+        filter(sample == i),
+      ids = ~ids,
+      labels = ~labels,
+      parents = ~parents,
+      values = ~values,
+      maxdepth = 3,
+      type = "treemap",
+      branchvalues = "total",
+      textinfo = "label+value+percent parent+percent root"
+    ) |>
+      plotly::layout(
+        colorway = sunburst_colors,
+        title = i,
+        margin = list(t = 40)
+      )
+  } else {
+    treemaps[[i]] <- plotly::plot_ly() |>
+      add_trace(
+        data = hierarchies[[i]] |>
+          filter(sample == unique(hierarchies[[i]]$species)[1] &
+            !is.na(labels)),
+        ids = ~ids,
+        labels = ~labels,
+        parents = ~parents,
+        values = ~values,
+        maxdepth = 3,
+        type = "treemap",
+        branchvalues = "total",
+        textinfo = "label+value+percent parent+percent root",
+        domain = list(row = 0, column = 0)
+      ) |>
+      add_trace(
+        data = hierarchies[[i]] |>
+          filter(sample == unique(hierarchies[[i]]$species)[2] &
+            !is.na(labels)),
+        ids = ~ids,
+        labels = ~labels,
+        parents = ~parents,
+        values = ~values,
+        maxdepth = 3,
+        type = "treemap",
+        branchvalues = "total",
+        textinfo = "label+value+percent parent+percent root",
+        domain = list(row = 0, column = 1)
+      ) |>
+      plotly::layout(
+        title = paste(
+          "Comparative analysis",
+          "\n",
+          unique(hierarchies[[i]]$species)[1],
+          "                                 ",
+          unique(hierarchies[[i]]$species)[2]
+        ),
+        grid = list(rows = 1, columns = 2),
+        colorway = sunburst_colors,
+        margin = list(t = 40)
+      )
+  }
 }
 
 sunbursts <- list()
-for (i in names(hierarchies)) {
-  sunbursts[[i]] <- plotly::plot_ly(
-    data = hierarchies[[i]] |>
-      filter(sample == i),
-    ids = ~ids,
-    labels = ~labels,
-    parents = ~parents,
-    values = ~values,
-    maxdepth = 3,
-    type = "sunburst",
-    branchvalues = "total"
-  ) |>
-    plotly::layout(
-      colorway = sunburst_colors,
-      title = i,
-      margin = list(t = 40)
-    )
+for (i in names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies))]) {
+  if (i != "special") {
+    sunbursts[[i]] <- plotly::plot_ly(
+      data = hierarchies[[i]] |>
+        filter(sample == i),
+      ids = ~ids,
+      labels = ~labels,
+      parents = ~parents,
+      values = ~values,
+      maxdepth = 3,
+      type = "sunburst",
+      branchvalues = "total"
+    ) |>
+      plotly::layout(
+        colorway = sunburst_colors,
+        title = i,
+        margin = list(t = 40)
+      )
+  } else {
+    sunbursts[[i]] <- plotly::plot_ly() |>
+      add_trace(
+        data = hierarchies[[i]] |>
+          filter(sample == unique(hierarchies[[i]]$species)[1] &
+            !is.na(labels)),
+        ids = ~ids,
+        labels = ~labels,
+        parents = ~parents,
+        values = ~values,
+        maxdepth = 3,
+        type = "sunburst",
+        branchvalues = "total",
+        domain = list(row = 0, column = 0)
+      ) |>
+      add_trace(
+        data = hierarchies[[i]] |>
+          filter(sample == unique(hierarchies[[i]]$species)[2] &
+            !is.na(labels)),
+        ids = ~ids,
+        labels = ~labels,
+        parents = ~parents,
+        values = ~values,
+        maxdepth = 3,
+        type = "sunburst",
+        branchvalues = "total",
+        domain = list(row = 0, column = 1)
+      ) |>
+      plotly::layout(
+        title = paste(
+          "Comparative analysis",
+          "\n",
+          unique(hierarchies[[i]]$species)[1],
+          "                                 ",
+          unique(hierarchies[[i]]$species)[2]
+        ),
+        grid = list(rows = 1, columns = 2),
+        colorway = sunburst_colors,
+        margin = list(t = 40)
+      )
+  }
 }
 
 lapply(X = exports, FUN = check_export_dir)

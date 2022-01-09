@@ -31,11 +31,10 @@ prepare_plot <- function(dataframe, organism = "species") {
           perl = TRUE
         )
     ) |>
-    dplyr::group_by(parents) |>
-    dplyr::mutate(group = dplyr::cur_group_id()) |>
-    dplyr::group_by(group, ids) |>
-    dplyr::mutate(subgroup = dplyr::cur_group_id()) |>
+    dplyr::arrange(desc(values)) |>
+    dplyr::mutate(group = as.integer(factor(parents, levels = unique(parents)))) |>
     dplyr::group_by(group) |>
+    dplyr::mutate(subgroup = as.integer(factor(x = ids, levels = unique(ids)))) |>
     dplyr::mutate(subgroup = dplyr::dense_rank(x = as.numeric(subgroup))) |>
     dplyr::rowwise() |>
     dplyr::group_by(sample) |>
@@ -49,7 +48,7 @@ prepare_plot <- function(dataframe, organism = "species") {
       .f = samples$ids,
       .x = samples$values,
       .y = samples$group,
-      .desc = FALSE
+      .desc = TRUE
     )
 
   samples$color <-
@@ -57,7 +56,7 @@ prepare_plot <- function(dataframe, organism = "species") {
       .f = samples$color,
       .x = samples$values,
       .y = samples$group,
-      .desc = FALSE
+      .desc = TRUE
     )
 
   samples$sample <-
@@ -65,7 +64,7 @@ prepare_plot <- function(dataframe, organism = "species") {
       .f = samples$sample,
       .x = samples$values,
       .y = samples$sample,
-      .desc = FALSE
+      .desc = TRUE
     )
 
   return(samples)
