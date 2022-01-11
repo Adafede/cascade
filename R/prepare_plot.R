@@ -64,7 +64,7 @@ prepare_plot <- function(dataframe, organism = "species") {
       .f = samples$sample,
       .x = samples$values,
       .y = samples$sample,
-      .desc = TRUE
+      .desc = FALSE
     )
 
   return(samples)
