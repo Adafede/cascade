@@ -11,17 +11,17 @@ make_confident <- function(df, score) {
   df_ready <- df |>
     dplyr::mutate(
       best_candidate_1 = ifelse(
-        test = score_final >= score,
+        test = as.numeric(score_final) >= score,
         yes = best_candidate_1,
         no = "notConfident"
       ),
       best_candidate_2 = ifelse(
-        test = score_final >= score,
+        test = as.numeric(score_final) >= score,
         yes = best_candidate_2,
         no = "notConfident"
       ),
       best_candidate_3 = ifelse(
-        test = score_final >= score,
+        test = as.numeric(score_final) >= score,
         yes = best_candidate_3,
         no = "notConfident"
       )

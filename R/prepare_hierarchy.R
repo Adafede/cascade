@@ -705,7 +705,19 @@ prepare_hierarchy <-
       ) |>
       dplyr::group_by(across(any_of(
         c("parents", "ids", "labels", "sample", "species")
-      ))) |>
+      )))
+
+    final_interim_table_1_other <- final_interim_table_1 |>
+      dplyr::filter(parents == "Other") |>
+      dplyr::distinct()
+
+    final_interim_table_1_clean <- final_interim_table_1 |>
+      dplyr::filter(parents != "Other")
+
+    final_interim_table_1_1 <- rbind(
+      final_interim_table_1_other,
+      final_interim_table_1_clean
+    ) |>
       dplyr::summarise(values = sum(values)) |>
       dplyr::ungroup()
 
@@ -729,7 +741,7 @@ prepare_hierarchy <-
       dplyr::ungroup()
 
     final_interim_table <-
-      rbind(final_interim_table_1, final_interim_table_2)
+      rbind(final_interim_table_1_1, final_interim_table_2)
 
     final_parents_table <- table_1_1_new |>
       dplyr::filter(parents == "") |>
