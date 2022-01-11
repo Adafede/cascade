@@ -18,7 +18,7 @@ plot_histograms <-
       dataframe,
       ggplot2::aes(
         x = sample,
-        y = get(y),
+        y = get(y) / 3, #' Because 3 levels
         fill = ids
       )
     ) +
@@ -39,10 +39,12 @@ plot_histograms <-
       ggplot2::theme(
         legend.title = ggplot2::element_text(face = "bold"),
         # legend.position = "none",
-        axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)
+        # axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
+        axis.text.y = ggplot2::element_text(face = "italic")
       ) +
       ggplot2::xlab(label) +
-      ggplot2::ylab("absolute")
+      ggplot2::ylab("Count") +
+      coord_flip()
 
     return(absolute)
   }
