@@ -50,8 +50,13 @@ exports <-
 qids <- c(
   # "Actinobacteria" = "Q26262282",
   # "Simaroubaceae" = "Q156679",
+  # "Picrasma" = "Q135638",
   # "Swertia" = "Q163970",
-  # "Gentiana lutea" = "Q158572"
+  # "Swertia chirayita" = "Q21318003",
+  # "Gentiana" = "Q144682",
+  # "Gentiana lutea" = "Q158572",
+  # "Quassia" = "Q1947702",
+  # "Quassia amara" = "Q135389"
   "Dendrobium" = "Q133778",
   "Dendrobium chrysanthum" = "Q5223343",
   "Dendrobium fimbriatum" = "Q7990065",
@@ -60,6 +65,8 @@ qids <- c(
   "Papiliotrema" = "Q7132982",
   "Papiliotrema rajasthanensis" = "Q27866418"
 )
+
+comparison <- c("Dendrobium", "Trichoderma")
 
 limit <- 2000
 start_date <- 1900
@@ -299,13 +306,17 @@ histograms <- list()
 for (i in names(prehistograms)[!grepl(pattern = "\\W+", x = names(prehistograms))]) {
   histograms[[i]] <- plot_histograms(
     dataframe = prehistograms[[i]],
-    label = "Based on literature"
+    label = "Organism"
   )
 }
 
 #' Special requests
+special <- list()
+for (i in (seq_along(1:length(comparison)))) {
+  special[[i]] <- tables[[comparison[[i]]]]
+}
 hierarchies[["special"]] <- prepare_hierarchy(
-  dataframe = rbind(tables[["Dendrobium"]], tables[["Trichoderma"]]) |>
+  dataframe = dplyr::bind_rows(special) |>
     dplyr::mutate(
       best_candidate_1 = chemical_pathway,
       best_candidate_2 = chemical_superclass,
@@ -328,7 +339,7 @@ prehistograms[["special"]] <-
 histograms[["special"]] <-
   plot_histograms(
     dataframe = prehistograms[["special"]],
-    label = "Based on literature"
+    label = "Organism"
   )
 
 treemaps <- list()

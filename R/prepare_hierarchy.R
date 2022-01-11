@@ -377,7 +377,7 @@ prepare_hierarchy <-
       dplyr::filter(!grepl(pattern = "-", x = parents)) |>
       dplyr::distinct(parents, ids, labels = labels.x, values_2 = values_2.y, n.x) |>
       dplyr::group_by(parents) |>
-      dplyr::mutate(values_3 = sum(values_2) / as.numeric(n.x)) |>
+      dplyr::mutate(values_3 = sum(!is.na(values_2)) / as.numeric(n.x)) |>
       dplyr::filter(parents != "") |>
       dplyr::distinct(parents, values_3) |>
       dplyr::ungroup() |>
