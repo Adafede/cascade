@@ -22,6 +22,7 @@ source(file = "R/get_gnps.R")
 source(file = "R/get_params.R")
 source(file = "R/improve_signal.R")
 source(file = "R/log_debug.R")
+source(file = "r/make_confident.R")
 source(file = "R/parse_cli_params.R")
 source(file = "R/parse_yaml_params.R")
 source(file = "R/parse_yaml_paths.R")
@@ -81,7 +82,7 @@ PPM <- 10
 #' Parameters for annotation
 CONFIDENCE_SCORE_MIN <- 0.5
 
-future::plan(strategy = future::multiprocess(workers = WORKERS))
+future::plan(strategy = future::multicore(workers = WORKERS))
 
 files <- list.files(
   path = TOYSET,
@@ -611,22 +612,20 @@ df_new_with_cor_pre <- bind_rows(df_peaks_samples)
 
 #' With peak similarity score > 0.7: 3421 features
 df_new_with_cor_07 <- df_new_with_cor_pre |>
-  make_confident(score = CONFIDENCE_SCORE_MIN) |>
   dplyr::filter(comparison_score >= 0.7)
 
 #' With peak similarity score > 0.8: 1928 features
 df_new_with_cor_08 <- df_new_with_cor_pre |>
-  make_confident(score = CONFIDENCE_SCORE_MIN) |>
   dplyr::filter(comparison_score >= 0.8)
 
 #' With peak similarity score > 0.75: 2598 features
 df_new_with_cor_075 <- df_new_with_cor_pre |>
-  make_confident(score = CONFIDENCE_SCORE_MIN) |>
   dplyr::filter(comparison_score >= 0.75)
 
-final_table_taxed <-
-  prepare_hierarchy_preparation(dataframe = annotations) |>
-  prepare_hierarchy()
+#' TODO fix it
+# final_table_taxed <-
+#   prepare_hierarchy_preparation(dataframe = annotations) |>
+#   prepare_hierarchy()
 
 final_table_taxed_with <-
   prepare_hierarchy(dataframe = df_new_with, detector = "ms")
@@ -779,7 +778,8 @@ plotly::plot_ly(
   parents = ~parents,
   values = ~values,
   maxdepth = 3,
-  type = "treemap"
+  type = "treemap",
+  branchvalues = "total"
 ) |>
   plotly::layout(colorway = sunburst_colors)
 
@@ -795,7 +795,6 @@ plotly::plot_ly(
   branchvalues = "total"
 ) |>
   plotly::layout(colorway = sunburst_colors)
-
 
 #' Work in progress
 #' Add some metadata per peak
