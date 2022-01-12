@@ -59,7 +59,8 @@ prepare_hierarchy <-
       dataframe2 <- rbind(df_confident, df_notConfident) |>
         dplyr::group_by(chemical_pathway)
     } else {
-      dataframe2 <- dataframe
+      dataframe2 <- dataframe |>
+        dplyr::group_by(chemical_pathway)
     }
 
     parents <- dataframe2 |>
@@ -587,6 +588,12 @@ prepare_hierarchy <-
     table_new <- dataframe2 |>
       dplyr::filter(!is.na(species)) |>
       dplyr::full_join(genealogy_new_med_4, by = c("best_candidate_3" = "labels"))
+      # dplyr::mutate(join = paste(best_candidate_1, best_candidate_2,
+      #                            sep =
+      #                              "-")) |>
+      # dplyr::full_join(genealogy_new_med_4,
+      #                  by = c("best_candidate_3" = "labels", "join" = "parents")) |>
+      # dplyr::mutate(parents = join)
 
     if (type == "analysis") {
       table_new <- table_new |>
@@ -615,7 +622,7 @@ prepare_hierarchy <-
         )
 
       table_1_new <- table_new |>
-        dplyr::group_by(ids, sample, intensity) |>
+        dplyr::group_by(parents, ids, sample, intensity) |>
         dplyr::add_count(name = "values") |>
         dplyr::select(parents, ids, labels, values, sample, intensity, species) |>
         dplyr::distinct() |>
@@ -623,7 +630,7 @@ prepare_hierarchy <-
     } else {
       table_1_new <- table_new |>
         dplyr::mutate(labels = best_candidate_3) |>
-        dplyr::group_by(ids, sample) |>
+        dplyr::group_by(parents, ids, sample) |>
         dplyr::add_count(name = "values") |>
         dplyr::select(parents, ids, labels, values, sample, organism, species) |>
         dplyr::distinct() |>
