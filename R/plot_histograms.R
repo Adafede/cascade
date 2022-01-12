@@ -18,7 +18,7 @@ plot_histograms <-
       dataframe,
       ggplot2::aes(
         x = sample,
-        y = get(y) / 3, #' Because 3 levels
+        y = get(y),
         fill = ids
       )
     ) +

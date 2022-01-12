@@ -123,42 +123,36 @@ prepare_hierarchy <-
         labels = gsub(
           pattern = "notAnnotated notAnnotated",
           replacement = "notAnnotated",
-          x = labels,
-          fixed = TRUE
+          x = labels
         ),
         ids = gsub(
           pattern = "notAnnotated-notAnnotated",
           replacement = "Other-notAnnotated",
-          x = ids,
-          fixed = TRUE
+          x = ids
         )
       ) |>
       dplyr::mutate(
         labels = gsub(
           pattern = "notClassified notClassified$",
           replacement = "notClassified",
-          x = labels,
-          fixed = TRUE
+          x = labels
         ),
         ids = gsub(
           pattern = "notClassified-notClassified",
           replacement = "Other-notClassified",
-          x = ids,
-          fixed = TRUE
+          x = ids
         )
       ) |>
       dplyr::mutate(
         labels = gsub(
           pattern = "notConfident notConfident$",
           replacement = "notConfident",
-          x = labels,
-          fixed = TRUE
+          x = labels
         ),
         ids = gsub(
           pattern = "notConfident-notConfident",
           replacement = "Other-notConfident",
-          x = ids,
-          fixed = TRUE
+          x = ids
         )
       ) |>
       dplyr::mutate(parents = gsub(
@@ -281,7 +275,7 @@ prepare_hierarchy <-
       dplyr::distinct() |>
       dplyr::group_by(ids) |>
       dplyr::add_count() |> #' for ambiguous classes
-      dplyr::filter(!parents == "" |
+      dplyr::filter(parents != "" |
         !is.na(ids) |
         !is.na(labels)) |>
       dplyr::ungroup()
@@ -359,6 +353,7 @@ prepare_hierarchy <-
       table_1 <- table |>
         dplyr::group_by(labels, organism) |>
         dplyr::add_count(name = "values") |>
+        dplyr::ungroup() |>
         dplyr::select(parents, ids, labels, values, organism, sample, n) |>
         dplyr::distinct()
 
@@ -381,16 +376,16 @@ prepare_hierarchy <-
       dplyr::filter(parents != "") |>
       dplyr::distinct(parents, values_3) |>
       dplyr::ungroup() |>
-      dplyr::top_n(n = 8, wt = values_3) |>
+      dplyr::top_n(n = 12, wt = values_3) |>
       dplyr::arrange(desc(values_3)) |>
       dplyr::select(-values_3) |>
       dplyr::mutate(ids = parents, labels = parents) |>
       dplyr::mutate(parents = "", new_labels = labels) |>
       dplyr::distinct()
 
-    if (nrow(top_parents_table > 8)) {
+    if (nrow(top_parents_table > 12)) {
       top_parents_table <- top_parents_table |>
-        head(8) #' in case of equal numbers among classes
+        head(12) #' in case of equal numbers among classes
     }
 
     top_parents <- top_parents_table$labels
@@ -562,7 +557,12 @@ prepare_hierarchy <-
         labels = best_candidate_3,
         new_labels = best_candidate_3
       ) |>
-      dplyr::select(parents, ids, labels, new_labels)
+      dplyr::select(parents, ids, labels, new_labels) |>
+      dplyr::mutate_all(list(~ gsub(
+        x = .x,
+        pattern = "-NA$",
+        replacement = "",
+      )))
 
     missing_children_2 <- genealogy_new_med_3 |>
       dplyr::filter(grepl(pattern = "^Other", x = parents)) |>
@@ -581,7 +581,8 @@ prepare_hierarchy <-
       dplyr::distinct()
 
     genealogy_new_med_4 <-
-      dplyr::bind_rows(genealogy_new_med_3, missing_children, missing_children_2)
+      dplyr::bind_rows(genealogy_new_med_3, missing_children, missing_children_2) |>
+      dplyr::distinct(parents, ids, labels, new_labels)
 
     table_new <- dataframe2 |>
       dplyr::filter(!is.na(species)) |>
@@ -614,7 +615,7 @@ prepare_hierarchy <-
         )
 
       table_1_new <- table_new |>
-        dplyr::group_by(labels, sample, intensity) |>
+        dplyr::group_by(ids, sample, intensity) |>
         dplyr::add_count(name = "values") |>
         dplyr::select(parents, ids, labels, values, sample, intensity, species) |>
         dplyr::distinct() |>
@@ -622,7 +623,7 @@ prepare_hierarchy <-
     } else {
       table_1_new <- table_new |>
         dplyr::mutate(labels = best_candidate_3) |>
-        dplyr::group_by(labels, sample) |>
+        dplyr::group_by(ids, sample) |>
         dplyr::add_count(name = "values") |>
         dplyr::select(parents, ids, labels, values, sample, organism, species) |>
         dplyr::distinct() |>
@@ -650,7 +651,8 @@ prepare_hierarchy <-
         "analysis" = intensity,
         "literature" = values
       ))) |>
-      dplyr::ungroup()
+      dplyr::ungroup() |>
+      dplyr::filter(!is.na(labels))
 
     final_children_table_1 <- table_1_1_new |>
       dplyr::filter(!is.na(species)) |>

@@ -176,8 +176,7 @@ for (i in names(results)) {
         chemical_pathway = NA,
         chemical_superclass = NA,
         chemical_class = NA
-      ) |>
-      dplyr::group_by(chemical_pathway)
+      )
   }
 }
 
@@ -233,7 +232,9 @@ for (i in names(tables)) {
             )
           )
         ) |>
-        dplyr::mutate(sample = organism, species = organism),
+        dplyr::mutate(sample = organism, species = organism) |>
+        dplyr::select(-taxa, -taxaLabels, -references, -referencesLabels) |>
+        dplyr::distinct(),
       type = "literature"
     )
   } else {
@@ -317,6 +318,7 @@ for (i in (seq_along(1:length(comparison)))) {
 }
 hierarchies[["special"]] <- prepare_hierarchy(
   dataframe = dplyr::bind_rows(special) |>
+    dplyr::rowwise() |>
     dplyr::mutate(
       best_candidate_1 = chemical_pathway,
       best_candidate_2 = chemical_superclass,
@@ -331,7 +333,9 @@ hierarchies[["special"]] <- prepare_hierarchy(
         )
       )
     ) |>
-    dplyr::mutate(sample = organism, species = organism),
+    dplyr::mutate(sample = organism, species = organism) |>
+    dplyr::select(-taxa, -taxaLabels, -references, -referencesLabels) |>
+    dplyr::distinct(),
   type = "literature"
 )
 prehistograms[["special"]] <-
@@ -359,13 +363,13 @@ for (i in names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies)
     ) |>
       plotly::layout(
         colorway = sunburst_colors,
-        title = i,
+        title = paste(i, "(", sum(prehistograms[[i]]$values), ")"),
         margin = list(t = 40)
       )
   } else {
     treemaps[[i]] <- plotly::plot_ly() |>
       add_trace(
-        data = hierarchies[[i]] |>
+        data = hierarchies[[unique(hierarchies[[i]]$species)[1]]] |>
           filter(sample == unique(hierarchies[[i]]$species)[1] &
             !is.na(labels)),
         ids = ~ids,
@@ -379,7 +383,7 @@ for (i in names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies)
         domain = list(row = 0, column = 0)
       ) |>
       add_trace(
-        data = hierarchies[[i]] |>
+        data = hierarchies[[unique(hierarchies[[i]]$species)[2]]] |>
           filter(sample == unique(hierarchies[[i]]$species)[2] &
             !is.na(labels)),
         ids = ~ids,
@@ -397,8 +401,14 @@ for (i in names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies)
           "Comparative analysis",
           "\n",
           unique(hierarchies[[i]]$species)[1],
+          "(",
+          sum(prehistograms[[unique(hierarchies[[i]]$species)[1]]]$values),
+          ")",
           "                                 ",
-          unique(hierarchies[[i]]$species)[2]
+          unique(hierarchies[[i]]$species)[2],
+          "(",
+          sum(prehistograms[[unique(hierarchies[[i]]$species)[2]]]$values),
+          ")"
         ),
         grid = list(rows = 1, columns = 2),
         colorway = sunburst_colors,
@@ -423,13 +433,13 @@ for (i in names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies)
     ) |>
       plotly::layout(
         colorway = sunburst_colors,
-        title = i,
+        title = paste(i, "(", sum(prehistograms[[i]]$values), ")"),
         margin = list(t = 40)
       )
   } else {
     sunbursts[[i]] <- plotly::plot_ly() |>
       add_trace(
-        data = hierarchies[[i]] |>
+        data = hierarchies[[unique(hierarchies[[i]]$species)[1]]] |>
           filter(sample == unique(hierarchies[[i]]$species)[1] &
             !is.na(labels)),
         ids = ~ids,
@@ -442,7 +452,7 @@ for (i in names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies)
         domain = list(row = 0, column = 0)
       ) |>
       add_trace(
-        data = hierarchies[[i]] |>
+        data = hierarchies[[unique(hierarchies[[i]]$species)[2]]] |>
           filter(sample == unique(hierarchies[[i]]$species)[2] &
             !is.na(labels)),
         ids = ~ids,
@@ -459,8 +469,14 @@ for (i in names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies)
           "Comparative analysis",
           "\n",
           unique(hierarchies[[i]]$species)[1],
+          "(",
+          sum(prehistograms[[unique(hierarchies[[i]]$species)[1]]]$values),
+          ")",
           "                                 ",
-          unique(hierarchies[[i]]$species)[2]
+          unique(hierarchies[[i]]$species)[2],
+          "(",
+          sum(prehistograms[[unique(hierarchies[[i]]$species)[2]]]$values),
+          ")"
         ),
         grid = list(rows = 1, columns = 2),
         colorway = sunburst_colors,
