@@ -59,7 +59,27 @@ qids <- c(
   "Gentiana" = "Q144682",
   "Gentiana lutea" = "Q158572",
   "Quassia" = "Q1947702",
-  "Quassia amara" = "Q135389"
+  "Quassia amara" = "Q135389",
+  "Aloe ferox" = "Q1194889",
+  "Sambucus nigra" = "Q22701",
+  "Coriandrum sativum" = "Q41611",
+  "Juniperus communis" = "Q26325",
+  "Piper cubeba" = "Q161927",
+  "Aframomum melegueta" = "Q1503476",
+  "Angelica archangelica" = "Q207745",
+  "Glycyrrhiza glabra" = "Q257106",
+  "Cinnamomum cassia" = "Q204148",
+  "Iris pallida" = "Q161347",
+  "Centaurea benedicta" = "Q792835",
+  "Hypericum perforatum" = "Q158289",
+  "Prunus dulcis" = "Q39918",
+  "Taraxacum officinale" = "Q131219",
+  "Rheum palmatum" = "Q1109580",
+  "Arnica montana" = "Q207848",
+  "Cinchona succirubra" = "Q50830790",
+  "Ginkgo biloba" = "Q43284",
+  "Panax ginseng" = "Q182881",
+  "Salvia officinalis" = "Q1111359"
   # "Dendrobium" = "Q133778",
   # "Dendrobium chrysanthum" = "Q5223343",
   # "Dendrobium fimbriatum" = "Q7990065",
@@ -69,7 +89,15 @@ qids <- c(
   # "Papiliotrema rajasthanensis" = "Q27866418"
 )
 
-comparison <- c("Gentiana", "Swertia")
+comparison <-
+  c(
+    "Arnica montana",
+    "Cinchona succirubra",
+    "Ginkgo biloba",
+    "Panax ginseng",
+    "Salvia officinalis"
+  )
+# comparison <- c("Gentiana", "Swertia")
 # comparison <- c("Dendrobium", "Trichoderma")
 
 limit <- 50000
