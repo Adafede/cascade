@@ -48,8 +48,10 @@ exports <-
 #' As there is no better way than to manually assess if the QID
 #' really corresponds to what you want
 qids <- c(
-  # "Actinobacteria" = "Q26262282",
-  # "Simaroubaceae" = "Q156679",
+  # "Actinobacteria" = "Q26262282"
+  # "Asteraceae" = "Q25400"
+  # "Simaroubaceae" = "Q156679"
+  # "Gentianaceae" = "Q157216"
   # "Picrasma" = "Q135638",
   # "Picrasma quassioides" = "Q855778",
   "Swertia" = "Q163970",
@@ -70,7 +72,7 @@ qids <- c(
 comparison <- c("Gentiana", "Swertia")
 # comparison <- c("Dendrobium", "Trichoderma")
 
-limit <- 2000
+limit <- 50000
 start_date <- 1900
 end_date <- 2022
 
@@ -528,7 +530,14 @@ for (i in names(prettySubtables)) {
 
 dimensions <- list()
 for (i in names(prehistograms)) {
-  dimensions[[i]] <- nrow(prehistograms[[i]] |> dplyr::distinct(ids))
+  dimensions[[i]] <-
+    nrow(prehistograms[[i]] |> dplyr::ungroup() |> dplyr::distinct(ids))
+}
+
+size <- list()
+for (i in names(prehistograms)) {
+  size[[i]] <-
+    nrow(prehistograms[[i]] |> dplyr::ungroup() |> dplyr::distinct(species))
 }
 
 for (i in names(histograms)) {
@@ -547,7 +556,7 @@ for (i in names(histograms)) {
       )
     ),
     width = 16 * max((dimensions[[i]] / 30), 0.5),
-    height = 9 * max((dimensions[[i]] / 30), 0.5)
+    height = 9 * min(max((size[[i]] / 100), 1), 10) * max((dimensions[[i]] / 30), 0.5)
   )
 }
 
