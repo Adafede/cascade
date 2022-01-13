@@ -18,12 +18,12 @@ make_confident <- function(df, score) {
       best_candidate_2 = ifelse(
         test = as.numeric(score_final) >= score,
         yes = best_candidate_2,
-        no = "notConfident"
+        no = "notConfident notConfident"
       ),
       best_candidate_3 = ifelse(
         test = as.numeric(score_final) >= score,
         yes = best_candidate_3,
-        no = "notConfident"
+        no = "notConfident notConfident notConfident"
       )
     )
 

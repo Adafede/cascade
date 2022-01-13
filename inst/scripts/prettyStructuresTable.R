@@ -363,7 +363,7 @@ for (i in names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies)
     ) |>
       plotly::layout(
         colorway = sunburst_colors,
-        title = paste(i, "(", sum(prehistograms[[i]]$values), ")"),
+        title = paste(i, "(", nrow(tables[[i]] |> dplyr::distinct(structure)), ")"),
         margin = list(t = 40)
       )
   } else {
@@ -402,12 +402,12 @@ for (i in names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies)
           "\n",
           unique(hierarchies[[i]]$species)[1],
           "(",
-          sum(prehistograms[[unique(hierarchies[[i]]$species)[1]]]$values),
+          nrow(tables[[unique(hierarchies[[i]]$species)[1]]] |> dplyr::distinct(structure)),
           ")",
           "                                 ",
           unique(hierarchies[[i]]$species)[2],
           "(",
-          sum(prehistograms[[unique(hierarchies[[i]]$species)[2]]]$values),
+          nrow(tables[[unique(hierarchies[[i]]$species)[2]]] |> dplyr::distinct(structure)),
           ")"
         ),
         grid = list(rows = 1, columns = 2),
@@ -433,7 +433,7 @@ for (i in names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies)
     ) |>
       plotly::layout(
         colorway = sunburst_colors,
-        title = paste(i, "(", sum(prehistograms[[i]]$values), ")"),
+        title = paste(i, "(", nrow(tables[[i]] |> dplyr::distinct(structure)), ")"),
         margin = list(t = 40)
       )
   } else {
@@ -470,12 +470,12 @@ for (i in names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies)
           "\n",
           unique(hierarchies[[i]]$species)[1],
           "(",
-          sum(prehistograms[[unique(hierarchies[[i]]$species)[1]]]$values),
+          nrow(tables[[unique(hierarchies[[i]]$species)[1]]] |> dplyr::distinct(structure)),
           ")",
           "                                 ",
           unique(hierarchies[[i]]$species)[2],
           "(",
-          sum(prehistograms[[unique(hierarchies[[i]]$species)[2]]]$values),
+          nrow(tables[[unique(hierarchies[[i]]$species)[2]]] |> dplyr::distinct(structure)),
           ")"
         ),
         grid = list(rows = 1, columns = 2),
