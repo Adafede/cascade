@@ -51,22 +51,24 @@ qids <- c(
   # "Actinobacteria" = "Q26262282",
   # "Simaroubaceae" = "Q156679",
   # "Picrasma" = "Q135638",
-  # "Swertia" = "Q163970",
-  # "Swertia chirayita" = "Q21318003",
-  # "Gentiana" = "Q144682",
-  # "Gentiana lutea" = "Q158572",
-  # "Quassia" = "Q1947702",
-  # "Quassia amara" = "Q135389"
-  "Dendrobium" = "Q133778",
-  "Dendrobium chrysanthum" = "Q5223343",
-  "Dendrobium fimbriatum" = "Q7990065",
-  "Trichoderma" = "Q135322",
-  "Trichoderma yunnanense" = "Q108442404",
-  "Papiliotrema" = "Q7132982",
-  "Papiliotrema rajasthanensis" = "Q27866418"
+  # "Picrasma quassioides" = "Q855778",
+  "Swertia" = "Q163970",
+  "Swertia chirayita" = "Q21318003",
+  "Gentiana" = "Q144682",
+  "Gentiana lutea" = "Q158572",
+  "Quassia" = "Q1947702",
+  "Quassia amara" = "Q135389"
+  # "Dendrobium" = "Q133778",
+  # "Dendrobium chrysanthum" = "Q5223343",
+  # "Dendrobium fimbriatum" = "Q7990065",
+  # "Trichoderma" = "Q135322",
+  # "Trichoderma yunnanense" = "Q108442404",
+  # "Papiliotrema" = "Q7132982",
+  # "Papiliotrema rajasthanensis" = "Q27866418"
 )
 
-comparison <- c("Dendrobium", "Trichoderma")
+comparison <- c("Gentiana", "Swertia")
+# comparison <- c("Dendrobium", "Trichoderma")
 
 limit <- 2000
 start_date <- 1900
@@ -544,8 +546,8 @@ for (i in names(histograms)) {
         ".pdf"
       )
     ),
-    width = 16 * max((dimensions[[i]] / 35), 0.5),
-    height = 9 * max((dimensions[[i]] / 35), 0.5)
+    width = 16 * max((dimensions[[i]] / 30), 0.5),
+    height = 9 * max((dimensions[[i]] / 30), 0.5)
   )
 }
 
