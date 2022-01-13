@@ -363,7 +363,9 @@ for (i in names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies)
     ) |>
       plotly::layout(
         colorway = sunburst_colors,
-        title = paste(i, "(", nrow(tables[[i]] |> dplyr::distinct(structure)), ")"),
+        title = paste(i, "(", nrow(
+          tables[[i]] |> dplyr::distinct(structure)
+        ), ")"),
         margin = list(t = 40)
       )
   } else {
@@ -433,7 +435,9 @@ for (i in names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies)
     ) |>
       plotly::layout(
         colorway = sunburst_colors,
-        title = paste(i, "(", nrow(tables[[i]] |> dplyr::distinct(structure)), ")"),
+        title = paste(i, "(", nrow(
+          tables[[i]] |> dplyr::distinct(structure)
+        ), ")"),
         margin = list(t = 40)
       )
   } else {
@@ -520,6 +524,11 @@ for (i in names(prettySubtables)) {
   )
 }
 
+dimensions <- list()
+for (i in names(prehistograms)) {
+  dimensions[[i]] <- nrow(prehistograms[[i]] |> dplyr::distinct(ids))
+}
+
 for (i in names(histograms)) {
   ggplot2::ggsave(
     plot = histograms[[i]],
@@ -535,8 +544,8 @@ for (i in names(histograms)) {
         ".pdf"
       )
     ),
-    width = 16,
-    height = 9
+    width = 16 * max((dimensions[[i]] / 35), 0.5),
+    height = 9 * max((dimensions[[i]] / 35), 0.5)
   )
 }
 
