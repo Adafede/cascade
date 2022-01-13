@@ -41,7 +41,15 @@ prepare_plot <- function(dataframe, organism = "species") {
     dplyr::mutate(tot = sum(values)) |>
     dplyr::rowwise() |>
     dplyr::mutate(color = nice_colors[[group]][subgroup]) |>
-    dplyr::mutate(relative = values / tot)
+    dplyr::mutate(relative = values / tot) |>
+    dplyr::ungroup()
+
+  quickfix <- samples |>
+    dplyr::filter(is.na(color)) |>
+    dplyr::mutate(color = paste0("#0000", sprintf("%02d", row_number())))
+
+  samples <-
+    rbind(samples |> dplyr::filter(!is.na(color)), quickfix)
 
   samples$ids <-
     forcats::fct_reorder2(
