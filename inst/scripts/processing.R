@@ -740,7 +740,8 @@ plotly::plot_ly(
   values = ~values,
   maxdepth = 3,
   type = "treemap",
-  branchvalues = "total"
+  branchvalues = "total",
+  textinfo = "label+value+percent parent+percent root"
 ) |>
   plotly::layout(colorway = sunburst_colors)
 
@@ -753,7 +754,8 @@ plotly::plot_ly(
   values = ~values,
   maxdepth = 3,
   type = "treemap",
-  branchvalues = "total"
+  branchvalues = "total",
+  textinfo = "label+value+percent parent+percent root"
 ) |>
   plotly::layout(colorway = sunburst_colors)
 
@@ -766,7 +768,8 @@ plotly::plot_ly(
   values = ~values,
   maxdepth = 3,
   type = "treemap",
-  branchvalues = "total"
+  branchvalues = "total",
+  textinfo = "label+value+percent parent+percent root"
 ) |>
   plotly::layout(colorway = sunburst_colors)
 
@@ -779,7 +782,8 @@ plotly::plot_ly(
   values = ~values,
   maxdepth = 3,
   type = "treemap",
-  branchvalues = "total"
+  branchvalues = "total",
+  textinfo = "label+value+percent parent+percent root"
 ) |>
   plotly::layout(colorway = sunburst_colors)
 
@@ -792,7 +796,8 @@ plotly::plot_ly(
   values = ~values,
   maxdepth = 3,
   type = "treemap",
-  branchvalues = "total"
+  branchvalues = "total",
+  textinfo = "label+value+percent parent+percent root"
 ) |>
   plotly::layout(colorway = sunburst_colors)
 
