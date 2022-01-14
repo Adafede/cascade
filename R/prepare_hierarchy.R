@@ -24,16 +24,18 @@ prepare_hierarchy <-
             test = !is.na(smiles_2D),
             yes = best_candidate_1,
             no = "notAnnotated"
-          ),
+          )) |>
+        dplyr::mutate(
           best_candidate_2 = ifelse(
             test = !is.na(smiles_2D),
             yes = best_candidate_2,
-            no = "notAnnotated notAnnotated"
-          ),
+            no = paste(best_candidate_1, "notAnnotated", sep = " ")
+          )) |>
+        dplyr::mutate(
           best_candidate_3 = ifelse(
             test = !is.na(smiles_2D),
             yes = best_candidate_3,
-            no = "notAnnotated notAnnotated notAnnotated"
+            no = paste(best_candidate_2, "notAnnotated", sep = " ")
           )
         ) |>
         dplyr::mutate(
@@ -41,21 +43,19 @@ prepare_hierarchy <-
             test = best_candidate_2 != "notClassified",
             yes = best_candidate_2,
             no = paste(best_candidate_1, "notClassified", sep = " ")
-          ),
+          )) |>
+        dplyr::mutate(
           best_candidate_3 = ifelse(
             test = best_candidate_3 != "notClassified",
             yes = best_candidate_3,
             no = paste(best_candidate_2, "notClassified", sep = " ")
           )
         ) |>
-        dplyr::mutate(chemical_pathway = ifelse(
-          test = grepl(pattern = "not", x = best_candidate_1),
-          yes = "Other",
-          no = best_candidate_1
-        ))
+        dplyr::mutate(chemical_pathway = best_candidate_1
+        )
 
       df_notConfident <- df |>
-        dplyr::filter(grepl(pattern = "notConfident", x = best_candidate_1)) |>
+        dplyr::filter(grepl(pattern = "notConfident", x = best_candidate_2)) |>
         dplyr::mutate(
           smiles_2D = NA,
           inchikey_2D = NA
@@ -66,7 +66,7 @@ prepare_hierarchy <-
         dplyr::distinct(id, peak_id, sample, .keep_all = TRUE)
 
       df_confident <- df |>
-        dplyr::filter(!grepl(pattern = "notConfident", x = best_candidate_1))
+        dplyr::filter(!grepl(pattern = "notConfident", x = best_candidate_2))
 
       dataframe2 <- rbind(df_confident, df_notConfident) |>
         dplyr::group_by(chemical_pathway)
@@ -318,16 +318,16 @@ prepare_hierarchy <-
       dplyr::filter(parents != "") |>
       dplyr::distinct(chemical_pathway, parents, values_3) |>
       dplyr::ungroup() |>
-      dplyr::top_n(n = 12, wt = values_3) |>
+      dplyr::top_n(n = 11, wt = values_3) |>
       dplyr::arrange(desc(values_3)) |>
       dplyr::select(-values_3) |>
       dplyr::mutate(ids = parents, labels = parents) |>
       dplyr::mutate(parents = "", new_labels = labels) |>
       dplyr::distinct()
 
-    if (nrow(top_parents_table > 12)) {
+    if (nrow(top_parents_table > 11)) {
       top_parents_table <- top_parents_table |>
-        head(12) #' in case of equal numbers among classes
+        head(11) #' in case of equal numbers among classes
     }
 
     top_parents <- top_parents_table$labels
@@ -559,8 +559,8 @@ prepare_hierarchy <-
     if (type == "analysis") {
       table_new <- table_new |>
         dplyr::rowwise() |>
-        dplyr::filter(grepl(pattern = id, x = sample) |
-          is.na(id)) |>
+        dplyr::filter(grepl(pattern = id, x = sample) | #'Comment these if
+          is.na(id)) |> #' using wrong feature table
         dplyr::ungroup() |>
         dplyr::mutate(intensity = switch(detector,
           "ms" = intensity,
