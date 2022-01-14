@@ -45,7 +45,10 @@ prepare_plot <- function(dataframe, organism = "species") {
 
   quickfix <- samples |>
     dplyr::filter(is.na(color)) |>
-    dplyr::mutate(color = paste0("#00", sprintf("%04d", row_number())))
+    dplyr::group_by(group, subgroup) |> 
+    dplyr::mutate(subsub = cur_group_id()) |> 
+    dplyr::mutate(color = paste0("#00", sprintf("%04d", subsub))) |> 
+    dplyr::select(-subsub)
 
   samples <-
     rbind(samples |> dplyr::filter(!is.na(color)), quickfix)
