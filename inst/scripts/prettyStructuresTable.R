@@ -584,7 +584,8 @@ for (i in names(histograms)) {
       )
     ),
     width = 16 * max((dimensions[[i]] / 30), 0.5),
-    height = 9 * min(max((size[[i]] / 100), 1), 10) * max((dimensions[[i]] / 30), 0.5)
+    height = 9 * max((size[[i]] / 100), 1) * max((dimensions[[i]] / 30), 0.5),
+    limitsize = FALSE
   )
 }
 
