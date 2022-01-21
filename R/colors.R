@@ -1,3 +1,5 @@
+library(microshades, quietly = TRUE)
+
 #' Colors
 nice_colors <- list(
   microshades_palette("micro_cvd_green", lightest = FALSE),
