@@ -24,13 +24,15 @@ prepare_hierarchy <-
             test = !is.na(smiles_2D),
             yes = best_candidate_1,
             no = "notAnnotated"
-          )) |>
+          )
+        ) |>
         dplyr::mutate(
           best_candidate_2 = ifelse(
             test = !is.na(smiles_2D),
             yes = best_candidate_2,
             no = paste(best_candidate_1, "notAnnotated", sep = " ")
-          )) |>
+          )
+        ) |>
         dplyr::mutate(
           best_candidate_3 = ifelse(
             test = !is.na(smiles_2D),
@@ -43,7 +45,8 @@ prepare_hierarchy <-
             test = best_candidate_2 != "notClassified",
             yes = best_candidate_2,
             no = paste(best_candidate_1, "notClassified", sep = " ")
-          )) |>
+          )
+        ) |>
         dplyr::mutate(
           best_candidate_3 = ifelse(
             test = best_candidate_3 != "notClassified",
@@ -51,8 +54,7 @@ prepare_hierarchy <-
             no = paste(best_candidate_2, "notClassified", sep = " ")
           )
         ) |>
-        dplyr::mutate(chemical_pathway = best_candidate_1
-        )
+        dplyr::mutate(chemical_pathway = best_candidate_1)
 
       df_notConfident <- df |>
         dplyr::filter(grepl(pattern = "notConfident", x = best_candidate_2)) |>
@@ -559,7 +561,7 @@ prepare_hierarchy <-
     if (type == "analysis") {
       table_new <- table_new |>
         dplyr::rowwise() |>
-        dplyr::filter(grepl(pattern = id, x = sample) | #'Comment these if
+        dplyr::filter(grepl(pattern = id, x = sample) | #' Comment these if
           is.na(id)) |> #' using wrong feature table
         dplyr::ungroup() |>
         dplyr::mutate(intensity = switch(detector,
