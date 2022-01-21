@@ -22,40 +22,49 @@ source(file = "r/prepare_plot.R")
 
 classified_path <-
   "~/Git/lotus-processor/data/processed/211220_frozen_metadata.csv.gz"
+export_dir <- "~/Downloads"
+export_name <- "full"
 
-n_min <- 10
+n_min <- 50
+filter_level <- "organism_taxonomy_06family"
+filter_taxon <- NA #' replace with NA for no filter
+group_level <- "organism_taxonomy_06family"
+subgroup_level <- "organism_taxonomy_08genus"
 
-pairs_metadata <- readr::read_delim(file = classified_path) %>%
+pairs_metadata <- readr::read_delim(file = classified_path) |>
   data.table::data.table()
 
-genus_restricted <- pairs_metadata |>
-  dplyr::filter(organism_taxonomy_06family == "Fabaceae") |>
-  dplyr::filter(!is.na(organism_taxonomy_08genus)) |>
-  dplyr::group_by(organism_taxonomy_08genus) |>
+if (!is.na(filter_taxon)) {
+  taxon_prerestricted <- pairs_metadata |>
+    dplyr::filter(!!as.name(filter_level) == filter_taxon)
+} else {
+  taxon_prerestricted <- pairs_metadata
+}
+
+taxon_restricted <- taxon_prerestricted |>
+  dplyr::filter(!is.na(!!as.name(group_level))) |>
+  dplyr::distinct(structure_inchikey, !!as.name(group_level), .keep_all = TRUE) |>
+  dplyr::group_by(!!as.name(group_level)) |>
   dplyr::add_count() |>
   dplyr::ungroup() |>
   dplyr::filter(n >= n_min) |>
-  dplyr::distinct(organism_taxonomy_08genus)
+  dplyr::distinct(!!as.name(group_level))
 
-genus_matched_restricted <-
-  rotl::tnrs_match_names(
-    names = genus_restricted$organism_taxonomy_08genus,
-    do_approximate_matching = FALSE
-  )
+taxon_matched_restricted <-
+  rotl::tnrs_match_names(names = taxon_restricted[[1]],
+                         do_approximate_matching = FALSE)
 
 ott_in_tree <-
-  rotl::ott_id(genus_matched_restricted)[rotl::is_in_tree(rotl::ott_id(genus_matched_restricted))]
+  rotl::ott_id(taxon_matched_restricted)[rotl::is_in_tree(rotl::ott_id(taxon_matched_restricted))]
 
-genus_restricted <- genus_restricted |>
-  dplyr::filter(organism_taxonomy_08genus %in% names(ott_in_tree))
+taxon_restricted <- taxon_restricted |>
+  dplyr::filter(!!as.name(group_level) %in% names(ott_in_tree))
 
-genus_matched_restricted <-
-  rotl::tnrs_match_names(
-    names = genus_restricted$organism_taxonomy_08genus,
-    do_approximate_matching = FALSE
-  )
+taxon_matched_restricted <-
+  rotl::tnrs_match_names(names = taxon_restricted[[1]],
+                         do_approximate_matching = FALSE)
 
-genus_matched_restricted <- genus_matched_restricted |>
+taxon_matched_restricted <- taxon_matched_restricted |>
   dplyr::mutate(key = paste(
     gsub(
       x = unique_name,
@@ -69,46 +78,58 @@ genus_matched_restricted <- genus_matched_restricted |>
 
 tr_restricted <- rotl::tol_induced_subtree(ott_ids = ott_in_tree)
 
-specific_classes <- pairs_metadata |>
+specific_classes <- taxon_prerestricted |>
   splitstackshape::cSplit(
-    splitCols = colnames(pairs_metadata)[pairs_metadata[, grepl(
-      pattern = "structure_taxonomy_npclassifier_",
-      x = colnames(pairs_metadata)
-    )]],
+    splitCols = colnames(pairs_metadata)[pairs_metadata[, grepl(pattern = "structure_taxonomy_npclassifier_",
+                                                                x = colnames(pairs_metadata))]],
     sep = "|",
     direction = "long"
   ) |>
-  dplyr::filter(
-    !is.na(structure_taxonomy_npclassifier_01pathway) &
-      !is.na(structure_taxonomy_npclassifier_02superclass) &
-      !is.na(structure_taxonomy_npclassifier_03class)
+  dplyr::mutate(
+    structure_taxonomy_npclassifier_01pathway = ifelse(
+      test = !is.na(structure_taxonomy_npclassifier_01pathway),
+      yes = structure_taxonomy_npclassifier_01pathway,
+      no = "notClassified"
+    )
+  ) |>
+  dplyr::mutate(
+    structure_taxonomy_npclassifier_02superclass = ifelse(
+      test = !is.na(structure_taxonomy_npclassifier_02superclass),
+      yes = structure_taxonomy_npclassifier_02superclass,
+      no = paste(structure_taxonomy_npclassifier_01pathway, "notClassified")
+    )
+  ) |>
+  dplyr::mutate(
+    structure_taxonomy_npclassifier_03class = ifelse(
+      test = !is.na(structure_taxonomy_npclassifier_03class),
+      yes = structure_taxonomy_npclassifier_03class,
+      no = paste(
+        structure_taxonomy_npclassifier_02superclass,
+        "notClassified"
+      )
+    )
   ) |>
   dplyr::mutate_all(as.character) |>
-  dplyr::filter(organism_taxonomy_08genus %in% genus_matched_restricted$unique_name) |>
+  dplyr::filter(!!as.name(group_level) %in% taxon_matched_restricted$unique_name) |>
   dplyr::filter(!is.na(structure_taxonomy_npclassifier_03class)) |>
-  dplyr::distinct(organism_taxonomy_08genus,
-    structure_inchikey,
-    .keep_all = TRUE
-  )
+  dplyr::distinct(!!as.name(group_level),
+                  structure_inchikey,
+                  .keep_all = TRUE)
 
 specific_classes_o <- specific_classes |>
-  dplyr::group_by(organism_taxonomy_08genus) |>
-  dplyr::distinct(organism_taxonomy_09species, .keep_all = TRUE) |>
-  dplyr::count(name = "o") %>%
+  dplyr::group_by(!!as.name(group_level)) |>
+  dplyr::distinct(!!as.name(subgroup_level), .keep_all = TRUE) |>
+  dplyr::count(name = "o") |>
   dplyr::ungroup()
 
 tr_restricted$tip.label <-
-  gsub(
-    pattern = "_.*",
-    replacement = "",
-    x = tr_restricted$tip.label
-  )
+  gsub(pattern = "_.*",
+       replacement = "",
+       x = tr_restricted$tip.label)
 
 taxonomy <-
-  dplyr::left_join(
-    genus_restricted,
-    pairs_metadata
-  ) |>
+  dplyr::left_join(taxon_restricted,
+                   pairs_metadata) |>
   dplyr::distinct(
     Domain = organism_taxonomy_01domain,
     Kingdom = organism_taxonomy_02kingdom,
@@ -116,22 +137,31 @@ taxonomy <-
     Class = organism_taxonomy_04class,
     Order = organism_taxonomy_05order,
     Family = organism_taxonomy_06family,
-    Genus = organism_taxonomy_08genus
+    Tribe = organism_taxonomy_07tribe,
+    Genus = organism_taxonomy_08genus,
+    Species = organism_taxonomy_09species,
+    Varietas = organism_taxonomy_10varietas
   )
 
 info <- taxonomy |>
-  dplyr::select(
-    id = Genus,
-    dplyr::everything()
-  ) |>
+  dplyr::select(id = names(taxonomy)[grepl(
+    pattern = gsub(
+      pattern = "organism_taxonomy_[0-9]{2}",
+      replacement = "",
+      x = group_level
+    ),
+    x = names(taxonomy),
+    ignore.case = TRUE
+  )],
+  dplyr::everything()) |>
   dplyr::mutate(Kingdom = forcats::fct_reorder(Kingdom, !is.na(Domain))) |>
   dplyr::mutate(Phylum = forcats::fct_reorder(Phylum, !is.na(Kingdom))) |>
-  dplyr::left_join(specific_classes_o, by = c("id" = "organism_taxonomy_08genus"))
+  dplyr::left_join(specific_classes_o, by = c("id" = group_level))
 
 specific_classes_adapted <- specific_classes |>
   dplyr::distinct(
     structure = structure_wikidata,
-    organism = organism_taxonomy_08genus,
+    organism = !!as.name(group_level),
     best_candidate_1 = structure_taxonomy_npclassifier_01pathway,
     best_candidate_2 = structure_taxonomy_npclassifier_02superclass,
     best_candidate_3 = structure_taxonomy_npclassifier_03class
@@ -143,40 +173,36 @@ myHierch <-
 
 myPreplot <- prepare_plot(dataframe = myHierch)
 
-ott_ready <- ott_in_tree[!duplicated(ott_in_tree) & names(ott_in_tree) %in% info$id]
+ott_ready <-
+  ott_in_tree[!duplicated(ott_in_tree) &
+                names(ott_in_tree) %in% info$id]
 
 tr_ott <- rotl::tol_induced_subtree(ott_ids = ott_ready)
 
 tr_ott$tip.label <-
-  gsub(
-    pattern = "_.*",
-    replacement = "",
-    x = tr_ott$tip.label
-  )
+  gsub(pattern = "_.*",
+       replacement = "",
+       x = tr_ott$tip.label)
 
 tree_ott <- ggtree::ggtree(tr = tr_ott)
 
-p_1 <- tree_ott %<+%
+p_rel <- tree_ott %<+%
   info +
   ggtree::geom_tiplab(
     ggplot2::aes(color = Kingdom),
     align = TRUE,
     size = ggplot2::rel(5),
-    offset = ggplot2::rel(1)
+    offset = ggplot2::rel(0.5)
   ) +
-  ggplot2::scale_color_manual(
-    values = strsplit(x = paired, split = " "),
-    na.value = "grey"
-  ) +
+  ggplot2::scale_color_manual(values = strsplit(x = paired, split = " "),
+                              na.value = "grey") +
   ggtreeExtra::geom_fruit(
     data = myPreplot,
     geom = geom_col,
     mapping =
-      ggplot2::aes(
-        y = sample,
-        x = relative,
-        fill = ids
-      ),
+      ggplot2::aes(y = sample,
+                   x = relative,
+                   fill = ids),
     offset = ggplot2::rel(0.15),
     pwidth = ggplot2::rel(1.2),
     orientation = "y",
@@ -198,39 +224,29 @@ p_1 <- tree_ott %<+%
   ) +
   ggtree::geom_tippoint(mapping = ggplot2::aes(color = Kingdom, size = o)) +
   ggnewscale::new_scale_fill() +
-  ggplot2::scale_fill_discrete(
-    name = "Biological kingdom",
-    guide = ggplot2::guide_legend(
-      order = 1,
-      ncol = 2
-    )
-  ) +
-  ggplot2::scale_size_continuous(
-    name = "Species in biological genus",
-    guide = ggplot2::guide_legend(
-      order = 2,
-      direction = "horizontal"
-    )
-  ) +
+  ggplot2::scale_fill_discrete(name = "Biological kingdom",
+                               guide = ggplot2::guide_legend(order = 1,
+                                                             ncol = 2)) +
+  ggplot2::scale_size_continuous(name = "Considered subtaxa in taxon",
+                                 guide = ggplot2::guide_legend(order = 2,
+                                                               direction = "horizontal")) +
   ggplot2::theme(
-    legend.position = c(0.14, 0.93),
+    legend.position = c(ggplot2::rel(0.15),  ggplot2::rel(0.93)),
     legend.background = ggplot2::element_rect(fill = NA),
     legend.title = ggplot2::element_text(size = ggplot2::rel(3)),
     legend.text = ggplot2::element_text(size = ggplot2::rel(2)),
   )
 
-p_2 <- tree_ott %<+%
+p_abs <- tree_ott %<+%
   info +
   ggtree::geom_tiplab(
     ggplot2::aes(color = Kingdom),
     align = TRUE,
     size = ggplot2::rel(5),
-    offset = ggplot2::rel(1)
+    offset = ggplot2::rel(0.5)
   ) +
-  ggplot2::scale_color_manual(
-    values = strsplit(x = paired, split = " "),
-    na.value = "grey"
-  ) +
+  ggplot2::scale_color_manual(values = strsplit(x = paired, split = " "),
+                              na.value = "grey") +
   ggtreeExtra::geom_fruit(
     data = myPreplot |> dplyr::filter(parents == "Terpenoids"),
     geom = geom_col,
@@ -336,42 +352,51 @@ p_2 <- tree_ott %<+%
   ) +
   ggplot2::scale_fill_manual(
     values = c(
-      strsplit(rev(unique(droplevels(myPreplot[myPreplot$parents == "Alkaloids", ]$color))) |> as.character(), split = " "),
-      strsplit(rev(unique(droplevels(myPreplot[myPreplot$parents == "Amino acids and Peptides", ]$color))) |> as.character(), split = " "),
-      strsplit(rev(unique(droplevels(myPreplot[myPreplot$parents == "Carbohydrates", ]$color))) |> as.character(), split = " "),
-      strsplit(rev(unique(droplevels(myPreplot[myPreplot$parents == "Fatty acids", ]$color))) |> as.character(), split = " "),
-      strsplit(rev(unique(droplevels(myPreplot[myPreplot$parents == "Polyketides", ]$color))) |> as.character(), split = " "),
-      strsplit(rev(unique(droplevels(myPreplot[myPreplot$parents == "Shikimates and Phenylpropanoids", ]$color))) |> as.character(), split = " "),
-      strsplit(rev(unique(droplevels(myPreplot[myPreplot$parents == "Terpenoids", ]$color))) |> as.character(), split = " ")
+      strsplit(rev(unique(
+        droplevels(myPreplot[myPreplot$parents == "Alkaloids",]$color)
+      )) |> as.character(), split = " "),
+      strsplit(rev(unique(
+        droplevels(myPreplot[myPreplot$parents == "Amino acids and Peptides",]$color)
+      )) |> as.character(), split = " "),
+      strsplit(rev(unique(
+        droplevels(myPreplot[myPreplot$parents == "Carbohydrates",]$color)
+      )) |> as.character(), split = " "),
+      strsplit(rev(unique(
+        droplevels(myPreplot[myPreplot$parents == "Fatty acids",]$color)
+      )) |> as.character(), split = " "),
+      strsplit(rev(unique(
+        droplevels(myPreplot[myPreplot$parents == "Polyketides",]$color)
+      )) |> as.character(), split = " "),
+      strsplit(rev(unique(
+        droplevels(myPreplot[myPreplot$parents == "Shikimates and Phenylpropanoids",]$color)
+      )) |> as.character(), split = " "),
+      strsplit(rev(unique(
+        droplevels(myPreplot[myPreplot$parents == "Terpenoids",]$color)
+      )) |> as.character(), split = " ")
     ),
     na.value = "grey"
   ) +
   ggtree::geom_tippoint(mapping = ggplot2::aes(color = Kingdom, size = o)) +
   ggnewscale::new_scale_fill() +
-  ggplot2::scale_fill_discrete(
-    name = "Biological kingdom",
-    guide = ggplot2::guide_legend(
-      order = 1,
-      ncol = 2
-    )
-  ) +
-  ggplot2::scale_size_continuous(
-    name = "Species in biological genus",
-    guide = ggplot2::guide_legend(
-      order = 2,
-      direction = "horizontal"
-    )
-  ) +
+  ggplot2::scale_fill_discrete(name = "Biological kingdom",
+                               guide = ggplot2::guide_legend(order = 1,
+                                                             ncol = 2)) +
+  ggplot2::scale_size_continuous(name = "Considered subtaxa in taxon",
+                                 guide = ggplot2::guide_legend(order = 2,
+                                                               direction = "horizontal")) +
   ggplot2::theme(
-    legend.position = c(0.14, 0.93),
+    legend.position = c(ggplot2::rel(0.15), ggplot2::rel(0.93)),
     legend.background = ggplot2::element_rect(fill = NA),
     legend.title = ggplot2::element_text(size = ggplot2::rel(3)),
     legend.text = ggplot2::element_text(size = ggplot2::rel(2)),
   )
 
 ggplot2::ggsave(
-  filename = file.path("~/Downloads/smallTree_1.pdf"),
-  plot = p_1,
+  filename =  file.path(
+    export_dir,
+    paste("tree", export_name, "relative.pdf", sep = "_")
+  ),
+  plot = p_rel,
   width = 75,
   height = 75,
   units = "in",
@@ -379,24 +404,16 @@ ggplot2::ggsave(
 )
 
 ggplot2::ggsave(
-  filename = file.path("~/Downloads/smallTree_2.pdf"),
-  plot = p_2,
+  filename = file.path(
+    export_dir,
+    paste("tree", export_name, "absolute.pdf", sep = "_")
+  ),
+  plot = p_abs,
   width = 75,
   height = 75,
   units = "in",
   limitsize = FALSE
 )
-
-# test <- p_1 + p_2
-#
-# ggplot2::ggsave(
-#   filename = file.path("~/Downloads/test.pdf"),
-#   plot = test,
-#   width = 150,
-#   height = 75,
-#   units = "in",
-#   limitsize = FALSE
-# )
 
 end <- Sys.time()
 
