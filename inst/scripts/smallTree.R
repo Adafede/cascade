@@ -23,38 +23,39 @@ source(file = "r/prepare_plot.R")
 classified_path <-
   "~/Git/lotus-processor/data/processed/211220_frozen_metadata.csv.gz"
 
-n_min <- 50
+n_min <- 10
 
 pairs_metadata <- readr::read_delim(file = classified_path) %>%
   data.table::data.table()
 
-families_restricted <- pairs_metadata |>
-  dplyr::filter(!is.na(organism_taxonomy_06family)) |>
-  dplyr::group_by(organism_taxonomy_06family) |>
+genus_restricted <- pairs_metadata |>
+  dplyr::filter(organism_taxonomy_06family == "Fabaceae") |>
+  dplyr::filter(!is.na(organism_taxonomy_08genus)) |>
+  dplyr::group_by(organism_taxonomy_08genus) |>
   dplyr::add_count() |>
   dplyr::ungroup() |>
   dplyr::filter(n >= n_min) |>
-  dplyr::distinct(organism_taxonomy_06family)
+  dplyr::distinct(organism_taxonomy_08genus)
 
-families_matched_restricted <-
+genus_matched_restricted <-
   rotl::tnrs_match_names(
-    names = families_restricted$organism_taxonomy_06family,
+    names = genus_restricted$organism_taxonomy_08genus,
     do_approximate_matching = FALSE
   )
 
 ott_in_tree <-
-  rotl::ott_id(families_matched_restricted)[rotl::is_in_tree(rotl::ott_id(families_matched_restricted))]
+  rotl::ott_id(genus_matched_restricted)[rotl::is_in_tree(rotl::ott_id(genus_matched_restricted))]
 
-families_restricted <- families_restricted |>
-  dplyr::filter(organism_taxonomy_06family %in% names(ott_in_tree))
+genus_restricted <- genus_restricted |>
+  dplyr::filter(organism_taxonomy_08genus %in% names(ott_in_tree))
 
-families_matched_restricted <-
+genus_matched_restricted <-
   rotl::tnrs_match_names(
-    names = families_restricted$organism_taxonomy_06family,
+    names = genus_restricted$organism_taxonomy_08genus,
     do_approximate_matching = FALSE
   )
 
-families_matched_restricted <- families_matched_restricted |>
+genus_matched_restricted <- genus_matched_restricted |>
   dplyr::mutate(key = paste(
     gsub(
       x = unique_name,
@@ -83,16 +84,16 @@ specific_classes <- pairs_metadata |>
       !is.na(structure_taxonomy_npclassifier_03class)
   ) |>
   dplyr::mutate_all(as.character) |>
-  dplyr::filter(organism_taxonomy_06family %in% families_matched_restricted$unique_name) |>
+  dplyr::filter(organism_taxonomy_08genus %in% genus_matched_restricted$unique_name) |>
   dplyr::filter(!is.na(structure_taxonomy_npclassifier_03class)) |>
-  dplyr::distinct(organism_taxonomy_06family,
+  dplyr::distinct(organism_taxonomy_08genus,
     structure_inchikey,
     .keep_all = TRUE
   )
 
 specific_classes_o <- specific_classes |>
-  dplyr::group_by(organism_taxonomy_06family) |>
-  dplyr::distinct(organism_taxonomy_08genus, .keep_all = TRUE) |>
+  dplyr::group_by(organism_taxonomy_08genus) |>
+  dplyr::distinct(organism_taxonomy_09species, .keep_all = TRUE) |>
   dplyr::count(name = "o") %>%
   dplyr::ungroup()
 
@@ -105,7 +106,7 @@ tr_restricted$tip.label <-
 
 taxonomy <-
   dplyr::left_join(
-    families_restricted,
+    genus_restricted,
     pairs_metadata
   ) |>
   dplyr::distinct(
@@ -114,22 +115,23 @@ taxonomy <-
     Phylum = organism_taxonomy_03phylum,
     Class = organism_taxonomy_04class,
     Order = organism_taxonomy_05order,
-    Family = organism_taxonomy_06family
+    Family = organism_taxonomy_06family,
+    Genus = organism_taxonomy_08genus
   )
 
 info <- taxonomy |>
   dplyr::select(
-    id = Family,
+    id = Genus,
     dplyr::everything()
   ) |>
   dplyr::mutate(Kingdom = forcats::fct_reorder(Kingdom, !is.na(Domain))) |>
   dplyr::mutate(Phylum = forcats::fct_reorder(Phylum, !is.na(Kingdom))) |>
-  dplyr::left_join(specific_classes_o, by = c("id" = "organism_taxonomy_06family"))
+  dplyr::left_join(specific_classes_o, by = c("id" = "organism_taxonomy_08genus"))
 
 specific_classes_adapted <- specific_classes |>
   dplyr::distinct(
     structure = structure_wikidata,
-    organism = organism_taxonomy_06family,
+    organism = organism_taxonomy_08genus,
     best_candidate_1 = structure_taxonomy_npclassifier_01pathway,
     best_candidate_2 = structure_taxonomy_npclassifier_02superclass,
     best_candidate_3 = structure_taxonomy_npclassifier_03class
@@ -204,7 +206,7 @@ p_1 <- tree_ott %<+%
     )
   ) +
   ggplot2::scale_size_continuous(
-    name = "Genera in biological family",
+    name = "Species in biological genus",
     guide = ggplot2::guide_legend(
       order = 2,
       direction = "horizontal"
@@ -354,7 +356,7 @@ p_2 <- tree_ott %<+%
     )
   ) +
   ggplot2::scale_size_continuous(
-    name = "Genera in biological family",
+    name = "Species in biological genus",
     guide = ggplot2::guide_legend(
       order = 2,
       direction = "horizontal"
@@ -368,7 +370,7 @@ p_2 <- tree_ott %<+%
   )
 
 ggplot2::ggsave(
-  filename = file.path("~/Downloads/bigTree_1.pdf"),
+  filename = file.path("~/Downloads/smallTree_1.pdf"),
   plot = p_1,
   width = 75,
   height = 75,
@@ -377,7 +379,7 @@ ggplot2::ggsave(
 )
 
 ggplot2::ggsave(
-  filename = file.path("~/Downloads/bigTree_2.pdf"),
+  filename = file.path("~/Downloads/smallTree_2.pdf"),
   plot = p_2,
   width = 75,
   height = 75,
