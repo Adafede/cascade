@@ -23,12 +23,12 @@ source(file = "r/prepare_plot.R")
 classified_path <-
   "~/Git/lotus-processor/data/processed/211220_frozen_metadata.csv.gz"
 export_dir <- "~/Downloads"
-export_name <- "crazy"
+export_name <- "full"
 
 n_min <- 100
 filter_level <- "organism_taxonomy_06family"
 filter_taxon <- NA #' replace with NA for no filter
-group_level <- "organism_taxonomy_08genus"
+group_level <- "organism_taxonomy_09species"
 subgroup_level <- "organism_taxonomy_09species"
 
 pairs_metadata <- readr::read_delim(file = classified_path) |>
@@ -169,7 +169,12 @@ info <- taxonomy |>
   ) |>
   dplyr::mutate(Kingdom = forcats::fct_reorder(Kingdom, !is.na(Domain))) |>
   dplyr::mutate(Phylum = forcats::fct_reorder(Phylum, !is.na(Kingdom))) |>
-  dplyr::left_join(specific_classes_o, by = c("id" = group_level))
+  dplyr::left_join(specific_classes_o, by = c("id" = group_level)) |>
+  dplyr::mutate(id = gsub(
+    pattern = " ",
+    replacement = "_",
+    x = id
+  ))
 
 specific_classes_adapted <- specific_classes |>
   dplyr::distinct(
@@ -184,62 +189,52 @@ specific_classes_adapted <- specific_classes |>
 myHierch <-
   prepare_hierarchy(dataframe = specific_classes_adapted, type = "literature")
 
-myPreplot <- prepare_plot(dataframe = myHierch)
+myPreplot <- prepare_plot(dataframe = myHierch) |>
+  mutate(sample = gsub(
+    pattern = " ",
+    replacement = "_",
+    x = sample
+  ))
 
 ott_ready <-
   ott_in_tree[!duplicated(ott_in_tree) &
-    names(ott_in_tree) %in% info$id]
+    gsub(
+      pattern = " ",
+      replacement = "_",
+      x = names(ott_in_tree)
+    ) %in% info$id]
 
 tr_ott <- rotl::tol_induced_subtree(ott_ids = ott_ready)
 
 tr_ott$tip.label <-
   gsub(
-    pattern = "_.*",
+    pattern = "_ott.*",
     replacement = "",
     x = tr_ott$tip.label
   )
 
 tree_ott <- ggtree::ggtree(tr = tr_ott)
 
-p_rel <- tree_ott %<+%
+p <- tree_ott %<+%
   info +
   ggtree::geom_tiplab(
-    ggplot2::aes(color = Kingdom),
+    mapping = ggplot2::aes(color = Kingdom),
     align = TRUE,
     size = ggplot2::rel(5),
-    offset = ggplot2::rel(0.5)
+    offset = ggplot2::rel(0.2)
   ) +
   ggplot2::scale_color_manual(
-    values = strsplit(x = paired, split = " "),
-    na.value = "grey"
-  ) +
-  ggtreeExtra::geom_fruit(
-    data = myPreplot,
-    geom = geom_col,
-    mapping =
-      ggplot2::aes(
-        y = sample,
-        x = relative,
-        fill = ids
-      ),
-    offset = ggplot2::rel(0.15),
-    pwidth = ggplot2::rel(1.2),
-    orientation = "y",
-    stat = "identity",
-  ) +
-  ggplot2::scale_fill_discrete(
-    name = "Chemical pathway",
-    direction = "vertical",
-    guide = ggplot2::guide_legend(order = 3)
-  ) +
-  ggplot2::scale_fill_manual(
     values = strsplit(
-      x = levels(myPreplot$color) |>
-        as.character(),
+      x = c(
+        nice_colors[[8]][5],
+        nice_colors[[9]][5],
+        nice_colors[[10]][5],
+        nice_colors[[11]][5],
+        nice_colors[[12]][5]
+      ),
       split = " "
     ),
-    na.value = "grey",
-    guide = ggplot2::guide_legend(reverse = TRUE)
+    na.value = "grey"
   ) +
   ggtree::geom_tippoint(mapping = ggplot2::aes(color = Kingdom, size = o)) +
   ggnewscale::new_scale_fill() +
@@ -250,6 +245,7 @@ p_rel <- tree_ott %<+%
       ncol = 2
     )
   ) +
+  ggnewscale::new_scale("size") +
   ggplot2::scale_size_continuous(
     name = "Considered subtaxa in taxon",
     guide = ggplot2::guide_legend(
@@ -262,61 +258,69 @@ p_rel <- tree_ott %<+%
     legend.background = ggplot2::element_rect(fill = NA),
     legend.title = ggplot2::element_text(size = ggplot2::rel(3)),
     legend.text = ggplot2::element_text(size = ggplot2::rel(2)),
-  )
+  ) +
+  ggnewscale::new_scale_fill()
 
-p_abs <- tree_ott %<+%
-  info +
-  ggtree::geom_tiplab(
-    ggplot2::aes(color = Kingdom),
-    align = TRUE,
-    size = ggplot2::rel(5),
-    offset = ggplot2::rel(0.5)
-  ) +
-  ggplot2::scale_color_manual(
-    values = strsplit(x = paired, split = " "),
-    na.value = "grey"
-  ) +
+p_rel <- p +
   ggtreeExtra::geom_fruit(
-    data = myPreplot |> dplyr::filter(parents == "Terpenoids"),
+    data = myPreplot,
     geom = geom_col,
     mapping =
       ggplot2::aes(
         y = sample,
-        x = log(values),
+        x = relative,
         fill = ids
       ),
     offset = ggplot2::rel(0.15),
-    pwidth = ggplot2::rel(0.19),
+    pwidth = ggplot2::rel(1.2),
     orientation = "y",
-    stat = "identity",
+  ) +
+  ggplot2::scale_fill_manual(
+    values = strsplit(
+      x = levels(myPreplot$color) |>
+        as.character(),
+      split = " "
+    ),
+    na.value = "grey",
+    guide = ggplot2::guide_legend(reverse = TRUE)
+  )
+
+p_abs <- p +
+  ggtreeExtra::geom_fruit(
+    data = myPreplot |> dplyr::filter(parents == "Terpenoids"),
+    geom = geom_col,
+    mapping = ggplot2::aes(
+      y = sample,
+      x = log(values),
+      fill = ids
+    ),
+    offset = ggplot2::rel(0.15),
+    pwidth = ggplot2::rel(0.19),
+    orientation = "y"
   ) +
   ggtreeExtra::geom_fruit(
     data = myPreplot |> dplyr::filter(parents == "Shikimates and Phenylpropanoids"),
     geom = geom_col,
-    mapping =
-      ggplot2::aes(
-        y = sample,
-        x = log(values),
-        fill = ids
-      ),
+    mapping = ggplot2::aes(
+      y = sample,
+      x = log(values),
+      fill = ids
+    ),
     offset = ggplot2::rel(0.0),
     pwidth = ggplot2::rel(0.19),
-    orientation = "y",
-    stat = "identity",
+    orientation = "y"
   ) +
   ggtreeExtra::geom_fruit(
     data = myPreplot |> dplyr::filter(parents == "Alkaloids"),
     geom = geom_col,
-    mapping =
-      ggplot2::aes(
-        y = sample,
-        x = log(values),
-        fill = ids
-      ),
+    mapping = ggplot2::aes(
+      y = sample,
+      x = log(values),
+      fill = ids
+    ),
     offset = ggplot2::rel(0.0),
     pwidth = ggplot2::rel(0.19),
-    orientation = "y",
-    stat = "identity",
+    orientation = "y"
   ) +
   ggtreeExtra::geom_fruit(
     data = myPreplot |> dplyr::filter(parents == "Polyketides"),
@@ -329,55 +333,43 @@ p_abs <- tree_ott %<+%
       ),
     offset = ggplot2::rel(0.0),
     pwidth = ggplot2::rel(0.19),
-    orientation = "y",
-    stat = "identity",
+    orientation = "y"
   ) +
   ggtreeExtra::geom_fruit(
     data = myPreplot |> dplyr::filter(parents == "Fatty acids"),
     geom = geom_col,
-    mapping =
-      ggplot2::aes(
-        y = sample,
-        x = log(values),
-        fill = ids
-      ),
+    mapping = ggplot2::aes(
+      y = sample,
+      x = log(values),
+      fill = ids
+    ),
     offset = ggplot2::rel(0.0),
     pwidth = ggplot2::rel(0.19),
-    orientation = "y",
-    stat = "identity",
+    orientation = "y"
   ) +
   ggtreeExtra::geom_fruit(
     data = myPreplot |> dplyr::filter(parents == "Amino acids and Peptides"),
     geom = geom_col,
-    mapping =
-      ggplot2::aes(
-        y = sample,
-        x = log(values),
-        fill = ids
-      ),
+    mapping = ggplot2::aes(
+      y = sample,
+      x = log(values),
+      fill = ids
+    ),
     offset = ggplot2::rel(0.0),
     pwidth = ggplot2::rel(0.19),
-    orientation = "y",
-    stat = "identity",
+    orientation = "y"
   ) +
   ggtreeExtra::geom_fruit(
     data = myPreplot |> dplyr::filter(parents == "Carbohydrates"),
     geom = geom_col,
-    mapping =
-      ggplot2::aes(
-        y = sample,
-        x = log(values),
-        fill = ids
-      ),
+    mapping = ggplot2::aes(
+      y = sample,
+      x = log(values),
+      fill = ids
+    ),
     offset = ggplot2::rel(0.0),
     pwidth = ggplot2::rel(0.09),
-    orientation = "y",
-    stat = "identity",
-  ) +
-  ggplot2::scale_fill_discrete(
-    name = "Chemical pathway",
-    direction = "vertical",
-    guide = ggplot2::guide_legend(order = 3)
+    orientation = "y"
   ) +
   ggplot2::scale_fill_manual(
     values = c(
@@ -404,28 +396,6 @@ p_abs <- tree_ott %<+%
       )) |> as.character(), split = " ")
     ),
     na.value = "grey"
-  ) +
-  ggtree::geom_tippoint(mapping = ggplot2::aes(color = Kingdom, size = o)) +
-  ggnewscale::new_scale_fill() +
-  ggplot2::scale_fill_discrete(
-    name = "Biological kingdom",
-    guide = ggplot2::guide_legend(
-      order = 1,
-      ncol = 2
-    )
-  ) +
-  ggplot2::scale_size_continuous(
-    name = "Considered subtaxa in taxon",
-    guide = ggplot2::guide_legend(
-      order = 2,
-      direction = "horizontal"
-    )
-  ) +
-  ggplot2::theme(
-    legend.position = c(ggplot2::rel(0.15), ggplot2::rel(0.93)),
-    legend.background = ggplot2::element_rect(fill = NA),
-    legend.title = ggplot2::element_text(size = ggplot2::rel(3)),
-    legend.text = ggplot2::element_text(size = ggplot2::rel(2)),
   )
 
 ggplot2::ggsave(
@@ -435,7 +405,7 @@ ggplot2::ggsave(
   ),
   plot = p_rel,
   width = 75,
-  height = 75,
+  height = 70 + nrow(taxon_restricted) / 10,
   units = "in",
   limitsize = FALSE
 )
@@ -447,7 +417,7 @@ ggplot2::ggsave(
   ),
   plot = p_abs,
   width = 75,
-  height = 75,
+  height = 70 + nrow(taxon_restricted) / 10,
   units = "in",
   limitsize = FALSE
 )
