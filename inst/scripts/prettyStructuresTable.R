@@ -23,7 +23,7 @@ source(file = "R/log_debug.R")
 source(file = "R/molinfo.R")
 
 classified_path <-
-  "~/Git/lotus-processor/data/processed/211220_frozen_metadata.csv.gz"
+  "~/Git/lotus-processor/data/processed/220204_frozen_metadata.csv.gz"
 
 query_path_1 <- "inst/scripts/sparql/get_review_table_part_1.sql"
 query_path_2 <- "inst/scripts/sparql/get_review_table_part_2.sql"
@@ -54,32 +54,33 @@ qids <- c(
   # "Gentianaceae" = "Q157216"
   # "Picrasma" = "Q135638",
   # "Picrasma quassioides" = "Q855778",
-  "Swertia" = "Q163970",
-  "Swertia chirayita" = "Q21318003",
-  "Gentiana" = "Q144682",
-  "Gentiana lutea" = "Q158572",
-  "Quassia" = "Q1947702",
-  "Quassia amara" = "Q135389",
-  "Aloe ferox" = "Q1194889",
-  "Sambucus nigra" = "Q22701",
-  "Coriandrum sativum" = "Q41611",
-  "Juniperus communis" = "Q26325",
-  "Piper cubeba" = "Q161927",
-  "Aframomum melegueta" = "Q1503476",
-  "Angelica archangelica" = "Q207745",
-  "Glycyrrhiza glabra" = "Q257106",
-  "Cinnamomum cassia" = "Q204148",
-  "Iris pallida" = "Q161347",
-  "Centaurea benedicta" = "Q792835",
-  "Hypericum perforatum" = "Q158289",
-  "Prunus dulcis" = "Q39918",
-  "Taraxacum officinale" = "Q131219",
-  "Rheum palmatum" = "Q1109580",
+  # "Swertia" = "Q163970",
+  # "Swertia chirayita" = "Q21318003",
+  # "Gentiana" = "Q144682",
+  # "Gentiana lutea" = "Q158572",
+  # "Quassia" = "Q1947702",
+  # "Quassia amara" = "Q135389",
+  # "Aloe ferox" = "Q1194889",
+  # "Sambucus nigra" = "Q22701",
+  # "Coriandrum sativum" = "Q41611",
+  # "Juniperus communis" = "Q26325",
+  # "Piper cubeba" = "Q161927",
+  # "Aframomum melegueta" = "Q1503476",
+  # "Angelica archangelica" = "Q207745",
+  # "Glycyrrhiza glabra" = "Q257106",
+  # "Cinnamomum cassia" = "Q204148",
+  # "Iris pallida" = "Q161347",
+  # "Centaurea benedicta" = "Q792835",
+  # "Hypericum perforatum" = "Q158289",
+  # "Prunus dulcis" = "Q39918",
+  # "Taraxacum officinale" = "Q131219",
+  # "Rheum palmatum" = "Q1109580",
   "Arnica montana" = "Q207848",
   "Cinchona succirubra" = "Q50830790",
   "Ginkgo biloba" = "Q43284",
   "Panax ginseng" = "Q182881",
   "Salvia officinalis" = "Q1111359"
+  # "Saxifraga" = "Q156146"
   # "Dendrobium" = "Q133778",
   # "Dendrobium chrysanthum" = "Q5223343",
   # "Dendrobium fimbriatum" = "Q7990065",
