@@ -5,22 +5,33 @@ nice_colors <- list(
   microshades_palette("micro_cvd_green", lightest = FALSE),
   microshades_palette("micro_cvd_orange", lightest = FALSE),
   microshades_palette("micro_cvd_blue", lightest = FALSE),
-  microshades_palette("micro_cvd_turquoise", lightest = FALSE),
   microshades_palette("micro_cvd_purple", lightest = FALSE),
-  microshades_palette("micro_cvd_gray", lightest = FALSE),
-  microshades_palette("micro_orange", lightest = FALSE),
+  # microshades_palette("micro_cvd_gray", lightest = FALSE),
+  microshades_palette("micro_cvd_turquoise", lightest = FALSE),
   microshades_palette("micro_purple", lightest = FALSE),
+  microshades_palette("micro_orange", lightest = FALSE),
   microshades_palette("micro_blue", lightest = FALSE),
   microshades_palette("micro_green", lightest = FALSE),
-  microshades_palette("micro_brown", lightest = FALSE),
-  microshades_palette("micro_gray", lightest = FALSE)
+  microshades_palette("micro_brown", lightest = FALSE)
+  # microshades_palette("micro_gray", lightest = FALSE)
 )
 
+#' Grey
+grey_colors <- list(
+  microshades_palette("micro_cvd_gray", lightest = FALSE),
+  microshades_palette("micro_gray", lightest = FALSE)
+)
 
 sunburst_colors <- character()
 
 for (i in seq_len(length(nice_colors))) {
   sunburst_colors[i] <- nice_colors[[i]][5]
+}
+
+sunburst_colors_grey <- character()
+
+for (i in seq_len(length(grey_colors))) {
+  sunburst_colors_grey[i] <- grey_colors[[i]][5]
 }
 
 #' Qualitative
