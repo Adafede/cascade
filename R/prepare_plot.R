@@ -10,27 +10,20 @@ require(package = forcats, quietly = TRUE)
 #'
 #' @examples
 prepare_plot <- function(dataframe, organism = "species") {
-  samples <- dataframe |>
+  presamples <- dataframe |>
     ungroup() |>
-    dplyr::filter(
-      parents != "" &
-        !grepl(pattern = "-", x = parents) &
-        !grepl(
-          pattern = "notClassified",
-          x = parents,
-          fixed = TRUE
-        )
-    ) |>
+    dplyr::filter(parents != "" &
+                    !grepl(pattern = "-", x = parents)) |>
+    dplyr::filter(parents != "" &
+                    !grepl(pattern = "-", x = parents)) |>
     dplyr::filter(!is.na(get(organism))) |>
-    dplyr::mutate(
-      species =
-        gsub(
-          pattern = "([A-Z]{1})(.* )",
-          replacement = "\\1. ",
-          x = get(organism),
-          perl = TRUE
-        )
-    ) |>
+    dplyr::mutate(species =
+                    gsub(
+                      pattern = "([A-Z]{1})(.* )",
+                      replacement = "\\1. ",
+                      x = get(organism),
+                      perl = TRUE
+                    )) |>
     dplyr::arrange(desc(values)) |>
     dplyr::mutate(group = as.integer(factor(parents, levels = unique(parents)))) |>
     dplyr::group_by(group) |>
@@ -39,20 +32,54 @@ prepare_plot <- function(dataframe, organism = "species") {
     dplyr::rowwise() |>
     dplyr::group_by(sample) |>
     dplyr::mutate(tot = sum(values)) |>
+    dplyr::ungroup()
+  
+  tempval <- presamples |>
+    dplyr::filter(parents == "Other") |>
+    dplyr::distinct(group) |>
+    dplyr::pull()
+  
+  if (length(tempval) != 0) {
+    samples_0 <- presamples |>
+      dplyr::filter(group == tempval) |>
+      dplyr::rowwise() |>
+      dplyr::mutate(group = 666) |>
+      dplyr::ungroup()
+    
+    samples_1 <- presamples |>
+      dplyr::filter(group > tempval) |>
+      dplyr::rowwise() |>
+      dplyr::mutate(group = group - 1) |>
+      dplyr::ungroup()
+    
+    samples_2 <- presamples |>
+      dplyr::filter(group < tempval)
+    
+    samples <- rbind(samples_0, samples_1, samples_2)
+  }
+  samples <- samples |>
     dplyr::rowwise() |>
-    dplyr::mutate(color = nice_colors[[group]][subgroup]) |>
+    dplyr::mutate(color = ifelse(
+      test =  grepl(
+        pattern = "Other",
+        x = parents,
+        fixed = TRUE
+      ),
+      yes = grey_colors[[1]][subgroup],
+      no = nice_colors[[group]][subgroup]
+    )) |>
     dplyr::mutate(relative = values / tot)
-
+  
   quickfix <- samples |>
     dplyr::filter(is.na(color)) |>
     dplyr::group_by(group, subgroup) |>
     dplyr::mutate(subsub = cur_group_id()) |>
     dplyr::mutate(color = paste0("#00", sprintf("%04d", subsub))) |>
     dplyr::select(-subsub)
-
+  
   samples <-
     rbind(samples |> dplyr::filter(!is.na(color)), quickfix)
-
+  
   samples$ids <-
     forcats::fct_reorder2(
       .f = samples$ids,
@@ -60,7 +87,7 @@ prepare_plot <- function(dataframe, organism = "species") {
       .y = samples$group,
       .desc = TRUE
     )
-
+  
   samples$color <-
     forcats::fct_reorder2(
       .f = samples$color,
@@ -68,7 +95,7 @@ prepare_plot <- function(dataframe, organism = "species") {
       .y = samples$group,
       .desc = TRUE
     )
-
+  
   samples$sample <-
     forcats::fct_reorder2(
       .f = samples$sample,
@@ -76,6 +103,6 @@ prepare_plot <- function(dataframe, organism = "species") {
       .y = samples$sample,
       .desc = FALSE
     )
-
+  
   return(samples)
 }

@@ -21,13 +21,13 @@ source(file = "r/prepare_hierarchy.R")
 source(file = "r/prepare_plot.R")
 
 classified_path <-
-  "~/Git/lotus-processor/data/processed/211220_frozen_metadata.csv.gz"
+  "~/Git/lotus-processor/data/processed/220204_frozen_metadata.csv.gz"
 export_dir <- "~/Downloads"
 export_name <- "full"
 
-n_min <- 100
+n_min <- 50
 filter_level <- "organism_taxonomy_06family"
-filter_taxon <- NA #' replace with NA for no filter
+filter_taxon <- "Gentianaceae" #' replace with NA for no filter
 group_level <- "organism_taxonomy_09species"
 subgroup_level <- "organism_taxonomy_09species"
 
@@ -184,7 +184,14 @@ specific_classes_adapted <- specific_classes |>
     best_candidate_2 = structure_taxonomy_npclassifier_02superclass,
     best_candidate_3 = structure_taxonomy_npclassifier_03class
   ) |>
-  dplyr::mutate(sample = organism, species = organism)
+  dplyr::mutate(sample = organism, species = organism) |>
+  dplyr::mutate(
+    best_candidate_1 = ifelse(
+      test = best_candidate_1 == "notClassified",
+      yes = "Other",
+      no = best_candidate_1
+    )
+  )
 
 myHierch <-
   prepare_hierarchy(dataframe = specific_classes_adapted, type = "literature")
@@ -226,11 +233,12 @@ p <- tree_ott %<+%
   ggplot2::scale_color_manual(
     values = strsplit(
       x = c(
+        nice_colors[[5]][5],
+        nice_colors[[6]][5],
+        nice_colors[[7]][5],
         nice_colors[[8]][5],
         nice_colors[[9]][5],
-        nice_colors[[10]][5],
-        nice_colors[[11]][5],
-        nice_colors[[12]][5]
+        nice_colors[[10]][5]
       ),
       split = " "
     ),
