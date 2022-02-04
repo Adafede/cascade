@@ -19,27 +19,21 @@ prepare_hierarchy <-
 
     if (type == "analysis") {
       df <- dataframe |>
-        dplyr::mutate(
-          best_candidate_1 = ifelse(
-            test = !is.na(smiles_2D),
-            yes = best_candidate_1,
-            no = "notAnnotated"
-          )
-        ) |>
-        dplyr::mutate(
-          best_candidate_2 = ifelse(
-            test = !is.na(smiles_2D),
-            yes = best_candidate_2,
-            no = paste(best_candidate_1, "notAnnotated", sep = " ")
-          )
-        ) |>
-        dplyr::mutate(
-          best_candidate_3 = ifelse(
-            test = !is.na(smiles_2D),
-            yes = best_candidate_3,
-            no = paste(best_candidate_2, "notAnnotated", sep = " ")
-          )
-        ) |>
+        dplyr::mutate(best_candidate_1 = ifelse(
+          test = !is.na(smiles_2D),
+          yes = best_candidate_1,
+          no = "Other"
+        )) |>
+        dplyr::mutate(best_candidate_2 = ifelse(
+          test = !is.na(smiles_2D),
+          yes = best_candidate_2,
+          no = paste(best_candidate_1, "notAnnotated", sep = " ")
+        )) |>
+        dplyr::mutate(best_candidate_3 = ifelse(
+          test = !is.na(smiles_2D),
+          yes = best_candidate_3,
+          no = paste(best_candidate_2, "notAnnotated", sep = " ")
+        )) |>
         dplyr::mutate(
           best_candidate_2 = ifelse(
             test = best_candidate_2 != "notClassified",
@@ -54,14 +48,36 @@ prepare_hierarchy <-
             no = paste(best_candidate_2, "notClassified", sep = " ")
           )
         ) |>
+        dplyr::mutate(
+          best_candidate_1 = ifelse(
+            test = best_candidate_3 != "notClassified notClassified notClassified",
+            yes = best_candidate_1,
+            no = "Other"
+          )
+        ) |>
+        dplyr::mutate(
+          best_candidate_2 = ifelse(
+            test = best_candidate_3 != "notClassified notClassified notClassified",
+            yes = best_candidate_2,
+            no = "Other notClassified"
+          )
+        ) |>
+        dplyr::mutate(
+          best_candidate_3 = ifelse(
+            test = best_candidate_3 != "notClassified notClassified notClassified",
+            yes = best_candidate_3,
+            no = "Other notClassified notClassified"
+          )
+        ) |>
         dplyr::mutate(chemical_pathway = best_candidate_1)
 
       df_notConfident <- df |>
         dplyr::filter(grepl(pattern = "notConfident", x = best_candidate_2)) |>
         dplyr::mutate(
           smiles_2D = NA,
-          best_candidate_2 = "notConfident notConfident",
-          best_candidate_3 = "notConfident notConfident",
+          best_candidate_1 = "Other",
+          best_candidate_2 = "Other notConfident",
+          best_candidate_3 = "Other notConfident notConfident",
           inchikey_2D = NA
         ) |>
         dplyr::arrange(desc(across(any_of(
@@ -527,10 +543,12 @@ prepare_hierarchy <-
       dplyr::left_join(dataframe2 |>
         dplyr::distinct(best_candidate_3, best_candidate_2)) |>
       dplyr::mutate(
-        ids = paste(gsub(
-          pattern = ".*-",
-          replacement = "\\1",
-          x = parents),
+        ids = paste(
+          gsub(
+            pattern = ".*-",
+            replacement = "\\1",
+            x = parents
+          ),
           best_candidate_3,
           sep = "-"
         ),
@@ -566,7 +584,8 @@ prepare_hierarchy <-
     if (type == "analysis") {
       table_new <- table_new |>
         dplyr::rowwise() |>
-        dplyr::filter(grepl(pattern = id, x = sample) | #' Comment these if
+        dplyr::filter(grepl(pattern = id, x = sample) |
+          #' Comment these if
           is.na(id)) |> #' using wrong feature table
         dplyr::ungroup() |>
         dplyr::mutate(intensity = switch(detector,
@@ -729,6 +748,7 @@ prepare_hierarchy <-
         final_table_3,
         final_table_4
       ) |>
+      # dplyr::filter(!grepl(pattern = "^Other", x = ids)) |>
       dplyr::filter(!is.na(sample))
 
     if (type == "analysis") {
