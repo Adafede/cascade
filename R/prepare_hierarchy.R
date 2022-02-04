@@ -60,6 +60,8 @@ prepare_hierarchy <-
         dplyr::filter(grepl(pattern = "notConfident", x = best_candidate_2)) |>
         dplyr::mutate(
           smiles_2D = NA,
+          best_candidate_2 = "notConfident notConfident",
+          best_candidate_3 = "notConfident notConfident",
           inchikey_2D = NA
         ) |>
         dplyr::arrange(desc(across(any_of(
@@ -320,16 +322,16 @@ prepare_hierarchy <-
       dplyr::filter(parents != "") |>
       dplyr::distinct(chemical_pathway, parents, values_3) |>
       dplyr::ungroup() |>
-      dplyr::top_n(n = 11, wt = values_3) |>
+      dplyr::top_n(n = length(nice_colors), wt = values_3) |>
       dplyr::arrange(desc(values_3)) |>
       dplyr::select(-values_3) |>
       dplyr::mutate(ids = parents, labels = parents) |>
       dplyr::mutate(parents = "", new_labels = labels) |>
       dplyr::distinct()
 
-    if (nrow(top_parents_table > 11)) {
+    if (nrow(top_parents_table > length(nice_colors))) {
       top_parents_table <- top_parents_table |>
-        head(11) #' in case of equal numbers among classes
+        head(length(nice_colors)) #' in case of equal numbers among classes
     }
 
     top_parents <- top_parents_table$labels
@@ -525,7 +527,10 @@ prepare_hierarchy <-
       dplyr::left_join(dataframe2 |>
         dplyr::distinct(best_candidate_3, best_candidate_2)) |>
       dplyr::mutate(
-        ids = paste(best_candidate_2,
+        ids = paste(gsub(
+          pattern = ".*-",
+          replacement = "\\1",
+          x = parents),
           best_candidate_3,
           sep = "-"
         ),
