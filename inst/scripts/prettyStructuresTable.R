@@ -23,7 +23,7 @@ source(file = "R/log_debug.R")
 source(file = "R/molinfo.R")
 
 classified_path <-
-  "~/Git/lotus-processor/data/processed/220204_frozen_metadata.csv.gz"
+  "~/Git/lotus-processor/data/processed/220208_frozen_metadata.csv.gz"
 
 query_path_1 <- "inst/scripts/sparql/get_review_table_part_1.sql"
 query_path_2 <- "inst/scripts/sparql/get_review_table_part_2.sql"
@@ -49,45 +49,45 @@ exports <-
 #' really corresponds to what you want
 qids <- c(
   # "Actinobacteria" = "Q26262282"
-  # "Asteraceae" = "Q25400"
-  # "Simaroubaceae" = "Q156679"
-  # "Gentianaceae" = "Q157216"
-  # "Picrasma" = "Q135638",
-  # "Picrasma quassioides" = "Q855778",
-  # "Swertia" = "Q163970",
-  # "Swertia chirayita" = "Q21318003",
-  # "Gentiana" = "Q144682",
-  # "Gentiana lutea" = "Q158572",
-  # "Quassia" = "Q1947702",
-  # "Quassia amara" = "Q135389",
-  # "Aloe ferox" = "Q1194889",
-  # "Sambucus nigra" = "Q22701",
-  # "Coriandrum sativum" = "Q41611",
-  # "Juniperus communis" = "Q26325",
-  # "Piper cubeba" = "Q161927",
-  # "Aframomum melegueta" = "Q1503476",
-  # "Angelica archangelica" = "Q207745",
-  # "Glycyrrhiza glabra" = "Q257106",
-  # "Cinnamomum cassia" = "Q204148",
-  # "Iris pallida" = "Q161347",
-  # "Centaurea benedicta" = "Q792835",
-  # "Hypericum perforatum" = "Q158289",
-  # "Prunus dulcis" = "Q39918",
-  # "Taraxacum officinale" = "Q131219",
-  # "Rheum palmatum" = "Q1109580",
+  "Asteraceae" = "Q25400",
+  "Simaroubaceae" = "Q156679",
+  "Gentianaceae" = "Q157216",
+  "Picrasma" = "Q135638",
+  "Picrasma quassioides" = "Q855778",
+  "Swertia" = "Q163970",
+  "Swertia chirayita" = "Q21318003",
+  "Gentiana" = "Q144682",
+  "Gentiana lutea" = "Q158572",
+  "Quassia" = "Q1947702",
+  "Quassia amara" = "Q135389",
+  "Aloe ferox" = "Q1194889",
+  "Sambucus nigra" = "Q22701",
+  "Coriandrum sativum" = "Q41611",
+  "Juniperus communis" = "Q26325",
+  "Piper cubeba" = "Q161927",
+  "Aframomum melegueta" = "Q1503476",
+  "Angelica archangelica" = "Q207745",
+  "Glycyrrhiza glabra" = "Q257106",
+  "Cinnamomum cassia" = "Q204148",
+  "Iris pallida" = "Q161347",
+  "Centaurea benedicta" = "Q792835",
+  "Hypericum perforatum" = "Q158289",
+  "Prunus dulcis" = "Q39918",
+  "Taraxacum officinale" = "Q131219",
+  "Rheum palmatum" = "Q1109580",
   "Arnica montana" = "Q207848",
   "Cinchona succirubra" = "Q50830790",
   "Ginkgo biloba" = "Q43284",
   "Panax ginseng" = "Q182881",
-  "Salvia officinalis" = "Q1111359"
-  # "Saxifraga" = "Q156146"
-  # "Dendrobium" = "Q133778",
-  # "Dendrobium chrysanthum" = "Q5223343",
-  # "Dendrobium fimbriatum" = "Q7990065",
-  # "Trichoderma" = "Q135322",
-  # "Trichoderma yunnanense" = "Q108442404",
-  # "Papiliotrema" = "Q7132982",
-  # "Papiliotrema rajasthanensis" = "Q27866418"
+  "Salvia officinalis" = "Q1111359",
+  "Saxifraga" = "Q156146",
+  "Dendrobium" = "Q133778",
+  "Dendrobium chrysanthum" = "Q5223343",
+  "Dendrobium fimbriatum" = "Q7990065",
+  "Trichoderma" = "Q135322",
+  "Trichoderma yunnanense" = "Q108442404",
+  "Papiliotrema" = "Q7132982",
+  "Papiliotrema rajasthanensis" = "Q27866418"
 )
 
 comparison <-
@@ -213,38 +213,38 @@ for (i in names(results)) {
   }
 }
 
-subtables <- list()
-for (i in names(tables)) {
-  subtables[[i]] <- tables[[i]] %>%
-    dplyr::filter(chemical_pathway == .[1, "chemical_pathway"]) %>%
-    dplyr::group_by(chemical_class) %>%
-    dplyr::add_count(sort = TRUE) %>%
-    dplyr::select(-n) %>%
-    dplyr::group_by(chemical_superclass) %>%
-    dplyr::add_count(sort = TRUE) %>%
-    dplyr::select(-n, -chemical_pathway) %>%
-    dplyr::distinct()
-}
+# subtables <- list()
+# for (i in names(tables)) {
+#   subtables[[i]] <- tables[[i]] %>%
+#     dplyr::filter(chemical_pathway == .[1, "chemical_pathway"]) %>%
+#     dplyr::group_by(chemical_class) %>%
+#     dplyr::add_count(sort = TRUE) %>%
+#     dplyr::select(-n) %>%
+#     dplyr::group_by(chemical_superclass) %>%
+#     dplyr::add_count(sort = TRUE) %>%
+#     dplyr::select(-n, -chemical_pathway) %>%
+#     dplyr::distinct()
+# }
 
-prettyTables <- list()
-for (i in names(tables)) {
-  prettyTables[[i]] <-
-    temp_gt_function(
-      table = tables[[i]],
-      title = i,
-      subtitle = "All compounds"
-    )
-}
+# prettyTables <- list()
+# for (i in names(tables)) {
+#   prettyTables[[i]] <-
+#     temp_gt_function(
+#       table = tables[[i]],
+#       title = i,
+#       subtitle = "All compounds"
+#     )
+# }
 
-prettySubtables <- list()
-for (i in names(subtables)) {
-  prettySubtables[[i]] <-
-    temp_gt_function(
-      table = subtables[[i]],
-      title = i,
-      subtitle = tables[[i]][1, "chemical_pathway"]
-    )
-}
+# prettySubtables <- list()
+# for (i in names(subtables)) {
+#   prettySubtables[[i]] <-
+#     temp_gt_function(
+#       table = subtables[[i]],
+#       title = i,
+#       subtitle = tables[[i]][1, "chemical_pathway"]
+#     )
+# }
 
 hierarchies <- list()
 for (i in names(tables)) {
@@ -522,40 +522,58 @@ for (i in names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies)
   }
 }
 
+treemaps <-
+  within(
+    treemaps,
+    rm(list = names(treemaps)[grepl(
+      pattern = "ae$",
+      x = names(treemaps)
+    )])
+  )
+
+sunbursts <-
+  within(
+    sunbursts,
+    rm(list = names(sunbursts)[grepl(
+      pattern = "ae$",
+      x = names(sunbursts)
+    )])
+  )
+
 lapply(X = exports, FUN = check_export_dir)
 
-for (i in names(prettyTables)) {
-  gt::gtsave(
-    data = prettyTables[[i]],
-    filename = file.path(export_dir_tables, paste0(
-      "prettyTable_",
-      gsub(
-        pattern = " ",
-        replacement = "_",
-        x = i
-      ),
-      ".html"
-    ))
-  )
-}
+# for (i in names(prettyTables)) {
+#   gt::gtsave(
+#     data = prettyTables[[i]],
+#     filename = file.path(export_dir_tables, paste0(
+#       "prettyTable_",
+#       gsub(
+#         pattern = " ",
+#         replacement = "_",
+#         x = i
+#       ),
+#       ".html"
+#     ))
+#   )
+# }
 
-for (i in names(prettySubtables)) {
-  gt::gtsave(
-    data = prettySubtables[[i]],
-    filename = file.path(
-      export_dir_tables,
-      paste0(
-        "prettySubtable_",
-        gsub(
-          pattern = " ",
-          replacement = "_",
-          x = i
-        ),
-        ".html"
-      )
-    )
-  )
-}
+# for (i in names(prettySubtables)) {
+#   gt::gtsave(
+#     data = prettySubtables[[i]],
+#     filename = file.path(
+#       export_dir_tables,
+#       paste0(
+#         "prettySubtable_",
+#         gsub(
+#           pattern = " ",
+#           replacement = "_",
+#           x = i
+#         ),
+#         ".html"
+#       )
+#     )
+#   )
+# }
 
 dimensions <- list()
 for (i in names(prehistograms)) {
