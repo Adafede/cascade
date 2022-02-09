@@ -21,7 +21,7 @@ source(file = "r/prepare_hierarchy.R")
 source(file = "r/prepare_plot.R")
 
 classified_path <-
-  "~/Git/lotus-processor/data/processed/220204_frozen_metadata.csv.gz"
+  "~/Git/lotus-processor/data/processed/220208_frozen_metadata.csv.gz"
 export_dir <- "~/Downloads"
 export_name <- "full"
 
