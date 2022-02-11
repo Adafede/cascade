@@ -9,7 +9,7 @@
 compare_peaks <-
   function(ms_peak) {
     MSnbase::compareChromatograms(cad_peak,
-      ms_peaks[[ms_peak]],
+      ms_peak,
       ALIGNFUNARGS = list(method = "approx")
     )
   }

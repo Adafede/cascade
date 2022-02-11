@@ -44,7 +44,7 @@ plot_histograms <-
       ) +
       ggplot2::xlab(label) +
       ggplot2::ylab("Count") +
-      coord_flip()
+      ggplot2::coord_flip()
 
     return(absolute)
   }

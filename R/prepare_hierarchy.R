@@ -80,7 +80,7 @@ prepare_hierarchy <-
           best_candidate_3 = "Other notConfident notConfident",
           inchikey_2D = NA
         ) |>
-        dplyr::arrange(desc(across(any_of(
+        dplyr::arrange(dplyr::desc(dplyr::across(dplyr::any_of(
           c("intensity", "comparison_score")
         )))) |>
         dplyr::distinct(id, peak_id, sample, .keep_all = TRUE)
@@ -642,7 +642,7 @@ prepare_hierarchy <-
     final_table_4_1 <- table_1_1_new |>
       dplyr::filter(grepl(pattern = "-", x = parents) &
         parents %in% missing_children_1$parents) |>
-      dplyr::group_by(across(any_of(
+      dplyr::group_by(dplyr::across(dplyr::any_of(
         c("parents", "ids", "labels", "sample", "species")
       ))) |>
       dplyr::summarise(values = sum(switch(type,
@@ -677,7 +677,7 @@ prepare_hierarchy <-
           x = labels
         )
       ) |>
-      dplyr::group_by(across(any_of(
+      dplyr::group_by(dplyr::across(dplyr::any_of(
         c("parents", "ids", "labels", "sample", "species")
       ))) |>
       dplyr::summarise(values = sum(values)) |>
@@ -690,7 +690,7 @@ prepare_hierarchy <-
         x = parents
       ) &
         !parents %in% missing_children_1$parents) |>
-      dplyr::group_by(across(any_of(
+      dplyr::group_by(dplyr::across(dplyr::any_of(
         c("parents", "ids", "labels", "sample", "species")
       ))) |>
       dplyr::summarise(values = sum(switch(type,
@@ -717,7 +717,7 @@ prepare_hierarchy <-
         )),
       by = c("ids" = "parents")
       ) |>
-      dplyr::group_by(across(any_of(
+      dplyr::group_by(dplyr::across(dplyr::any_of(
         c("parents", "ids", "labels", "sample", "species")
       ))) |>
       dplyr::summarise(values = sum(values)) |>
@@ -734,7 +734,7 @@ prepare_hierarchy <-
         )),
       by = c("ids" = "parents")
       ) |>
-      dplyr::group_by(across(any_of(
+      dplyr::group_by(dplyr::across(dplyr::any_of(
         c("parents", "ids", "labels", "sample", "species")
       ))) |>
       dplyr::filter(!is.na(values)) |>
