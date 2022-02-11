@@ -4,13 +4,15 @@ library(package = baseline, quietly = TRUE)
 library(package = data.table, quietly = TRUE)
 library(package = dplyr, quietly = TRUE)
 library(package = docopt, quietly = TRUE)
+library(package = future, quietly = TRUE)
+library(package = future.apply, quietly = TRUE)
 library(package = microshades, quietly = TRUE)
 library(package = MSnbase, quietly = TRUE)
 library(package = nucleR, quietly = TRUE)
 library(package = patchwork, quietly = TRUE)
-library(package = parallel, quietly = TRUE)
 library(package = plotly, quietly = TRUE)
 library(package = pracma, quietly = TRUE)
+library(package = progressr, quietly = TRUE)
 library(package = purrr, quietly = TRUE)
 library(package = readr, quietly = TRUE)
 library(package = xcms, quietly = TRUE)
@@ -32,6 +34,10 @@ source(file = "R/prepare_hierarchy.R")
 source(file = "R/prepare_hierarchy_preparation.R")
 source(file = "R/y_as_na.R")
 
+future::plan(strategy = future::multisession)
+progressr::handlers(global = TRUE)
+progressr::handlers("progress")
+
 step <- "processing"
 paths <- parse_yaml_paths()
 params <- ""
@@ -47,7 +53,7 @@ log_debug("Contributors: \n", "...")
 
 #' Paths
 ANNOTATIONS <-
-  "~/git/tima-r/inst/extdata/processed/211230_110947/20211227_10043.tsv.gz"
+  "~/git/tima-r/inst/extdata/processed/220208_172733/20220208_10043.tsv.gz"
 GNPS_JOB <- "97d7c50031a84b9ba2747e883a5907cd"
 TOYSET <- "~/data/20210701_10043/fractions"
 
@@ -82,14 +88,16 @@ PPM <- 10
 #' Parameters for annotation
 CONFIDENCE_SCORE_MIN <- 0.5
 
-future::plan(strategy = future::multicore(workers = WORKERS))
-
 files <- list.files(
   path = TOYSET,
   pattern = ".mzML.gz",
   full.names = TRUE,
   recursive = TRUE
 )
+
+# files <- files |>
+#   head(20) |>
+#   tail(11)
 
 names <- list.files(
   path = TOYSET,
@@ -103,11 +111,13 @@ names <- list.files(
     fixed = TRUE
   )
 
-annotations <-
-  readr::read_delim(file = ANNOTATIONS)
+# names <- names |>
+#   head(20) |>
+#   tail(11)
 
-feature_table <-
-  read_features(id = GNPS_JOB)
+annotations <- readr::read_delim(file = ANNOTATIONS)
+
+feature_table <- read_features(id = GNPS_JOB)
 
 dda_data <- MSnbase::readMSData(
   files = files,
@@ -115,115 +125,24 @@ dda_data <- MSnbase::readMSData(
   msLevel. = 1
 )
 
-objects <- list()
+objects <- lapply(files, mzR::openMSfile)
 
-for (i in seq_along(files)) {
-  objects[[i]] <-
-    mzR::openMSfile(files[i])
-}
-
-chromatograms <- list()
-
-for (i in seq_along(objects)) {
-  chromatograms[[i]] <-
-    mzR::chromatograms(objects[[i]])
-}
+chromatograms <- lapply(objects, mzR::chromatograms)
 
 chromatograms_all <- purrr::flatten(chromatograms)
 
-# chromatograms_bpi <- chromatograms_all[c(TRUE, FALSE, FALSE)]
-
-# chromatograms_pda <- chromatograms_all[c(FALSE, TRUE, FALSE)]
-
 chromatograms_cad <- chromatograms_all[c(FALSE, FALSE, TRUE)]
 
-# chromatograms_bpi_improved <- list()
-
-# for (i in seq_along(1:length(chromatograms_bpi))) {
-#   chromatograms_bpi_improved[[i]] <-
-#     improve_signal(df = chromatograms_bpi[[i]] |>
-#       dplyr::select(time, intensity = BasePeak_0))
-# }
-
-# names(chromatograms_bpi_improved) <- names
-
-# bpis_improved <-
-#   dplyr::bind_rows(chromatograms_bpi_improved, .id = "id") |>
-#   dplyr::mutate(time = time)
-
-# chromatograms_pda_improved <- list()
-
-# for (i in seq_along(1:length(chromatograms_pda))) {
-#   chromatograms_pda_improved[[i]] <-
-#     improve_signal(df = chromatograms_pda[[i]] |>
-#       dplyr::select(time, intensity = PDA.1_TotalAbsorbance_0))
-# }
-
-# names(chromatograms_pda_improved) <- names
-
-# pdas_improved <-
-#   dplyr::bind_rows(chromatograms_pda_improved, .id = "id") |>
-#   dplyr::mutate(time = time + PDA_SHIFT)
-
-chromatograms_cad_improved <- list()
-
-for (i in seq_along(1:length(chromatograms_cad))) {
-  chromatograms_cad_improved[[i]] <-
-    improve_signal(df = chromatograms_cad[[i]] |>
-      dplyr::select(time, intensity = UV.1_CAD_1_0))
-}
+chromatograms_cad_improved <- lapply(chromatograms_cad, function(x) {
+  improve_signal(df = x |>
+    dplyr::select(time, intensity = UV.1_CAD_1_0))
+})
 
 names(chromatograms_cad_improved) <- names
 
 cads_improved <-
   dplyr::bind_rows(chromatograms_cad_improved, .id = "id") |>
   dplyr::mutate(time = time + CAD_SHIFT)
-
-# bpi_plot <- plotly::plot_ly(
-#   data = bpis_improved,
-#   # |> dplyr::filter(grepl(pattern = "M", x = id)),
-#   x = ~time,
-#   y = ~intensity,
-#   color = ~id,
-#   colors = "Spectral",
-#   type = "scatter",
-#   mode = "lines",
-#   line = list(width = 0.5),
-#   legendgroup = ~id
-# ) |>
-#   plotly::layout(
-#     annotations = list(
-#       x = 0.95,
-#       y = 0.95,
-#       xref = "paper",
-#       yref = "paper",
-#       text = "MS (POS)",
-#       showarrow = FALSE
-#     )
-#   )
-
-# pda_plot <- plotly::plot_ly(
-#   data = pdas_improved,
-#   # |> dplyr::filter(grepl(pattern = "M", x = id)),
-#   x = ~time,
-#   y = ~intensity,
-#   color = ~id,
-#   colors = "Spectral",
-#   type = "scatter",
-#   mode = "lines",
-#   line = list(width = 0.5),
-#   legendgroup = ~id
-# ) |>
-#   plotly::layout(
-#     annotations = list(
-#       x = 0.95,
-#       y = 0.95,
-#       xref = "paper",
-#       yref = "paper",
-#       text = "UV (200-500nm)",
-#       showarrow = FALSE
-#     )
-#   )
 
 cad_plot <- plotly::plot_ly(
   data = cads_improved,
@@ -247,16 +166,6 @@ cad_plot <- plotly::plot_ly(
       showarrow = FALSE
     )
   )
-
-# comparison <-
-#   plotly::subplot(bpi_plot,
-#     pda_plot,
-#     cad_plot,
-#     nrows = 3,
-#     shareX = TRUE
-#   )
-#
-# comparison
 
 chromatograms_cad_baselined <- chromatograms_cad_improved
 
@@ -303,31 +212,19 @@ new_new <- plotly::plot_ly(
     )
   )
 
-# comparison_2 <-
-#   plotly::subplot(bpi_plot,
-#     pda_plot,
-#     new_new,
-#     nrows = 3,
-#     shareX = TRUE
-#   )
-#
-# comparison_2
-
-peaks_cad <- list()
-
-for (i in seq_along(seq_len(length(chromatograms_cad_baselined)))) {
+peaks_cad <- lapply(chromatograms_cad_baselined, function(x) {
   # plot(cads_baselined$intensity, type = "l", col = "navy")
   # grid()
-  x <-
+  found <-
     pracma::findpeaks(
-      chromatograms_cad_baselined[[i]]$intensity,
+      x$intensity,
       npeaks = 2000,
       threshold = 0.01,
       sortstr = TRUE
     )
   # points(x[, 2], x[, 1], pch = 20, col = "maroon") ## End(Not run)
 
-  peaks <- data.frame(x) |>
+  peaks <- data.frame(found) |>
     dplyr::mutate(
       peak_id = dplyr::row_number(),
       peak_max = X1,
@@ -337,8 +234,8 @@ for (i in seq_along(seq_len(length(chromatograms_cad_baselined)))) {
     ) |>
     data.table::data.table()
 
-  peaks_cad[[i]] <- peaks
-}
+  return(peaks)
+})
 
 names(peaks_cad) <- names
 
@@ -459,7 +356,7 @@ top_n <- feature_table |>
     replacement = "",
     x = column
   )) |>
-  dplyr::arrange(rowname, desc(value)) |>
+  dplyr::arrange(rowname, dplyr::desc(value)) |>
   dplyr::filter(value >= INTENSITY)
 
 top_m <- top_n |>
@@ -523,7 +420,7 @@ for (s in unique(df_new_with$id)) {
   for (i in unique(df_new$peak_id)) {
     df_peak <- df_new |>
       dplyr::filter(peak_id == i) |>
-      dplyr::arrange(desc(intensity))
+      dplyr::arrange(dplyr::desc(intensity))
 
     #' Silently sub-setting the object to speed-up analysis
     dda_data_min <-
@@ -540,19 +437,20 @@ for (s in unique(df_new_with$id)) {
       ))
 
     rtr <- df_peak |>
-      mutate(rtmin = rt_min * 60, rtmax = rt_max * 60) |>
-      select(rtmin, rtmax) |>
+      dplyr::mutate(rtmin = rt_min * 60, rtmax = rt_max * 60) |>
+      dplyr::select(rtmin, rtmax) |>
       as.matrix()
 
     mzr <- df_peak |>
-      select(mzmin = mz_min, mzmax = mz_max) |>
+      dplyr::select(mzmin = mz_min, mzmax = mz_max) |>
       as.matrix()
 
     ms_chr <-
-      chromatogram(
+      MSnbase::chromatogram(
         object = dda_data_min,
         rt = rtr,
-        mz = mzr
+        mz = mzr,
+        BPPARAM = BiocParallel::bpparam("SnowParam") #' parallelization issue
       )
 
     ## CAD part
@@ -577,20 +475,21 @@ for (s in unique(df_new_with$id)) {
       dplyr::arrange(rtime)
 
     cad_peak <-
-      MSnbase::Chromatogram(intensity = cad_ready$intensity, rtime = cad_ready$rtime)
+      MSnbase::Chromatogram(
+        intensity = cad_ready$intensity,
+        rtime = cad_ready$rtime
+      )
 
     ms_peaks <-
-      parallel::mclapply(
+      future.apply::future_lapply(
         X = seq_along(ms_chr),
-        FUN = extract_peak,
-        mc.cores = 10
+        FUN = extract_peak
       )
 
     comparison_score <-
-      parallel::mclapply(
-        X = seq_along(ms_peaks),
-        FUN = compare_peaks,
-        mc.cores = 10
+      future.apply::future_lapply(
+        X = ms_peaks,
+        FUN = compare_peaks
       )
 
     df_peak$comparison_score <- as.numeric(comparison_score)
@@ -601,14 +500,35 @@ for (s in unique(df_new_with$id)) {
     df_peaks[[i]] <- df_peak_new
   }
 
-  df_new_with_cor <- bind_rows(df_peaks)
+  df_new_with_cor <- dplyr::bind_rows(df_peaks)
 
   df_peaks_samples[[s]] <- df_new_with_cor
 }
 
 #' We got 2556 CAD peaks automatically detected
 #' With peak similarity score > 0.6: 5313 features
-df_new_with_cor_pre <- bind_rows(df_peaks_samples)
+df_new_with_cor_pre <- dplyr::bind_rows(df_peaks_samples)
+#' dirty annotation change after computation of peak comparison
+# df_new_with_cor_pre <- df_new_with_cor_pre |>
+#   dplyr::select(
+#     id,
+#     peak_id,
+#     peak_max,
+#     rt_apex,
+#     rt_min,
+#     rt_max,
+#     integral,
+#     feature_id,
+#     sample,
+#     intensity,
+#     species,
+#     mz_min,
+#     mz_max,
+#     comparison_score
+#   ) |>
+#   dplyr::left_join(ms1_multiple |>
+#                      mutate(feature_id = as.character(feature_id))) |>
+#   make_confident(score = CONFIDENCE_SCORE_MIN)
 
 #' With peak similarity score > 0.7: 3421 features
 df_new_with_cor_07 <- df_new_with_cor_pre |>
@@ -675,6 +595,17 @@ samples_with_new_cor_08 <-
 samples_with_new_cor <-
   prepare_plot(dataframe = final_table_taxed_with_new_cor)
 
+bound <- dplyr::bind_rows(
+  df_new_with |> dplyr::mutate(species = "absolute_with"),
+  df_new_without |> dplyr::mutate(species = "absolute_without"),
+  df_new_with |> dplyr::mutate(intensity = integral, species = "absolute_with_new"),
+  df_new_with_cor_075 |> dplyr::mutate(intensity = integral, species = "absolute_with_new_cor")
+)
+
+bound_ready <- bound |> 
+  prepare_hierarchy(rescale = TRUE) |> 
+  prepare_plot()
+
 absolute <- plot_histograms(
   dataframe = samples,
   label = "Based on MS intensity only",
@@ -683,18 +614,30 @@ absolute <- plot_histograms(
 
 absolute_with <- plot_histograms(
   dataframe = samples_with,
+  # dataframe = bound_ready[bound_ready$species == "absolute_with", ] |> 
+  #   dplyr::mutate_at(c("ids", "sample", "color"),as.character) |> 
+  #   dplyr::arrange(sample,parents,ids) |> 
+  #   dplyr::mutate_at(c("ids", "sample", "color"),as.factor),
   label = "MS intensity within CAD peak",
   xlab = FALSE
 )
 
 absolute_without <- plot_histograms(
   dataframe = samples_without,
+  # dataframe = bound_ready[bound_ready$species == "absolute_without", ] |> 
+  #   dplyr::mutate_at(c("ids", "sample", "color"),as.character) |>
+  #   dplyr::arrange(sample,parents,ids) |> 
+  #   dplyr::mutate_at(c("ids", "sample", "color"),as.factor),
   label = "MS intensity outside CAD peak",
   xlab = FALSE
 )
 
 absolute_with_new <- plot_histograms(
   dataframe = samples_with_new,
+  # dataframe = bound_ready[bound_ready$species == "absolute_with_new", ] |> 
+  #   dplyr::mutate_at(c("ids", "sample", "color"),as.character) |> 
+  #   dplyr::arrange(sample,parents,ids) |> 
+  #   dplyr::mutate_at(c("ids", "sample", "color"),as.factor),
   label = "CAD intensity within CAD peak",
   xlab = FALSE
 )
@@ -720,6 +663,10 @@ absolute_with_new_cor_08 <-
 absolute_with_new_cor <-
   plot_histograms(
     dataframe = samples_with_new_cor,
+    # dataframe = bound_ready[bound_ready$species == "absolute_with_new_cor", ] |> 
+    #   dplyr::mutate_at(c("ids", "sample", "color"),as.character) |> 
+    #   dplyr::arrange(sample,parents,ids) |> 
+    #   dplyr::mutate_at(c("ids", "sample", "color"),as.factor),
     label = "CAD intensity of corelated peaks within CAD peak",
     xlab = FALSE
   )
@@ -730,10 +677,11 @@ combined <-
   absolute_with_new +
   absolute_with_new_cor
 
+
 ## specific sample exploration
 plotly::plot_ly(
   data = final_table_taxed |>
-    dplyr::filter(sample == "210619_AR_31_M_36_01"),
+    dplyr::filter(sample == "210619_AR_29_M_34_01"),
   ids = ~ids,
   labels = ~labels,
   parents = ~parents,
@@ -747,7 +695,7 @@ plotly::plot_ly(
 
 plotly::plot_ly(
   data = final_table_taxed_with |>
-    dplyr::filter(sample == "210619_AR_31_M_36_01"),
+    dplyr::filter(sample == "210619_AR_29_M_34_01"),
   ids = ~ids,
   labels = ~labels,
   parents = ~parents,
@@ -761,7 +709,7 @@ plotly::plot_ly(
 
 plotly::plot_ly(
   data = final_table_taxed_without |>
-    dplyr::filter(sample == "210619_AR_31_M_36_01"),
+    dplyr::filter(sample == "210619_AR_29_M_34_01"),
   ids = ~ids,
   labels = ~labels,
   parents = ~parents,
@@ -775,7 +723,7 @@ plotly::plot_ly(
 
 plotly::plot_ly(
   data = final_table_taxed_with_new |>
-    dplyr::filter(sample == "210619_AR_31_M_36_01"),
+    dplyr::filter(sample == "210619_AR_29_M_34_01"),
   ids = ~ids,
   labels = ~labels,
   parents = ~parents,
@@ -789,7 +737,7 @@ plotly::plot_ly(
 
 plotly::plot_ly(
   data = final_table_taxed_with_new_cor_07 |>
-    dplyr::filter(sample == "210619_AR_31_M_36_01"),
+    dplyr::filter(sample == "210619_AR_29_M_34_01"),
   ids = ~ids,
   labels = ~labels,
   parents = ~parents,
@@ -827,20 +775,20 @@ df_meta <- df_new_with_cor_pre |>
   dplyr::group_by(id, peak_id) |>
   dplyr::distinct(
     feature_id,
-    smiles_2D,
-    inchikey_2D,
-    best_candidate_1,
-    best_candidate_2,
-    best_candidate_3,
+    # smiles_2D,
+    # inchikey_2D,
+    # best_candidate_1,
+    # best_candidate_2,
+    # best_candidate_3,
     .keep_all = TRUE
   ) |>
   dplyr::add_count(name = "featuresPerPeak") |>
   dplyr::distinct(
     smiles_2D,
     inchikey_2D,
-    best_candidate_1,
-    best_candidate_2,
-    best_candidate_3,
+    # best_candidate_1,
+    # best_candidate_2,
+    # best_candidate_3,
     .keep_all = TRUE
   ) |>
   dplyr::add_count(name = "structuresPerPeak") |>
@@ -887,16 +835,17 @@ test_pathways <- df_meta |>
   count()
 
 plotly::plot_ly() |>
-  add_pie(
+  plotly::add_pie(
     data = test_features,
     name = "Features",
     labels = ~featuresPerPeak,
     values = ~n,
+    sort = FALSE,
     type = "pie",
     textposition = "inside",
     domain = list(row = 0, column = 0)
   ) |>
-  add_pie(
+  plotly::add_pie(
     data = test_structures,
     name = "Structures",
     labels = ~structuresPerPeak,
@@ -905,7 +854,7 @@ plotly::plot_ly() |>
     textposition = "inside",
     domain = list(row = 0, column = 1)
   ) |>
-  add_pie(
+  plotly::add_pie(
     data = test_classes,
     name = "Classes",
     labels = ~chemicalClassesPerPeak,
@@ -914,7 +863,7 @@ plotly::plot_ly() |>
     textposition = "inside",
     domain = list(row = 0, column = 2)
   ) |>
-  add_pie(
+  plotly::add_pie(
     data = test_superclasses,
     name = "Superclasses",
     labels = ~chemicalSuperclassesPerPeak,
@@ -923,7 +872,7 @@ plotly::plot_ly() |>
     textposition = "inside",
     domain = list(row = 1, column = 0)
   ) |>
-  add_pie(
+  plotly::add_pie(
     data = test_pathways,
     name = "Pathways",
     labels = ~chemicalPathwaysPerPeak,
@@ -932,7 +881,7 @@ plotly::plot_ly() |>
     textposition = "inside",
     domain = list(row = 1, column = 1)
   ) |>
-  layout(
+  plotly::layout(
     title = "Peak analysis \n Features > Structures > Chemical classes > \n Superclasses > Pathways",
     colorway = viridis::cividis(max(
       nrow(test_features),
