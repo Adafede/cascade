@@ -58,7 +58,10 @@ prepare_plot <- function(dataframe, organism = "species") {
       dplyr::filter(group < tempval)
 
     samples <- rbind(samples_0, samples_1, samples_2)
+  } else {
+    samples <- presamples
   }
+  
   samples <- samples |>
     dplyr::rowwise() |>
     dplyr::mutate(color = ifelse(
