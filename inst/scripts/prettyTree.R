@@ -25,9 +25,9 @@ classified_path <-
 export_dir <- "~/Downloads"
 export_name <- "full"
 
-n_min <- 50
+n_min <- 25
 filter_level <- "organism_taxonomy_06family"
-filter_taxon <- "Gentianaceae" #' replace with NA for no filter
+filter_taxon <- "Apocynaceae" #' replace with NA for no filter
 group_level <- "organism_taxonomy_09species"
 subgroup_level <- "organism_taxonomy_09species"
 
