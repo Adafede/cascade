@@ -11,7 +11,7 @@ require(package = forcats, quietly = TRUE)
 #' @examples
 prepare_plot <- function(dataframe, organism = "species") {
   presamples <- dataframe |>
-    ungroup() |>
+    dplyr::ungroup() |>
     dplyr::filter(parents != "" &
       !grepl(pattern = "-", x = parents)) |>
     dplyr::filter(parents != "" &
