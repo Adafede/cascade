@@ -750,15 +750,18 @@ plotly::plot_ly(
   plotly::layout(colorway = sunburst_colors)
 
 # plotly::plot_ly(
-#   bound_ready[bound_ready$species == "absolute_with_new_cor",]  |>
-#     dplyr::filter(sample == "210619_AR_29_M_34_01") |>
-#     dplyr::mutate_at(c("ids", "sample", "color"), as.character) |>
+#   table_new  |> #' from internal prepare_hierarchy()
+#     dplyr::filter(!grepl(pattern = " Other-", 
+#                          x = parents,
+#                          fixed = TRUE)) |>
+#     dplyr::mutate_at(c("ids", "sample"), as.character) |>
 #     dplyr::arrange(sample, parents, ids) |>
-#     dplyr::mutate_at(c("ids", "sample", "color"), as.factor),
-#   y = ~ values,
+#     dplyr::mutate_at(c("ids", "sample"), as.factor) |>
+#     dplyr::left_join(df_new_with_cor_075 |> distinct(feature_id, rt_apex)),
+#   x = ~ rt_apex,
+#   y = ~ intensity,
 #   type = "bar",
-#   color = ~ ids,
-#   colors = ~ levels(color)
+#   color = ~ parents
 # ) |>
 #   plotly::layout(barmode = "stack")
 
