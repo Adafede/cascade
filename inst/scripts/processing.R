@@ -749,6 +749,19 @@ plotly::plot_ly(
 ) |>
   plotly::layout(colorway = sunburst_colors)
 
+# plotly::plot_ly(
+#   bound_ready[bound_ready$species == "absolute_with_new_cor",]  |>
+#     dplyr::filter(sample == "210619_AR_29_M_34_01") |>
+#     dplyr::mutate_at(c("ids", "sample", "color"), as.character) |>
+#     dplyr::arrange(sample, parents, ids) |>
+#     dplyr::mutate_at(c("ids", "sample", "color"), as.factor),
+#   y = ~ values,
+#   type = "bar",
+#   color = ~ ids,
+#   colors = ~ levels(color)
+# ) |>
+#   plotly::layout(barmode = "stack")
+
 #' Work in progress
 #' Add some metadata per peak
 df_meta <- df_new_with_cor_pre |>
@@ -819,20 +832,20 @@ df_meta <- df_new_with_cor_pre |>
   )
 
 test_features <- df_meta |>
-  group_by(featuresPerPeak) |>
-  count()
+  dplyr::group_by(featuresPerPeak) |>
+  dplyr::count()
 test_structures <- df_meta |>
-  group_by(structuresPerPeak) |>
-  count()
+  dplyr::group_by(structuresPerPeak) |>
+  dplyr::count()
 test_classes <- df_meta |>
-  group_by(chemicalClassesPerPeak) |>
-  count()
+  dplyr::group_by(chemicalClassesPerPeak) |>
+  dplyr::count()
 test_superclasses <- df_meta |>
-  group_by(chemicalSuperclassesPerPeak) |>
-  count()
+  dplyr::group_by(chemicalSuperclassesPerPeak) |>
+  dplyr::count()
 test_pathways <- df_meta |>
-  group_by(chemicalPathwaysPerPeak) |>
-  count()
+  dplyr::group_by(chemicalPathwaysPerPeak) |>
+  dplyr::count()
 
 plotly::plot_ly() |>
   plotly::add_pie(

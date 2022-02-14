@@ -6,6 +6,7 @@ require(package = splitstackshape, quietly = TRUE)
 #' @param dataframe
 #' @param type
 #' @param detector
+#' @param rescale
 #'
 #' @return
 #' @export
@@ -14,7 +15,8 @@ require(package = splitstackshape, quietly = TRUE)
 prepare_hierarchy <-
   function(dataframe,
            type = "analysis",
-           detector = "ms") {
+           detector = "ms",
+           rescale = FALSE) {
     stopifnot("'type' must be either 'analysis' or 'literature'" = type %in% c("analysis", "literature"))
 
     if (type == "analysis") {
@@ -752,10 +754,17 @@ prepare_hierarchy <-
       dplyr::filter(!is.na(sample))
 
     if (type == "analysis") {
+      if (rescale == TRUE) {
+        final_table <- final_table |>
+          dplyr::group_by(sample, species) |>
+          dplyr::mutate(values = values / (sum(values) / 3)) |> #' because 3 levels
+          dplyr::ungroup()
+      } else {
       final_table <- final_table |>
         dplyr::group_by(sample) |>
         dplyr::mutate(values = values / (sum(values) / 3)) |> #' because 3 levels
         dplyr::ungroup()
+      }
     }
 
     return(final_table)
