@@ -162,11 +162,7 @@ for (i in names(qids)) {
   )
 }
 
-results <- list()
-for (i in names(queries)) {
-  results[[i]] <-
-    WikidataQueryServiceR::query_wikidata(sparql_query = queries[i])
-}
+results <- lapply(queries, WikidataQueryServiceR::query_wikidata)
 
 tables <- list()
 for (i in names(results)) {
@@ -338,6 +334,12 @@ for (i in names(hierarchies)) {
 
 histograms <- list()
 for (i in names(prehistograms)[!grepl(pattern = "\\W+", x = names(prehistograms))]) {
+  histograms[[i]] <- plot_histograms(
+    dataframe = prehistograms[[i]],
+    label = "Organism"
+  )
+}
+for (i in names(prehistograms)[grepl(pattern = "\\W+", x = names(prehistograms))]) {
   histograms[[i]] <- plot_histograms(
     dataframe = prehistograms[[i]],
     label = "Organism"
@@ -603,7 +605,7 @@ for (i in names(histograms)) {
       )
     ),
     width = 16 * max((dimensions[[i]] / 30), 0.5),
-    height = 9 * max((size[[i]] / 100), 1) * max((dimensions[[i]] / 30), 0.5),
+    height = 9 * max((size[[i]] / 100), 1) * max((dimensions[[i]] / 30), 1),
     limitsize = FALSE
   )
 }
