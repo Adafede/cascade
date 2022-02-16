@@ -485,7 +485,18 @@ df_peaks_samples_full <- dplyr::bind_rows(df_peaks_samples)
 #' We got 2556 CAD peaks automatically detected
 #' With peak similarity score > 0.6: 5313 features
 df_new_with_cor_pre <- df_peaks_samples_full |>
-  dplyr::filter(comparison_score >= PEAK_SIMILARITY_PREFILTER)
+  dplyr::filter(abs(comparison_score) >= PEAK_SIMILARITY_PREFILTER) #' TODO check negative values
+
+df_new_with_cor_pre_taxo <- df_new_with_cor_pre |>
+  dplyr::rowwise() |>
+  dplyr::mutate(taxo = ifelse(
+    test = best_candidate_organism %in% species,
+    yes = 1,
+    no = 0
+  )) |> 
+  dplyr::group_by(id,peak_id) |> 
+  dplyr::mutate(sum = sum(taxo)) |> 
+  filter(taxo == 1 | sum == 0)
 
 #' dirty annotation change after computation of peak comparison
 # df_new_with_cor_pre <- df_new_with_cor_pre |>
@@ -510,15 +521,15 @@ df_new_with_cor_pre <- df_peaks_samples_full |>
 #   make_confident(score = CONFIDENCE_SCORE_MIN)
 
 #' With peak similarity score > 0.7: 3421 features
-df_new_with_cor_07 <- df_new_with_cor_pre |>
+df_new_with_cor_07 <- df_new_with_cor_pre_taxo |>
   dplyr::filter(comparison_score >= 0.7)
 
 #' With peak similarity score > 0.8: 1928 features
-df_new_with_cor_08 <- df_new_with_cor_pre |>
+df_new_with_cor_08 <- df_new_with_cor_pre_taxo |>
   dplyr::filter(comparison_score >= 0.8)
 
 #' With peak similarity score > 0.75: 2598 features
-df_new_with_cor_075 <- df_new_with_cor_pre |>
+df_new_with_cor_075 <- df_new_with_cor_pre_taxo |>
   dplyr::filter(comparison_score >= 0.75)
 
 #' TODO fix it
@@ -746,7 +757,7 @@ plotly::plot_ly(
 
 #' Work in progress
 #' Add some metadata per peak
-df_meta <- df_new_with_cor_pre |>
+df_meta <- df_new_with_cor_pre_taxo |>
   dplyr::arrange(desc(intensity)) |>
   dplyr::distinct(
     id,
