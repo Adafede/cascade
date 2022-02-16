@@ -9,6 +9,7 @@ library(package = future.apply, quietly = TRUE)
 library(package = microshades, quietly = TRUE)
 library(package = MSnbase, quietly = TRUE)
 library(package = nucleR, quietly = TRUE)
+library(package = parallel, quietly = TRUE)
 library(package = patchwork, quietly = TRUE)
 library(package = plotly, quietly = TRUE)
 library(package = pracma, quietly = TRUE)
@@ -23,11 +24,13 @@ source(file = "R/extract_peak.R")
 source(file = "R/get_gnps.R")
 source(file = "R/get_params.R")
 source(file = "R/improve_signal.R")
+source(file = "R/improve_signals_progress.R")
 source(file = "R/log_debug.R")
 source(file = "r/make_confident.R")
 source(file = "R/parse_cli_params.R")
 source(file = "R/parse_yaml_params.R")
 source(file = "R/parse_yaml_paths.R")
+source(file = "R/peaks_progress.R")
 source(file = "R/plot_histograms.R")
 source(file = "R/prepare_plot.R")
 source(file = "R/prepare_hierarchy.R")
@@ -95,9 +98,9 @@ files <- list.files(
   recursive = TRUE
 )
 
-# files <- files |>
-#   head(20) |>
-#   tail(11)
+files <- files |>
+  head(20) |>
+  tail(3)
 
 names <- list.files(
   path = TOYSET,
@@ -111,9 +114,9 @@ names <- list.files(
     fixed = TRUE
   )
 
-# names <- names |>
-#   head(20) |>
-#   tail(11)
+names <- names |>
+  head(20) |>
+  tail(3)
 
 annotations <- readr::read_delim(file = ANNOTATIONS)
 
@@ -133,10 +136,7 @@ chromatograms_all <- purrr::flatten(chromatograms)
 
 chromatograms_cad <- chromatograms_all[c(FALSE, FALSE, TRUE)]
 
-chromatograms_cad_improved <- lapply(chromatograms_cad, function(x) {
-  improve_signal(df = x |>
-    dplyr::select(time, intensity = UV.1_CAD_1_0))
-})
+chromatograms_cad_improved <- improve_signals_progress(chromatograms_cad)
 
 names(chromatograms_cad_improved) <- names
 
@@ -212,30 +212,7 @@ new_new <- plotly::plot_ly(
     )
   )
 
-peaks_cad <- lapply(chromatograms_cad_baselined, function(x) {
-  # plot(cads_baselined$intensity, type = "l", col = "navy")
-  # grid()
-  found <-
-    pracma::findpeaks(
-      x$intensity,
-      npeaks = 2000,
-      threshold = 0.01,
-      sortstr = TRUE
-    )
-  # points(x[, 2], x[, 1], pch = 20, col = "maroon") ## End(Not run)
-
-  peaks <- data.frame(found) |>
-    dplyr::mutate(
-      peak_id = dplyr::row_number(),
-      peak_max = X1,
-      rt_apex = chromatograms_cad_baselined[[i]]$time[X2],
-      rt_min = chromatograms_cad_baselined[[i]]$time[X3],
-      rt_max = chromatograms_cad_baselined[[i]]$time[X4]
-    ) |>
-    data.table::data.table()
-
-  return(peaks)
-})
+peaks_cad <- peaks_progress(chromatograms_cad_baselined)
 
 names(peaks_cad) <- names
 
@@ -449,8 +426,7 @@ for (s in unique(df_new_with$id)) {
       MSnbase::chromatogram(
         object = dda_data_min,
         rt = rtr,
-        mz = mzr,
-        BPPARAM = BiocParallel::bpparam("SnowParam") #' parallelization issue
+        mz = mzr
       )
 
     ## CAD part
@@ -481,21 +457,20 @@ for (s in unique(df_new_with$id)) {
       )
 
     ms_peaks <-
-      future.apply::future_lapply(
+      parallel::mclapply(
         X = seq_along(ms_chr),
         FUN = extract_peak
       )
 
     comparison_score <-
-      future.apply::future_lapply(
+      parallel::mclapply(
         X = ms_peaks,
         FUN = compare_peaks
       )
 
     df_peak$comparison_score <- as.numeric(comparison_score)
 
-    df_peak_new <- df_peak |>
-      dplyr::filter(comparison_score >= PEAK_SIMILARITY_PREFILTER)
+    df_peak_new <- df_peak
 
     df_peaks[[i]] <- df_peak_new
   }
@@ -505,9 +480,13 @@ for (s in unique(df_new_with$id)) {
   df_peaks_samples[[s]] <- df_new_with_cor
 }
 
+df_peaks_samples_full <- dplyr::bind_rows(df_peaks_samples)
+
 #' We got 2556 CAD peaks automatically detected
 #' With peak similarity score > 0.6: 5313 features
-df_new_with_cor_pre <- dplyr::bind_rows(df_peaks_samples)
+df_new_with_cor_pre <- df_peaks_samples_full |>
+  dplyr::filter(comparison_score >= PEAK_SIMILARITY_PREFILTER)
+
 #' dirty annotation change after computation of peak comparison
 # df_new_with_cor_pre <- df_new_with_cor_pre |>
 #   dplyr::select(
@@ -681,7 +660,7 @@ combined <-
 ## specific sample exploration
 plotly::plot_ly(
   data = final_table_taxed |>
-    dplyr::filter(sample == "210619_AR_29_M_34_01"),
+    dplyr::filter(sample == "210619_AR_25_M_30_01"),
   ids = ~ids,
   labels = ~labels,
   parents = ~parents,
@@ -695,7 +674,7 @@ plotly::plot_ly(
 
 plotly::plot_ly(
   data = final_table_taxed_with |>
-    dplyr::filter(sample == "210619_AR_29_M_34_01"),
+    dplyr::filter(sample == "210619_AR_25_M_30_01"),
   ids = ~ids,
   labels = ~labels,
   parents = ~parents,
@@ -709,7 +688,7 @@ plotly::plot_ly(
 
 plotly::plot_ly(
   data = final_table_taxed_without |>
-    dplyr::filter(sample == "210619_AR_29_M_34_01"),
+    dplyr::filter(sample == "210619_AR_25_M_30_01"),
   ids = ~ids,
   labels = ~labels,
   parents = ~parents,
@@ -723,7 +702,7 @@ plotly::plot_ly(
 
 plotly::plot_ly(
   data = final_table_taxed_with_new |>
-    dplyr::filter(sample == "210619_AR_29_M_34_01"),
+    dplyr::filter(sample == "210619_AR_25_M_30_01"),
   ids = ~ids,
   labels = ~labels,
   parents = ~parents,
@@ -737,7 +716,7 @@ plotly::plot_ly(
 
 plotly::plot_ly(
   data = final_table_taxed_with_new_cor_07 |>
-    dplyr::filter(sample == "210619_AR_29_M_34_01"),
+    dplyr::filter(sample == "210619_AR_25_M_30_01"),
   ids = ~ids,
   labels = ~labels,
   parents = ~parents,
