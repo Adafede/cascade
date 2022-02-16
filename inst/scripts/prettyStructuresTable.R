@@ -1,11 +1,14 @@
 start <- Sys.time()
 
 library(package = dplyr, quietly = TRUE)
+library(package = future, quietly = TRUE)
+library(package = future.apply, quietly = TRUE)
 library(package = ggplot2, quietly = TRUE)
 library(package = gt, quietly = TRUE)
 library(package = htmltools, quietly = TRUE)
 library(package = microshades, quietly = TRUE)
 library(package = plotly, quietly = TRUE)
+library(package = progressr, quietly = TRUE)
 library(package = purrr, quietly = TRUE)
 library(package = RCurl, quietly = TRUE)
 library(package = readr, quietly = TRUE)
@@ -16,11 +19,25 @@ library(package = WikidataQueryServiceR, quietly = TRUE)
 source(file = "R/check_export_dir.R")
 source(file = "R/colors.R")
 source(file = "R/format_gt.R")
-source(file = "R/plot_histograms.R")
-source(file = "R/prepare_hierarchy.R")
-source(file = "R/prepare_plot.R")
+source(file = "R/hierarchies_progress.R")
+source(file = "R/hierarchies_grouped_progress.R")
+source(file = "R/histograms_progress.R")
 source(file = "R/log_debug.R")
 source(file = "R/molinfo.R")
+source(file = "R/plot_histograms.R")
+source(file = "R/prehistograms_progress.R")
+source(file = "R/prepare_hierarchy.R")
+source(file = "R/prepare_plot.R")
+source(file = "R/prettyTables_progress.R")
+source(file = "R/queries_progress.R")
+source(file = "R/subtables_progress.R")
+source(file = "R/tables_progress.R")
+source(file = "R/treemaps_progress.R")
+source(file = "R/wiki_progress.R")
+
+future::plan(strategy = future::multisession)
+handlers(global = TRUE)
+handlers("progress")
 
 classified_path <-
   "~/Git/lotus-processor/data/processed/220208_frozen_metadata.csv.gz"
@@ -47,9 +64,9 @@ exports <-
 
 #' As there is no better way than to manually assess if the QID
 #' really corresponds to what you want
-qids <- c(
+qids <- list(
   # "Actinobacteria" = "Q26262282"
-  "Asteraceae" = "Q25400",
+  # "Asteraceae" = "Q25400",
   "Simaroubaceae" = "Q156679",
   "Gentianaceae" = "Q157216",
   "Picrasma" = "Q135638",
@@ -106,11 +123,9 @@ start_date <- 1900
 end_date <- 2022
 
 genera <-
-  names(qids)[!grepl(
-    pattern = " ",
-    x = names(qids),
-    fixed = TRUE
-  )]
+  names(qids)[!grepl(pattern = " ",
+                     x = names(qids),
+                     fixed = TRUE)]
 
 query_part_1 <- readr::read_file(query_path_1)
 query_part_2 <- readr::read_file(query_path_2)
@@ -148,399 +163,102 @@ structures_classified <- readr::read_delim(
 # ) |>
 #   dplyr::distinct()
 
-queries <- character()
-for (i in names(qids)) {
-  queries[[i]] <- paste0(
-    query_part_1,
-    qids[i],
-    query_part_2,
-    start_date,
-    query_part_3,
-    end_date,
-    query_part_4,
-    paste("\nLIMIT", limit)
-  )
-}
+message("Building queries")
+queries <- queries_progress(qids)
 
-results <- lapply(queries, WikidataQueryServiceR::query_wikidata)
+message("Querying Wikidata")
+results <- wiki_progress(queries)
 
-tables <- list()
-for (i in names(results)) {
-  if (nrow(results[[i]] != 0)) {
-    tables[[i]] <- results[[i]] %>%
-      dplyr::left_join(structures_classified) %>%
-      dplyr::mutate(structureImage = RCurl::curlEscape(structureSmiles)) %>%
-      dplyr::relocate(structureImage, .after = structure) %>%
-      dplyr::relocate(structureLabel, .before = structure) %>%
-      dplyr::select(-references_ids, -structure_id, -structureSmiles) %>%
-      splitstackshape::cSplit(
-        c("taxa", "taxaLabels", "references", "referencesLabels"),
-        sep = "|",
-        direction = "long"
-      ) %>%
-      dplyr::group_by(structure) %>%
-      tidyr::fill(c("taxa", "taxaLabels", "references", "referencesLabels"),
-        .direction = "downup"
-      ) %>%
-      dplyr::group_by(chemical_class) %>%
-      dplyr::add_count(sort = TRUE) %>%
-      dplyr::select(-n) %>%
-      dplyr::group_by(chemical_superclass) %>%
-      dplyr::add_count(sort = TRUE) %>%
-      dplyr::select(-n) %>%
-      dplyr::group_by(chemical_pathway) %>%
-      dplyr::add_count(sort = TRUE) %>%
-      dplyr::select(-n) %>%
-      dplyr::distinct()
-  } else {
-    tables[[i]] <- data.frame() |>
-      dplyr::mutate(
-        structureLabel = NA,
-        structure = NA,
-        structureImage = NA,
-        taxaLabels = NA,
-        taxa = NA,
-        referenceLabels = NA,
-        references = NA,
-        chemical_pathway = NA,
-        chemical_superclass = NA,
-        chemical_class = NA
-      )
-  }
-}
+message("Cleaning tables and adding columns")
+tables <- tables_progress(results)
 
-# subtables <- list()
-# for (i in names(tables)) {
-#   subtables[[i]] <- tables[[i]] %>%
-#     dplyr::filter(chemical_pathway == .[1, "chemical_pathway"]) %>%
-#     dplyr::group_by(chemical_class) %>%
-#     dplyr::add_count(sort = TRUE) %>%
-#     dplyr::select(-n) %>%
-#     dplyr::group_by(chemical_superclass) %>%
-#     dplyr::add_count(sort = TRUE) %>%
-#     dplyr::select(-n, -chemical_pathway) %>%
-#     dplyr::distinct()
-# }
+message("Generating subtables based on chemical classification")
+subtables <- subtables_progress(tables)
 
-# prettyTables <- list()
-# for (i in names(tables)) {
-#   prettyTables[[i]] <-
-#     temp_gt_function(
-#       table = tables[[i]],
-#       title = i,
-#       subtitle = "All compounds"
-#     )
-# }
+message("Generating pretty tables")
+prettyTables <- prettyTables_progress(tables)
 
-# prettySubtables <- list()
-# for (i in names(subtables)) {
-#   prettySubtables[[i]] <-
-#     temp_gt_function(
-#       table = subtables[[i]],
-#       title = i,
-#       subtitle = tables[[i]][1, "chemical_pathway"]
-#     )
-# }
+message("Generating pretty subtables")
+prettySubtables <- prettyTables_progress(subtables)
 
-hierarchies <- list()
-for (i in names(tables)) {
-  if (nrow(tables[[i]]) != 0) {
-    hierarchies[[i]] <- prepare_hierarchy(
-      dataframe = tables[[i]] |>
-        dplyr::mutate(
-          best_candidate_1 = chemical_pathway,
-          best_candidate_2 = chemical_superclass,
-          best_candidate_3 = chemical_class,
-          organism = ifelse(
-            test = grepl(pattern = "\\W+", x = i),
-            yes = taxaLabels,
-            no = gsub(
-              pattern = " .*",
-              replacement = "",
-              x = taxaLabels
-            )
-          )
-        ) |>
-        dplyr::mutate(sample = organism, species = organism) |>
-        dplyr::select(-taxa, -taxaLabels, -references, -referencesLabels) |>
-        dplyr::distinct(),
-      type = "literature"
-    )
-  } else {
-    hierarchies[[i]] <- data.frame() |>
-      dplyr::mutate(
-        parents = NA,
-        ids = NA,
-        labels = NA,
-        sample = NA,
-        species = NA,
-        values = 0
-      ) |>
-      dplyr::mutate_if(is.logical, as.character)
-  }
-}
-for (i in names(tables)) {
-  if (nrow(tables[[i]]) != 0) {
-    if (!grepl(pattern = "\\W+", x = i)) {
-      hierarchies[[paste0(i, "_grouped")]] <- prepare_hierarchy(
-        dataframe = tables[[i]] |>
-          dplyr::mutate(
-            best_candidate_1 = chemical_pathway,
-            best_candidate_2 = chemical_superclass,
-            best_candidate_3 = chemical_class,
-            organism = taxaLabels
-          ) |>
-          dplyr::mutate(sample = organism, species = organism),
-        type = "literature"
-      )
-    }
-  } else {
-    hierarchies[[i]] <- data.frame() |>
-      dplyr::mutate(
-        parents = NA,
-        ids = NA,
-        labels = NA,
-        sample = NA,
-        species = NA,
-        values = 0
-      ) |>
-      dplyr::mutate_if(is.logical, as.character)
-  }
-}
-
-prehistograms <- list()
-for (i in names(hierarchies)) {
-  if (nrow(hierarchies[[i]]) != 0) {
-    prehistograms[[i]] <-
-      prepare_plot(dataframe = hierarchies[[i]])
-  } else {
-    prehistograms[[i]] <- data.frame() |>
-      dplyr::mutate(
-        parents = NA,
-        ids = NA,
-        labels = NA,
-        sample = NA,
-        species = NA,
-        values = NA,
-        group = NA,
-        subgroup = NA,
-        tot = NA,
-        color = NA,
-        relative = NA
-      ) |>
-      dplyr::rowwise()
-  }
-}
-
-histograms <- list()
-for (i in names(prehistograms)[!grepl(pattern = "\\W+", x = names(prehistograms))]) {
-  histograms[[i]] <- plot_histograms(
-    dataframe = prehistograms[[i]],
-    label = "Organism"
-  )
-}
-for (i in names(prehistograms)[grepl(pattern = "\\W+", x = names(prehistograms))]) {
-  histograms[[i]] <- plot_histograms(
-    dataframe = prehistograms[[i]],
-    label = "Organism"
-  )
-}
-
-#' Special requests
-special <- list()
-for (i in (seq_along(1:length(comparison)))) {
-  special[[i]] <- tables[[comparison[[i]]]]
-}
-hierarchies[["special"]] <- prepare_hierarchy(
-  dataframe = dplyr::bind_rows(special) |>
-    dplyr::rowwise() |>
-    dplyr::mutate(
-      best_candidate_1 = chemical_pathway,
-      best_candidate_2 = chemical_superclass,
-      best_candidate_3 = chemical_class,
-      organism = ifelse(
-        test = grepl(pattern = "\\W+", x = i),
-        yes = taxaLabels,
-        no = gsub(
-          pattern = " .*",
-          replacement = "",
-          x = taxaLabels
-        )
-      )
-    ) |>
-    dplyr::mutate(sample = organism, species = organism) |>
-    dplyr::select(-taxa, -taxaLabels, -references, -referencesLabels) |>
-    dplyr::distinct(),
-  type = "literature"
+message("Generating chemical hierarchies...")
+message("... for single taxa")
+hierarchies_simple <- hierarchies_progress(tables)
+message("... for grouped taxa")
+hierarchies_grouped <- hierarchies_grouped_progress(tables)
+message("... combining")
+names(hierarchies_grouped) <- ifelse(
+  test = !grepl(pattern = "\\W+",
+                x = names(hierarchies_grouped))
+  ,
+  yes = paste(names(hierarchies_grouped),
+              "grouped",
+              sep = "_"),
+  no = names(hierarchies_grouped)
 )
-prehistograms[["special"]] <-
-  prepare_plot(dataframe = hierarchies[["special"]])
-histograms[["special"]] <-
-  plot_histograms(
-    dataframe = prehistograms[["special"]],
-    label = "Organism"
+hierarchies_simple <- hierarchies_simple[!grepl(pattern = "\\W+",
+                                                x = names(hierarchies_simple))]
+hierarchies <- append(hierarchies_simple, hierarchies_grouped)
+
+if (!is.null(comparison)) {
+  message("Generating special comparison")
+  special <- lapply(
+    X = 1:length(comparison),
+    FUN = function(x) {
+      tables[[comparison[[x]]]]
+    }
   )
-
-treemaps <- list()
-for (i in names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies))]) {
-  if (i != "special") {
-    treemaps[[i]] <- plotly::plot_ly(
-      data = hierarchies[[i]] |>
-        filter(sample == i),
-      ids = ~ids,
-      labels = ~labels,
-      parents = ~parents,
-      values = ~values,
-      maxdepth = 3,
-      type = "treemap",
-      branchvalues = "total",
-      textinfo = "label+value+percent parent+percent root"
-    ) |>
-      plotly::layout(
-        colorway = sunburst_colors,
-        title = paste(i, "(", nrow(
-          tables[[i]] |> dplyr::distinct(structure)
-        ), ")"),
-        margin = list(t = 40)
-      )
-  } else {
-    treemaps[[i]] <- plotly::plot_ly() |>
-      add_trace(
-        data = hierarchies[[unique(hierarchies[[i]]$species)[1]]] |>
-          filter(sample == unique(hierarchies[[i]]$species)[1] &
-            !is.na(labels)),
-        ids = ~ids,
-        labels = ~labels,
-        parents = ~parents,
-        values = ~values,
-        maxdepth = 3,
-        type = "treemap",
-        branchvalues = "total",
-        textinfo = "label+value+percent parent+percent root",
-        domain = list(row = 0, column = 0)
+  hierarchies[["special"]] <- prepare_hierarchy(
+    dataframe = dplyr::bind_rows(special) |>
+      dplyr::rowwise() |>
+      dplyr::mutate(
+        best_candidate_1 = chemical_pathway,
+        best_candidate_2 = chemical_superclass,
+        best_candidate_3 = chemical_class,
+        organism = ifelse(
+          test = all(grepl(pattern = "\\W+", x = comparison)),
+          yes = taxaLabels,
+          no = gsub(
+            pattern = " .*",
+            replacement = "",
+            x = taxaLabels
+          )
+        )
       ) |>
-      add_trace(
-        data = hierarchies[[unique(hierarchies[[i]]$species)[2]]] |>
-          filter(sample == unique(hierarchies[[i]]$species)[2] &
-            !is.na(labels)),
-        ids = ~ids,
-        labels = ~labels,
-        parents = ~parents,
-        values = ~values,
-        maxdepth = 3,
-        type = "treemap",
-        branchvalues = "total",
-        textinfo = "label+value+percent parent+percent root",
-        domain = list(row = 0, column = 1)
-      ) |>
-      plotly::layout(
-        title = paste(
-          "Comparative analysis",
-          "\n",
-          unique(hierarchies[[i]]$species)[1],
-          "(",
-          nrow(tables[[unique(hierarchies[[i]]$species)[1]]] |> dplyr::distinct(structure)),
-          ")",
-          "                                 ",
-          unique(hierarchies[[i]]$species)[2],
-          "(",
-          nrow(tables[[unique(hierarchies[[i]]$species)[2]]] |> dplyr::distinct(structure)),
-          ")"
-        ),
-        grid = list(rows = 1, columns = 2),
-        colorway = sunburst_colors,
-        margin = list(t = 40)
-      )
-  }
+      dplyr::mutate(sample = organism, species = organism) |>
+      dplyr::select(-taxa, -taxaLabels, -references, -referencesLabels) |>
+      dplyr::distinct(),
+    type = "literature"
+  )
 }
 
-sunbursts <- list()
-for (i in names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies))]) {
-  if (i != "special") {
-    sunbursts[[i]] <- plotly::plot_ly(
-      data = hierarchies[[i]] |>
-        filter(sample == i),
-      ids = ~ids,
-      labels = ~labels,
-      parents = ~parents,
-      values = ~values,
-      maxdepth = 3,
-      type = "sunburst",
-      branchvalues = "total"
-    ) |>
-      plotly::layout(
-        colorway = sunburst_colors,
-        title = paste(i, "(", nrow(
-          tables[[i]] |> dplyr::distinct(structure)
-        ), ")"),
-        margin = list(t = 40)
-      )
-  } else {
-    sunbursts[[i]] <- plotly::plot_ly() |>
-      add_trace(
-        data = hierarchies[[unique(hierarchies[[i]]$species)[1]]] |>
-          filter(sample == unique(hierarchies[[i]]$species)[1] &
-            !is.na(labels)),
-        ids = ~ids,
-        labels = ~labels,
-        parents = ~parents,
-        values = ~values,
-        maxdepth = 3,
-        type = "sunburst",
-        branchvalues = "total",
-        domain = list(row = 0, column = 0)
-      ) |>
-      add_trace(
-        data = hierarchies[[unique(hierarchies[[i]]$species)[2]]] |>
-          filter(sample == unique(hierarchies[[i]]$species)[2] &
-            !is.na(labels)),
-        ids = ~ids,
-        labels = ~labels,
-        parents = ~parents,
-        values = ~values,
-        maxdepth = 3,
-        type = "sunburst",
-        branchvalues = "total",
-        domain = list(row = 0, column = 1)
-      ) |>
-      plotly::layout(
-        title = paste(
-          "Comparative analysis",
-          "\n",
-          unique(hierarchies[[i]]$species)[1],
-          "(",
-          nrow(tables[[unique(hierarchies[[i]]$species)[1]]] |> dplyr::distinct(structure)),
-          ")",
-          "                                 ",
-          unique(hierarchies[[i]]$species)[2],
-          "(",
-          nrow(tables[[unique(hierarchies[[i]]$species)[2]]] |> dplyr::distinct(structure)),
-          ")"
-        ),
-        grid = list(rows = 1, columns = 2),
-        colorway = sunburst_colors,
-        margin = list(t = 40)
-      )
-  }
-}
+message("Generating prehistograms")
+prehistograms <- prehistograms_progress(hierarchies)
+prehistograms <- prehistograms[!is.na(prehistograms)]
+
+message("Generating histograms")
+histograms <- histograms_progress(prehistograms)
+
+message("Generating treemaps")
+treemaps <-
+  treemaps_progress(xs = names(hierarchies)[!grepl(pattern = "_grouped",
+                                                   x = names(hierarchies))])
+
+message("Generating sunbursts")
+sunbursts <-
+  treemaps_progress(xs = names(hierarchies)[!grepl(pattern = "_grouped",
+                                                   x = names(hierarchies))],
+                    type = "sunburst")
 
 treemaps <-
-  within(
-    treemaps,
-    rm(list = names(treemaps)[grepl(
-      pattern = "ae$",
-      x = names(treemaps)
-    )])
-  )
+  within(treemaps,
+         rm(list = names(treemaps)[grepl(pattern = "ae$",
+                                         x = names(treemaps))]))
 
 sunbursts <-
-  within(
-    sunbursts,
-    rm(list = names(sunbursts)[grepl(
-      pattern = "ae$",
-      x = names(sunbursts)
-    )])
-  )
+  within(sunbursts,
+         rm(list = names(sunbursts)[grepl(pattern = "ae$",
+                                          x = names(sunbursts))]))
 
 lapply(X = exports, FUN = check_export_dir)
 
@@ -580,75 +298,80 @@ lapply(X = exports, FUN = check_export_dir)
 dimensions <- list()
 for (i in names(prehistograms)) {
   dimensions[[i]] <-
-    nrow(prehistograms[[i]] |> dplyr::ungroup() |> dplyr::distinct(ids))
+    nrow(prehistograms[[i]] |> dplyr::ungroup() |> dplyr::distinct(ids)) + 1
 }
 
 size <- list()
 for (i in names(prehistograms)) {
   size[[i]] <-
-    nrow(prehistograms[[i]] |> dplyr::ungroup() |> dplyr::distinct(species))
+    nrow(prehistograms[[i]] |> dplyr::ungroup() |> dplyr::distinct(species)) + 1
 }
 
-for (i in names(histograms)) {
-  ggplot2::ggsave(
-    plot = histograms[[i]],
-    filename = file.path(
-      export_dir_histograms,
-      paste0(
-        "histogram_",
-        gsub(
-          pattern = " ",
-          replacement = "_",
-          x = i
-        ),
-        ".pdf"
-      )
-    ),
-    width = 16 * max((dimensions[[i]] / 30), 0.5),
-    height = 9 * max((size[[i]] / 100), 1) * max((dimensions[[i]] / 30), 1),
-    limitsize = FALSE
-  )
-}
+lapply(
+  X = names(histograms),
+  FUN = function(x) {
+    ggplot2::ggsave(
+      plot = histograms[[x]],
+      filename = file.path(export_dir_histograms,
+                           paste0(
+                             "histogram_",
+                             gsub(
+                               pattern = " ",
+                               replacement = "_",
+                               x = x
+                             ),
+                             ".pdf"
+                           )),
+      width = 16 * max((dimensions[[x]] / 30), 0.5),
+      height = 9 * max((size[[x]] / 100), 1) * max((dimensions[[x]] / 30), 1),
+      limitsize = FALSE
+    )
+  }
+)
 
-for (i in names(sunbursts)) {
-  plotly::save_image(
-    p = sunbursts[[i]],
-    file = file.path(
-      export_dir_sunbursts,
-      paste0(
-        "sunburst_",
-        gsub(
-          pattern = " ",
-          replacement = "_",
-          x = i
-        ),
-        ".pdf"
-      )
-    ),
-    width = 900,
-    height = 900
-  )
-}
+# reticulate::install_miniconda()
+# reticulate::conda_install('r-reticulate', 'python-kaleido')
+# reticulate::conda_install('r-reticulate', 'plotly', channel = 'plotly')
+# reticulate::use_miniconda('r-reticulate')
 
-for (i in names(treemaps)) {
-  plotly::save_image(
-    p = treemaps[[i]],
-    file = file.path(
-      export_dir_treemaps,
-      paste0(
-        "treemap_",
-        gsub(
-          pattern = " ",
-          replacement = "_",
-          x = i
-        ),
-        ".pdf"
-      )
-    ),
-    width = 900,
-    height = 900
-  )
-}
+# lapply(
+#   X = names(sunbursts),
+#   FUN = function(x) {
+#     plotly::save_image(
+#       p = sunbursts[[x]],
+#       file = file.path(export_dir_sunbursts,
+#                        paste0(
+#                          "sunburst_",
+#                          gsub(
+#                            pattern = " ",
+#                            replacement = "_",
+#                            x = x
+#                          ),
+#                          ".pdf"
+#                        )),
+#       width = 900,
+#       height = 900
+#     )
+#   }
+# )
+
+# for (i in names(treemaps)) {
+#   plotly::save_image(
+#     p = treemaps[[i]],
+#     file = file.path(export_dir_treemaps,
+#                      paste0(
+#                        "treemap_",
+#                        gsub(
+#                          pattern = " ",
+#                          replacement = "_",
+#                          x = i
+#                        ),
+#                        ".pdf"
+#                      )),
+#     width = 900,
+#     height = 900
+#   )
+# }
 
 end <- Sys.time()
 
