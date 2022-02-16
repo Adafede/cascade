@@ -18,13 +18,7 @@ prepare_plot <- function(dataframe, organism = "species") {
       !grepl(pattern = "-", x = parents)) |>
     dplyr::filter(!is.na(get(organism))) |>
     dplyr::mutate(
-      species =
-        gsub(
-          pattern = "([A-Z]{1})(.* )",
-          replacement = "\\1. ",
-          x = get(organism),
-          perl = TRUE
-        )
+      species = get(organism)
     ) |>
     dplyr::arrange(desc(values)) |>
     dplyr::mutate(group = as.integer(factor(parents, levels = unique(parents)))) |>
