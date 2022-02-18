@@ -493,9 +493,9 @@ df_new_with_cor_pre_taxo <- df_new_with_cor_pre |>
     test = best_candidate_organism %in% species,
     yes = 1,
     no = 0
-  )) |> 
-  dplyr::group_by(id,peak_id) |> 
-  dplyr::mutate(sum = sum(taxo)) |> 
+  )) |>
+  dplyr::group_by(id, peak_id) |>
+  dplyr::mutate(sum = sum(taxo)) |>
   filter(taxo == 1 | sum == 0)
 
 #' dirty annotation change after computation of peak comparison
@@ -592,8 +592,8 @@ bound <- dplyr::bind_rows(
   df_new_with_cor_075 |> dplyr::mutate(intensity = integral, species = "absolute_with_new_cor")
 )
 
-bound_ready <- bound |> 
-  prepare_hierarchy(rescale = TRUE) |> 
+bound_ready <- bound |>
+  prepare_hierarchy(rescale = TRUE) |>
   prepare_plot()
 
 absolute <- plot_histograms(
@@ -604,9 +604,9 @@ absolute <- plot_histograms(
 
 absolute_with <- plot_histograms(
   dataframe = samples_with,
-  # dataframe = bound_ready[bound_ready$species == "absolute_with", ] |> 
-  #   dplyr::mutate_at(c("ids", "sample", "color"),as.character) |> 
-  #   dplyr::arrange(sample,parents,ids) |> 
+  # dataframe = bound_ready[bound_ready$species == "absolute_with", ] |>
+  #   dplyr::mutate_at(c("ids", "sample", "color"),as.character) |>
+  #   dplyr::arrange(sample,parents,ids) |>
   #   dplyr::mutate_at(c("ids", "sample", "color"),as.factor),
   label = "MS intensity within CAD peak",
   xlab = FALSE
@@ -614,9 +614,9 @@ absolute_with <- plot_histograms(
 
 absolute_without <- plot_histograms(
   dataframe = samples_without,
-  # dataframe = bound_ready[bound_ready$species == "absolute_without", ] |> 
+  # dataframe = bound_ready[bound_ready$species == "absolute_without", ] |>
   #   dplyr::mutate_at(c("ids", "sample", "color"),as.character) |>
-  #   dplyr::arrange(sample,parents,ids) |> 
+  #   dplyr::arrange(sample,parents,ids) |>
   #   dplyr::mutate_at(c("ids", "sample", "color"),as.factor),
   label = "MS intensity outside CAD peak",
   xlab = FALSE
@@ -624,9 +624,9 @@ absolute_without <- plot_histograms(
 
 absolute_with_new <- plot_histograms(
   dataframe = samples_with_new,
-  # dataframe = bound_ready[bound_ready$species == "absolute_with_new", ] |> 
-  #   dplyr::mutate_at(c("ids", "sample", "color"),as.character) |> 
-  #   dplyr::arrange(sample,parents,ids) |> 
+  # dataframe = bound_ready[bound_ready$species == "absolute_with_new", ] |>
+  #   dplyr::mutate_at(c("ids", "sample", "color"),as.character) |>
+  #   dplyr::arrange(sample,parents,ids) |>
   #   dplyr::mutate_at(c("ids", "sample", "color"),as.factor),
   label = "CAD intensity within CAD peak",
   xlab = FALSE
@@ -653,9 +653,9 @@ absolute_with_new_cor_08 <-
 absolute_with_new_cor <-
   plot_histograms(
     dataframe = samples_with_new_cor,
-    # dataframe = bound_ready[bound_ready$species == "absolute_with_new_cor", ] |> 
-    #   dplyr::mutate_at(c("ids", "sample", "color"),as.character) |> 
-    #   dplyr::arrange(sample,parents,ids) |> 
+    # dataframe = bound_ready[bound_ready$species == "absolute_with_new_cor", ] |>
+    #   dplyr::mutate_at(c("ids", "sample", "color"),as.character) |>
+    #   dplyr::arrange(sample,parents,ids) |>
     #   dplyr::mutate_at(c("ids", "sample", "color"),as.factor),
     label = "CAD intensity of corelated peaks within CAD peak",
     xlab = FALSE
@@ -741,7 +741,7 @@ plotly::plot_ly(
 
 # plotly::plot_ly(
 #   table_new  |> #' from internal prepare_hierarchy()
-#     dplyr::filter(!grepl(pattern = " Other-", 
+#     dplyr::filter(!grepl(pattern = " Other-",
 #                          x = parents,
 #                          fixed = TRUE)) |>
 #     dplyr::mutate_at(c("ids", "sample"), as.character) |>

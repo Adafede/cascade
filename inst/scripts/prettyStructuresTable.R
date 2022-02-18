@@ -30,6 +30,9 @@ source(file = "R/prepare_hierarchy.R")
 source(file = "R/prepare_plot.R")
 source(file = "R/prettyTables_progress.R")
 source(file = "R/queries_progress.R")
+source(file = "R/save_histograms_progress.R")
+source(file = "R/save_prettySubtables_progress.R")
+source(file = "R/save_prettyTables_progress.R")
 source(file = "R/subtables_progress.R")
 source(file = "R/tables_progress.R")
 source(file = "R/treemaps_progress.R")
@@ -67,10 +70,10 @@ exports <-
 qids <- list(
   # "Actinobacteria" = "Q26262282"
   # "Asteraceae" = "Q25400",
-  "Simaroubaceae" = "Q156679",
-  "Gentianaceae" = "Q157216",
-  "Picrasma" = "Q135638",
-  "Picrasma quassioides" = "Q855778",
+  # "Simaroubaceae" = "Q156679",
+  # "Gentianaceae" = "Q157216",
+  # "Picrasma" = "Q135638",
+  # "Picrasma quassioides" = "Q855778",
   "Swertia" = "Q163970",
   "Swertia chirayita" = "Q21318003",
   "Gentiana" = "Q144682",
@@ -96,15 +99,15 @@ qids <- list(
   "Cinchona succirubra" = "Q50830790",
   "Ginkgo biloba" = "Q43284",
   "Panax ginseng" = "Q182881",
-  "Salvia officinalis" = "Q1111359",
-  "Saxifraga" = "Q156146",
-  "Dendrobium" = "Q133778",
-  "Dendrobium chrysanthum" = "Q5223343",
-  "Dendrobium fimbriatum" = "Q7990065",
-  "Trichoderma" = "Q135322",
-  "Trichoderma yunnanense" = "Q108442404",
-  "Papiliotrema" = "Q7132982",
-  "Papiliotrema rajasthanensis" = "Q27866418"
+  "Salvia officinalis" = "Q1111359"
+  # "Saxifraga" = "Q156146",
+  # "Dendrobium" = "Q133778",
+  # "Dendrobium chrysanthum" = "Q5223343",
+  # "Dendrobium fimbriatum" = "Q7990065",
+  # "Trichoderma" = "Q135322",
+  # "Trichoderma yunnanense" = "Q108442404",
+  # "Papiliotrema" = "Q7132982",
+  # "Papiliotrema rajasthanensis" = "Q27866418"
 )
 
 comparison <-
@@ -123,9 +126,11 @@ start_date <- 1900
 end_date <- 2022
 
 genera <-
-  names(qids)[!grepl(pattern = " ",
-                     x = names(qids),
-                     fixed = TRUE)]
+  names(qids)[!grepl(
+    pattern = " ",
+    x = names(qids),
+    fixed = TRUE
+  )]
 
 query_part_1 <- readr::read_file(query_path_1)
 query_part_2 <- readr::read_file(query_path_2)
@@ -140,7 +145,7 @@ structures_classified <- readr::read_delim(
     "chemical_superclass" = "structure_taxonomy_npclassifier_02superclass",
     "chemical_class" = "structure_taxonomy_npclassifier_03class"
   )
-) %>%
+) |>
   dplyr::distinct()
 
 # organisms_classified <- readr::read_delim(
@@ -183,21 +188,25 @@ prettySubtables <- prettyTables_progress(subtables)
 
 message("Generating chemical hierarchies...")
 message("... for single taxa")
-hierarchies_simple <- hierarchies_progress(tables)
+hierarchies_simple <-
+  hierarchies_progress(tables[!grepl(
+    pattern = "\\W+",
+    x = names(tables)
+  )])
 message("... for grouped taxa")
 hierarchies_grouped <- hierarchies_grouped_progress(tables)
 message("... combining")
 names(hierarchies_grouped) <- ifelse(
-  test = !grepl(pattern = "\\W+",
-                x = names(hierarchies_grouped))
-  ,
+  test = !grepl(
+    pattern = "\\W+",
+    x = names(hierarchies_grouped)
+  ),
   yes = paste(names(hierarchies_grouped),
-              "grouped",
-              sep = "_"),
+    "grouped",
+    sep = "_"
+  ),
   no = names(hierarchies_grouped)
 )
-hierarchies_simple <- hierarchies_simple[!grepl(pattern = "\\W+",
-                                                x = names(hierarchies_simple))]
 hierarchies <- append(hierarchies_simple, hierarchies_grouped)
 
 if (!is.null(comparison)) {
@@ -241,93 +250,60 @@ histograms <- histograms_progress(prehistograms)
 
 message("Generating treemaps")
 treemaps <-
-  treemaps_progress(xs = names(hierarchies)[!grepl(pattern = "_grouped",
-                                                   x = names(hierarchies))])
+  treemaps_progress(xs = names(hierarchies)[!grepl(
+    pattern = "_grouped",
+    x = names(hierarchies)
+  )])
 
 message("Generating sunbursts")
 sunbursts <-
-  treemaps_progress(xs = names(hierarchies)[!grepl(pattern = "_grouped",
-                                                   x = names(hierarchies))],
-                    type = "sunburst")
+  treemaps_progress(
+    xs = names(hierarchies)[!grepl(
+      pattern = "_grouped",
+      x = names(hierarchies)
+    )],
+    type = "sunburst"
+  )
 
 treemaps <-
-  within(treemaps,
-         rm(list = names(treemaps)[grepl(pattern = "ae$",
-                                         x = names(treemaps))]))
+  within(
+    treemaps,
+    rm(list = names(treemaps)[grepl(
+      pattern = "ae$",
+      x = names(treemaps)
+    )])
+  )
 
 sunbursts <-
-  within(sunbursts,
-         rm(list = names(sunbursts)[grepl(pattern = "ae$",
-                                          x = names(sunbursts))]))
+  within(
+    sunbursts,
+    rm(list = names(sunbursts)[grepl(
+      pattern = "ae$",
+      x = names(sunbursts)
+    )])
+  )
 
 lapply(X = exports, FUN = check_export_dir)
 
-# for (i in names(prettyTables)) {
-#   gt::gtsave(
-#     data = prettyTables[[i]],
-#     filename = file.path(export_dir_tables, paste0(
-#       "prettyTable_",
-#       gsub(
-#         pattern = " ",
-#         replacement = "_",
-#         x = i
-#       ),
-#       ".html"
-#     ))
-#   )
-# }
+save_prettyTables_progress(names(prettyTables))
 
-# for (i in names(prettySubtables)) {
-#   gt::gtsave(
-#     data = prettySubtables[[i]],
-#     filename = file.path(
-#       export_dir_tables,
-#       paste0(
-#         "prettySubtable_",
-#         gsub(
-#           pattern = " ",
-#           replacement = "_",
-#           x = i
-#         ),
-#         ".html"
-#       )
-#     )
-#   )
-# }
+save_prettySubtables_progress(names(prettySubtables))
 
-dimensions <- list()
-for (i in names(prehistograms)) {
-  dimensions[[i]] <-
-    nrow(prehistograms[[i]] |> dplyr::ungroup() |> dplyr::distinct(ids)) + 1
-}
-
-size <- list()
-for (i in names(prehistograms)) {
-  size[[i]] <-
-    nrow(prehistograms[[i]] |> dplyr::ungroup() |> dplyr::distinct(species)) + 1
-}
-
-lapply(
-  X = names(histograms),
+dimensions <- future.apply::future_lapply(
+  X = names(prehistograms),
   FUN = function(x) {
-    ggplot2::ggsave(
-      plot = histograms[[x]],
-      filename = file.path(export_dir_histograms,
-                           paste0(
-                             "histogram_",
-                             gsub(
-                               pattern = " ",
-                               replacement = "_",
-                               x = x
-                             ),
-                             ".pdf"
-                           )),
-      width = 16 * max((dimensions[[x]] / 30), 0.5),
-      height = 9 * max((size[[x]] / 100), 1) * max((dimensions[[x]] / 30), 1),
-      limitsize = FALSE
-    )
+    nrow(prehistograms[[x]] |> dplyr::ungroup() |> dplyr::distinct(ids)) + 1
   }
 )
+
+size <- future.apply::future_lapply(
+  X = names(prehistograms),
+  FUN = function(x) {
+    nrow(prehistograms[[i]] |> dplyr::ungroup() |> dplyr::distinct(species)) + 1
+  }
+)
+
+save_histograms_progress(names(histograms))
 
 # reticulate::install_miniconda()
 # reticulate::conda_install('r-reticulate', 'python-kaleido')

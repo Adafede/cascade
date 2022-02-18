@@ -1,6 +1,7 @@
 #' Title
 #'
 #' @param xs
+#' @param type
 #'
 #' @return
 #' @export
@@ -34,10 +35,10 @@ treemaps_progress <- function(xs, type = "treemap") {
           )
       } else {
         plotly::plot_ly() |>
-          add_trace(
+          plotly::add_trace(
             data = hierarchies[[unique(hierarchies[[x]]$species)[1]]] |>
-              filter(sample == unique(hierarchies[[x]]$species)[1] &
-                       !is.na(labels)),
+              dplyr::filter(sample == unique(hierarchies[[x]]$species)[1] &
+                              !is.na(labels)),
             ids = ~ ids,
             labels = ~ labels,
             parents = ~ parents,
@@ -48,10 +49,10 @@ treemaps_progress <- function(xs, type = "treemap") {
             textinfo = "label+value+percent parent+percent root",
             domain = list(row = 0, column = 0)
           ) |>
-          add_trace(
+          plotly::add_trace(
             data = hierarchies[[unique(hierarchies[[x]]$species)[2]]] |>
-              filter(sample == unique(hierarchies[[x]]$species)[2] &
-                       !is.na(labels)),
+              dplyr::filter(sample == unique(hierarchies[[x]]$species)[2] &
+                              !is.na(labels)),
             ids = ~ ids,
             labels = ~ labels,
             parents = ~ parents,
@@ -73,7 +74,7 @@ treemaps_progress <- function(xs, type = "treemap") {
               "                                 ",
               unique(hierarchies[[x]]$species)[2],
               "(",
-              nrow(tables[[unique(hierarchies[[i]]$species)[2]]] |> dplyr::distinct(structure)),
+              nrow(tables[[unique(hierarchies[[x]]$species)[2]]] |> dplyr::distinct(structure)),
               ")"
             ),
             grid = list(rows = 1, columns = 2),
