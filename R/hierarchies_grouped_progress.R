@@ -21,7 +21,9 @@ hierarchies_grouped_progress <- function(xs) {
                 best_candidate_3 = chemical_class,
                 organism = taxaLabels
               ) |>
-              dplyr::mutate(sample = organism, species = organism),
+              dplyr::mutate(sample = organism, species = organism) |>
+              dplyr::select(-taxa, -taxaLabels, -references, -referencesLabels) |>
+              dplyr::distinct(),
             type = "literature"
           )
         }
