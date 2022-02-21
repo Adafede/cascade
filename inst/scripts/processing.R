@@ -86,6 +86,7 @@ baseline_adjust <- 0
 INTENSITY <- 1E5
 PEAK_SIMILARITY <- 0.9
 PEAK_SIMILARITY_PREFILTER <- 0.6
+RT_TOL <- 0.1
 PPM <- 10
 
 #' Parameters for annotation
@@ -98,9 +99,7 @@ files <- list.files(
   recursive = TRUE
 )
 
-files <- files |>
-  head(20) |>
-  tail(3)
+files <- files[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = files)]
 
 names <- list.files(
   path = TOYSET,
@@ -114,9 +113,7 @@ names <- list.files(
     fixed = TRUE
   )
 
-names <- names |>
-  head(20) |>
-  tail(3)
+names <- names[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = names)]
 
 annotations <- readr::read_delim(file = ANNOTATIONS)
 
@@ -136,7 +133,8 @@ chromatograms_all <- purrr::flatten(chromatograms)
 
 chromatograms_cad <- chromatograms_all[c(FALSE, FALSE, TRUE)]
 
-chromatograms_cad_improved <- improve_signals_progress(chromatograms_cad)
+chromatograms_cad_improved <-
+  improve_signals_progress(chromatograms_cad)
 
 names(chromatograms_cad_improved) <- names
 
@@ -409,64 +407,44 @@ for (s in unique(df_new_with$id)) {
         )]
       ) |>
       MSnbase::filterRt(rt = c(
-        min(df_peak$rt_min) * 60 - 10,
-        max(df_peak$rt_max) * 60 + 10
+        (min(df_peak$rt_min) + CAD_SHIFT - RT_TOL) * 60,
+        (max(df_peak$rt_max) + CAD_SHIFT + RT_TOL) * 60
+      )) |>
+      MSnbase::filterMz(mz = c(
+        min(df_peak$mz_min),
+        max(df_peak$mz_max)
       ))
 
-    rtr <- df_peak |>
-      dplyr::mutate(rtmin = rt_min * 60, rtmax = rt_max * 60) |>
-      dplyr::select(rtmin, rtmax) |>
-      as.matrix()
-
-    mzr <- df_peak |>
-      dplyr::select(mzmin = mz_min, mzmax = mz_max) |>
-      as.matrix()
-
-    ms_chr <-
-      MSnbase::chromatogram(
-        object = dda_data_min,
-        rt = rtr,
-        mz = mzr
-      )
-
     ## CAD part
-    cad_time <- chromatograms_cad_improved[[1]][["time"]][which(
-      chromatograms_cad_improved[[1]][["time"]] >= df_peak$rt_min[1] &
-        chromatograms_cad_improved[[1]][["time"]] <= df_peak$rt_max[1]
-    )] * 60
-    cad_intensity <-
-      chromatograms_cad_improved[[1]][["intensity"]][which(
-        chromatograms_cad_improved[[1]][["time"]] >= df_peak$rt_min[1] &
-          chromatograms_cad_improved[[1]][["time"]] <= df_peak$rt_max[1]
-      )]
-
-    cad_ready <-
-      data.frame(intensity = cad_intensity, rtime = cad_time) |>
-      dplyr::filter(!is.na(intensity)) |>
+    cad_ready <- chromatograms_cad_improved[[s]] |>
+      dplyr::filter(time >= df_peak$rt_min[1] &
+        time <= df_peak$rt_max[1]) |>
       dplyr::mutate(intensity = (intensity - min(intensity)) / (max(intensity) -
         min(intensity))) |>
-      dplyr::filter(intensity >= 0.1) |>
-      dplyr::mutate(rtime = (rtime - min(rtime)) / (max(rtime) -
-        min(rtime))) |> # see https://github.com/sneumann/xcms/issues/593
-      dplyr::arrange(rtime)
+      dplyr::filter(intensity >= 0.1)
 
     cad_peak <-
       MSnbase::Chromatogram(
         intensity = cad_ready$intensity,
-        rtime = cad_ready$rtime
-      )
+        rtime = (cad_ready$time - min(cad_ready$time)) /
+          (max(cad_ready$time) - min(cad_ready$time))
+      ) #' see https://github.com/sneumann/xcms/issues/593
 
     ms_peaks <-
       parallel::mclapply(
-        X = seq_along(ms_chr),
+        X = seq_along(1:nrow(df_peak)),
         FUN = extract_peak
       )
 
     comparison_score <-
-      parallel::mclapply(
-        X = ms_peaks,
-        FUN = compare_peaks
-      )
+      if (length(ms_peaks) != 0) {
+        parallel::mclapply(
+          X = seq_along(ms_peaks),
+          FUN = compare_peaks
+        )
+      } else {
+        rep(list(0), nrow(df_peak))
+      }
 
     df_peak$comparison_score <- as.numeric(comparison_score)
 
@@ -485,7 +463,7 @@ df_peaks_samples_full <- dplyr::bind_rows(df_peaks_samples)
 #' We got 2556 CAD peaks automatically detected
 #' With peak similarity score > 0.6: 5313 features
 df_new_with_cor_pre <- df_peaks_samples_full |>
-  dplyr::filter(abs(comparison_score) >= PEAK_SIMILARITY_PREFILTER) #' TODO check negative values
+  dplyr::filter(comparison_score >= PEAK_SIMILARITY_PREFILTER) #' TODO check negative values
 
 df_new_with_cor_pre_taxo <- df_new_with_cor_pre |>
   dplyr::rowwise() |>
@@ -529,7 +507,7 @@ df_new_with_cor_08 <- df_new_with_cor_pre_taxo |>
   dplyr::filter(comparison_score >= 0.8)
 
 #' With peak similarity score > 0.75: 2598 features
-df_new_with_cor_075 <- df_new_with_cor_pre_taxo |>
+df_new_with_cor <- df_new_with_cor_pre_taxo |>
   dplyr::filter(comparison_score >= 0.75)
 
 #' TODO fix it
@@ -566,7 +544,7 @@ final_table_taxed_with_new_cor_08 <-
   )
 final_table_taxed_with_new_cor <-
   prepare_hierarchy(
-    dataframe = df_new_with_cor_075,
+    dataframe = df_new_with_cor,
     detector = "cad"
   )
 
@@ -667,6 +645,11 @@ combined <-
   absolute_with_new +
   absolute_with_new_cor
 
+combined_2 <-
+  absolute_with_new_cor_06 +
+  absolute_with_new_cor_07 +
+  absolute_with_new_cor_08 +
+  absolute_with_new_cor
 
 ## specific sample exploration
 plotly::plot_ly(
@@ -779,8 +762,7 @@ df_meta <- df_new_with_cor_pre_taxo |>
     species
   ) |>
   dplyr::group_by(id, peak_id) |>
-  dplyr::distinct(
-    feature_id,
+  dplyr::distinct(feature_id,
     # smiles_2D,
     # inchikey_2D,
     # best_candidate_1,
@@ -789,8 +771,7 @@ df_meta <- df_new_with_cor_pre_taxo |>
     .keep_all = TRUE
   ) |>
   dplyr::add_count(name = "featuresPerPeak") |>
-  dplyr::distinct(
-    smiles_2D,
+  dplyr::distinct(smiles_2D,
     inchikey_2D,
     # best_candidate_1,
     # best_candidate_2,
