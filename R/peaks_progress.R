@@ -21,7 +21,7 @@ peaks_progress <- function(xs) {
           sortstr = TRUE
         )
       # points(x[, 2], x[, 1], pch = 20, col = "maroon") ## End(Not run)
-      
+
       peaks <- data.frame(found) |>
         dplyr::mutate(
           peak_id = dplyr::row_number(),
@@ -31,7 +31,7 @@ peaks_progress <- function(xs) {
           rt_max = chromatograms_cad_baselined[[i]]$time[X4]
         ) |>
         data.table::data.table()
-      
+
       return(peaks)
     }
   )

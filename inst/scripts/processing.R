@@ -26,7 +26,7 @@ source(file = "R/get_params.R")
 source(file = "R/improve_signal.R")
 source(file = "R/improve_signals_progress.R")
 source(file = "R/log_debug.R")
-source(file = "r/make_confident.R")
+source(file = "R/make_confident.R")
 source(file = "R/parse_cli_params.R")
 source(file = "R/parse_yaml_params.R")
 source(file = "R/parse_yaml_paths.R")
@@ -99,7 +99,7 @@ files <- list.files(
   recursive = TRUE
 )
 
-files <- files[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = files)]
+# files <- files[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = files)]
 
 names <- list.files(
   path = TOYSET,
@@ -113,7 +113,7 @@ names <- list.files(
     fixed = TRUE
   )
 
-names <- names[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = names)]
+# names <- names[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = names)]
 
 annotations <- readr::read_delim(file = ANNOTATIONS)
 

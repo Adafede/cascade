@@ -10,17 +10,19 @@
 treemaps_progress <- function(xs, type = "treemap") {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(
-    X = setNames(object = xs,
-                 nm = xs),
+    X = setNames(
+      object = xs,
+      nm = xs
+    ),
     FUN = function(x) {
       if (x != "special") {
         plotly::plot_ly(
           data = hierarchies[[x]] |>
             dplyr::filter(sample == x),
-          ids = ~ ids,
-          labels = ~ labels,
-          parents = ~ parents,
-          values = ~ values,
+          ids = ~ids,
+          labels = ~labels,
+          parents = ~parents,
+          values = ~values,
           maxdepth = 3,
           type = type,
           branchvalues = "total",
@@ -38,11 +40,11 @@ treemaps_progress <- function(xs, type = "treemap") {
           plotly::add_trace(
             data = hierarchies[[unique(hierarchies[[x]]$species)[1]]] |>
               dplyr::filter(sample == unique(hierarchies[[x]]$species)[1] &
-                              !is.na(labels)),
-            ids = ~ ids,
-            labels = ~ labels,
-            parents = ~ parents,
-            values = ~ values,
+                !is.na(labels)),
+            ids = ~ids,
+            labels = ~labels,
+            parents = ~parents,
+            values = ~values,
             maxdepth = 3,
             type = type,
             branchvalues = "total",
@@ -52,11 +54,11 @@ treemaps_progress <- function(xs, type = "treemap") {
           plotly::add_trace(
             data = hierarchies[[unique(hierarchies[[x]]$species)[2]]] |>
               dplyr::filter(sample == unique(hierarchies[[x]]$species)[2] &
-                              !is.na(labels)),
-            ids = ~ ids,
-            labels = ~ labels,
-            parents = ~ parents,
-            values = ~ values,
+                !is.na(labels)),
+            ids = ~ids,
+            labels = ~labels,
+            parents = ~parents,
+            values = ~values,
             maxdepth = 3,
             type = type,
             branchvalues = "total",
