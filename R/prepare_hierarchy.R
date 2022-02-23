@@ -760,10 +760,10 @@ prepare_hierarchy <-
           dplyr::mutate(values = values / (sum(values) / 3)) |> #' because 3 levels
           dplyr::ungroup()
       } else {
-      final_table <- final_table |>
-        dplyr::group_by(sample) |>
-        dplyr::mutate(values = values / (sum(values) / 3)) |> #' because 3 levels
-        dplyr::ungroup()
+        final_table <- final_table |>
+          dplyr::group_by(sample) |>
+          dplyr::mutate(values = values / (sum(values) / 3)) |> #' because 3 levels
+          dplyr::ungroup()
       }
     }
 

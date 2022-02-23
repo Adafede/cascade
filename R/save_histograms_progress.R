@@ -9,8 +9,10 @@
 save_histograms_progress <- function(xs) {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(
-    X = setNames(object = xs,
-                 nm = xs),
+    X = setNames(
+      object = xs,
+      nm = xs
+    ),
     FUN = function(x) {
       ggplot2::ggsave(
         plot = histograms[[x]],

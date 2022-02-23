@@ -12,8 +12,9 @@ improve_signals_progress <- function(xs) {
     X = xs,
     FUN = function(x) {
       improve_signal(df = x |>
-                       dplyr::select(time,
-                                     intensity = UV.1_CAD_1_0))
+        dplyr::select(time,
+          intensity = UV.1_CAD_1_0
+        ))
     }
   )
 }
