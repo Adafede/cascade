@@ -12,9 +12,11 @@ prettyTables_progress <- function(xs) {
     X = xs,
     FUN = function(x) {
       p()
-      temp_gt_function(table = x,
-                         title = names(x),
-                         subtitle = "All compounds")
+      temp_gt_function(
+        table = x,
+        title = names(x),
+        subtitle = "All compounds"
+      )
     }
   )
 }

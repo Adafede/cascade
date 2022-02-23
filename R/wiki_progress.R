@@ -1,6 +1,6 @@
 #' Title
 #'
-#' @param xs 
+#' @param xs
 #'
 #' @return
 #' @export

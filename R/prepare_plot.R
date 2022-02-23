@@ -55,7 +55,7 @@ prepare_plot <- function(dataframe, organism = "species") {
   } else {
     samples <- presamples
   }
-  
+
   samples <- samples |>
     dplyr::rowwise() |>
     dplyr::mutate(color = ifelse(
