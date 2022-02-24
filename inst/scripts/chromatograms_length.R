@@ -1,5 +1,6 @@
 start <- Sys.time()
 
+library(package = baseline, quietly = TRUE)
 library(package = dplyr, quietly = TRUE)
 library(package = docopt, quietly = TRUE)
 library(package = future, quietly = TRUE)
@@ -50,7 +51,7 @@ WORKERS <- 10
 
 #' Parameters for LC alignment
 TIME_MIN <- 0 ## minutes
-TIME_MAX <- 32 ## minutes
+TIME_MAX <- 999 ## minutes
 CAD_SHIFT <- 0.055 ## minutes
 PDA_SHIFT <- 0.090 ## minutes
 ESTIMATED_SOLUBLITIY_LIMIT <- 58
@@ -79,14 +80,14 @@ CONFIDENCE_SCORE_MIN <- 0.5
 
 files <- list.files(
   path = TOYSET,
-  pattern = "Pos.mzML",
+  pattern = "Pos.mzML.gz",
   full.names = TRUE,
   recursive = TRUE
 )
 
 names <- list.files(
   path = TOYSET,
-  pattern = "Pos.mzML",
+  pattern = "Pos.mzML.gz",
   recursive = TRUE
 ) |>
   gsub(pattern = "[0-9]{6}_AR_[0-9]{2}_", replacement = "") |>
@@ -117,7 +118,10 @@ names(chromatograms_cad_improved) <- names
 
 cads_improved <-
   dplyr::bind_rows(chromatograms_cad_improved, .id = "id") |>
-  dplyr::mutate(time = time + CAD_SHIFT)
+  dplyr::mutate(time = time + CAD_SHIFT) |>
+  dplyr::group_by(id) |>
+  dplyr::mutate(time_2 = max(time)) |>
+  dplyr::mutate(time = time / time_2)
 
 cad_plot <- plotly::plot_ly(
   data = cads_improved,
@@ -161,7 +165,10 @@ for (i in seq_along(seq_len(length(chromatograms_cad_improved)))) {
 
 cads_baselined <-
   dplyr::bind_rows(chromatograms_cad_baselined, .id = "id") |>
-  dplyr::mutate(intensity = intensity / max(intensity))
+  dplyr::mutate(intensity = intensity / max(intensity)) |>
+  dplyr::group_by(id) |>
+  dplyr::mutate(time_2 = max(time)) |>
+  dplyr::mutate(time = time / time_2)
 
 new_new <- plotly::plot_ly(
   data = cads_baselined,
