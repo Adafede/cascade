@@ -141,6 +141,8 @@ structures_classified <- readr::read_delim(
   file = classified_path,
   col_select = c(
     "structure_id" = "structure_inchikey",
+    "structure_exact_mass",
+    "structure_xlogp",
     "chemical_pathway" = "structure_taxonomy_npclassifier_01pathway",
     "chemical_superclass" = "structure_taxonomy_npclassifier_02superclass",
     "chemical_class" = "structure_taxonomy_npclassifier_03class"
