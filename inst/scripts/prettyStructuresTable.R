@@ -15,6 +15,7 @@ library(package = readr, quietly = TRUE)
 library(package = splitstackshape, quietly = TRUE)
 library(package = tidyr, quietly = TRUE)
 library(package = WikidataQueryServiceR, quietly = TRUE)
+library(package = yaml, quietly = TRUE)
 
 source(file = "R/check_export_dir.R")
 source(file = "R/colors.R")
@@ -24,6 +25,7 @@ source(file = "R/hierarchies_grouped_progress.R")
 source(file = "R/histograms_progress.R")
 source(file = "R/log_debug.R")
 source(file = "R/molinfo.R")
+source(file = "R/parse_yaml_paths.R")
 source(file = "R/plot_histograms.R")
 source(file = "R/prehistograms_progress.R")
 source(file = "R/prepare_hierarchy.R")
@@ -42,13 +44,7 @@ future::plan(strategy = future::multisession)
 handlers(global = TRUE)
 handlers("progress")
 
-classified_path <-
-  "~/Git/lotus-processor/data/processed/220208_frozen_metadata.csv.gz"
-
-query_path_1 <- "inst/scripts/sparql/get_review_table_part_1.sql"
-query_path_2 <- "inst/scripts/sparql/get_review_table_part_2.sql"
-query_path_3 <- "inst/scripts/sparql/get_review_table_part_3.sql"
-query_path_4 <- "inst/scripts/sparql/get_review_table_part_4.sql"
+paths <- parse_yaml_paths()
 
 export_dir <- "data"
 export_dir_histograms <- file.path(export_dir, "histograms")
@@ -132,11 +128,19 @@ genera <-
     fixed = TRUE
   )]
 
-query_part_1 <- readr::read_file(query_path_1)
-query_part_2 <- readr::read_file(query_path_2)
-query_part_3 <- readr::read_file(query_path_3)
-query_part_4 <- readr::read_file(query_path_4)
+query_part_1 <- readr::read_file(paths$inst$scripts$sparql$review_1)
+query_part_2 <- readr::read_file(paths$inst$scripts$sparql$review_2)
+query_part_3 <- readr::read_file(paths$inst$scripts$sparql$review_3)
+query_part_4 <- readr::read_file(paths$inst$scripts$sparql$review_4)
 
+if (!file.exists(paths$inst$extdata$source$libraries$lotus)) {
+  message("Downloading LOTUS")
+  get_lotus(export = paths$inst$extdata$source$libraries$lotus)
+} else {
+  message("LOTUS found")
+}
+
+message("Loading LOTUS classified structures")
 structures_classified <- readr::read_delim(
   file = classified_path,
   col_select = c(

@@ -17,9 +17,31 @@ data:
       path: data/processed/config
   source:
     path: data/source
-src:
-  path: intst/scripts
-  docopt:
-    path: inst/scripts/docopt
+inst:
+  path: intst
+  extdata:
+    path: inst/extdata/
+    interim:
+      path: inst/extdata/interim/
+    source:
+      path: inst/extdata/source/
+      libraries:
+        path: inst/extdata/source/libraries
+        lotus: inst/extdata/source/libraries/lotus.csv.gz
+  scripts:
+    path: inst/scripts/
+    docopt:
+      path: inst/scripts/docopt
+    sparql:
+      path: inst/scripts/sparql
+      review_1: inst/scripts/sparql/get_review_table_part_1.sql
+      review_2: inst/scripts/sparql/get_review_table_part_2.sql
+      review_3: inst/scripts/sparql/get_review_table_part_3.sql
+      review_4: inst/scripts/sparql/get_review_table_part_4.sql
 tests:
   path: tests
+r:
+  path: R
+urls:
+  lotus: https://zenodo.org/record/6277266/files/220208_frozen_metadata.csv.gz?download=1
+  npc_json: https://raw.githubusercontent.com/mwang87/NP-Classifier/7e4e2001a1416b96968240650dc7d70f1275fdb5/Classifier/dict/index_v1.json
