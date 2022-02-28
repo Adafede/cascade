@@ -7,4 +7,10 @@ organisms:
   taxon: Gentianaceae # let empty for no filter
   group: organism_taxonomy_08genus
   subgroup: organism_taxonomy_09species
+references:
+  date:
+    start: 1900
+    end: 2022
+queries:
+  limit: 50000
 force: FALSE
