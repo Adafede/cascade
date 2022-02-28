@@ -179,7 +179,7 @@ new_new <- plotly::plot_ly(
   colors = "Spectral",
   type = "scatter",
   mode = "lines",
-  line = list(width = 0.5),
+  line = list(width = 1),
   legendgroup = ~id
 ) |>
   plotly::layout(
@@ -192,6 +192,41 @@ new_new <- plotly::plot_ly(
       showarrow = FALSE
     )
   )
+
+uhr <- plotly::plot_ly() |> 
+  plotly::add_lines(
+  data = cads_baselined |> dplyr::filter(grepl(pattern = "UHR", x = id)),
+  x = ~time,
+  y = ~intensity,
+  name = "very long"
+) 
+semi <- plotly::plot_ly() |> 
+  plotly::add_lines(
+    data = cads_baselined |> dplyr::filter(grepl(pattern = "21", x = id)),
+    x = ~time,
+    y = ~intensity,
+    name = "long"
+  )
+short <- plotly::plot_ly() |> 
+  plotly::add_lines(
+    data = cads_baselined |> dplyr::filter(grepl(pattern = "09_P", x = id)),
+    x = ~time,
+    y = ~intensity,
+    name = "short"
+  )
+
+new_new_new <- plotly::subplot(short,
+                               semi,
+                               uhr,
+                               shareX = TRUE,
+                               shareY = TRUE,
+                               titleY = FALSE,
+                               titleX = FALSE,
+                               nrows = 3) |>
+  plotly::layout(yaxis = list(range = c(0, 0.2)),
+                 yaxis2 = list(range = c(0, 0.2)),
+                 yaxis3 = list(range = c(0, 0.2)))
+new_new_new
 
 peaks_cad <- peaks_progress(chromatograms_cad_baselined)
 
