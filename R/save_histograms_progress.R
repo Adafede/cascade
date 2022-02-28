@@ -17,7 +17,7 @@ save_histograms_progress <- function(xs) {
       ggplot2::ggsave(
         plot = histograms[[x]],
         filename = file.path(
-          export_dir_histograms,
+          paths$data$histograms$path,
           paste0(
             "histogram_",
             gsub(
