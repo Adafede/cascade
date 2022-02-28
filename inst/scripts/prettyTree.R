@@ -1,54 +1,82 @@
-source(file = "r/log_debug.R")
+source(file = "R/log_debug.R")
 log_debug("This script plots an alternative magic tree.")
 
 start <- Sys.time()
 
-library(package = data.table, quietly = TRUE)
-library(package = dplyr, quietly = TRUE)
-library(package = forcats, quietly = TRUE)
-library(package = ggplot2, quietly = TRUE)
-library(package = ggtree, quietly = TRUE)
-library(package = ggtreeExtra, quietly = TRUE)
-library(package = ggstar, quietly = TRUE)
-library(package = ggnewscale, quietly = TRUE)
-library(package = microshades, quietly = TRUE)
-library(package = readr, quietly = TRUE)
-library(package = rotl, quietly = TRUE)
-library(package = splitstackshape, quietly = TRUE)
-library(package = tidyr, quietly = TRUE)
-source(file = "r/colors.R")
-source(file = "r/prepare_hierarchy.R")
-source(file = "r/prepare_plot.R")
+#' Packages
+packages_cran <-
+  c(
+    "data.table",
+    "devtools",
+    "dplyr",
+    "forcats",
+    "ggplot2",
+    "ggnewscale",
+    "readr",
+    "rotl",
+    "splitstackshape",
+    "tidyr",
+    "yaml"
+  )
+packages_bioconductor <- c("ggtree", "ggtreeExtra", "ggstar")
+packages_github <- c("KarstensLab/microshades")
 
-classified_path <-
-  "~/Git/lotus-processor/data/processed/220208_frozen_metadata.csv.gz"
-export_dir <- "~/Downloads"
-export_name <- "full"
+source(file = "R/check_and_load_packages.R")
+source(file = "R/check_export_dir.R")
+source(file = "R/colors.R")
+source(file = "R/load_lotus.R")
+source(file = "R/make_2D.R")
+source(file = "R/parse_yaml_params.R")
+source(file = "R/parse_yaml_paths.R")
+source(file = "R/prepare_hierarchy.R")
+source(file = "R/prepare_plot.R")
 
-n_min <- 25
-filter_level <- "organism_taxonomy_06family"
-filter_taxon <- "Apocynaceae" #' replace with NA for no filter
-group_level <- "organism_taxonomy_09species"
-subgroup_level <- "organism_taxonomy_09species"
+check_and_load_packages()
 
-pairs_metadata <- readr::read_delim(file = classified_path) |>
+devtools::source_url(
+  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_lotus.R"
+)
+
+paths <- parse_yaml_paths()
+params <- parse_yaml_params()
+
+export_name <-
+  ifelse(
+    test = !is.null(params$organisms$taxon),
+    yes = params$organisms$taxon,
+    no = "full"
+  )
+
+load_lotus()
+
+lotus <-
+  readr::read_delim(file = paths$inst$extdata$source$libraries$lotus) |>
   data.table::data.table()
 
-if (!is.na(filter_taxon)) {
-  taxon_prerestricted <- pairs_metadata |>
-    dplyr::filter(!!as.name(filter_level) == filter_taxon)
+if (params$structures$dimensionality == 2) {
+  lotus <- lotus |>
+    make_2D() |>
+    data.table::data.table()
+}
+
+if (!is.na(params$organisms$taxon)) {
+  taxon_prerestricted <- lotus |>
+    dplyr::filter(!!as.name(params$organisms$level) == params$organisms$taxon)
 } else {
-  taxon_prerestricted <- pairs_metadata
+  taxon_prerestricted <- lotus
 }
 
 taxon_restricted <- taxon_prerestricted |>
-  dplyr::filter(!is.na(!!as.name(group_level))) |>
-  dplyr::distinct(structure_inchikey, !!as.name(group_level), .keep_all = TRUE) |>
-  dplyr::group_by(!!as.name(group_level)) |>
+  dplyr::filter(!is.na(!!as.name(params$organisms$group))) |>
+  dplyr::distinct(structure_inchikey,
+    !!as.name(params$organisms$group),
+    .keep_all = TRUE
+  ) |>
+  dplyr::group_by(!!as.name(params$organisms$group)) |>
   dplyr::add_count() |>
   dplyr::ungroup() |>
-  dplyr::filter(n >= n_min) |>
-  dplyr::distinct(!!as.name(group_level))
+  dplyr::filter(n >= params$structures$min) |>
+  dplyr::distinct(!!as.name(params$organisms$group))
 
 taxon_matched_restricted <-
   rotl::tnrs_match_names(
@@ -60,7 +88,7 @@ ott_in_tree <-
   rotl::ott_id(taxon_matched_restricted)[rotl::is_in_tree(rotl::ott_id(taxon_matched_restricted))]
 
 taxon_restricted <- taxon_restricted |>
-  dplyr::filter(!!as.name(group_level) %in% names(ott_in_tree))
+  dplyr::filter(!!as.name(params$organisms$group) %in% names(ott_in_tree))
 
 taxon_matched_restricted <-
   rotl::tnrs_match_names(
@@ -84,9 +112,9 @@ tr_restricted <- rotl::tol_induced_subtree(ott_ids = ott_in_tree)
 
 specific_classes <- taxon_prerestricted |>
   splitstackshape::cSplit(
-    splitCols = colnames(pairs_metadata)[pairs_metadata[, grepl(
+    splitCols = colnames(lotus)[lotus[, grepl(
       pattern = "structure_taxonomy_npclassifier_",
-      x = colnames(pairs_metadata)
+      x = colnames(lotus)
     )]],
     sep = "|",
     direction = "long"
@@ -116,16 +144,16 @@ specific_classes <- taxon_prerestricted |>
     )
   ) |>
   dplyr::mutate_all(as.character) |>
-  dplyr::filter(!!as.name(group_level) %in% taxon_matched_restricted$unique_name) |>
+  dplyr::filter(!!as.name(params$organisms$group) %in% taxon_matched_restricted$unique_name) |>
   dplyr::filter(!is.na(structure_taxonomy_npclassifier_03class)) |>
-  dplyr::distinct(!!as.name(group_level),
+  dplyr::distinct(!!as.name(params$organisms$group),
     structure_inchikey,
     .keep_all = TRUE
   )
 
 specific_classes_o <- specific_classes |>
-  dplyr::group_by(!!as.name(group_level)) |>
-  dplyr::distinct(!!as.name(subgroup_level), .keep_all = TRUE) |>
+  dplyr::group_by(!!as.name(params$organisms$group)) |>
+  dplyr::distinct(!!as.name(params$organisms$subgroup), .keep_all = TRUE) |>
   dplyr::count(name = "o") |>
   dplyr::ungroup()
 
@@ -139,7 +167,7 @@ tr_restricted$tip.label <-
 taxonomy <-
   dplyr::left_join(
     taxon_restricted,
-    pairs_metadata
+    lotus
   ) |>
   dplyr::distinct(
     Domain = organism_taxonomy_01domain,
@@ -160,7 +188,7 @@ info <- taxonomy |>
       pattern = gsub(
         pattern = "organism_taxonomy_[0-9]{2}",
         replacement = "",
-        x = group_level
+        x = params$organisms$group
       ),
       x = names(taxonomy),
       ignore.case = TRUE
@@ -169,7 +197,7 @@ info <- taxonomy |>
   ) |>
   dplyr::mutate(Kingdom = forcats::fct_reorder(Kingdom, !is.na(Domain))) |>
   dplyr::mutate(Phylum = forcats::fct_reorder(Phylum, !is.na(Kingdom))) |>
-  dplyr::left_join(specific_classes_o, by = c("id" = group_level)) |>
+  dplyr::left_join(specific_classes_o, by = c("id" = params$organisms$group)) |>
   dplyr::mutate(id = gsub(
     pattern = " ",
     replacement = "_",
@@ -179,7 +207,7 @@ info <- taxonomy |>
 specific_classes_adapted <- specific_classes |>
   dplyr::distinct(
     structure = structure_wikidata,
-    organism = !!as.name(group_level),
+    organism = !!as.name(params$organisms$group),
     best_candidate_1 = structure_taxonomy_npclassifier_01pathway,
     best_candidate_2 = structure_taxonomy_npclassifier_02superclass,
     best_candidate_3 = structure_taxonomy_npclassifier_03class
@@ -406,9 +434,11 @@ p_abs <- p +
     na.value = "grey"
   )
 
+lapply(X = paths$data$trees$path, FUN = check_export_dir)
+
 ggplot2::ggsave(
   filename = file.path(
-    export_dir,
+    paths$data$trees$path,
     paste("tree", export_name, "relative.pdf", sep = "_")
   ),
   plot = p_rel,
@@ -420,7 +450,7 @@ ggplot2::ggsave(
 
 ggplot2::ggsave(
   filename = file.path(
-    export_dir,
+    paths$data$trees$path,
     paste("tree", export_name, "absolute.pdf", sep = "_")
   ),
   plot = p_abs,

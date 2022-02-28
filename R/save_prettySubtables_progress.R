@@ -17,7 +17,7 @@ save_prettySubtables_progress <- function(xs) {
       gt::gtsave(
         data = prettySubtables[[x]],
         filename = file.path(
-          export_dir_tables,
+          paths$data$tables$path,
           paste0(
             "prettySubtable_",
             gsub(

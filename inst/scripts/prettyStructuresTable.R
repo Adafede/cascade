@@ -1,30 +1,41 @@
+source(file = "R/log_debug.R")
 start <- Sys.time()
 
-library(package = dplyr, quietly = TRUE)
-library(package = future, quietly = TRUE)
-library(package = future.apply, quietly = TRUE)
-library(package = ggplot2, quietly = TRUE)
-library(package = gt, quietly = TRUE)
-library(package = htmltools, quietly = TRUE)
-library(package = microshades, quietly = TRUE)
-library(package = plotly, quietly = TRUE)
-library(package = progressr, quietly = TRUE)
-library(package = purrr, quietly = TRUE)
-library(package = RCurl, quietly = TRUE)
-library(package = readr, quietly = TRUE)
-library(package = splitstackshape, quietly = TRUE)
-library(package = tidyr, quietly = TRUE)
-library(package = WikidataQueryServiceR, quietly = TRUE)
-library(package = yaml, quietly = TRUE)
+#' Packages
+packages_cran <-
+  c(
+    "devtools",
+    "dplyr",
+    "future",
+    "future.apply",
+    "ggplot2",
+    "gt",
+    "htmltools",
+    "plotly",
+    "progressr",
+    "purrr",
+    "RCurl",
+    "readr",
+    "rotl",
+    "splitstackshape",
+    "tidyr",
+    "WikidataQueryServiceR",
+    "yaml"
+  )
+packages_bioconductor <- NULL
+packages_github <- c("KarstensLab/microshades")
 
+source(file = "R/check_and_load_packages.R")
 source(file = "R/check_export_dir.R")
 source(file = "R/colors.R")
 source(file = "R/format_gt.R")
 source(file = "R/hierarchies_progress.R")
 source(file = "R/hierarchies_grouped_progress.R")
 source(file = "R/histograms_progress.R")
-source(file = "R/log_debug.R")
+source(file = "R/load_lotus.R")
+source(file = "R/make_2D.R")
 source(file = "R/molinfo.R")
+source(file = "R/parse_yaml_params.R")
 source(file = "R/parse_yaml_paths.R")
 source(file = "R/plot_histograms.R")
 source(file = "R/prehistograms_progress.R")
@@ -40,27 +51,31 @@ source(file = "R/tables_progress.R")
 source(file = "R/treemaps_progress.R")
 source(file = "R/wiki_progress.R")
 
+check_and_load_packages()
+
+devtools::source_url(
+  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_lotus.R"
+)
+
 future::plan(strategy = future::multisession)
 handlers(global = TRUE)
 handlers("progress")
 
 paths <- parse_yaml_paths()
+params <- parse_yaml_params()
 
-export_dir <- "data"
-export_dir_histograms <- file.path(export_dir, "histograms")
-export_dir_sunbursts <- file.path(export_dir, "sunbursts")
-export_dir_tables <- file.path(export_dir, "tables")
-export_dir_treemaps <- file.path(export_dir, "treemaps")
+load_lotus()
 
 exports <-
   list(
-    export_dir,
-    export_dir_histograms,
-    export_dir_sunbursts,
-    export_dir_tables,
-    export_dir_treemaps
+    paths$data$path,
+    paths$data$histograms$path,
+    paths$data$sunbursts$path,
+    paths$data$tables$path,
+    paths$data$treemaps$path
   )
 
+#' TODO clean this
 #' As there is no better way than to manually assess if the QID
 #' really corresponds to what you want
 qids <- list(
@@ -106,6 +121,7 @@ qids <- list(
   # "Papiliotrema rajasthanensis" = "Q27866418"
 )
 
+#' TODO clean this
 comparison <-
   c(
     "Arnica montana",
@@ -116,10 +132,6 @@ comparison <-
   )
 # comparison <- c("Gentiana", "Swertia")
 # comparison <- c("Dendrobium", "Trichoderma")
-
-limit <- 50000
-start_date <- 1900
-end_date <- 2022
 
 genera <-
   names(qids)[!grepl(
@@ -133,18 +145,12 @@ query_part_2 <- readr::read_file(paths$inst$scripts$sparql$review_2)
 query_part_3 <- readr::read_file(paths$inst$scripts$sparql$review_3)
 query_part_4 <- readr::read_file(paths$inst$scripts$sparql$review_4)
 
-if (!file.exists(paths$inst$extdata$source$libraries$lotus)) {
-  message("Downloading LOTUS")
-  get_lotus(export = paths$inst$extdata$source$libraries$lotus)
-} else {
-  message("LOTUS found")
-}
-
 message("Loading LOTUS classified structures")
 structures_classified <- readr::read_delim(
-  file = classified_path,
+  file = paths$inst$extdata$source$libraries$lotus,
   col_select = c(
     "structure_id" = "structure_inchikey",
+    "structure_smiles_2D",
     "structure_exact_mass",
     "structure_xlogp",
     "chemical_pathway" = "structure_taxonomy_npclassifier_01pathway",
@@ -182,6 +188,10 @@ results <- wiki_progress(queries)
 
 message("Cleaning tables and adding columns")
 tables <- tables_progress(results)
+
+if (params$structures$dimensionality == 2) {
+  tables_2 <- lapply(tables, make_2D)
+}
 
 message("Generating subtables based on chemical classification")
 subtables <- subtables_progress(tables)
@@ -321,7 +331,7 @@ save_histograms_progress(names(histograms))
 #   FUN = function(x) {
 #     plotly::save_image(
 #       p = sunbursts[[x]],
-#       file = file.path(export_dir_sunbursts,
+#       file = file.path(paths$data$sunbursts$path,
 #                        paste0(
 #                          "sunburst_",
 #                          gsub(
@@ -340,7 +350,7 @@ save_histograms_progress(names(histograms))
 # for (i in names(treemaps)) {
 #   plotly::save_image(
 #     p = treemaps[[i]],
-#     file = file.path(export_dir_treemaps,
+#     file = file.path(paths$data$treemaps$path,
 #                      paste0(
 #                        "treemap_",
 #                        gsub(

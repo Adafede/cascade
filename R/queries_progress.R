@@ -16,11 +16,11 @@ queries_progress <- function(xs) {
         query_part_1,
         x,
         query_part_2,
-        start_date,
+        params$references$date$start,
         query_part_3,
-        end_date,
+        params$references$date$end,
         query_part_4,
-        paste("\nLIMIT", limit)
+        paste("\nLIMIT", params$queries$limit)
       )
     }
   )
