@@ -8,7 +8,7 @@
 #' @examples
 wiki_progress <- function(xs) {
   p <- progressr::progressor(along = xs)
-  future.apply::future_lapply(
+  lapply(
     X = xs,
     FUN = function(x) {
       p()

@@ -21,6 +21,6 @@ make_chromatographiable <-
       dplyr::filter(structure_exact_mass <= mass_max) |>
       dplyr::filter(structure_xlogp >= logp_min) |>
       dplyr::filter(structure_xlogp <= logp_max)
-    
+
     return(df_ready)
   }

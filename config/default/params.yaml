@@ -1,0 +1,10 @@
+structures:
+  dimensionality: 2
+  min: 25
+  level: structure_taxonomy_npclassifier_02superclass
+organisms:
+  level: organism_taxonomy_06family
+  taxon: Gentianaceae # let empty for no filter
+  group: organism_taxonomy_08genus
+  subgroup: organism_taxonomy_09species
+force: FALSE
