@@ -26,6 +26,7 @@ source(file = "R/check_export_dir.R")
 source(file = "R/colors.R")
 source(file = "R/load_lotus.R")
 source(file = "R/make_2D.R")
+source(file = "R/make_chromatographiable.R")
 source(file = "R/parse_yaml_params.R")
 source(file = "R/parse_yaml_paths.R")
 source(file = "R/prepare_hierarchy.R")
@@ -56,6 +57,12 @@ lotus <-
 if (params$structures$dimensionality == 2) {
   lotus <- lotus |>
     make_2D() |>
+    data.table::data.table()
+}
+
+if (params$structures$c18 == TRUE) {
+  lotus <- lotus |>
+    make_chromatographiable()|>
     data.table::data.table()
 }
 
