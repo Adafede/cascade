@@ -12,10 +12,10 @@
 #' @examples
 make_chromatographiable <-
   function(df,
-           mass_min = 100,
-           mass_max = 1500,
-           logp_min = -1,
-           logp_max = 6) {
+           mass_min = params$structures$mass$min,
+           mass_max = params$structures$mass$max,
+           logp_min = params$structures$logp$min,
+           logp_max = params$structures$logp$max) {
     df_ready <- df |>
       dplyr::filter(structure_exact_mass >= mass_min) |>
       dplyr::filter(structure_exact_mass <= mass_max) |>

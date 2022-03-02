@@ -2,7 +2,13 @@ structures:
   dimensionality: 2
   min: 25
   level: structure_taxonomy_npclassifier_03class
-  c18: TRUE 
+  c18: TRUE
+  mass:
+    min: 150
+    max: 1500
+  logp:
+    min: -1
+    max: 6
 organisms:
   level: organism_taxonomy_05order
   taxon: Gentianales # let empty for no filter
