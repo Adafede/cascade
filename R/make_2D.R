@@ -18,7 +18,8 @@ make_2D <-
           "reference_doi"
         )
       )),
-      .keep_all = TRUE) |>
+      .keep_all = TRUE
+      ) |>
       dplyr::ungroup() |>
       dplyr::select(-structure_smiles_2D)
   }
