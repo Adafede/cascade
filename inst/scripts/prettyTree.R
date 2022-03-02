@@ -62,7 +62,7 @@ if (params$structures$dimensionality == 2) {
 
 if (params$structures$c18 == TRUE) {
   lotus <- lotus |>
-    make_chromatographiable()|>
+    make_chromatographiable() |>
     data.table::data.table()
 }
 
