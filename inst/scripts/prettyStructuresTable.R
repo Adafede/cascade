@@ -34,6 +34,7 @@ source(file = "R/hierarchies_grouped_progress.R")
 source(file = "R/histograms_progress.R")
 source(file = "R/load_lotus.R")
 source(file = "R/make_2D.R")
+source(file = "R/make_chromatographiable.R")
 source(file = "R/molinfo.R")
 source(file = "R/parse_yaml_params.R")
 source(file = "R/parse_yaml_paths.R")
@@ -190,7 +191,11 @@ message("Cleaning tables and adding columns")
 tables <- tables_progress(results)
 
 if (params$structures$dimensionality == 2) {
-  tables_2 <- lapply(tables, make_2D)
+  tables <- lapply(tables, make_2D)
+}
+
+if (params$structures$c18 == TRUE) {
+  tables <- lapply(tables, make_chromatographiable)
 }
 
 message("Generating subtables based on chemical classification")
