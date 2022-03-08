@@ -14,6 +14,7 @@ save_histograms_progress <- function(xs) {
       nm = xs
     ),
     FUN = function(x) {
+      p()
       ggplot2::ggsave(
         plot = histograms[[x]],
         filename = file.path(

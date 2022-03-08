@@ -15,6 +15,7 @@ treemaps_progress <- function(xs, type = "treemap") {
       nm = xs
     ),
     FUN = function(x) {
+      p()
       if (x != "special") {
         plotly::plot_ly(
           data = hierarchies[[x]] |>
