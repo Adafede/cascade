@@ -47,6 +47,7 @@ source(file = "R/queries_progress.R")
 source(file = "R/save_histograms_progress.R")
 source(file = "R/save_prettySubtables_progress.R")
 source(file = "R/save_prettyTables_progress.R")
+source(file = "R/save_treemaps_progress.R")
 source(file = "R/subtables_progress.R")
 source(file = "R/tables_progress.R")
 source(file = "R/treemaps_progress.R")
@@ -286,6 +287,7 @@ sunbursts <-
     type = "sunburst"
   )
 
+message("Filtering treemaps")
 treemaps <-
   within(
     treemaps,
@@ -295,6 +297,7 @@ treemaps <-
     )])
   )
 
+message("Filtering sunbursts")
 sunbursts <-
   within(
     sunbursts,
@@ -306,10 +309,13 @@ sunbursts <-
 
 lapply(X = exports, FUN = check_export_dir)
 
+message("Exporting html tables")
 save_prettyTables_progress(names(prettyTables))
 
+message("Exporting html subtables")
 save_prettySubtables_progress(names(prettySubtables))
 
+message("Adapting histograms dimensions")
 dimensions <- future.apply::future_lapply(
   X = names(prehistograms),
   FUN = function(x) {
@@ -324,6 +330,7 @@ size <- future.apply::future_lapply(
   }
 )
 
+message("Exporting histograms")
 save_histograms_progress(names(histograms))
 
 # reticulate::install_miniconda()
@@ -331,44 +338,14 @@ save_histograms_progress(names(histograms))
 # reticulate::conda_install('r-reticulate', 'plotly', channel = 'plotly')
 # reticulate::use_miniconda('r-reticulate')
 
-# lapply(
-#   X = names(sunbursts),
-#   FUN = function(x) {
-#     plotly::save_image(
-#       p = sunbursts[[x]],
-#       file = file.path(paths$data$sunbursts$path,
-#                        paste0(
-#                          "sunburst_",
-#                          gsub(
-#                            pattern = " ",
-#                            replacement = "_",
-#                            x = x
-#                          ),
-#                          ".pdf"
-#                        )),
-#       width = 900,
-#       height = 900
-#     )
-#   }
-# )
+message("Exporting sunbursts")
+save_treemaps_progress(
+  xs = names(sunbursts),
+  type = "sunburst"
+)
 
-# for (i in names(treemaps)) {
-#   plotly::save_image(
-#     p = treemaps[[i]],
-#     file = file.path(paths$data$treemaps$path,
-#                      paste0(
-#                        "treemap_",
-#                        gsub(
-#                          pattern = " ",
-#                          replacement = "_",
-#                          x = i
-#                        ),
-#                        ".pdf"
-#                      )),
-#     width = 900,
-#     height = 900
-#   )
-# }
+message("Exporting treemaps")
+save_treemaps_progress(xs = names(treemaps))
 
 end <- Sys.time()
 
