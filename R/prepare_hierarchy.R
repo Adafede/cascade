@@ -190,11 +190,14 @@ prepare_hierarchy <-
         replacement = "",
         x = ids
       )) |>
-      dplyr::mutate_all(list(~ gsub(
-        x = .x,
-        pattern = "-NA$",
-        replacement = "",
-      ))) |>
+      dplyr::mutate_at(
+        vars(-group_cols()),
+        ~ gsub(
+          x = .x,
+          pattern = "-NA$",
+          replacement = "",
+        )
+      ) |>
       dplyr::filter(!is.na(labels)) |>
       dplyr::distinct()
 
@@ -209,16 +212,22 @@ prepare_hierarchy <-
           x = join
         )
       ) |>
-      dplyr::mutate_all(list(~ gsub(
-        x = .x,
-        pattern = "-NA$",
-        replacement = "",
-      ))) |>
-      dplyr::mutate_all(list(~ gsub(
-        x = .x,
-        pattern = "^NA$",
-        replacement = NA,
-      ))) |>
+      dplyr::mutate_at(
+        vars(-group_cols()),
+        ~ gsub(
+          x = .x,
+          pattern = "-NA$",
+          replacement = "",
+        )
+      ) |>
+      dplyr::mutate_at(
+        vars(-group_cols()),
+        ~ gsub(
+          x = .x,
+          pattern = "^NA$",
+          replacement = NA,
+        )
+      ) |>
       dplyr::full_join(children_1,
         by = c(
           "join" = "labels",
@@ -239,24 +248,30 @@ prepare_hierarchy <-
         !is.na(labels)) |>
       dplyr::ungroup()
 
-    table <- dataframe2 |>
-      dplyr::mutate(ids = paste0(best_candidate_2, "-", best_candidate_3)) |>
-      dplyr::mutate(ids = gsub(
-        x = ids,
-        pattern = "-NA$",
-        replacement = "",
-      )) |>
-      dplyr::mutate(ids = gsub(
-        x = ids,
-        pattern = "^NA$",
-        replacement = NA,
-      )) |>
-      dplyr::full_join(genealogy) |>
-      dplyr::mutate(best_candidate_3 = ifelse(
-        test = is.na(best_candidate_3) & !is.na(best_candidate_2),
-        no = best_candidate_3,
-        yes = paste0(best_candidate_1, "-", best_candidate_2)
-      ))
+    suppressMessages(
+      table <- dataframe2 |>
+        dplyr::mutate(ids = paste0(
+          best_candidate_2, "-", best_candidate_3
+        )) |>
+        dplyr::mutate(ids = gsub(
+          x = ids,
+          pattern = "-NA$",
+          replacement = "",
+        )) |>
+        dplyr::mutate(ids = gsub(
+          x = ids,
+          pattern = "^NA$",
+          replacement = NA,
+        )) |>
+        dplyr::full_join(genealogy) |>
+        dplyr::mutate(
+          best_candidate_3 = ifelse(
+            test = is.na(best_candidate_3) & !is.na(best_candidate_2),
+            no = best_candidate_3,
+            yes = paste0(best_candidate_1, "-", best_candidate_2)
+          )
+        )
+    )
 
     if (type == "analysis") {
       table <- table |>
@@ -356,19 +371,21 @@ prepare_hierarchy <-
 
     table_2 <- table_1_1 |>
       dplyr::group_by(chemical_pathway, parents) |>
-      dplyr::summarize(sum = sum(values))
+      dplyr::summarize(sum = sum(values), .groups = "drop")
 
-    table_3 <-
-      dplyr::left_join(table_2, children_1, by = c("parents" = "ids")) |>
-      dplyr::group_by(chemical_pathway = chemical_pathway.y, parents.y) |>
-      dplyr::mutate(n = sum(sum)) |>
-      dplyr::mutate(n = if_else(
-        condition = parents.y == "Other",
-        true = n + 666,
-        false = n + 0
-      )) |>
-      dplyr::select(parents = parents.y, ids = parents, labels, sum, n) |>
-      dplyr::ungroup()
+    suppressMessages(
+      table_3 <-
+        dplyr::left_join(table_2, children_1, by = c("parents" = "ids")) |>
+        dplyr::group_by(chemical_pathway = chemical_pathway.y, parents.y) |>
+        dplyr::mutate(n = sum(sum)) |>
+        dplyr::mutate(n = if_else(
+          condition = parents.y == "Other",
+          true = n + 666,
+          false = n + 0
+        )) |>
+        dplyr::select(parents = parents.y, ids = parents, labels, sum, n) |>
+        dplyr::ungroup()
+    )
 
     table_3_1 <- table_3 |>
       dplyr::distinct(n, .keep_all = TRUE) |>
@@ -396,16 +413,18 @@ prepare_hierarchy <-
 
     top_medium <- top_medium_table$ids
 
-    low_medium_table <-
-      dplyr::anti_join(table_3, dplyr::bind_rows(table_3_1, top_medium_table)) |>
-      dplyr::select(
-        chemical_pathway,
-        parents,
-        ids,
-        labels
-      ) |>
-      dplyr::filter(!is.na(parents)) |>
-      dplyr::distinct()
+    suppressMessages(
+      low_medium_table <-
+        dplyr::anti_join(table_3, dplyr::bind_rows(table_3_1, top_medium_table)) |>
+        dplyr::select(
+          chemical_pathway,
+          parents,
+          ids,
+          labels
+        ) |>
+        dplyr::filter(!is.na(parents)) |>
+        dplyr::distinct()
+    )
 
     low_medium_table_1_a <- low_medium_table |>
       dplyr::filter(parents %in% top_parents) |>
@@ -477,19 +496,21 @@ prepare_hierarchy <-
       dplyr::ungroup() |>
       dplyr::distinct()
 
-    table_children <- genealogy |>
-      dplyr::filter(!labels %in% genealogy_new_med$ids) |>
-      dplyr::select(labels) |>
-      dplyr::left_join(genealogy_new_med_2) |>
-      dplyr::filter(grepl(pattern = "-", x = parents)) |>
-      dplyr::left_join(genealogy, by = c("parents" = "ids")) |>
-      dplyr::select(
-        chemical_pathway = chemical_pathway.x,
-        parents,
-        ids,
-        labels = labels.x,
-        new_labels
-      )
+    suppressMessages(
+      table_children <- genealogy |>
+        dplyr::filter(!labels %in% genealogy_new_med$ids) |>
+        dplyr::select(labels) |>
+        dplyr::left_join(genealogy_new_med_2) |>
+        dplyr::filter(grepl(pattern = "-", x = parents)) |>
+        dplyr::left_join(genealogy, by = c("parents" = "ids")) |>
+        dplyr::select(
+          chemical_pathway = chemical_pathway.x,
+          parents,
+          ids,
+          labels = labels.x,
+          new_labels
+        )
+    )
 
     table_other <- genealogy_new_med_2 |>
       dplyr::filter(grepl(pattern = " Other-", x = ids)) |>
@@ -513,58 +534,74 @@ prepare_hierarchy <-
       ) |>
       dplyr::distinct()
 
-    missing_children_1 <- genealogy_new_med_3 |>
-      dplyr::filter(grepl(pattern = " Other$", x = parents)) |>
-      dplyr::distinct(chemical_pathway,
-        parents = ids,
-        best_candidate_2 = labels
-      ) |>
-      dplyr::left_join(dataframe2 |>
-        dplyr::distinct(best_candidate_3, best_candidate_2)) |>
-      dplyr::mutate(
-        ids = paste(best_candidate_2,
-          best_candidate_3,
-          sep = "-"
-        ),
-        labels = best_candidate_3,
-        new_labels = best_candidate_3
-      ) |>
-      dplyr::select(chemical_pathway, parents, ids, labels, new_labels) |>
-      dplyr::mutate_all(list(~ gsub(
-        x = .x,
-        pattern = "-NA$",
-        replacement = "",
-      )))
-
-    missing_children_2 <- genealogy_new_med_3 |>
-      dplyr::filter(grepl(pattern = "^Other", x = parents)) |>
-      dplyr::distinct(chemical_pathway,
-        parents = ids,
-        best_candidate_2 = labels
-      ) |>
-      dplyr::left_join(dataframe2 |>
-        dplyr::distinct(best_candidate_3, best_candidate_2)) |>
-      dplyr::mutate(
-        ids = paste(
-          gsub(
-            pattern = ".*-",
-            replacement = "\\1",
-            x = parents
+    suppressMessages(
+      missing_children_1 <- genealogy_new_med_3 |>
+        dplyr::filter(grepl(pattern = " Other$", x = parents)) |>
+        dplyr::distinct(
+          chemical_pathway,
+          parents = ids,
+          best_candidate_2 = labels
+        ) |>
+        dplyr::left_join(
+          dataframe2 |>
+            dplyr::distinct(best_candidate_3, best_candidate_2)
+        ) |>
+        dplyr::mutate(
+          ids = paste(best_candidate_2,
+            best_candidate_3,
+            sep = "-"
           ),
-          best_candidate_3,
-          sep = "-"
-        ),
-        labels = best_candidate_3,
-        new_labels = best_candidate_3
-      ) |>
-      dplyr::select(chemical_pathway, parents, ids, labels, new_labels) |>
-      dplyr::distinct() |>
-      dplyr::mutate_all(list(~ gsub(
-        x = .x,
-        pattern = "-NA$",
-        replacement = "",
-      ))) |>
-      dplyr::filter(!is.na(labels))
+          labels = best_candidate_3,
+          new_labels = best_candidate_3
+        ) |>
+        dplyr::select(chemical_pathway, parents, ids, labels, new_labels) |>
+        dplyr::mutate_at(
+          vars(-group_cols()),
+          ~ gsub(
+            x = .x,
+            pattern = "-NA$",
+            replacement = "",
+          ),
+        )
+    )
+
+    suppressMessages(
+      missing_children_2 <- genealogy_new_med_3 |>
+        dplyr::filter(grepl(pattern = "^Other", x = parents)) |>
+        dplyr::distinct(
+          chemical_pathway,
+          parents = ids,
+          best_candidate_2 = labels
+        ) |>
+        dplyr::left_join(
+          dataframe2 |>
+            dplyr::distinct(best_candidate_3, best_candidate_2)
+        ) |>
+        dplyr::mutate(
+          ids = paste(
+            gsub(
+              pattern = ".*-",
+              replacement = "\\1",
+              x = parents
+            ),
+            best_candidate_3,
+            sep = "-"
+          ),
+          labels = best_candidate_3,
+          new_labels = best_candidate_3
+        ) |>
+        dplyr::select(chemical_pathway, parents, ids, labels, new_labels) |>
+        dplyr::distinct() |>
+        dplyr::mutate_at(
+          vars(-group_cols()),
+          ~ gsub(
+            x = .x,
+            pattern = "-NA$",
+            replacement = "",
+          )
+        ) |>
+        dplyr::filter(!is.na(labels))
+    )
 
     missing_children <-
       rbind(missing_children_1, missing_children_2)
@@ -650,8 +687,7 @@ prepare_hierarchy <-
       dplyr::summarise(values = sum(switch(type,
         "analysis" = intensity,
         "literature" = values
-      ))) |>
-      dplyr::ungroup() |>
+      )), .groups = "drop") |>
       dplyr::filter(!is.na(labels)) |>
       dplyr::mutate(join = gsub(
         pattern = "-.*",
@@ -682,8 +718,7 @@ prepare_hierarchy <-
       dplyr::group_by(dplyr::across(dplyr::any_of(
         c("parents", "ids", "labels", "sample", "species")
       ))) |>
-      dplyr::summarise(values = sum(values)) |>
-      dplyr::ungroup()
+      dplyr::summarise(values = sum(values), .groups = "drop")
 
     final_table_3_3 <- table_1_1_new |>
       dplyr::filter(!is.na(species)) |>
@@ -698,8 +733,7 @@ prepare_hierarchy <-
       dplyr::summarise(values = sum(switch(type,
         "analysis" = intensity,
         "literature" = values
-      ))) |>
-      dplyr::ungroup()
+      )), .groups = "drop")
 
     final_table_3 <-
       dplyr::bind_rows(
@@ -722,8 +756,7 @@ prepare_hierarchy <-
       dplyr::group_by(dplyr::across(dplyr::any_of(
         c("parents", "ids", "labels", "sample", "species")
       ))) |>
-      dplyr::summarise(values = sum(values)) |>
-      dplyr::ungroup() |>
+      dplyr::summarise(values = sum(values), .groups = "drop") |>
       dplyr::filter(!is.na(values))
 
     final_table_1 <- table_1_1_new |>
@@ -740,8 +773,7 @@ prepare_hierarchy <-
         c("parents", "ids", "labels", "sample", "species")
       ))) |>
       dplyr::filter(!is.na(values)) |>
-      dplyr::summarise(values = sum(values)) |>
-      dplyr::ungroup()
+      dplyr::summarise(values = sum(values), .groups = "drop")
 
     final_table <-
       dplyr::bind_rows(

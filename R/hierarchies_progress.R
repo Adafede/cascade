@@ -11,6 +11,7 @@ hierarchies_progress <- function(xs) {
   future.apply::future_lapply(
     X = xs,
     FUN = function(x) {
+      p()
       if (nrow(x) != 0) {
         prepare_hierarchy(
           dataframe = x |>
