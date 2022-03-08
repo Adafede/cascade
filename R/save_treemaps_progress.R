@@ -15,6 +15,7 @@ save_treemaps_progress <- function(xs, type = "treemap") {
       nm = xs
     ),
     FUN = function(x) {
+      p()
       plotly::save_image(
         p = switch(type,
           "treemap" = treemaps,

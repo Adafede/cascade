@@ -14,6 +14,7 @@ save_prettyTables_progress <- function(xs) {
       nm = xs
     ),
     FUN = function(x) {
+      p()
       gt::gtsave(
         data = prettyTables[[x]],
         filename = file.path(paths$data$tables$path, paste0(
