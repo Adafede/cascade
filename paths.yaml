@@ -3,20 +3,22 @@ config:
   path: config
   default:
     path: config/default
+    file: config/default/params.yaml
   params:
     path: config/params
+    file: config/params/params.yaml
 data:
   path: data
-  interim:
-    path: data/interim
-    config:
-      path: data/interim/config
-  processed:
-    path: data/processed
-    config:
-      path: data/processed/config
-  source:
-    path: data/source
+  histograms:
+    path: data/histograms
+  sunbursts:
+    path: data/sunbursts
+  tables:
+    path: data/tables
+  treemaps:
+    path: data/treemaps
+  trees:
+    path: data/trees
 inst:
   path: intst
   extdata:
@@ -28,7 +30,7 @@ inst:
       libraries:
         path: inst/extdata/source/libraries
         lotus: inst/extdata/source/libraries/lotus.csv.gz
-  scripts:
+  scripts: 
     path: inst/scripts/
     docopt:
       path: inst/scripts/docopt
@@ -43,5 +45,5 @@ tests:
 r:
   path: R
 urls:
-  lotus: https://zenodo.org/record/6277266/files/220208_frozen_metadata.csv.gz?download=1
+  lotus: https://zenodo.org/record/6299673/files/220226_frozen_metadata.csv.gz?download=1
   npc_json: https://raw.githubusercontent.com/mwang87/NP-Classifier/7e4e2001a1416b96968240650dc7d70f1275fdb5/Classifier/dict/index_v1.json
