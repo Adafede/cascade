@@ -59,6 +59,7 @@ ANNOTATIONS <-
   "~/git/tima-r/inst/extdata/processed/220208_172733/20220208_10043.tsv.gz"
 GNPS_JOB <- "97d7c50031a84b9ba2747e883a5907cd"
 TOYSET <- "~/data/20210701_10043/fractions"
+TOYSET <- "~/../../Volumes/LaCie/data/20210701_10043/fractions"
 
 #' Generic parameters
 WORKERS <- 10
@@ -99,7 +100,7 @@ files <- list.files(
   recursive = TRUE
 )
 
-# files <- files[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = files)]
+files <- files[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = files)]
 
 names <- list.files(
   path = TOYSET,
@@ -113,7 +114,7 @@ names <- list.files(
     fixed = TRUE
   )
 
-# names <- names[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = names)]
+names <- names[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = names)]
 
 annotations <- readr::read_delim(file = ANNOTATIONS)
 
@@ -131,19 +132,64 @@ chromatograms <- lapply(objects, mzR::chromatograms)
 
 chromatograms_all <- purrr::flatten(chromatograms)
 
+chromatograms_pda <- chromatograms_all[c(FALSE, TRUE, FALSE)]
+
 chromatograms_cad <- chromatograms_all[c(FALSE, FALSE, TRUE)]
 
+chromatograms_cad_ready <- lapply(chromatograms_cad, function(x) {
+  x |>
+    dplyr::select(time,
+                  intensity = UV.1_CAD_1_0)
+})
+
+chromatograms_pda_ready <- lapply(chromatograms_pda, function(x) {
+  x |>
+    dplyr::select(time,
+                  intensity = PDA.1_TotalAbsorbance_0)
+})
+
 chromatograms_cad_improved <-
-  improve_signals_progress(chromatograms_cad)
+  improve_signals_progress(chromatograms_cad_ready)
+
+chromatograms_pda_improved <-
+  improve_signals_progress(chromatograms_pda_ready)
 
 names(chromatograms_cad_improved) <- names
+names(chromatograms_pda_improved) <- names
 
 cads_improved <-
   dplyr::bind_rows(chromatograms_cad_improved, .id = "id") |>
   dplyr::mutate(time = time + CAD_SHIFT)
 
+pdas_improved <-
+  dplyr::bind_rows(chromatograms_pda_improved, .id = "id") |>
+  dplyr::mutate(time = time + PDA_SHIFT)
+
 cad_plot <- plotly::plot_ly(
   data = cads_improved,
+  # |> dplyr::filter(grepl(pattern = "M", x = id)),
+  x = ~time,
+  y = ~intensity,
+  color = ~id,
+  colors = "Spectral",
+  type = "scatter",
+  mode = "lines",
+  line = list(width = 0.5),
+  legendgroup = ~id
+) |>
+  plotly::layout(
+    annotations = list(
+      x = 0.95,
+      y = 0.95,
+      xref = "paper",
+      yref = "paper",
+      text = "CAD",
+      showarrow = FALSE
+    )
+  )
+
+pda_plot <- plotly::plot_ly(
+  data = pdas_improved,
   # |> dplyr::filter(grepl(pattern = "M", x = id)),
   x = ~time,
   y = ~intensity,
