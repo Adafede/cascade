@@ -45,5 +45,5 @@ tests:
 r:
   path: R
 urls:
-  lotus: https://zenodo.org/record/6299673/files/220226_frozen_metadata.csv.gz?download=1
+  lotus: https://zenodo.org/record/6378204/files/220318_frozen_metadata.csv.gz?download=1
   npc_json: https://raw.githubusercontent.com/mwang87/NP-Classifier/7e4e2001a1416b96968240650dc7d70f1275fdb5/Classifier/dict/index_v1.json
