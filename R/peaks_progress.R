@@ -26,9 +26,9 @@ peaks_progress <- function(xs) {
         dplyr::mutate(
           peak_id = dplyr::row_number(),
           peak_max = X1,
-          rt_apex = chromatograms_cad_baselined[[i]]$time[X2],
-          rt_min = chromatograms_cad_baselined[[i]]$time[X3],
-          rt_max = chromatograms_cad_baselined[[i]]$time[X4]
+          rt_apex = x$time[X2],
+          rt_min = x$time[X3],
+          rt_max = x$time[X4]
         ) |>
         data.table::data.table()
 
