@@ -97,7 +97,7 @@ PEAK_SIMILARITY <- 0.9
 PEAK_SIMILARITY_PREFILTER <- 0.6
 RT_TOL <- 0.1
 PPM <- 10
-AREA_MIN <- 0.01
+AREA_MIN <- 0.005
 
 #' Parameters for annotation
 CONFIDENCE_SCORE_MIN <- 0.5
@@ -174,6 +174,7 @@ chromatograms_cad_improved <-
 log_debug(x = "... PDA")
 chromatograms_pda_improved <-
   improve_signals_progress(chromatograms_pda_ready)
+chromatograms_pda_improved <- chromatograms_pda_ready
 
 names(chromatograms_cad_improved) <- names
 names(chromatograms_pda_improved) <- names

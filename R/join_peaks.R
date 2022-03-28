@@ -20,7 +20,7 @@ join_peaks <- function(chromatograms, peaks) {
     dplyr::ungroup() |>
     dplyr::distinct(peak_id, id, peak_max, rt_apex, rt_min, rt_max, integral) |>
     dplyr::group_by(id) |>
-    dplyr::filter(integral >= AREA_MIN * integral / sum(integral)) |>
+    dplyr::filter(integral / sum(integral) >= AREA_MIN) |>
     data.table::data.table()
   return(df)
 }
