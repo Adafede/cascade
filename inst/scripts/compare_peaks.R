@@ -2,6 +2,7 @@ start <- Sys.time()
 
 library(package = baseline, quietly = TRUE)
 library(package = data.table, quietly = TRUE)
+library(package = docopt, quietly = TRUE)
 library(package = dplyr, quietly = TRUE)
 library(package = future, quietly = TRUE)
 library(package = future.apply, quietly = TRUE)
@@ -16,7 +17,6 @@ library(package = readr, quietly = TRUE)
 library(package = xcms, quietly = TRUE)
 
 source(file = "R/check_export_dir.R")
-source(file = "R/colors.R")
 source(file = "R/compare_peaks.R")
 source(file = "R/extract_ms.R")
 source(file = "R/extract_ms_peak.R")
@@ -34,12 +34,8 @@ source(file = "R/parse_yaml_params.R")
 source(file = "R/parse_yaml_paths.R")
 source(file = "R/peaks_progress.R")
 source(file = "R/plot_chromatogram.R")
-source(file = "R/plot_histograms.R")
-source(file = "R/prepare_hierarchy.R")
-source(file = "R/prepare_hierarchy_preparation.R")
 source(file = "R/prepare_mz.R")
 source(file = "R/prepare_peaks.R")
-source(file = "R/prepare_plot.R")
 source(file = "R/prepare_rt.R")
 source(file = "R/transform_baseline.R")
 source(file = "R/transform_ms.R")
@@ -129,9 +125,6 @@ names <- list.files(
   )
 
 # names <- names[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = names)]
-
-log_debug(x = "loading annotations")
-annotations <- readr::read_delim(file = ANNOTATIONS)
 
 log_debug(x = "loading feature table")
 # feature_table <- read_features(id = GNPS_JOB)
