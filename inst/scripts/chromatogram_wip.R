@@ -8,7 +8,7 @@ df_histogram_test <- df_new_with_cor_08 |>
     best_candidate_1,
     best_candidate_2,
     best_candidate_3
-  ) |> 
+  ) |>
   dplyr::mutate(
     best_candidate_1 = ifelse(
       test = !is.na(best_candidate_1),
@@ -29,7 +29,7 @@ df_histogram_test <- df_new_with_cor_08 |>
       yes = best_candidate_3,
       no = "Other notClassified notClassified"
     )
-  ) |> 
+  ) |>
   dplyr::mutate(group = as.integer(factor(best_candidate_1, levels = unique(best_candidate_1)))) |>
   dplyr::group_by(group) |>
   dplyr::mutate(subgroup = as.integer(factor(x = best_candidate_2, levels = unique(best_candidate_2)))) |>
@@ -47,9 +47,9 @@ df_histogram_test <- df_new_with_cor_08 |>
 
 plotly::plot_ly(
   data = df_histogram_test,
-  x = ~ rt_apex,
-  y = ~ integral,
-  color = ~ color,
+  x = ~rt_apex,
+  y = ~integral,
+  color = ~color,
   type = "bar"
 )
 
