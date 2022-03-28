@@ -20,21 +20,31 @@ library(package = xcms, quietly = TRUE)
 
 source(file = "R/colors.R")
 source(file = "R/compare_peaks.R")
-source(file = "R/extract_peak.R")
+source(file = "R/extract_ms.R")
+source(file = "R/extract_ms_peak.R")
+source(file = "R/filter_ms.R")
 source(file = "R/get_gnps.R")
 source(file = "R/get_params.R")
 source(file = "R/improve_signal.R")
 source(file = "R/improve_signals_progress.R")
+source(file = "R/join_peaks.R")
 source(file = "R/log_debug.R")
 source(file = "R/make_confident.R")
+source(file = "R/normalize_chromato.R")
 source(file = "R/parse_cli_params.R")
 source(file = "R/parse_yaml_params.R")
 source(file = "R/parse_yaml_paths.R")
 source(file = "R/peaks_progress.R")
+source(file = "R/plot_chromatogram.R")
 source(file = "R/plot_histograms.R")
-source(file = "R/prepare_plot.R")
 source(file = "R/prepare_hierarchy.R")
 source(file = "R/prepare_hierarchy_preparation.R")
+source(file = "R/prepare_mz.R")
+source(file = "R/prepare_peaks.R")
+source(file = "R/prepare_plot.R")
+source(file = "R/prepare_rt.R")
+source(file = "R/transform_baseline.R")
+source(file = "R/transform_ms.R")
 source(file = "R/y_as_na.R")
 
 future::plan(strategy = future::multisession)
@@ -57,9 +67,11 @@ log_debug("Contributors: \n", "...")
 #' Paths
 ANNOTATIONS <-
   "~/git/tima-r/inst/extdata/processed/220208_172733/20220208_10043.tsv.gz"
+FEATURES <- "~/data/20210701_10043/local_feature_table.tsv"
 GNPS_JOB <- "97d7c50031a84b9ba2747e883a5907cd"
 TOYSET <- "~/data/20210701_10043/fractions"
 TOYSET <- "~/../../Volumes/LaCie/data/20210701_10043/fractions"
+TOYSET <- "~/data/20210701_10043/test"
 
 #' Generic parameters
 WORKERS <- 10
@@ -84,11 +96,12 @@ smoothing_width <- 5
 baseline_adjust <- 0
 
 #' Parameters related to MS/CAD
-INTENSITY <- 1E5
+INTENSITY_MS_MIN <- 1E5
 PEAK_SIMILARITY <- 0.9
 PEAK_SIMILARITY_PREFILTER <- 0.6
 RT_TOL <- 0.1
 PPM <- 10
+AREA_MIN <- 0.01
 
 #' Parameters for annotation
 CONFIDENCE_SCORE_MIN <- 0.5
@@ -100,7 +113,7 @@ files <- list.files(
   recursive = TRUE
 )
 
-files <- files[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = files)]
+# files <- files[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = files)]
 
 names <- list.files(
   path = TOYSET,
@@ -114,11 +127,12 @@ names <- list.files(
     fixed = TRUE
   )
 
-names <- names[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = names)]
+# names <- names[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = names)]
 
 annotations <- readr::read_delim(file = ANNOTATIONS)
 
-feature_table <- read_features(id = GNPS_JOB)
+# feature_table <- read_features(id = GNPS_JOB)
+feature_table <- readr::read_delim(file = FEATURES)
 
 dda_data <- MSnbase::readMSData(
   files = files,
@@ -130,7 +144,8 @@ objects <- lapply(files, mzR::openMSfile)
 
 chromatograms <- lapply(objects, mzR::chromatograms)
 
-chromatograms_all <- purrr::flatten(chromatograms)
+chromatograms_all <- chromatograms |>
+  purrr::flatten()
 
 chromatograms_pda <- chromatograms_all[c(FALSE, TRUE, FALSE)]
 
@@ -139,13 +154,15 @@ chromatograms_cad <- chromatograms_all[c(FALSE, FALSE, TRUE)]
 chromatograms_cad_ready <- lapply(chromatograms_cad, function(x) {
   x |>
     dplyr::select(time,
-                  intensity = UV.1_CAD_1_0)
+      intensity = UV.1_CAD_1_0
+    )
 })
 
 chromatograms_pda_ready <- lapply(chromatograms_pda, function(x) {
   x |>
     dplyr::select(time,
-                  intensity = PDA.1_TotalAbsorbance_0)
+      intensity = PDA.1_TotalAbsorbance_0
+    )
 })
 
 chromatograms_cad_improved <-
@@ -165,122 +182,49 @@ pdas_improved <-
   dplyr::bind_rows(chromatograms_pda_improved, .id = "id") |>
   dplyr::mutate(time = time + PDA_SHIFT)
 
-cad_plot <- plotly::plot_ly(
-  data = cads_improved,
-  # |> dplyr::filter(grepl(pattern = "M", x = id)),
-  x = ~time,
-  y = ~intensity,
-  color = ~id,
-  colors = "Spectral",
-  type = "scatter",
-  mode = "lines",
-  line = list(width = 0.5),
-  legendgroup = ~id
-) |>
-  plotly::layout(
-    annotations = list(
-      x = 0.95,
-      y = 0.95,
-      xref = "paper",
-      yref = "paper",
-      text = "CAD",
-      showarrow = FALSE
-    )
-  )
+cad_plot <- plot_chromatogram(df = cads_improved, text = "CAD")
+pda_plot <- plot_chromatogram(df = pdas_improved, text = "PDA")
 
-pda_plot <- plotly::plot_ly(
-  data = pdas_improved,
-  # |> dplyr::filter(grepl(pattern = "M", x = id)),
-  x = ~time,
-  y = ~intensity,
-  color = ~id,
-  colors = "Spectral",
-  type = "scatter",
-  mode = "lines",
-  line = list(width = 0.5),
-  legendgroup = ~id
-) |>
-  plotly::layout(
-    annotations = list(
-      x = 0.95,
-      y = 0.95,
-      xref = "paper",
-      yref = "paper",
-      text = "CAD",
-      showarrow = FALSE
-    )
-  )
+chromatograms_cad_baselined <-
+  transform_baseline(x = chromatograms_cad_improved)
 
-chromatograms_cad_baselined <- chromatograms_cad_improved
-
-for (i in seq_along(seq_len(length(chromatograms_cad_improved)))) {
-  intensity <- chromatograms_cad_improved[[i]]$intensity
-
-  intensity[is.na(intensity)] <- 0
-
-  intensity_baseline <- baseline(
-    spectra = t(intensity),
-    method = "peakDetection"
-  )
-
-  intensity_new <- t(intensity_baseline@corrected) |>
-    data.table::data.table()
-
-  chromatograms_cad_baselined[[i]]$intensity <- intensity_new$V1
-}
+chromatograms_pda_baselined <-
+  transform_baseline(x = chromatograms_pda_improved)
 
 cads_baselined <-
   dplyr::bind_rows(chromatograms_cad_baselined, .id = "id") |>
   dplyr::mutate(intensity = intensity / max(intensity))
 
-new_new <- plotly::plot_ly(
-  data = cads_baselined,
-  # |> dplyr::filter(grepl(pattern = "M", x = id)),
-  x = ~time,
-  y = ~intensity,
-  color = ~id,
-  colors = "Spectral",
-  type = "scatter",
-  mode = "lines",
-  line = list(width = 0.5),
-  legendgroup = ~id
-) |>
-  plotly::layout(
-    annotations = list(
-      x = 0.95,
-      y = 0.95,
-      xref = "paper",
-      yref = "paper",
-      text = "CAD",
-      showarrow = FALSE
-    )
-  )
+pdas_baselined <-
+  dplyr::bind_rows(chromatograms_pda_baselined, .id = "id") |>
+  dplyr::mutate(intensity = intensity / max(intensity))
+
+new_new_cad <- plot_chromatogram(df = cads_baselined, text = "CAD")
+new_new_pda <- plot_chromatogram(df = pdas_baselined, text = "PDA")
 
 peaks_cad <- peaks_progress(chromatograms_cad_baselined)
+peaks_pda <- peaks_progress(chromatograms_pda_baselined)
 
 names(peaks_cad) <- names
+names(peaks_pda) <- names
 
-peaks_all <- dplyr::bind_rows(peaks_cad, .id = "id")
+peaks_cad_all <- dplyr::bind_rows(peaks_cad, .id = "id")
+peaks_pda_all <- dplyr::bind_rows(peaks_pda, .id = "id")
 
 cads_baselined <- cads_baselined |>
   dplyr::mutate(rt_1 = time, rt_2 = time) |>
   data.table::data.table()
 
-cat("setting joining keys \n")
-data.table::setkey(peaks_all, rt_min, rt_max)
-data.table::setkey(cads_baselined, rt_1, rt_2)
-
-cat("joining within given rt tolerance \n")
-df <- data.table::foverlaps(peaks_all, cads_baselined) |>
-  dplyr::filter(id == i.id) |>
-  dplyr::group_by(peak_id, id) |>
-  dplyr::mutate(integral = sum(intensity)) |>
-  dplyr::ungroup() |>
-  dplyr::distinct(peak_id, id, peak_max, rt_apex, rt_min, rt_max, integral) |>
-  dplyr::group_by(id) |>
-  dplyr::filter(integral >= 0.01 * integral / sum(integral)) |>
+pdas_baselined <- pdas_baselined |>
+  dplyr::mutate(rt_1 = time, rt_2 = time) |>
   data.table::data.table()
 
+df_cad <-
+  join_peaks(chromatograms = cads_baselined, peaks = peaks_cad_all)
+df_pda <-
+  join_peaks(chromatograms = pdas_baselined, peaks = peaks_pda_all)
+
+#' TODO MOVE THAT PART AFTER
 ms1_best_candidate <- annotations |>
   dplyr::mutate_all(list(~ gsub(
     pattern = "\\|.*",
@@ -365,8 +309,8 @@ feature_table <- feature_table |>
     -"identified by n=",
     -"partners",
     -"neutral M mass",
-    -"Unnamed: 64"
   ) |>
+  dplyr::select(-(ncol(feature_table) - 9)) |>
   tibble::column_to_rownames(var = "row ID")
 
 top_n <- feature_table |>
@@ -378,7 +322,7 @@ top_n <- feature_table |>
     x = column
   )) |>
   dplyr::arrange(rowname, dplyr::desc(value)) |>
-  dplyr::filter(value >= INTENSITY)
+  dplyr::filter(value >= INTENSITY_MS_MIN)
 
 top_m <- top_n |>
   dplyr::mutate(column = gsub(
@@ -397,7 +341,7 @@ top_m <- top_n |>
 ms1_multiple <- ms1_best_candidate |>
   dplyr::left_join(top_m) |>
   dplyr::filter(!is.na(species)) |>
-  dplyr::filter(intensity >= INTENSITY)
+  dplyr::filter(intensity >= INTENSITY_MS_MIN)
 
 new_step <- ms1_multiple |>
   dplyr::mutate(
@@ -407,15 +351,15 @@ new_step <- ms1_multiple |>
   data.table::data.table()
 
 cat("setting joining keys \n")
-data.table::setkey(df, rt_min, rt_max)
+data.table::setkey(df_cad, rt_min, rt_max)
 data.table::setkey(new_step, rt_1, rt_2)
 
 cat("joining within given rt tolerance \n")
-df_new_pre <- data.table::foverlaps(new_step, df)
+df_new_pre <- data.table::foverlaps(new_step, df_cad)
 
 df_new_with <- df_new_pre |>
   dplyr::rowwise() |>
-  dplyr::filter(grepl(pattern = id, x = sample)) |>
+  # dplyr::filter(grepl(pattern = id, x = sample)) |> #' TODO DONT FORGET
   dplyr::mutate(
     mz_min = (1 - (1E-6 * PPM)) * as.numeric(mz),
     mz_max = (1 + (1E-6 * PPM)) * as.numeric(mz)
@@ -425,86 +369,88 @@ df_new_with <- df_new_pre |>
   dplyr::filter(!is.na(peak_id)) |>
   make_confident(score = CONFIDENCE_SCORE_MIN)
 
+df_new_with <- df_new_with |> #' TODO DONT FORGET
+  dplyr::distinct(id, peak_id, feature_id, .keep_all = TRUE) |> #' TODO DONT FORGET
+  dplyr::sample_n(500) #' TODO DONT FORGET
+
 df_new_without <- df_new_pre |>
   dplyr::filter(is.na(peak_id)) |>
   dplyr::filter(sample %in% df_new_with$sample) |>
   make_confident(score = CONFIDENCE_SCORE_MIN)
 
-df_peaks_samples <- list()
+df_new_without <- df_new_without |> #' TODO DONT FORGET
+  dplyr::distinct(id, peak_id, feature_id, .keep_all = TRUE) #' TODO DONT FORGET
 
-for (s in unique(df_new_with$id)) {
-  df_new <- df_new_with |>
-    dplyr::filter(id == s)
+list_df_peaks <- df_new_with |>
+  dplyr::group_split(id)
 
-  df_peaks <- list()
+names(list_df_peaks) <- unique(df_new_with$id)
 
-  for (i in unique(df_new$peak_id)) {
-    df_peak <- df_new |>
-      dplyr::filter(peak_id == i) |>
-      dplyr::arrange(dplyr::desc(intensity))
+list_df_peaks_split <- parallel::mclapply(
+  X = list_df_peaks,
+  FUN = dplyr::group_split,
+  peak_id
+)
 
-    #' Silently sub-setting the object to speed-up analysis
-    dda_data_min <-
-      MSnbase::filterFile(
-        dda_data,
-        dda_data@phenoData@data$sampleNames[grepl(
-          pattern = s,
-          x = dda_data@phenoData@data$sampleNames
-        )]
-      ) |>
-      MSnbase::filterRt(rt = c(
-        (min(df_peak$rt_min) + CAD_SHIFT - RT_TOL) * 60,
-        (max(df_peak$rt_max) + CAD_SHIFT + RT_TOL) * 60
-      )) |>
-      MSnbase::filterMz(mz = c(
-        min(df_peak$mz_min),
-        max(df_peak$mz_max)
-      ))
+list_df_peaks_split_flat <- list_df_peaks_split |>
+  purrr::flatten()
 
-    ## CAD part
-    cad_ready <- chromatograms_cad_improved[[s]] |>
-      dplyr::filter(time >= df_peak$rt_min[1] &
-        time <= df_peak$rt_max[1]) |>
-      dplyr::mutate(intensity = (intensity - min(intensity)) / (max(intensity) -
-        min(intensity))) |>
-      dplyr::filter(intensity >= 0.1)
+list_dda_split <- parallel::mclapply(
+  X = list_df_peaks_split_flat,
+  FUN = filter_ms
+)
 
-    cad_peak <-
-      MSnbase::Chromatogram(
-        intensity = cad_ready$intensity,
-        rtime = (cad_ready$time - min(cad_ready$time)) /
-          (max(cad_ready$time) - min(cad_ready$time))
-      ) #' see https://github.com/sneumann/xcms/issues/593
+list_chromato_split <-
+  parallel::mclapply(
+    X = list_df_peaks_split_flat,
+    FUN = normalize_chromato
+  )
 
-    ms_peaks <-
-      parallel::mclapply(
-        X = seq_along(1:nrow(df_peak)),
-        FUN = extract_peak
-      )
+list_chromato_peaks <- parallel::mclapply(
+  X = list_chromato_split,
+  FUN = prepare_peaks
+)
 
-    comparison_score <-
-      if (length(ms_peaks) != 0) {
-        parallel::mclapply(
-          X = seq_along(ms_peaks),
-          FUN = compare_peaks
-        )
-      } else {
-        rep(list(0), nrow(df_peak))
-      }
+list_rtr <- parallel::mclapply(
+  X = list_df_peaks_split_flat,
+  FUN = prepare_rt
+)
 
-    df_peak$comparison_score <- as.numeric(comparison_score)
+list_mzr <- parallel::mclapply(
+  X = list_df_peaks_split_flat,
+  FUN = prepare_mz
+)
 
-    df_peak_new <- df_peak
+list_ms_chr <-
+  parallel::mclapply(
+    X = seq_along(list_df_peaks_split_flat),
+    FUN = extract_ms
+  )
 
-    df_peaks[[i]] <- df_peak_new
-  }
+list_ms_transformed <- parallel::mclapply(
+  X = list_ms_chr,
+  FUN = transform_ms
+)
 
-  df_new_with_cor <- dplyr::bind_rows(df_peaks)
+list_ms_peaks <- parallel::mclapply(
+  X = list_ms_transformed,
+  FUN = extract_ms_peak
+)
 
-  df_peaks_samples[[s]] <- df_new_with_cor
-}
+list_comparison_score <-
+  parallel::mclapply(
+    X = seq_along(list_ms_peaks),
+    FUN = compare_peaks
+  )
 
-df_peaks_samples_full <- dplyr::bind_rows(df_peaks_samples)
+df_peaks_samples_full <- list_df_peaks_split_flat |>
+  dplyr::bind_rows()
+
+comparison_scores <- list_comparison_score |>
+  purrr::flatten()
+
+df_peaks_samples_full$comparison_score <-
+  as.numeric(comparison_scores)
 
 #' We got 2556 CAD peaks automatically detected
 #' With peak similarity score > 0.6: 5313 features
