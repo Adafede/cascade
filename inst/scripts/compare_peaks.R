@@ -99,9 +99,6 @@ RT_TOL <- 0.1
 PPM <- 10
 AREA_MIN <- 0.005
 
-#' Parameters for annotation
-CONFIDENCE_SCORE_MIN <- 0.5
-
 log_debug(x = "listing files")
 files <- list.files(
   path = TOYSET,
