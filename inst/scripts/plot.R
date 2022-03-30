@@ -3,6 +3,7 @@ start <- Sys.time()
 library(package = data.table, quietly = TRUE)
 library(package = dplyr, quietly = TRUE)
 library(package = parallel, quietly = TRUE)
+library(package = patchwork, quietly = TRUE)
 library(package = plotly, quietly = TRUE)
 library(package = readr, quietly = TRUE)
 
@@ -38,6 +39,17 @@ ANNOTATIONS <-
   "~/git/tima-r/inst/extdata/processed/220208_172733/20220208_10043.tsv.gz"
 EXPORT_DIR <- "~/git/cascade/data/interim"
 EXPORT_FILE <- "peaks_informed.tsv.gz"
+
+#' Parameters related to MS/CAD
+INTENSITY_MS_MIN <- 1E5
+PEAK_SIMILARITY <- 0.9
+PEAK_SIMILARITY_PREFILTER <- 0.6
+RT_TOL <- 0.1
+PPM <- 10
+AREA_MIN <- 0.005
+
+#' Parameters for annotation
+CONFIDENCE_SCORE_MIN <- 0.5
 
 log_debug(x = "loading compared peaks")
 compared_peaks <-
