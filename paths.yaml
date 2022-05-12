@@ -22,19 +22,20 @@ data:
 inst:
   path: intst
   extdata:
-    path: inst/extdata/
+    path: inst/extdata
     interim:
-      path: inst/extdata/interim/
-      peakonly: inst/extdata/interim/peakonly/
+      path: inst/extdata/interim
+      mzmine: inst/extdata/interim/mzmine
+      peakonly: inst/extdata/interim/peakonly
     source:
-      path: inst/extdata/source/
+      path: inst/extdata/source
       libraries:
         path: inst/extdata/source/libraries
         lotus: inst/extdata/source/libraries/lotus.csv.gz
       mzml:
         path: inst/extdata/source/mzml
   scripts: 
-    path: inst/scripts/
+    path: inst/scripts
     docopt:
       path: inst/scripts/docopt
     sparql:
