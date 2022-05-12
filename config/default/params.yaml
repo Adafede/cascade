@@ -1,11 +1,12 @@
-filename: 210705_AR_06_V_03_2_01
-chromato:
-  occurrence:
-    min: 1
-    max: 50
-  time:
+filename: 
+  mzml: 210705_AR_06_V_03_2_01
+  annotation: 
+    tima: 20220208_10043.tsv.gz
+annotation:
+  confidence:
     min: 0.5
-    max: 77.5
+  tool: tima
+chromato:
   intensity:
     ms1:
       min: 10000
@@ -13,6 +14,34 @@ chromato:
     ms2:
       min: 10000
       max: 1000000000
+  occurrence:
+    min: 1
+    max: 50
+  peak:
+    similarity:
+      prefilter: 0.6
+      filter: 0.9
+    tolerance:
+      rt: 0.1
+      ppm: 10
+    area:
+      min: 0.005
+  shift:
+    cad: 0.055
+    pda: 0.090
+  time:
+    min: 0.5
+    max: 77.5
+signal:
+  fourrier:
+    components: 0.05
+  frequency: 20
+  resample: 0.1
+  sigma: 0.05
+  k2: 250
+  k4: 1250000
+  smoothing: 5
+  baseline: 0
 structures:
   dimensionality: 2
   min: 25
@@ -35,4 +64,8 @@ references:
     end: 2022
 queries:
   limit: 50000
+workers: 10
+misc:
+  solubility:
+    limit: 58
 force: FALSE

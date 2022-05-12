@@ -36,20 +36,29 @@ log_debug("Contributors: \n", "...")
 
 #' Paths
 ANNOTATIONS <-
-  "~/git/tima-r/inst/extdata/processed/220208_172733/20220208_10043.tsv.gz"
-EXPORT_DIR <- "~/git/cascade/data/interim"
-EXPORT_FILE <- "peaks_informed.tsv.gz"
+  file.path(
+    paths$inst$extdata$interim$annotations$path,
+    params$annotation$tool,
+    params$filename$annotation$tima
+  )
+
+EXPORT_DIR <- paths$inst$extdata$interim$peaks
+EXPORT_FILE <- file.path(
+  EXPORT_DIR,
+  paste(params$filename$mzml, "peaks.tsv.gz", sep = "_")
+)
 
 #' Parameters related to MS/CAD
-INTENSITY_MS_MIN <- 1E5
-PEAK_SIMILARITY <- 0.9
-PEAK_SIMILARITY_PREFILTER <- 0.6
-RT_TOL <- 0.1
-PPM <- 10
-AREA_MIN <- 0.005
+INTENSITY_MS_MIN <- params$chromato$intensity$ms1$min
+PEAK_SIMILARITY <- params$chromato$peak$similarity$filter
+PEAK_SIMILARITY_PREFILTER <-
+  params$chromato$peak$similarity$prefilter
+RT_TOL <- params$chromato$peak$tolerance$rt
+PPM <- params$chromato$peak$tolerance$ppm
+AREA_MIN <- params$chromato$peak$area$min
 
 #' Parameters for annotation
-CONFIDENCE_SCORE_MIN <- 0.5
+CONFIDENCE_SCORE_MIN <- params$annotation$confidence$min
 
 log_debug(x = "loading compared peaks")
 compared_peaks <-
@@ -550,9 +559,7 @@ plotly::plot_ly(
   colors = rev(paired),
   type = "bar"
 ) |>
-  plotly::layout(
-    barmode = "stack"
-  )
+  plotly::layout(barmode = "stack")
 
 end <- Sys.time()
 

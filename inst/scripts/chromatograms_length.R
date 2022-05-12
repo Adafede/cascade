@@ -47,36 +47,37 @@ log_debug("Contributors: \n", "...")
 TOYSET <- "~/data/qcmix/"
 
 #' Generic parameters
-WORKERS <- 10
+WORKERS <- params$workers
 
 #' Parameters for LC alignment
-TIME_MIN <- 0 ## minutes
-TIME_MAX <- 999 ## minutes
-CAD_SHIFT <- 0.055 ## minutes
-PDA_SHIFT <- 0.090 ## minutes
-ESTIMATED_SOLUBLITIY_LIMIT <- 58
+TIME_MIN <- params$chromato$time$min
+TIME_MAX <- params$chromato$time$max
+CAD_SHIFT <- params$chromato$shift$cad
+PDA_SHIFT <- params$chromato$shift$pda
+ESTIMATED_SOLUBLITIY_LIMIT <- params$misc$solubility$limit
 
 #' Parameters for signal improvement
-FOURRIER_COMPONENTS <- 0.05 ## of total
-FREQUENCY <- 20 ## Hz
-RESAMPLE <- 1 / 10 ## points
+FOURRIER_COMPONENTS <- params$signal$fourrier$components
+FREQUENCY <- params$signal$frequency
+RESAMPLE <- params$signal$resample
 
 #' Parameters adapted from Excel sheet from paper shortDOI: 10/ghmvhz
-sigma <- 0.05
-k2 <- sigma / 250 # 30
-k4 <- sigma / 1250000 # 200
-smoothing_width <- 5
-baseline_adjust <- 0
+sigma <- params$signal$sigma
+k2 <- sigma / params$signal$k2 # 30
+k4 <- sigma / params$signal$k4 # 200
+smoothing_width <- params$signal$smoothing
+baseline_adjust <- params$signal$baseline
 
 #' Parameters related to MS/CAD
-INTENSITY <- 1E5
-PEAK_SIMILARITY <- 0.9
-PEAK_SIMILARITY_PREFILTER <- 0.6
-RT_TOL <- 0.1
-PPM <- 10
+INTENSITY <- params$chromato$intensity$ms1$min
+PEAK_SIMILARITY <- params$chromato$peak$similarity$filter
+PEAK_SIMILARITY_PREFILTER <-
+  params$chromato$peak$similarity$prefilter
+RT_TOL <- params$chromato$peak$tolerance$rt
+PPM <- params$chromato$peak$tolerance$ppm
 
 #' Parameters for annotation
-CONFIDENCE_SCORE_MIN <- 0.5
+CONFIDENCE_SCORE_MIN <- params$annotation$confidence$min
 
 files <- list.files(
   path = TOYSET,
