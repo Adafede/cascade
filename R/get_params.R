@@ -9,7 +9,7 @@ require(package = docopt, quietly = TRUE)
 #'
 #' @examples
 get_params <- function(step) {
-  doc_path <<- file.path(paths$src$docopt, paste0(step, ".txt"))
+  doc_path <<- file.path(paths$inst$scripts$docopt, paste0(step, ".txt"))
   default_path <<-
     file.path(paths$config$default$path, paste0(step, ".yaml"))
   params_path <<-
