@@ -49,3 +49,4 @@ vignettes/*.pdf
 config/params/**
 data/**
 inst/extdata/**
+https:/**
