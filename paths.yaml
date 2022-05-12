@@ -25,8 +25,12 @@ inst:
     path: inst/extdata
     interim:
       path: inst/extdata/interim
+      annotations:
+        path: inst/extdata/interim/annotations
+        tima: inst/extdata/interim/annotations/tima
       mzmine: inst/extdata/interim/mzmine
       peakonly: inst/extdata/interim/peakonly
+      peaks: inst/extdata/interim/peaks
     source:
       path: inst/extdata/source
       libraries:
