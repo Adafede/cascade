@@ -25,11 +25,14 @@ inst:
     path: inst/extdata/
     interim:
       path: inst/extdata/interim/
+      peakonly: inst/extdata/interim/peakonly/
     source:
       path: inst/extdata/source/
       libraries:
         path: inst/extdata/source/libraries
         lotus: inst/extdata/source/libraries/lotus.csv.gz
+      mzml:
+        path: inst/extdata/source/mzml
   scripts: 
     path: inst/scripts/
     docopt:
