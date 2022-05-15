@@ -1,7 +1,7 @@
 filename: 
   mzml: 210705_AR_06_V_03_2_01
   annotation: 
-    tima: 20220208_10043.tsv.gz
+    tima: 210705_AR_06_V_03_2_01.tsv
 annotation:
   confidence:
     min: 0.5

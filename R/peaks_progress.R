@@ -29,8 +29,7 @@ peaks_progress <- function(xs) {
           rt_apex = x$time[X2],
           rt_min = x$time[X3],
           rt_max = x$time[X4]
-        ) |>
-        data.table::data.table()
+        )
 
       return(peaks)
     }
