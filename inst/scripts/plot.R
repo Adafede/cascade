@@ -43,9 +43,11 @@ ANNOTATIONS <-
   )
 
 EXPORT_DIR <- paths$inst$extdata$interim$peaks
-EXPORT_FILE <- file.path(
-  EXPORT_DIR,
-  paste(params$filename$mzml, "peaks.tsv.gz", sep = "_")
+EXPORT_FILE <- list.files(
+  path = EXPORT_DIR,
+  pattern = paste(params$filename$mzml, "featuresInformed", sep = "_"),
+  full.names = FALSE,
+  recursive = FALSE
 )
 
 #' Parameters related to MS/CAD
@@ -56,7 +58,7 @@ PEAK_SIMILARITY_PREFILTER <-
 RT_TOL <- params$chromato$peak$tolerance$rt
 PPM <- params$chromato$peak$tolerance$ppm
 AREA_MIN <- params$chromato$peak$area$min
-
+"inst/extdata/interim/peaks/inst/extdata/interim/"
 #' Parameters for annotation
 CONFIDENCE_SCORE_MIN <- params$annotation$confidence$min
 
