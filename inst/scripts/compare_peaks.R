@@ -59,15 +59,21 @@ log_debug("Authors: \n", "AR")
 log_debug("Contributors: \n", "...")
 
 #' Paths
-ANNOTATIONS <-
-  "~/git/tima-r/inst/extdata/processed/220208_172733/20220208_10043.tsv.gz"
-FEATURES <- "~/data/20210701_10043/local_feature_table.tsv"
-EXPORT_DIR <- "~/git/cascade/data/interim"
-EXPORT_FILE <- "peaks_informed.tsv.gz"
-GNPS_JOB <- "97d7c50031a84b9ba2747e883a5907cd"
+ANNOTATIONS <- list.files(
+  path = file.path(paths$inst$extdata$interim$annotations$path, params$annotation$tool),
+  pattern = params$filename$mzml,
+  full.names = TRUE,
+  recursive = TRUE
+)
+FEATURES <- "~/Downloads/test_quant.csv"
+EXPORT_DIR <- paths$inst$extdata$interim$peaks
+EXPORT_FILE <- paste(params$filename$mzml, "featuresInformed.tsv.gz", sep = "_")
+EXPORT_FILE_2 <- paste(params$filename$mzml, "featuresNotInformed.tsv.gz", sep = "_")
+# GNPS_JOB <- "97d7c50031a84b9ba2747e883a5907cd"
 TOYSET <- "~/data/20210701_10043/fractions"
 TOYSET <- "~/../../Volumes/LaCie/data/20210701_10043/fractions"
 TOYSET <- "~/data/20210701_10043/test"
+TOYSET <- paths$inst$extdata$source$mzml$path
 
 #' Generic parameters
 WORKERS <- params$workers
@@ -94,8 +100,7 @@ baseline_adjust <- params$signal$baseline
 #' Parameters related to MS/CAD
 INTENSITY_MS_MIN <- params$chromato$intensity$ms1$min
 PEAK_SIMILARITY <- params$chromato$peak$similarity$filter
-PEAK_SIMILARITY_PREFILTER <-
-  params$chromato$peak$similarity$prefilter
+PEAK_SIMILARITY_PREFILTER <- params$chromato$peak$similarity$prefilter
 RT_TOL <- params$chromato$peak$tolerance$rt
 PPM <- params$chromato$peak$tolerance$ppm
 AREA_MIN <- params$chromato$peak$area$min
@@ -106,7 +111,7 @@ CONFIDENCE_SCORE_MIN <- params$annotation$confidence$min
 log_debug(x = "listing files")
 files <- list.files(
   path = TOYSET,
-  pattern = ".mzML.gz",
+  pattern = ".mzML",
   full.names = TRUE,
   recursive = TRUE
 )
@@ -115,12 +120,12 @@ files <- list.files(
 
 names <- list.files(
   path = TOYSET,
-  pattern = ".mzML.gz",
+  pattern = ".mzML",
   recursive = TRUE
 ) |>
   gsub(pattern = "[0-9]{6}_AR_[0-9]{2}_", replacement = "") |>
   gsub(
-    pattern = ".mzML.gz",
+    pattern = ".mzML",
     replacement = "",
     fixed = TRUE
   )
@@ -214,14 +219,19 @@ new_new_cad <- plot_chromatogram(df = cads_baselined, text = "CAD")
 log_debug(x = "... PDA")
 new_new_pda <- plot_chromatogram(df = pdas_baselined, text = "PDA")
 
+#' data.table call outside of future because buggy else
 peaks_cad <- peaks_progress(chromatograms_cad_baselined)
+
 peaks_pda <- peaks_progress(chromatograms_pda_baselined)
 
 names(peaks_cad) <- names
 names(peaks_pda) <- names
 
-peaks_cad_all <- dplyr::bind_rows(peaks_cad, .id = "id")
-peaks_pda_all <- dplyr::bind_rows(peaks_pda, .id = "id")
+#' data.table call outside of future because buggy else
+peaks_cad_all <- dplyr::bind_rows(peaks_cad, .id = "id") |>
+  data.table::data.table()
+peaks_pda_all <- dplyr::bind_rows(peaks_pda, .id = "id") |>
+  data.table::data.table()
 
 cads_baselined <- cads_baselined |>
   dplyr::mutate(rt_1 = time, rt_2 = time) |>
@@ -308,17 +318,17 @@ df_new_with <- df_new_pre |>
   dplyr::select(-rt_1, -rt_2) |>
   dplyr::filter(!is.na(peak_id))
 
-df_new_with <- df_new_with |> #' TODO DONT FORGET
-  dplyr::distinct(id, peak_id, feature_id, .keep_all = TRUE) |> #' TODO DONT FORGET
-  sample_n(500) #' TODO DONT FORGET
+# df_new_with <- df_new_with |> #' TODO DONT FORGET
+#   dplyr::distinct(id, peak_id, feature_id, .keep_all = TRUE) |> #' TODO DONT FORGET
+#   sample_n(500) #' TODO DONT FORGET
 
 log_debug(x = "selecting features outside peaks")
 df_new_without <- df_new_pre |>
   dplyr::filter(is.na(peak_id)) |>
   dplyr::filter(sample %in% df_new_with$sample)
 
-df_new_without <- df_new_without |> #' TODO DONT FORGET
-  dplyr::distinct(id, peak_id, feature_id, .keep_all = TRUE) #' TODO DONT FORGET
+# df_new_without <- df_new_without |> #' TODO DONT FORGET
+#   dplyr::distinct(id, peak_id, feature_id, .keep_all = TRUE) #' TODO DONT FORGET
 
 log_debug(x = "splitting by file")
 list_df_peaks <- df_new_with |>
@@ -406,7 +416,7 @@ df_peaks_samples_full$comparison_score <-
 
 log_debug(x = "final aesthetics")
 df_final <- df_peaks_samples_full |>
-  select(
+  dplyr::select(
     sample = id,
     peak_id,
     peak_rt_min = rt_min,
@@ -419,16 +429,37 @@ df_final <- df_peaks_samples_full |>
     feature_area = intensity,
     comparison_score
   ) |>
-  distinct()
+  dplyr::distinct()
+
+df_final_2 <- df_new_without |>
+  dplyr::mutate(comparison_score = NA) |>
+  dplyr::select(
+    sample = id,
+    peak_id,
+    peak_rt_min = rt_min,
+    peak_rt_apex = rt_apex,
+    peak_rt_max = rt_max,
+    peak_area = integral,
+    feature_id,
+    feature_rt = rt,
+    feature_mz = mz,
+    feature_area = intensity,
+    comparison_score
+  ) |>
+  dplyr::distinct()
 
 log_debug(x = "checking export directory")
 check_export_dir(EXPORT_DIR)
 
 log_debug(x = "exporting to ...")
-log_debug(x = file.path(EXPORT_DIR, EXPORT_FILE))
+log_debug(x = EXPORT_DIR)
 readr::write_tsv(
   x = df_final,
   file = file.path(EXPORT_DIR, EXPORT_FILE)
+)
+readr::write_tsv(
+  x = df_final_2,
+  file = file.path(EXPORT_DIR, EXPORT_FILE_2)
 )
 
 end <- Sys.time()
