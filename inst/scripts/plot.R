@@ -50,6 +50,12 @@ EXPORT_FILE <- list.files(
   full.names = FALSE,
   recursive = FALSE
 )
+EXPORT_FILE_2 <- list.files(
+  path = EXPORT_DIR,
+  pattern = paste(params$filename$mzml, "featuresNotInformed", sep = "_"),
+  full.names = FALSE,
+  recursive = FALSE
+)
 
 #' Parameters related to MS/CAD
 INTENSITY_MS_MIN <- params$chromato$intensity$ms1$min
@@ -66,6 +72,9 @@ CONFIDENCE_SCORE_MIN <- params$annotation$confidence$min
 log_debug(x = "loading compared peaks")
 compared_peaks <-
   readr::read_delim(file = file.path(EXPORT_DIR, EXPORT_FILE))
+
+outside_peaks <-
+  readr::read_delim(file = file.path(EXPORT_DIR, EXPORT_FILE_2))
 
 log_debug(x = "loading annotations")
 annotations <- readr::read_delim(file = ANNOTATIONS)
@@ -148,12 +157,23 @@ log_debug(x = "joining compared peaks and candidates")
 df_peaks_samples_full <- compared_peaks |>
   dplyr::left_join(candidates_confident)
 
+df_peaks_samples_min <- outside_peaks |>
+  dplyr::left_join(candidates_confident)
+
 log_debug(x = "temporary fix") #' TODO
 df_peaks_samples_full <- df_peaks_samples_full |>
   dplyr::mutate(
     id = sample,
     integral = peak_area,
     intensity = feature_area
+  )
+df_peaks_samples_min <- df_peaks_samples_min |>
+  dplyr::mutate(
+    id = sample,
+    integral = peak_area,
+    intensity = feature_area,
+    peak_rt_apex = rt,
+    peak_area = 1
   )
 
 log_debug(x = "keeping peaks similarities above desired (pre-)threshold only")
@@ -193,21 +213,33 @@ log_debug(x = "keeping peaks similarities with score above", PEAK_SIMILARITY)
 df_new_with_cor <- df_new_with_cor_pre_taxo |>
   dplyr::filter(comparison_score >= PEAK_SIMILARITY)
 
+#' TODO limit to 5 as for hierarchy
 log_debug(x = "plotting histograms")
 df_histogram_ready <- df_new_with_cor_pre_taxo |>
+  prepare_plot_2()
+df_histogram_outside_ready <- df_peaks_samples_min |>
   prepare_plot_2()
 
 df_histogram_ready_conf <- df_new_with_cor_pre_taxo |>
   no_other() |>
   prepare_plot_2()
+df_histogram_outside_ready_conf <- df_peaks_samples_min |>
+  no_other() |>
+  prepare_plot_2()
 
 df_histogram_ready |>
   plot_histograms_taxo()
+# df_histogram_outside_ready |>
+#   plot_histograms_taxo()
 
 df_histogram_ready_conf |>
   plot_histograms_confident()
+df_histogram_outside_ready_conf |>
+  plot_histograms_confident()
 
 df_histogram_ready |>
+  plot_histograms_confident()
+df_histogram_outside_ready |>
   plot_histograms_confident()
 
 final_table_taxed_with_new_cor <- df_new_with_cor_pre_taxo |>
