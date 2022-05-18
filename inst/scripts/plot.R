@@ -244,6 +244,8 @@ plotly::plot_ly(
   plotly::layout(colorway = sunburst_colors)
 
 
+#' TODO minor peaks
+#' TODO change MS for counts
 
 
 #' Work in progress

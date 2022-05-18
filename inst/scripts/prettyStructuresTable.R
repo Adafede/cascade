@@ -77,63 +77,12 @@ exports <-
     paths$data$treemaps$path
   )
 
-#' TODO clean this
 #' As there is no better way than to manually assess if the QID
 #' really corresponds to what you want
-qids <- list(
-  # "Actinobacteria" = "Q26262282"
-  # "Asteraceae" = "Q25400",
-  # "Simaroubaceae" = "Q156679",
-  # "Gentianaceae" = "Q157216",
-  # "Picrasma" = "Q135638",
-  # "Picrasma quassioides" = "Q855778",
-  "Swertia" = "Q163970",
-  "Swertia chirayita" = "Q21318003",
-  "Gentiana" = "Q144682",
-  "Gentiana lutea" = "Q158572",
-  "Quassia" = "Q1947702",
-  "Quassia amara" = "Q135389",
-  "Aloe ferox" = "Q1194889",
-  "Sambucus nigra" = "Q22701",
-  "Coriandrum sativum" = "Q41611",
-  "Juniperus communis" = "Q26325",
-  "Piper cubeba" = "Q161927",
-  "Aframomum melegueta" = "Q1503476",
-  "Angelica archangelica" = "Q207745",
-  "Glycyrrhiza glabra" = "Q257106",
-  "Cinnamomum cassia" = "Q204148",
-  "Iris pallida" = "Q161347",
-  "Centaurea benedicta" = "Q792835",
-  "Hypericum perforatum" = "Q158289",
-  "Prunus dulcis" = "Q39918",
-  "Taraxacum officinale" = "Q131219",
-  "Rheum palmatum" = "Q1109580",
-  "Arnica montana" = "Q207848",
-  "Cinchona succirubra" = "Q50830790",
-  "Ginkgo biloba" = "Q43284",
-  "Panax ginseng" = "Q182881",
-  "Salvia officinalis" = "Q1111359"
-  # "Saxifraga" = "Q156146",
-  # "Dendrobium" = "Q133778",
-  # "Dendrobium chrysanthum" = "Q5223343",
-  # "Dendrobium fimbriatum" = "Q7990065",
-  # "Trichoderma" = "Q135322",
-  # "Trichoderma yunnanense" = "Q108442404",
-  # "Papiliotrema" = "Q7132982",
-  # "Papiliotrema rajasthanensis" = "Q27866418"
-)
+qids <- params$organisms$wikidata
 
-#' TODO clean this
-comparison <-
-  c(
-    "Arnica montana",
-    "Cinchona succirubra",
-    "Ginkgo biloba",
-    "Panax ginseng",
-    "Salvia officinalis"
-  )
-# comparison <- c("Gentiana", "Swertia")
-# comparison <- c("Dendrobium", "Trichoderma")
+comparison <- params$organisms$comparison |>
+  as.character()
 
 genera <-
   names(qids)[!grepl(
