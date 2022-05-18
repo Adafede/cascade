@@ -18,8 +18,7 @@ treemaps_progress <- function(xs, type = "treemap") {
       p()
       if (x != "special") {
         plotly::plot_ly(
-          data = hierarchies[[x]] |>
-            dplyr::filter(sample == x),
+          data = hierarchies[[x]],
           ids = ~ids,
           labels = ~labels,
           parents = ~parents,
@@ -39,9 +38,7 @@ treemaps_progress <- function(xs, type = "treemap") {
       } else {
         plotly::plot_ly() |>
           plotly::add_trace(
-            data = hierarchies[[unique(hierarchies[[x]]$species)[1]]] |>
-              dplyr::filter(sample == unique(hierarchies[[x]]$species)[1] &
-                !is.na(labels)),
+            data = hierarchies[[unique(hierarchies[[x]]$species)[1]]],
             ids = ~ids,
             labels = ~labels,
             parents = ~parents,
@@ -53,9 +50,7 @@ treemaps_progress <- function(xs, type = "treemap") {
             domain = list(row = 0, column = 0)
           ) |>
           plotly::add_trace(
-            data = hierarchies[[unique(hierarchies[[x]]$species)[2]]] |>
-              dplyr::filter(sample == unique(hierarchies[[x]]$species)[2] &
-                !is.na(labels)),
+            data = hierarchies[[unique(hierarchies[[x]]$species)[2]]],
             ids = ~ids,
             labels = ~labels,
             parents = ~parents,

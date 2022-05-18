@@ -13,7 +13,10 @@ hierarchies_grouped_progress <- function(xs) {
     FUN = function(x) {
       p()
       if (nrow(x) != 0) {
-        if (!grepl(pattern = "\\W+", x = names(x))) {
+        #' dirty workaround
+        if (nrow(x |>
+          dplyr::filter(!grepl(pattern = "var. ", x = taxaLabels)) |>
+          dplyr::distinct(taxa)) != 1) {
           prepare_hierarchy(
             dataframe = x |>
               dplyr::mutate(

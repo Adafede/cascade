@@ -1,6 +1,8 @@
 source(file = "R/log_debug.R")
 start <- Sys.time()
 
+#' See https://github.com/HenrikBengtsson/future/issues/609
+remotes::install_github("HenrikBengtsson/future", ref = "develop")
 #' Packages
 packages_cran <-
   c(
@@ -132,13 +134,16 @@ structures_classified <- readr::read_delim(
 #   dplyr::distinct()
 
 message("Building queries")
-queries <- queries_progress(qids)
+queries <- queries_progress(xs = qids)
 
 message("Querying Wikidata")
-results <- wiki_progress(queries)
+results <- wiki_progress(xs = queries)
+
+message("Removing empty results")
+results <- purrr::keep(results, ~ nrow(.) > 0)
 
 message("Cleaning tables and adding columns")
-tables <- tables_progress(results)
+tables <- tables_progress(xs = results)
 
 if (params$structures$dimensionality == 2) {
   tables <- lapply(tables, make_2D)
@@ -160,12 +165,9 @@ prettySubtables <- prettyTables_progress(subtables)
 message("Generating chemical hierarchies...")
 message("... for single taxa")
 hierarchies_simple <-
-  hierarchies_progress(tables[!grepl(
-    pattern = "\\W+",
-    x = names(tables)
-  )])
+  hierarchies_progress(tables)
 message("... for grouped taxa")
-hierarchies_grouped <- hierarchies_grouped_progress(tables)
+hierarchies_grouped <- hierarchies_grouped_progress(xs = tables)
 message("... combining")
 names(hierarchies_grouped) <- ifelse(
   test = !grepl(
@@ -178,6 +180,8 @@ names(hierarchies_grouped) <- ifelse(
   ),
   no = names(hierarchies_grouped)
 )
+hierarchies_grouped <- purrr::compact(hierarchies_grouped)
+
 hierarchies <- append(hierarchies_simple, hierarchies_grouped)
 
 if (!is.null(comparison)) {
@@ -213,7 +217,7 @@ if (!is.null(comparison)) {
 }
 
 message("Generating prehistograms")
-prehistograms <- prehistograms_progress(hierarchies)
+prehistograms <- prehistograms_progress(xs = hierarchies)
 prehistograms <- prehistograms[!is.na(prehistograms)]
 
 message("Generating histograms")
