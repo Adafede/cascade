@@ -13,6 +13,7 @@ source(file = "R/get_gnps.R")
 source(file = "R/get_params.R")
 source(file = "R/log_debug.R")
 source(file = "R/make_confident.R")
+source(file = "R/no_other.R")
 source(file = "R/parse_cli_params.R")
 source(file = "R/parse_yaml_params.R")
 source(file = "R/parse_yaml_paths.R")
@@ -169,7 +170,8 @@ df_new_with_cor_pre_taxo <- df_new_with_cor_pre |>
   )) |>
   dplyr::group_by(sample, peak_id) |> #' TODO switch to ID if needed
   dplyr::mutate(sum = sum(taxo)) |>
-  filter(taxo == 1 | sum == 0)
+  dplyr::filter(taxo == 1 | sum == 0) |>
+  dplyr::ungroup()
 
 log_debug(x = "keeping peaks similarities with score above", PEAK_SIMILARITY)
 df_new_with_cor <- df_new_with_cor_pre_taxo |>
@@ -180,11 +182,7 @@ df_histogram_ready <- df_new_with_cor_pre_taxo |>
   prepare_plot_2()
 
 df_histogram_ready_conf <- df_new_with_cor_pre_taxo |>
-  dplyr::filter(!grepl(
-    pattern = "not",
-    x = best_candidate_1
-  ) &
-    !is.na(best_candidate_1)) |>
+  no_other() |>
   prepare_plot_2()
 
 df_histogram_ready |>
@@ -196,11 +194,12 @@ df_histogram_ready_conf |>
 df_histogram_ready |>
   plot_histograms_confident()
 
-final_table_taxed_with_new_cor <-
-  prepare_hierarchy(
-    dataframe = df_new_with_cor_pre_taxo,
-    detector = "cad"
-  )
+final_table_taxed_with_new_cor <- df_new_with_cor_pre_taxo |>
+  prepare_hierarchy(detector = "cad")
+
+final_table_taxed_with_new_cor_conf <- df_new_with_cor_pre_taxo |>
+  no_other() |>
+  prepare_hierarchy(detector = "cad")
 
 # samples_with_new_cor <-
 #   prepare_plot(dataframe = final_table_taxed_with_new_cor)
@@ -211,6 +210,19 @@ final_table_taxed_with_new_cor <-
 #                   xlab = FALSE)
 #
 # absolute_with_new_cor
+
+plotly::plot_ly(
+  data = final_table_taxed_with_new_cor_conf,
+  ids = ~ids,
+  labels = ~labels,
+  parents = ~parents,
+  values = ~values,
+  maxdepth = 3,
+  type = "treemap",
+  branchvalues = "total",
+  textinfo = "label+percent value+percent parent+percent root"
+) |>
+  plotly::layout(colorway = sunburst_colors)
 
 index <- final_table_taxed_with_new_cor |>
   dplyr::filter(parents == "") |>

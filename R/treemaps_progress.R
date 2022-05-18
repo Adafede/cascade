@@ -27,7 +27,7 @@ treemaps_progress <- function(xs, type = "treemap") {
           maxdepth = 3,
           type = type,
           branchvalues = "total",
-          textinfo = "label+value+percent parent+percent root"
+          textinfo = "label+percent value+percent parent+percent root"
         ) |>
           plotly::layout(
             colorway = sunburst_colors,
@@ -49,7 +49,7 @@ treemaps_progress <- function(xs, type = "treemap") {
             maxdepth = 3,
             type = type,
             branchvalues = "total",
-            textinfo = "label+value+percent parent+percent root",
+            textinfo = "label+percent value+percent parent+percent root",
             domain = list(row = 0, column = 0)
           ) |>
           plotly::add_trace(
@@ -63,7 +63,7 @@ treemaps_progress <- function(xs, type = "treemap") {
             maxdepth = 3,
             type = type,
             branchvalues = "total",
-            textinfo = "label+value+percent parent+percent root",
+            textinfo = "label+percent value+percent parent+percent root",
             domain = list(row = 0, column = 1)
           ) |>
           plotly::layout(

@@ -70,9 +70,9 @@ EXPORT_DIR <- paths$inst$extdata$interim$peaks
 EXPORT_FILE <- paste(params$filename$mzml, "featuresInformed.tsv.gz", sep = "_")
 EXPORT_FILE_2 <- paste(params$filename$mzml, "featuresNotInformed.tsv.gz", sep = "_")
 # GNPS_JOB <- "97d7c50031a84b9ba2747e883a5907cd"
-TOYSET <- "~/data/20210701_10043/fractions"
-TOYSET <- "~/../../Volumes/LaCie/data/20210701_10043/fractions"
-TOYSET <- "~/data/20210701_10043/test"
+# TOYSET <- "~/data/20210701_10043/fractions"
+# TOYSET <- "~/../../Volumes/LaCie/data/20210701_10043/fractions"
+# TOYSET <- "~/data/20210701_10043/test"
 TOYSET <- paths$inst$extdata$source$mzml$path
 
 #' Generic parameters
