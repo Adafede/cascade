@@ -13,6 +13,7 @@ source(file = "R/get_gnps.R")
 source(file = "R/get_params.R")
 source(file = "R/log_debug.R")
 source(file = "R/make_confident.R")
+source(file = "R/make_other.R")
 source(file = "R/no_other.R")
 source(file = "R/parse_cli_params.R")
 source(file = "R/parse_yaml_params.R")
@@ -213,17 +214,21 @@ log_debug(x = "keeping peaks similarities with score above", PEAK_SIMILARITY)
 df_new_with_cor <- df_new_with_cor_pre_taxo |>
   dplyr::filter(comparison_score >= PEAK_SIMILARITY)
 
-#' TODO limit to 5 as for hierarchy
 log_debug(x = "plotting histograms")
+#' TODO harmonize 'others' among minor and major
 df_histogram_ready <- df_new_with_cor_pre_taxo |>
+  make_other() |>
   prepare_plot_2()
 df_histogram_outside_ready <- df_peaks_samples_min |>
+  make_other() |>
   prepare_plot_2()
 
 df_histogram_ready_conf <- df_new_with_cor_pre_taxo |>
+  make_other() |>
   no_other() |>
   prepare_plot_2()
 df_histogram_outside_ready_conf <- df_peaks_samples_min |>
+  make_other() |>
   no_other() |>
   prepare_plot_2()
 
@@ -290,10 +295,6 @@ plotly::plot_ly(
   textinfo = "label+percent value+percent parent+percent root"
 ) |>
   plotly::layout(colorway = sunburst_colors)
-
-
-#' TODO minor peaks
-#' TODO change MS for counts
 
 
 #' Work in progress
