@@ -58,7 +58,7 @@ PEAK_SIMILARITY_PREFILTER <-
 RT_TOL <- params$chromato$peak$tolerance$rt
 PPM <- params$chromato$peak$tolerance$ppm
 AREA_MIN <- params$chromato$peak$area$min
-"inst/extdata/interim/peaks/inst/extdata/interim/"
+
 #' Parameters for annotation
 CONFIDENCE_SCORE_MIN <- params$annotation$confidence$min
 
@@ -171,219 +171,55 @@ df_new_with_cor_pre_taxo <- df_new_with_cor_pre |>
   dplyr::mutate(sum = sum(taxo)) |>
   filter(taxo == 1 | sum == 0)
 
-log_debug(x = "keeping peaks similarities with score above ...")
-log_debug(x = "... 0.7")
-df_new_with_cor_07 <- df_new_with_cor_pre_taxo |>
-  dplyr::filter(comparison_score >= 0.7)
-
-log_debug(x = "... 0.8")
-df_new_with_cor_08 <- df_new_with_cor_pre_taxo |>
-  dplyr::filter(comparison_score >= 0.8)
-
-log_debug(x = "... 0.75")
+log_debug(x = "keeping peaks similarities with score above", PEAK_SIMILARITY)
 df_new_with_cor <- df_new_with_cor_pre_taxo |>
-  dplyr::filter(comparison_score >= 0.75)
+  dplyr::filter(comparison_score >= PEAK_SIMILARITY)
 
-#' TODO fix it
-# final_table_taxed <-
-#   prepare_hierarchy_preparation(dataframe = annotations) |>
-#   prepare_hierarchy()
-# final_table_taxed_with <-
-#   prepare_hierarchy(dataframe = df_new_with, detector = "ms")
-#
-# final_table_taxed_without <-
-#   prepare_hierarchy(dataframe = df_new_without)
-#
-# final_table_taxed_with_new <-
-#   prepare_hierarchy(
-#     dataframe = df_new_with,
-#     detector = "cad"
-#   )
+log_debug(x = "plotting histograms")
+df_histogram_ready <- df_new_with_cor_pre_taxo |>
+  prepare_plot_2()
 
-final_table_taxed_with_new_cor_06 <-
-  prepare_hierarchy(
-    dataframe = df_new_with_cor_pre,
-    detector = "cad"
-  )
-final_table_taxed_with_new_cor_07 <-
-  prepare_hierarchy(
-    dataframe = df_new_with_cor_07,
-    detector = "cad"
-  )
-final_table_taxed_with_new_cor_08 <-
-  prepare_hierarchy(
-    dataframe = df_new_with_cor_08,
-    detector = "cad"
-  )
+df_histogram_ready_conf <- df_new_with_cor_pre_taxo |>
+  dplyr::filter(!grepl(
+    pattern = "not",
+    x = best_candidate_1
+  ) &
+    !is.na(best_candidate_1)) |>
+  prepare_plot_2()
+
+df_histogram_ready |>
+  plot_histograms_taxo()
+
+df_histogram_ready_conf |>
+  plot_histograms_confident()
+
+df_histogram_ready |>
+  plot_histograms_confident()
+
 final_table_taxed_with_new_cor <-
   prepare_hierarchy(
-    dataframe = df_new_with_cor,
+    dataframe = df_new_with_cor_pre_taxo,
     detector = "cad"
   )
 
-#' TODO fix it
-# samples <- prepare_plot(dataframe = final_table_taxed)
-# samples_with <- prepare_plot(dataframe = final_table_taxed_with)
-# samples_without <-
-#   prepare_plot(dataframe = final_table_taxed_without)
-# samples_with_new <-
-#   prepare_plot(dataframe = final_table_taxed_with_new)
-samples_with_new_cor_06 <-
-  prepare_plot(dataframe = final_table_taxed_with_new_cor_06)
-samples_with_new_cor_07 <-
-  prepare_plot(dataframe = final_table_taxed_with_new_cor_07)
-samples_with_new_cor_08 <-
-  prepare_plot(dataframe = final_table_taxed_with_new_cor_08)
-samples_with_new_cor <-
-  prepare_plot(dataframe = final_table_taxed_with_new_cor)
+# samples_with_new_cor <-
+#   prepare_plot(dataframe = final_table_taxed_with_new_cor)
+#
+# absolute_with_new_cor <-
+#   plot_histograms(dataframe = samples_with_new_cor,
+#                   label = "CAD intensity of corelated peaks within CAD peak",
+#                   xlab = FALSE)
+#
+# absolute_with_new_cor
 
-# bound <- dplyr::bind_rows(
-#   df_new_with |> dplyr::mutate(species = "absolute_with"),
-#   df_new_without |> dplyr::mutate(species = "absolute_without"),
-#   df_new_with |> dplyr::mutate(intensity = integral, species = "absolute_with_new"),
-#   df_new_with_cor |> dplyr::mutate(intensity = integral, species = "absolute_with_new_cor")
-# )
-
-# bound_ready <- bound |>
-#   prepare_hierarchy(rescale = TRUE) |>
-#   prepare_plot()
-
-# absolute <- plot_histograms(
-#   dataframe = samples,
-#   label = "Based on MS intensity only",
-#   xlab = FALSE
-# )
-
-# absolute_with <- plot_histograms(
-#   dataframe = samples_with,
-#   # dataframe = bound_ready[bound_ready$species == "absolute_with", ] |>
-#   #   dplyr::mutate_at(c("ids", "sample", "color"),as.character) |>
-#   #   dplyr::arrange(sample,parents,ids) |>
-#   #   dplyr::mutate_at(c("ids", "sample", "color"),as.factor),
-#   label = "MS intensity within CAD peak",
-#   xlab = FALSE
-# )
-
-# absolute_without <- plot_histograms(
-#   dataframe = samples_without,
-#   # dataframe = bound_ready[bound_ready$species == "absolute_without", ] |>
-#   #   dplyr::mutate_at(c("ids", "sample", "color"),as.character) |>
-#   #   dplyr::arrange(sample,parents,ids) |>
-#   #   dplyr::mutate_at(c("ids", "sample", "color"),as.factor),
-#   label = "MS intensity outside CAD peak",
-#   xlab = FALSE
-# )
-
-# absolute_with_new <- plot_histograms(
-#   dataframe = samples_with_new,
-#   # dataframe = bound_ready[bound_ready$species == "absolute_with_new", ] |>
-#   #   dplyr::mutate_at(c("ids", "sample", "color"),as.character) |>
-#   #   dplyr::arrange(sample,parents,ids) |>
-#   #   dplyr::mutate_at(c("ids", "sample", "color"),as.factor),
-#   label = "CAD intensity within CAD peak",
-#   xlab = FALSE
-# )
-
-absolute_with_new_cor_06 <-
-  plot_histograms(
-    dataframe = samples_with_new_cor_06,
-    label = "CAD intensity of corelated peaks within CAD peak",
-    xlab = FALSE
-  )
-absolute_with_new_cor_07 <-
-  plot_histograms(
-    dataframe = samples_with_new_cor_07,
-    label = "CAD intensity of corelated peaks within CAD peak",
-    xlab = FALSE
-  )
-absolute_with_new_cor_08 <-
-  plot_histograms(
-    dataframe = samples_with_new_cor_08,
-    label = "CAD intensity of corelated peaks within CAD peak",
-    xlab = FALSE
-  )
-absolute_with_new_cor <-
-  plot_histograms(
-    dataframe = samples_with_new_cor,
-    # dataframe = bound_ready[bound_ready$species == "absolute_with_new_cor", ] |>
-    #   dplyr::mutate_at(c("ids", "sample", "color"),as.character) |>
-    #   dplyr::arrange(sample,parents,ids) |>
-    #   dplyr::mutate_at(c("ids", "sample", "color"),as.factor),
-    label = "CAD intensity of corelated peaks within CAD peak",
-    xlab = FALSE
-  )
-
-# combined <-
-#   absolute_with +
-#   absolute_without +
-#   absolute_with_new +
-#   absolute_with_new_cor
-
-combined_2 <-
-  absolute_with_new_cor_06 +
-  absolute_with_new_cor_07 +
-  absolute_with_new_cor_08 +
-  absolute_with_new_cor
-
-## specific sample exploration
-# plotly::plot_ly(
-#   data = final_table_taxed |>
-#     dplyr::filter(sample == "210619_AR_25_M_30_01"),
-#   ids = ~ids,
-#   labels = ~labels,
-#   parents = ~parents,
-#   values = ~values,
-#   maxdepth = 3,
-#   type = "treemap",
-#   branchvalues = "total",
-#   textinfo = "label+value+percent parent+percent root"
-# ) |>
-#   plotly::layout(colorway = sunburst_colors)
-
-# plotly::plot_ly(
-#   data = final_table_taxed_with |>
-#     dplyr::filter(sample == "210619_AR_25_M_30_01"),
-#   ids = ~ids,
-#   labels = ~labels,
-#   parents = ~parents,
-#   values = ~values,
-#   maxdepth = 3,
-#   type = "treemap",
-#   branchvalues = "total",
-#   textinfo = "label+value+percent parent+percent root"
-# ) |>
-#   plotly::layout(colorway = sunburst_colors)
-
-# plotly::plot_ly(
-#   data = final_table_taxed_without |>
-#     dplyr::filter(sample == "210619_AR_25_M_30_01"),
-#   ids = ~ids,
-#   labels = ~labels,
-#   parents = ~parents,
-#   values = ~values,
-#   maxdepth = 3,
-#   type = "treemap",
-#   branchvalues = "total",
-#   textinfo = "label+value+percent parent+percent root"
-# ) |>
-#   plotly::layout(colorway = sunburst_colors)
-
-# plotly::plot_ly(
-#   data = final_table_taxed_with_new |>
-#     dplyr::filter(sample == "210619_AR_25_M_30_01"),
-#   ids = ~ids,
-#   labels = ~labels,
-#   parents = ~parents,
-#   values = ~values,
-#   maxdepth = 3,
-#   type = "treemap",
-#   branchvalues = "total",
-#   textinfo = "label+value+percent parent+percent root"
-# ) |>
-#   plotly::layout(colorway = sunburst_colors)
+index <- final_table_taxed_with_new_cor |>
+  dplyr::filter(parents == "") |>
+  dplyr::arrange(desc(values))
+sunburst_colors[[which(index$ids == "Other", arr.ind = TRUE)]] <-
+  grey_colors[[1]][[5]]
 
 plotly::plot_ly(
-  data = final_table_taxed_with_new_cor_07,
+  data = final_table_taxed_with_new_cor,
   ids = ~ids,
   labels = ~labels,
   parents = ~parents,
@@ -391,25 +227,12 @@ plotly::plot_ly(
   maxdepth = 3,
   type = "treemap",
   branchvalues = "total",
-  textinfo = "label+value+percent parent+percent root"
+  textinfo = "label+percent value+percent parent+percent root"
 ) |>
   plotly::layout(colorway = sunburst_colors)
 
-# plotly::plot_ly(
-#   table_new  |> #' from internal prepare_hierarchy()
-#     dplyr::filter(!grepl(pattern = " Other-",
-#                          x = parents,
-#                          fixed = TRUE)) |>
-#     dplyr::mutate_at(c("ids", "sample"), as.character) |>
-#     dplyr::arrange(sample, parents, ids) |>
-#     dplyr::mutate_at(c("ids", "sample"), as.factor) |>
-#     dplyr::left_join(df_new_with_cor_075 |> distinct(feature_id, rt_apex)),
-#   x = ~ rt_apex,
-#   y = ~ intensity,
-#   type = "bar",
-#   color = ~ parents
-# ) |>
-#   plotly::layout(barmode = "stack")
+
+
 
 #' Work in progress
 #' Add some metadata per peak
@@ -552,16 +375,6 @@ plotly::plot_ly() |>
     )),
     grid = list(rows = 2, columns = 3)
   )
-
-plotly::plot_ly(
-  data = df_new_with_cor,
-  x = ~peak_rt_apex,
-  y = ~peak_area,
-  color = ~best_candidate_1,
-  colors = rev(paired),
-  type = "bar"
-) |>
-  plotly::layout(barmode = "stack")
 
 end <- Sys.time()
 
