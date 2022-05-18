@@ -20,7 +20,7 @@ chromato:
   peak:
     similarity:
       prefilter: 0.6
-      filter: 0.9
+      filter: 0.8
     tolerance:
       rt: 0.1
       ppm: 10
