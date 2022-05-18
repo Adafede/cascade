@@ -164,13 +164,29 @@ log_debug(x = "keeping multiple features only if none was reported in the sepcie
 df_new_with_cor_pre_taxo <- df_new_with_cor_pre |>
   dplyr::rowwise() |>
   dplyr::mutate(taxo = ifelse(
+    test = grepl(
+      pattern = best_candidate_organism,
+      x = species
+    ),
+    yes = 1,
+    no = 0
+  )) |>
+  dplyr::mutate(taxo = ifelse(
+    test = is.na(taxo),
+    yes = 0,
+    no = taxo
+  )) |>
+  dplyr::mutate(taxo_2 = ifelse(
     test = best_candidate_organism %in% species,
     yes = 1,
     no = 0
   )) |>
   dplyr::group_by(sample, peak_id) |> #' TODO switch to ID if needed
   dplyr::mutate(sum = sum(taxo)) |>
-  dplyr::filter(taxo == 1 | sum == 0) |>
+  dplyr::mutate(sum_2 = sum(taxo_2)) |>
+  dplyr::filter(taxo_2 == 1 |
+    sum_2 == 0 |
+    sum == 0) |> #' TODO decide if genus
   dplyr::ungroup()
 
 log_debug(x = "keeping peaks similarities with score above", PEAK_SIMILARITY)
