@@ -1,0 +1,65 @@
+require(dplyr)
+
+#' Title
+#'
+#' @param dataframe
+#' @param value
+#'
+#' @return
+#' @export
+#'
+#' @examples
+make_other <- function(dataframe, value = "peak_area") {
+  top_4 <- dataframe |>
+    dplyr::group_by(best_candidate_1, best_candidate_2) |>
+    dplyr::mutate(new = sum(!!as.name(value))) |>
+    dplyr::distinct(new, .keep_all = TRUE) |>
+    dplyr::group_by(best_candidate_1) |>
+    dplyr::slice_max(new, n = 4, with_ties = FALSE) |>
+    dplyr::ungroup() |>
+    dplyr::select(
+      smiles_2D,
+      inchikey_2D,
+      best_candidate_1,
+      best_candidate_2,
+      best_candidate_3
+    ) |>
+    dplyr::distinct()
+
+  last <- dataframe |>
+    dplyr::ungroup() |>
+    dplyr::anti_join(
+      top_4,
+      by = c(
+        "best_candidate_1" = "best_candidate_1",
+        "best_candidate_2" = "best_candidate_2"
+      )
+    ) |>
+    dplyr::mutate(best_candidate_2 = "Other") |>
+    dplyr::select(
+      smiles_2D,
+      inchikey_2D,
+      best_candidate_1,
+      best_candidate_2,
+      best_candidate_3
+    ) |>
+    dplyr::distinct()
+
+  new <- dplyr::bind_rows(
+    top_4,
+    last
+  ) |>
+    dplyr::select(
+      -smiles_2D,
+      -inchikey_2D
+    )
+
+  df_new <- dataframe |>
+    dplyr::select(
+      -best_candidate_1,
+      -best_candidate_2
+    ) |>
+    dplyr::left_join(new)
+
+  return(df_new)
+}
