@@ -120,7 +120,8 @@ chromatograms_cad <- chromatograms_all[c(FALSE, FALSE, TRUE)]
 chromatograms_cad_ready <- lapply(chromatograms_cad, function(x) {
   x |>
     dplyr::select(time,
-                  intensity = UV.1_CAD_1_0)
+      intensity = UV.1_CAD_1_0
+    )
 })
 
 chromatograms_cad_improved <-
