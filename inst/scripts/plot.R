@@ -239,12 +239,19 @@ df_histogram_ready |>
 
 df_histogram_ready_conf |>
   plot_histograms_confident()
+#' keeping only distinct structures
+df_histogram_ready_conf |>
+  dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
+  plot_histograms_confident()
 df_histogram_outside_ready_conf |>
+  dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
   plot_histograms_confident()
 
 df_histogram_ready |>
+  dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
   plot_histograms_confident()
 df_histogram_outside_ready |>
+  dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
   plot_histograms_confident()
 
 final_table_taxed_with_new_cor <- df_new_with_cor_pre_taxo |>

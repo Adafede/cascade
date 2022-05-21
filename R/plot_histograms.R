@@ -25,7 +25,7 @@ plot_histograms <-
       )
     ) +
       ggplot2::geom_col() +
-      ggplot2::geom_bar(stat = "identity") +
+      ggplot2::geom_bar(color = "grey", stat = "identity") +
       ggplot2::scale_fill_manual(
         values = levels(dataframe$color) |>
           as.character(),
@@ -70,7 +70,7 @@ plot_histograms_confident <-
       )
     ) +
       ggplot2::geom_col() +
-      ggplot2::geom_bar(stat = "identity") +
+      ggplot2::geom_bar(color = "grey", stat = "identity") +
       ggplot2::scale_fill_manual(values = levels(dataframe$color) |>
         as.character()) +
       ggplot2::labs(fill = "Chemical Pathway - Superclass") +
@@ -111,7 +111,7 @@ plot_histograms_taxo <-
       )
     ) +
       ggplot2::geom_col() +
-      ggplot2::geom_bar(stat = "identity") +
+      ggplot2::geom_bar(color = "grey", stat = "identity") +
       ggplot2::scale_fill_manual(values = levels(dataframe$color_2) |>
         as.character()) +
       ggplot2::labs(fill = "Already reported in") +
