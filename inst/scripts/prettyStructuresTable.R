@@ -1,8 +1,6 @@
 source(file = "R/log_debug.R")
 start <- Sys.time()
 
-#' See https://github.com/HenrikBengtsson/future/issues/609
-remotes::install_github("HenrikBengtsson/future", ref = "develop")
 #' Packages
 packages_cran <-
   c(
