@@ -1,7 +1,7 @@
 #' Title
 #'
-#' @param df 
-#' @param name 
+#' @param df
+#' @param name
 #'
 #' @return
 #' @export
@@ -10,5 +10,6 @@
 change_intensity_name <- function(df, name) {
   df |>
     dplyr::select(time,
-                  intensity = !!as.name(name))
+      intensity = !!as.name(name)
+    )
 }
