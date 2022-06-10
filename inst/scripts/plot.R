@@ -256,10 +256,15 @@ df_histogram_outside_ready |>
 
 final_table_taxed_with_new_cor <- df_new_with_cor_pre_taxo |>
   prepare_hierarchy(detector = "cad")
+final_table_taxed_with_new_cor_ms_pos <- df_new_with_cor_pre_taxo |>
+  prepare_hierarchy(detector = "ms")
 
 final_table_taxed_with_new_cor_conf <- df_new_with_cor_pre_taxo |>
   no_other() |>
   prepare_hierarchy(detector = "cad")
+final_table_taxed_with_new_cor_conf_ms_pos <- df_new_with_cor_pre_taxo |>
+  no_other() |>
+  prepare_hierarchy(detector = "ms")
 
 # samples_with_new_cor <-
 #   prepare_plot(dataframe = final_table_taxed_with_new_cor)
@@ -278,7 +283,20 @@ plotly::plot_ly(
   parents = ~parents,
   values = ~values,
   maxdepth = 3,
-  type = "treemap",
+  type = "sunburst",
+  branchvalues = "total",
+  textinfo = "label+percent value+percent parent+percent root"
+) |>
+  plotly::layout(colorway = sunburst_colors)
+
+plotly::plot_ly(
+  data = final_table_taxed_with_new_cor_conf_ms_pos,
+  ids = ~ids,
+  labels = ~labels,
+  parents = ~parents,
+  values = ~values,
+  maxdepth = 3,
+  type = "sunburst",
   branchvalues = "total",
   textinfo = "label+percent value+percent parent+percent root"
 ) |>
@@ -287,7 +305,9 @@ plotly::plot_ly(
 index <- final_table_taxed_with_new_cor |>
   dplyr::filter(parents == "") |>
   dplyr::arrange(desc(values))
-sunburst_colors[[which(index$ids == "Other", arr.ind = TRUE)]] <-
+
+sunburst_grey_colors <- sunburst_colors
+sunburst_grey_colors[[which(index$ids == "Other", arr.ind = TRUE)]] <-
   grey_colors[[1]][[5]]
 
 plotly::plot_ly(
@@ -297,12 +317,24 @@ plotly::plot_ly(
   parents = ~parents,
   values = ~values,
   maxdepth = 3,
-  type = "treemap",
+  type = "sunburst",
   branchvalues = "total",
   textinfo = "label+percent value+percent parent+percent root"
 ) |>
-  plotly::layout(colorway = sunburst_colors)
+  plotly::layout(colorway = sunburst_grey_colors)
 
+plotly::plot_ly(
+  data = final_table_taxed_with_new_cor_ms_pos,
+  ids = ~ids,
+  labels = ~labels,
+  parents = ~parents,
+  values = ~values,
+  maxdepth = 3,
+  type = "sunburst",
+  branchvalues = "total",
+  textinfo = "label+percent value+percent parent+percent root"
+) |>
+  plotly::layout(colorway = sunburst_grey_colors)
 
 #' Work in progress
 #' Add some metadata per peak
