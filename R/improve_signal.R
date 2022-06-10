@@ -17,7 +17,7 @@ improve_signal <-
   function(df,
            fourier_components = FOURRIER_COMPONENTS,
            time_min = TIME_MIN,
-           time_max = TIME_MAX, #' TODO fix this... at the moment useless
+           time_max = TIME_MAX,
            frequency = FREQUENCY,
            resample = RESAMPLE) {
     df_fourier <- df |>
@@ -39,13 +39,13 @@ improve_signal <-
 
     timeow <<- seq(
       from = time_min,
-      to = max(df_fourier$time), #' fix: time_max
+      to = min(max(df_fourier$time), time_max),
       by = 1 / (frequency * 60 * resample)
     )
 
     intensityeah <<- f(seq(
       from = time_min,
-      to = max(df_fourier$time), #' fix: time_max
+      to = min(max(df_fourier$time), time_max),
       by = 1 / (frequency * 60 * resample)
     ))
 

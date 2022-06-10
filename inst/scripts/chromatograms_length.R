@@ -102,21 +102,29 @@ files_2 <- list.files(
   recursive = TRUE
 )
 
-names <- list.files(path = TOYSET,
-                    pattern = "Pos.mzML.gz",
-                    recursive = TRUE) |>
+names <- list.files(
+  path = TOYSET,
+  pattern = "Pos.mzML.gz",
+  recursive = TRUE
+) |>
   gsub(pattern = "[0-9]{6}_AR_[0-9]{2}_", replacement = "") |>
-  gsub(pattern = ".mzML.gz",
-       replacement = "",
-       fixed = TRUE)
+  gsub(
+    pattern = ".mzML.gz",
+    replacement = "",
+    fixed = TRUE
+  )
 
-names_2 <- list.files(path = TOYSET,
-                    pattern = "Neg.mzML.gz",
-                    recursive = TRUE) |>
+names_2 <- list.files(
+  path = TOYSET,
+  pattern = "Neg.mzML.gz",
+  recursive = TRUE
+) |>
   gsub(pattern = "[0-9]{6}_AR_[0-9]{2}_", replacement = "") |>
-  gsub(pattern = ".mzML.gz",
-       replacement = "",
-       fixed = TRUE)
+  gsub(
+    pattern = ".mzML.gz",
+    replacement = "",
+    fixed = TRUE
+  )
 
 # dda_data <- MSnbase::readMSData(
 #   files = files,
@@ -152,9 +160,11 @@ chromatograms_cad_ready <-
   lapply(chromatograms_cad, change_intensity_name, "UV.1_CAD_1_0")
 
 chromatograms_pda_ready <-
-  lapply(chromatograms_pda,
-         change_intensity_name,
-         "PDA.1_TotalAbsorbance_0")
+  lapply(
+    chromatograms_pda,
+    change_intensity_name,
+    "PDA.1_TotalAbsorbance_0"
+  )
 
 chromatograms_bpi_improved <-
   improve_signals_progress(chromatograms_bpi_ready)
@@ -202,24 +212,39 @@ pdas_baselined <- chromatograms_pda_baselined |>
 
 uhr <- plotly::plot_ly() |>
   plotly::add_lines(
-    data = cads_baselined |> dplyr::filter(grepl(pattern = "UHR", x = id)),
-    x = ~ time,
-    y = ~ intensity,
-    name = "very long"
+    data = cads_baselined |>
+      dplyr::filter(grepl(pattern = "UHR", x = id)),
+    x = ~time,
+    y = ~intensity,
+    name = "very long",
+    line = list(
+      width = 1,
+      color = "ff7f00"
+    )
   )
 semi <- plotly::plot_ly() |>
   plotly::add_lines(
-    data = cads_baselined |> dplyr::filter(grepl(pattern = "21", x = id)),
-    x = ~ time,
-    y = ~ intensity,
-    name = "long"
+    data = cads_baselined |>
+      dplyr::filter(grepl(pattern = "21", x = id)),
+    x = ~time,
+    y = ~intensity,
+    name = "long",
+    line = list(
+      width = 1,
+      color = "cab2d6"
+    )
   )
 short <- plotly::plot_ly() |>
   plotly::add_lines(
-    data = cads_baselined |> dplyr::filter(grepl(pattern = "09_P", x = id)),
-    x = ~ time,
-    y = ~ intensity,
-    name = "short"
+    data = cads_baselined |>
+      dplyr::filter(grepl(pattern = "09_P", x = id)),
+    x = ~time,
+    y = ~intensity,
+    name = "short",
+    line = list(
+      width = 1,
+      color = "b15928"
+    )
   )
 
 new_new_new <- plotly::subplot(
@@ -233,17 +258,22 @@ new_new_new <- plotly::subplot(
   nrows = 3
 ) |>
   plotly::layout(
-    yaxis = list(range = c(0, 0.2)),
+    yaxis = list(
+      title = "Intensity",
+      range = c(0, 0.2)
+    ),
     yaxis2 = list(range = c(0, 0.2)),
-    yaxis3 = list(range = c(0, 0.2))
+    yaxis3 = list(range = c(0, 0.2)),
+    xaxis = list(title = "Time")
   )
 new_new_new
 
 new <- plotly::plot_ly() |>
   plotly::add_lines(
-    data = bpis_baselined |> dplyr::filter(grepl(pattern = "UHR", x = id)),
-    x = ~ time,
-    y = ~ intensity,
+    data = bpis_baselined |>
+      dplyr::filter(grepl(pattern = "UHR", x = id)),
+    x = ~time,
+    y = ~intensity,
     name = "MS Pos",
     line = list(
       width = 1,
@@ -252,9 +282,10 @@ new <- plotly::plot_ly() |>
     )
   ) |>
   plotly::add_lines(
-    data = bpis_neg_baselined |> dplyr::filter(grepl(pattern = "UHR", x = id)),
-    x = ~ time,
-    y = ~ intensity,
+    data = bpis_neg_baselined |>
+      dplyr::filter(grepl(pattern = "UHR", x = id)),
+    x = ~time,
+    y = ~intensity,
     name = "MS Neg",
     line = list(
       width = 1,
@@ -263,8 +294,9 @@ new <- plotly::plot_ly() |>
     )
   ) |>
   plotly::add_lines(
-    data = pdas_baselined |> dplyr::filter(grepl(pattern = "UHR", x = id)),
-    x = ~ time,
+    data = pdas_baselined |>
+      dplyr::filter(grepl(pattern = "UHR", x = id)),
+    x = ~time,
     y = ~ -intensity,
     name = "PDA",
     line = list(
@@ -274,18 +306,21 @@ new <- plotly::plot_ly() |>
     )
   ) |>
   plotly::add_lines(
-    data = cads_baselined |> dplyr::filter(grepl(pattern = "UHR", x = id)),
-    x = ~ time,
+    data = cads_baselined |>
+      dplyr::filter(grepl(pattern = "UHR", x = id)),
+    x = ~time,
     y = ~ -intensity,
     name = "CAD",
     line = list(
       width = 1,
-      dash = 'dot',
+      dash = "dot",
       color = "e31a1c"
     )
   ) |>
-  plotly::layout(xaxis = list(title = "Time"),
-                 yaxis = list(title = "Intensity"))
+  plotly::layout(
+    xaxis = list(title = "Time"),
+    yaxis = list(title = "Intensity")
+  )
 new
 
 #' WIP
