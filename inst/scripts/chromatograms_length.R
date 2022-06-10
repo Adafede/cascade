@@ -258,11 +258,11 @@ new_new_new <- plotly::subplot(
   nrows = 3
 ) |>
   plotly::layout(
-    yaxis = list(
+    yaxis = list(range = c(0, 0.2)),
+    yaxis2 = list(
       title = "Intensity",
       range = c(0, 0.2)
     ),
-    yaxis2 = list(range = c(0, 0.2)),
     yaxis3 = list(range = c(0, 0.2)),
     xaxis = list(title = "Time")
   )
