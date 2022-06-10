@@ -30,8 +30,8 @@ chromato:
     cad: 0.055
     pda: 0.090
   time:
-    min: 0.2
-    max: 77.2
+    min: 0
+    max: 150
 signal:
   fourrier:
     components: 0.05
