@@ -1,12 +1,22 @@
 #' Title
 #'
 #' @param x
+#' @param detector
 #'
 #' @return
 #' @export
 #'
 #' @examples
-compare_peaks <- function(x) {
+compare_peaks <- function(x, detector) {
+  list_ms_peaks <- switch(detector,
+    "cad" = list_ms_peaks_cad,
+    "pda" = list_ms_peaks_pda
+  )
+  list_chromato_peaks <- switch(detector,
+    "cad" = list_chromato_peaks_cad,
+    "pda" = list_chromato_peaks_pda
+  )
+
   if (length(list_ms_peaks[[x]]) != 0) {
     feature <- seq_along(list_ms_peaks[[x]])
     y <- mclapply(

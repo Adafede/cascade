@@ -459,92 +459,173 @@ if (params$signal$detector$pda == TRUE) {
   )
 }
 
-# TODO be smart and not extract twice if both detectors present
+if (params$signal$detector$cad == TRUE) {
+  log_debug(x = "extracting ms chromatograms (longest step)")
+  log_debug(x = "count approx 1 minute per 100 features (increasing with features number)")
+  log_debug(x = "varies a lot depending on features distribution")
+  list_ms_chr_cad <-
+    parallel::mclapply(
+      X = seq_along(list_df_peaks_cad_split_flat),
+      FUN = extract_ms,
+      detector = "cad"
+    )
 
-log_debug(x = "extracting ms chromatograms (longest step)")
-log_debug(x = "count approx 1 minute per 100 features (increasing with features number)")
-log_debug(x = "varies a lot depending on features distribution")
-list_ms_chr_cad <-
-  parallel::mclapply(
-    X = seq_along(list_df_peaks_cad_split_flat),
-    FUN = extract_ms
+  log_debug(x = "transforming ms chromatograms")
+  list_ms_transformed_cad <- parallel::mclapply(
+    X = list_ms_chr_cad,
+    FUN = transform_ms
   )
 
-log_debug(x = "transforming ms chromatograms")
-list_ms_transformed_cad <- parallel::mclapply(
-  X = list_ms_chr_cad,
-  FUN = transform_ms
-)
-
-log_debug(x = "extracting ms peaks")
-list_ms_peaks_cad <- parallel::mclapply(
-  X = list_ms_transformed_cad,
-  FUN = extract_ms_peak
-)
-
-log_debug(x = "comparing peaks")
-list_comparison_score_cad <-
-  parallel::mclapply(
-    X = seq_along(list_ms_peaks_cad),
-    FUN = compare_peaks
+  log_debug(x = "extracting ms peaks")
+  list_ms_peaks_cad <- parallel::mclapply(
+    X = list_ms_transformed_cad,
+    FUN = extract_ms_peak
   )
 
-df_peaks_samples_full_cad <- list_df_peaks_cad_split_flat |>
-  dplyr::bind_rows()
+  log_debug(x = "comparing peaks")
+  list_comparison_score_cad <-
+    parallel::mclapply(
+      X = seq_along(list_ms_peaks_cad),
+      FUN = compare_peaks,
+      detector = "cad"
+    )
 
-comparison_scores_cad <- list_comparison_score_cad |>
-  purrr::flatten()
+  df_peaks_samples_full_cad <- list_df_peaks_cad_split_flat |>
+    dplyr::bind_rows()
 
-df_peaks_samples_full_cad$comparison_score <-
-  as.numeric(comparison_scores_cad)
+  comparison_scores_cad <- list_comparison_score_cad |>
+    purrr::flatten()
 
-log_debug(x = "final aesthetics")
-df_final_cad <- df_peaks_samples_full_cad |>
-  dplyr::select(
-    sample = id,
-    peak_id,
-    peak_rt_min = rt_min,
-    peak_rt_apex = rt_apex,
-    peak_rt_max = rt_max,
-    peak_area = integral,
-    feature_id,
-    feature_rt = rt,
-    feature_mz = mz,
-    feature_area = intensity,
-    comparison_score
-  ) |>
-  dplyr::distinct()
+  df_peaks_samples_full_cad$comparison_score <-
+    as.numeric(comparison_scores_cad)
 
-df_final_2_cad <- df_new_without_cad |>
-  dplyr::mutate(comparison_score = NA) |>
-  dplyr::select(
-    sample = id,
-    peak_id,
-    peak_rt_min = rt_min,
-    peak_rt_apex = rt_apex,
-    peak_rt_max = rt_max,
-    peak_area = integral,
-    feature_id,
-    feature_rt = rt,
-    feature_mz = mz,
-    feature_area = intensity,
-    comparison_score
-  ) |>
-  dplyr::distinct()
+  log_debug(x = "final aesthetics")
+  df_final_cad <- df_peaks_samples_full_cad |>
+    dplyr::select(
+      sample = id,
+      peak_id,
+      peak_rt_min = rt_min,
+      peak_rt_apex = rt_apex,
+      peak_rt_max = rt_max,
+      peak_area = integral,
+      feature_id,
+      feature_rt = rt,
+      feature_mz = mz,
+      feature_area = intensity,
+      comparison_score
+    ) |>
+    dplyr::distinct()
 
-log_debug(x = "checking export directory")
-check_export_dir(EXPORT_DIR)
+  df_final_2_cad <- df_new_without_cad |>
+    dplyr::mutate(comparison_score = NA) |>
+    dplyr::select(
+      sample = id,
+      peak_id,
+      peak_rt_min = rt_min,
+      peak_rt_apex = rt_apex,
+      peak_rt_max = rt_max,
+      peak_area = integral,
+      feature_id,
+      feature_rt = rt,
+      feature_mz = mz,
+      feature_area = intensity,
+      comparison_score
+    ) |>
+    dplyr::distinct()
 
-log_debug(x = "exporting to ...")
-log_debug(x = EXPORT_DIR)
-readr::write_tsv(
-  x = df_final_cad,
-  file = file.path(EXPORT_DIR, EXPORT_FILE_CAD)
-)
-readr::write_tsv(
-  x = df_final_2_cad,
-  file = file.path(EXPORT_DIR, EXPORT_FILE_CAD_2)
-)
+  log_debug(x = "checking export directory")
+  check_export_dir(EXPORT_DIR)
+
+  log_debug(x = "exporting to ...")
+  log_debug(x = EXPORT_DIR)
+  readr::write_tsv(
+    x = df_final_cad,
+    file = file.path(EXPORT_DIR, EXPORT_FILE_CAD)
+  )
+  readr::write_tsv(
+    x = df_final_2_cad,
+    file = file.path(EXPORT_DIR, EXPORT_FILE_CAD_2)
+  )
+}
+
+if (params$signal$detector$pda == TRUE) {
+  list_ms_chr_pda <-
+    parallel::mclapply(
+      X = seq_along(list_df_peaks_pda_split_flat),
+      FUN = extract_ms,
+      detector = "pda"
+    )
+
+  list_ms_transformed_pda <- parallel::mclapply(
+    X = list_ms_chr_pda,
+    FUN = transform_ms
+  )
+
+  list_ms_peaks_pda <- parallel::mclapply(
+    X = list_ms_transformed_pda,
+    FUN = extract_ms_peak
+  )
+
+  list_comparison_score_pda <-
+    parallel::mclapply(
+      X = seq_along(list_ms_peaks_pda),
+      FUN = compare_peaks,
+      detector = "pda"
+    )
+
+  df_peaks_samples_full_pda <- list_df_peaks_pda_split_flat |>
+    dplyr::bind_rows()
+
+  comparison_scores_pda <- list_comparison_score_pda |>
+    purrr::flatten()
+
+  df_peaks_samples_full_pda$comparison_score <-
+    as.numeric(comparison_scores_pda)
+
+  df_final_pda <- df_peaks_samples_full_pda |>
+    dplyr::select(
+      sample = id,
+      peak_id,
+      peak_rt_min = rt_min,
+      peak_rt_apex = rt_apex,
+      peak_rt_max = rt_max,
+      peak_area = integral,
+      feature_id,
+      feature_rt = rt,
+      feature_mz = mz,
+      feature_area = intensity,
+      comparison_score
+    ) |>
+    dplyr::distinct()
+
+  df_final_2_pda <- df_new_without_pda |>
+    dplyr::mutate(comparison_score = NA) |>
+    dplyr::select(
+      sample = id,
+      peak_id,
+      peak_rt_min = rt_min,
+      peak_rt_apex = rt_apex,
+      peak_rt_max = rt_max,
+      peak_area = integral,
+      feature_id,
+      feature_rt = rt,
+      feature_mz = mz,
+      feature_area = intensity,
+      comparison_score
+    ) |>
+    dplyr::distinct()
+
+  check_export_dir(EXPORT_DIR)
+
+  readr::write_tsv(
+    x = df_final_pda,
+    file = file.path(EXPORT_DIR, EXPORT_FILE_PDA)
+  )
+  readr::write_tsv(
+    x = df_final_2_pda,
+    file = file.path(EXPORT_DIR, EXPORT_FILE_PDA_2)
+  )
+}
 
 end <- Sys.time()
 
