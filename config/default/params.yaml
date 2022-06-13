@@ -33,6 +33,9 @@ chromato:
     min: 0
     max: 150
 signal:
+  detector:
+    cad: TRUE
+    pda: TRUE
   fourrier:
     components: 0.05
   frequency: 20
