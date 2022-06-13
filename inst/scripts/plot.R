@@ -167,6 +167,9 @@ if (params$signal$detector$cad == TRUE) {
   outside_peaks_cad <-
     readr::read_delim(file = file.path(EXPORT_DIR, EXPORT_FILE_CAD_2))
 
+  ms_peaks_cad <- compared_peaks_cad |>
+    dplyr::bind_rows(outside_peaks_cad)
+
   log_debug(x = "joining compared peaks and candidates")
   df_peaks_samples_full_cad <- compared_peaks_cad |>
     dplyr::left_join(candidates_confident)
@@ -194,7 +197,7 @@ if (params$signal$detector$cad == TRUE) {
   df_new_with_cor_pre_cad <- df_peaks_samples_full_cad |>
     dplyr::filter(comparison_score >= PEAK_SIMILARITY_PREFILTER) #' TODO check negative values
 
-  log_debug(x = "keeping multiple features only if none was reported in the sepcies")
+  log_debug(x = "keeping multiple features only if none was reported in the species")
   df_new_with_cor_pre_taxo_cad <- df_new_with_cor_pre_cad |>
     dplyr::rowwise() |>
     dplyr::mutate(taxo = ifelse(
@@ -218,9 +221,24 @@ if (params$signal$detector$cad == TRUE) {
     dplyr::group_by(sample, peak_id) |> #' TODO switch to ID if needed
     dplyr::mutate(sum = sum(taxo)) |>
     dplyr::mutate(sum_2 = sum(taxo_2)) |>
-    dplyr::filter(taxo_2 == 1 |
-      sum_2 == 0 |
-      sum == 0) |> #' TODO decide if genus
+    dplyr::mutate(keep = ifelse(
+      test = taxo_2 == 1,
+      yes = "Y",
+      no = ifelse(
+        test = taxo == 1,
+        yes = ifelse(
+          test = sum != sum_2 & sum_2 == 0,
+          yes = "Y",
+          no = "N"
+        ),
+        no = ifelse(
+          test = sum == 0,
+          yes = "Y",
+          no = "N"
+        )
+      )
+    )) |>
+    dplyr::filter(keep == "Y") |> #' TODO decide if genus
     dplyr::ungroup()
 
   log_debug(x = "keeping peaks similarities with score above", PEAK_SIMILARITY)
@@ -390,7 +408,7 @@ if (params$signal$detector$pda == TRUE) {
   df_new_with_cor_pre_pda <- df_peaks_samples_full_pda |>
     dplyr::filter(comparison_score >= PEAK_SIMILARITY_PREFILTER) #' TODO check negative values
 
-  log_debug(x = "keeping multiple features only if none was reported in the sepcies")
+  log_debug(x = "keeping multiple features only if none was reported in the species")
   df_new_with_cor_pre_taxo_pda <- df_new_with_cor_pre_pda |>
     dplyr::rowwise() |>
     dplyr::mutate(taxo = ifelse(
@@ -414,9 +432,24 @@ if (params$signal$detector$pda == TRUE) {
     dplyr::group_by(sample, peak_id) |> #' TODO switch to ID if needed
     dplyr::mutate(sum = sum(taxo)) |>
     dplyr::mutate(sum_2 = sum(taxo_2)) |>
-    dplyr::filter(taxo_2 == 1 |
-      sum_2 == 0 |
-      sum == 0) |> #' TODO decide if genus
+    dplyr::mutate(keep = ifelse(
+      test = taxo_2 == 1,
+      yes = "Y",
+      no = ifelse(
+        test = taxo == 1,
+        yes = ifelse(
+          test = sum != sum_2 & sum_2 == 0,
+          yes = "Y",
+          no = "N"
+        ),
+        no = ifelse(
+          test = sum == 0,
+          yes = "Y",
+          no = "N"
+        )
+      )
+    )) |>
+    dplyr::filter(keep == "Y") |> #' TODO decide if genus
     dplyr::ungroup()
 
   log_debug(x = "keeping peaks similarities with score above", PEAK_SIMILARITY)
@@ -557,7 +590,7 @@ if (params$signal$detector$pda == TRUE) {
 
 #' Work in progress
 #' Add some metadata per peak
-df_meta <- df_new_with_cor_pre_taxo |>
+df_meta <- df_new_with_cor_pre_taxo_cad |>
   dplyr::arrange(desc(intensity)) |>
   dplyr::distinct(
     id,
