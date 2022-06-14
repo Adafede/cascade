@@ -38,11 +38,13 @@ source(file = "R/plot_chromatogram.R")
 source(file = "R/prepare_mz.R")
 source(file = "R/prepare_peaks.R")
 source(file = "R/prepare_rt.R")
+source(file = "R/preprocess_chromatograms.R")
+source(file = "R/preprocess_peaks.R")
+source(file = "R/process_peaks.R")
 source(file = "R/transform_baseline.R")
 source(file = "R/transform_ms.R")
 source(file = "R/y_as_na.R")
 
-future::plan(strategy = future::multisession)
 progressr::handlers(global = TRUE)
 progressr::handlers("progress")
 
@@ -73,28 +75,24 @@ FEATURES <- "~/Downloads/test_quant.csv"
 EXPORT_DIR <- paths$inst$extdata$interim$peaks
 EXPORT_FILE_CAD <-
   paste(params$filename$mzml,
-    "featuresInformed",
-    "cad.tsv.gz",
-    sep = "_"
-  )
+        "featuresInformed",
+        "cad.tsv.gz",
+        sep = "_")
 EXPORT_FILE_CAD_2 <-
   paste(params$filename$mzml,
-    "featuresNotInformed",
-    "cad.tsv.gz",
-    sep = "_"
-  )
+        "featuresNotInformed",
+        "cad.tsv.gz",
+        sep = "_")
 EXPORT_FILE_PDA <-
   paste(params$filename$mzml,
-    "featuresInformed",
-    "pda.tsv.gz",
-    sep = "_"
-  )
+        "featuresInformed",
+        "pda.tsv.gz",
+        sep = "_")
 EXPORT_FILE_PDA_2 <-
   paste(params$filename$mzml,
-    "featuresNotInformed",
-    "pda.tsv.gz",
-    sep = "_"
-  )
+        "featuresNotInformed",
+        "pda.tsv.gz",
+        sep = "_")
 # GNPS_JOB <- "97d7c50031a84b9ba2747e883a5907cd"
 # TOYSET <- "~/data/20210701_10043/fractions"
 # TOYSET <- "~/../../Volumes/LaCie/data/20210701_10043/fractions"
@@ -145,17 +143,13 @@ files <- list.files(
 
 # files <- files[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = files)]
 
-names <- list.files(
-  path = TOYSET,
-  pattern = ".mzML",
-  recursive = TRUE
-) |>
+names <- list.files(path = TOYSET,
+                    pattern = ".mzML",
+                    recursive = TRUE) |>
   gsub(pattern = "[0-9]{6}_AR_[0-9]{2}_", replacement = "") |>
-  gsub(
-    pattern = ".mzML",
-    replacement = "",
-    fixed = TRUE
-  )
+  gsub(pattern = ".mzML",
+       replacement = "",
+       fixed = TRUE)
 
 # names <- names[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = names)]
 
@@ -164,18 +158,14 @@ log_debug(x = "loading feature table")
 feature_table <- readr::read_delim(file = FEATURES)
 
 log_debug(x = "loading raw files (can take long if loading multiple files)")
-dda_data <- MSnbase::readMSData(
-  files = files,
-  mode = "onDisk",
-  msLevel. = 1
-)
+dda_data <- MSnbase::readMSData(files = files,
+                                mode = "onDisk",
+                                msLevel. = 1)
 
-log_debug(x = "opening raw files objects")
-objects <- lapply(files, mzR::openMSfile)
-
-log_debug(x = "extracting chromatograms")
-chromatograms <- lapply(objects, mzR::chromatograms)
-
+log_debug(x = "opening raw files objects and extracting chromatograms")
+chromatograms_all <- lapply(files, mzR::openMSfile) |>
+  lapply(mzR::chromatograms) |>
+  purrr::flatten()
 
 log_debug(x = "preparing feature list ...")
 colnames(feature_table) <-
@@ -220,13 +210,11 @@ df_features <- feature_table |>
     replacement = "",
     x = column
   )) |>
-  dplyr::select(
-    feature_id = rowname,
-    rt,
-    mz,
-    sample = column,
-    intensity = value
-  ) |>
+  dplyr::select(feature_id = rowname,
+                rt,
+                mz,
+                sample = column,
+                intensity = value) |>
   dplyr::mutate(
     rt_1 = as.numeric(rt),
     rt_2 = as.numeric(rt),
@@ -238,393 +226,27 @@ df_features <- feature_table |>
 log_debug(x = "setting joining keys")
 data.table::setkey(df_features, rt_1, rt_2)
 
-log_debug(x = "preparing chromatograms ...")
-chromatograms_all <- chromatograms |>
-  purrr::flatten()
-
+if (params$signal$detector$bpi == TRUE) {
+  chromatograms_list_bpi <- preprocess_chromatograms(detector = "bpi")
+  peaks_prelist_bpi <- preprocess_peaks(detector = "bpi")
+}
 if (params$signal$detector$cad == TRUE) {
-  log_debug(x = "... CAD")
-  log_debug(x = "selecting specific chromatograms ...")
-  chromatograms_cad <- chromatograms_all[c(FALSE, FALSE, TRUE)]
-
-  chromatograms_cad_ready <-
-    lapply(chromatograms_cad, change_intensity_name, "UV.1_CAD_1_0")
-
-  log_debug(x = "improving chromatograms ...")
-  chromatograms_cad_improved <-
-    improve_signals_progress(chromatograms_cad_ready)
-
-  names(chromatograms_cad_improved) <- names
-
-  cads_improved <-
-    dplyr::bind_rows(chromatograms_cad_improved, .id = "id") |>
-    dplyr::mutate(time = time + CAD_SHIFT)
-
-  log_debug(x = "plotting improved chromatograms ...")
-  cad_plot <- plot_chromatogram(df = cads_improved, text = "CAD")
-
-  log_debug(x = "baselining chromatograms ...")
-  chromatograms_cad_baselined <-
-    transform_baseline(x = chromatograms_cad_improved)
-
-  cads_baselined <-
-    dplyr::bind_rows(chromatograms_cad_baselined, .id = "id") |>
-    dplyr::mutate(intensity = intensity / max(intensity))
-
-  log_debug(x = "plotting baselined chromatograms ...")
-  new_new_cad <- plot_chromatogram(df = cads_baselined, text = "CAD")
-
-  #' data.table call outside of future because buggy else
-  peaks_cad <- peaks_progress(chromatograms_cad_baselined)
-
-  names(peaks_cad) <- names
-
-  #' data.table call outside of future because buggy else
-  peaks_cad_all <- dplyr::bind_rows(peaks_cad, .id = "id") |>
-    data.table::data.table()
-
-  cads_baselined <- cads_baselined |>
-    dplyr::mutate(rt_1 = time, rt_2 = time) |>
-    data.table::data.table()
-
-  log_debug(x = "joining peaks ...")
-  df_cad <-
-    join_peaks(chromatograms = cads_baselined, peaks = peaks_cad_all)
-
-  data.table::setkey(df_cad, rt_min, rt_max)
-
-  log_debug(x = "joining within given rt tolerance")
-  df_new_pre_cad <- data.table::foverlaps(df_features, df_cad)
-
-  df_new_with_cad <- df_new_pre_cad |>
-    dplyr::select(-rt_1, -rt_2) |>
-    dplyr::filter(!is.na(peak_id))
-
-  # df_new_with_cad <- df_new_with_cad |> #' TODO DONT FORGET
-  #   dplyr::distinct(id, peak_id, feature_id, .keep_all = TRUE) |> #' TODO DONT FORGET
-  #   sample_n(500) #' TODO DONT FORGET
-
-  log_debug(x = "selecting features outside peaks")
-  df_new_without_cad <- df_new_pre_cad |>
-    dplyr::filter(is.na(peak_id)) |>
-    dplyr::filter(sample %in% df_new_with_cad$sample)
-
-  # df_new_without <- df_new_without |> #' TODO DONT FORGET
-  #   dplyr::distinct(id, peak_id, feature_id, .keep_all = TRUE) #' TODO DONT FORGET
-
-  log_debug(x = "splitting by file")
-  list_df_peaks_cad <- df_new_with_cad |>
-    dplyr::group_split(id)
-
-  names(list_df_peaks_cad) <- unique(df_new_with_cad$id)
-
-  log_debug(x = "splitting by peak")
-  list_df_peaks_cad_split <- parallel::mclapply(
-    X = list_df_peaks_cad,
-    FUN = dplyr::group_split,
-    peak_id
-  )
-
-  list_df_peaks_cad_split_flat <- list_df_peaks_cad_split |>
-    purrr::flatten()
-
-  log_debug(x = "retrieving ms files")
-  list_dda_split_cad <- parallel::mclapply(
-    X = list_df_peaks_cad_split_flat,
-    FUN = filter_ms,
-    shift = CAD_SHIFT
-  )
-
-  log_debug(x = "normalizing chromato")
-  list_chromato_split_cad <-
-    parallel::mclapply(
-      X = list_df_peaks_cad_split_flat,
-      FUN = normalize_chromato
-    )
-
-  log_debug(x = "preparing peaks chromato")
-  list_chromato_peaks_cad <- parallel::mclapply(
-    X = list_chromato_split_cad,
-    FUN = prepare_peaks
-  )
-
-  log_debug(x = "preparing rt")
-  list_rtr_cad <- parallel::mclapply(
-    X = list_df_peaks_cad_split_flat,
-    FUN = prepare_rt
-  )
-
-  log_debug(x = "preparing mz")
-  list_mzr_cad <- parallel::mclapply(
-    X = list_df_peaks_cad_split_flat,
-    FUN = prepare_mz
-  )
+detector <- "cad"
 }
-
-if (params$signal$detector$pda == TRUE) {
-  log_debug(x = "... PDA")
-  chromatograms_pda <- chromatograms_all[c(FALSE, TRUE, FALSE)]
-
-  chromatograms_pda_ready <-
-    lapply(chromatograms_pda, change_intensity_name, "PDA.1_TotalAbsorbance_0")
-
-  chromatograms_pda_improved <-
-    improve_signals_progress(chromatograms_pda_ready)
-  chromatograms_pda_improved <- chromatograms_pda_ready
-
-  names(chromatograms_pda_improved) <- names
-
-  pdas_improved <-
-    dplyr::bind_rows(chromatograms_pda_improved, .id = "id") |>
-    dplyr::mutate(time = time + PDA_SHIFT)
-
-  pda_plot <- plot_chromatogram(df = pdas_improved, text = "PDA")
-
-  chromatograms_pda_baselined <-
-    transform_baseline(x = chromatograms_pda_improved)
-
-  pdas_baselined <-
-    dplyr::bind_rows(chromatograms_pda_baselined, .id = "id") |>
-    dplyr::mutate(intensity = intensity / max(intensity))
-
-  new_new_pda <- plot_chromatogram(df = pdas_baselined, text = "PDA")
-
-  peaks_pda <- peaks_progress(chromatograms_pda_baselined)
-
-  names(peaks_pda) <- names
-
-  peaks_pda_all <- dplyr::bind_rows(peaks_pda, .id = "id") |>
-    data.table::data.table()
-
-  pdas_baselined <- pdas_baselined |>
-    dplyr::mutate(rt_1 = time, rt_2 = time) |>
-    data.table::data.table()
-
-  df_pda <-
-    join_peaks(chromatograms = pdas_baselined, peaks = peaks_pda_all)
-
-  data.table::setkey(df_pda, rt_min, rt_max)
-
-  df_new_pre_pda <- data.table::foverlaps(df_features, df_pda)
-
-  df_new_with_pda <- df_new_pre_pda |>
-    dplyr::select(-rt_1, -rt_2) |>
-    dplyr::filter(!is.na(peak_id))
-
-  df_new_without_pda <- df_new_pre_pda |>
-    dplyr::filter(is.na(peak_id)) |>
-    dplyr::filter(sample %in% df_new_with_pda$sample)
-
-  list_df_peaks_pda <- df_new_with_pda |>
-    dplyr::group_split(id)
-
-  names(list_df_peaks_pda) <- unique(df_new_with_pda$id)
-
-  list_df_peaks_pda_split <- parallel::mclapply(
-    X = list_df_peaks_pda,
-    FUN = dplyr::group_split,
-    peak_id
-  )
-
-  list_df_peaks_pda_split_flat <- list_df_peaks_pda_split |>
-    purrr::flatten()
-
-  list_dda_split_pda <- parallel::mclapply(
-    X = list_df_peaks_pda_split_flat,
-    FUN = filter_ms,
-    shift = PDA_SHIFT
-  )
-
-  list_chromato_split_pda <-
-    parallel::mclapply(
-      X = list_df_peaks_pda_split_flat,
-      FUN = normalize_chromato
-    )
-
-  list_chromato_peaks_pda <- parallel::mclapply(
-    X = list_chromato_split_pda,
-    FUN = prepare_peaks
-  )
-
-  log_debug(x = "preparing rt")
-  list_rtr_pda <- parallel::mclapply(
-    X = list_df_peaks_pda_split_flat,
-    FUN = prepare_rt
-  )
-
-  log_debug(x = "preparing mz")
-  list_mzr_pda <- parallel::mclapply(
-    X = list_df_peaks_pda_split_flat,
-    FUN = prepare_mz
-  )
-}
-
 if (params$signal$detector$cad == TRUE) {
-  log_debug(x = "extracting ms chromatograms (longest step)")
-  log_debug(x = "count approx 1 minute per 100 features (increasing with features number)")
-  log_debug(x = "varies a lot depending on features distribution")
-  list_ms_chr_cad <-
-    parallel::mclapply(
-      X = seq_along(list_df_peaks_cad_split_flat),
-      FUN = extract_ms,
-      detector = "cad"
-    )
-
-  log_debug(x = "transforming ms chromatograms")
-  list_ms_transformed_cad <- parallel::mclapply(
-    X = list_ms_chr_cad,
-    FUN = transform_ms
-  )
-
-  log_debug(x = "extracting ms peaks")
-  list_ms_peaks_cad <- parallel::mclapply(
-    X = list_ms_transformed_cad,
-    FUN = extract_ms_peak
-  )
-
-  log_debug(x = "comparing peaks")
-  list_comparison_score_cad <-
-    parallel::mclapply(
-      X = seq_along(list_ms_peaks_cad),
-      FUN = compare_peaks,
-      detector = "cad"
-    )
-
-  df_peaks_samples_full_cad <- list_df_peaks_cad_split_flat |>
-    dplyr::bind_rows()
-
-  comparison_scores_cad <- list_comparison_score_cad |>
-    purrr::flatten()
-
-  df_peaks_samples_full_cad$comparison_score <-
-    as.numeric(comparison_scores_cad)
-
-  log_debug(x = "final aesthetics")
-  df_final_cad <- df_peaks_samples_full_cad |>
-    dplyr::select(
-      sample = id,
-      peak_id,
-      peak_rt_min = rt_min,
-      peak_rt_apex = rt_apex,
-      peak_rt_max = rt_max,
-      peak_area = integral,
-      feature_id,
-      feature_rt = rt,
-      feature_mz = mz,
-      feature_area = intensity,
-      comparison_score
-    ) |>
-    dplyr::distinct()
-
-  df_final_2_cad <- df_new_without_cad |>
-    dplyr::mutate(comparison_score = NA) |>
-    dplyr::select(
-      sample = id,
-      peak_id,
-      peak_rt_min = rt_min,
-      peak_rt_apex = rt_apex,
-      peak_rt_max = rt_max,
-      peak_area = integral,
-      feature_id,
-      feature_rt = rt,
-      feature_mz = mz,
-      feature_area = intensity,
-      comparison_score
-    ) |>
-    dplyr::distinct()
-
-  log_debug(x = "checking export directory")
-  check_export_dir(EXPORT_DIR)
-
-  log_debug(x = "exporting to ...")
-  log_debug(x = EXPORT_DIR)
-  readr::write_tsv(
-    x = df_final_cad,
-    file = file.path(EXPORT_DIR, EXPORT_FILE_CAD)
-  )
-  readr::write_tsv(
-    x = df_final_2_cad,
-    file = file.path(EXPORT_DIR, EXPORT_FILE_CAD_2)
-  )
+  chromatograms_list_cad <- preprocess_chromatograms()
+  peaks_prelist_cad <- preprocess_peaks()
+  peaks_list_cad <- process_peaks()
 }
-
 if (params$signal$detector$pda == TRUE) {
-  list_ms_chr_pda <-
-    parallel::mclapply(
-      X = seq_along(list_df_peaks_pda_split_flat),
-      FUN = extract_ms,
-      detector = "pda"
-    )
-
-  list_ms_transformed_pda <- parallel::mclapply(
-    X = list_ms_chr_pda,
-    FUN = transform_ms
-  )
-
-  list_ms_peaks_pda <- parallel::mclapply(
-    X = list_ms_transformed_pda,
-    FUN = extract_ms_peak
-  )
-
-  list_comparison_score_pda <-
-    parallel::mclapply(
-      X = seq_along(list_ms_peaks_pda),
-      FUN = compare_peaks,
-      detector = "pda"
-    )
-
-  df_peaks_samples_full_pda <- list_df_peaks_pda_split_flat |>
-    dplyr::bind_rows()
-
-  comparison_scores_pda <- list_comparison_score_pda |>
-    purrr::flatten()
-
-  df_peaks_samples_full_pda$comparison_score <-
-    as.numeric(comparison_scores_pda)
-
-  df_final_pda <- df_peaks_samples_full_pda |>
-    dplyr::select(
-      sample = id,
-      peak_id,
-      peak_rt_min = rt_min,
-      peak_rt_apex = rt_apex,
-      peak_rt_max = rt_max,
-      peak_area = integral,
-      feature_id,
-      feature_rt = rt,
-      feature_mz = mz,
-      feature_area = intensity,
-      comparison_score
-    ) |>
-    dplyr::distinct()
-
-  df_final_2_pda <- df_new_without_pda |>
-    dplyr::mutate(comparison_score = NA) |>
-    dplyr::select(
-      sample = id,
-      peak_id,
-      peak_rt_min = rt_min,
-      peak_rt_apex = rt_apex,
-      peak_rt_max = rt_max,
-      peak_area = integral,
-      feature_id,
-      feature_rt = rt,
-      feature_mz = mz,
-      feature_area = intensity,
-      comparison_score
-    ) |>
-    dplyr::distinct()
-
-  check_export_dir(EXPORT_DIR)
-
-  readr::write_tsv(
-    x = df_final_pda,
-    file = file.path(EXPORT_DIR, EXPORT_FILE_PDA)
-  )
-  readr::write_tsv(
-    x = df_final_2_pda,
-    file = file.path(EXPORT_DIR, EXPORT_FILE_PDA_2)
-  )
+  detector <- "pda"
+}
+if (params$signal$detector$pda == TRUE) {
+  #' TODO check if change for PDA doing baselining on normal and not improved
+  chromatograms_list_pda <-
+    preprocess_chromatograms(detector = "pda")
+  peaks_prelist_pda <- preprocess_peaks(detector = "pda")
+  peaks_list_pda <- process_peaks(detector = "pda")
 }
 
 end <- Sys.time()

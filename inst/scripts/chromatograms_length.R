@@ -35,7 +35,6 @@ source(file = "R/prepare_hierarchy.R")
 source(file = "R/prepare_plot.R")
 source(file = "R/y_as_na.R")
 
-future::plan(strategy = future::multisession)
 progressr::handlers(global = TRUE)
 progressr::handlers("progress")
 
