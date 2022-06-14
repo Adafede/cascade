@@ -1,30 +1,24 @@
 #' Title
 #'
 #' @param x
-#' @param detector
 #'
 #' @return
 #' @export
 #'
 #' @examples
-compare_peaks <- function(x, detector) {
-  list_ms_peaks <- switch(detector,
-    "cad" = list_ms_peaks_cad,
-    "pda" = list_ms_peaks_pda
-  )
-  list_chromato_peaks <- switch(detector,
-    "cad" = list_chromato_peaks_cad,
-    "pda" = list_chromato_peaks_pda
-  )
-
+compare_peaks <- function(x) {
   if (length(list_ms_peaks[[x]]) != 0) {
     feature <- seq_along(list_ms_peaks[[x]])
     y <- mclapply(
       X = feature,
       FUN = function(z) {
         if (length(list_ms_peaks[[x]][[z]]) > 1) {
-          score <- MSnbase::compareChromatograms(list_chromato_peaks[[x]],
-            list_ms_peaks[[x]][[z]],
+          score <- MSnbase::compareChromatograms(
+            x = switch(detector,
+              "cad" = peaks_prelist_cad$list_chromato_peaks,
+              "pda" = peaks_prelist_pda$list_chromato_peaks
+            )[[x]],
+            y = list_ms_peaks[[x]][[z]],
             ALIGNFUNARGS = list(method = "approx")
           )
         } else {

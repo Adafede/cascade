@@ -59,7 +59,6 @@ devtools::source_url(
   "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_lotus.R"
 )
 
-future::plan(strategy = future::multisession)
 handlers(global = TRUE)
 handlers("progress")
 
