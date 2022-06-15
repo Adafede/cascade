@@ -273,7 +273,7 @@ new <- plotly::plot_ly() |>
       dplyr::filter(grepl(pattern = "UHR", x = id)),
     x = ~time,
     y = ~intensity,
-    name = "CAD",
+    name = "<b> CAD </b>",
     line = list(
       width = 1,
       # dash = "dot",
@@ -285,7 +285,7 @@ new <- plotly::plot_ly() |>
       dplyr::filter(grepl(pattern = "UHR", x = id)),
     x = ~time,
     y = ~intensity,
-    name = "PDA",
+    name = "<b> PDA </b>",
     line = list(
       width = 1,
       # dash = "dot",
@@ -297,7 +297,7 @@ new <- plotly::plot_ly() |>
       dplyr::filter(grepl(pattern = "UHR", x = id)),
     x = ~time,
     y = ~ -intensity,
-    name = "MS Pos",
+    name = "<b> MS Pos </b>",
     line = list(
       width = 1,
       # dash = "dot",
@@ -309,7 +309,7 @@ new <- plotly::plot_ly() |>
       dplyr::filter(grepl(pattern = "UHR", x = id)),
     x = ~time,
     y = ~ -intensity,
-    name = "MS Neg",
+    name = "<b> MS Neg </b>",
     line = list(
       width = 1,
       # dash = "dot",
@@ -317,17 +317,35 @@ new <- plotly::plot_ly() |>
     )
   ) |>
   plotly::layout(
-    xaxis = list(title = "Time"),
-    yaxis = list(title = "Intensity")
+    xaxis = list(title = "<b> Time (normalized) </b>"),
+    yaxis = list(title = "<b> Intensity (normalized) </b>")
   )
 new
 
 new_zoom <- new |>
-  plotly::layout(xaxis = list(range = c(0.18, 0.33)),
-                 yaxis = list(range = c(-0.3, 0.3)))
+  plotly::layout(
+    xaxis = list(range = c(0.18, 0.33)),
+    yaxis = list(range = c(-0.3, 0.3))
+  )
 new_zoom
 
-#' WIP
+# reticulate::install_miniconda()
+# reticulate::conda_install('r-reticulate', 'python-kaleido')
+# reticulate::conda_install('r-reticulate', 'plotly', channel = 'plotly')
+# reticulate::use_miniconda('r-reticulate')
+
+plotly::save_image(
+  p = new,
+  file = "data/chromatograms/chromatogram_full.pdf",
+  width = 1600,
+  height = 900
+)
+plotly::save_image(
+  p = new_zoom,
+  file = "data/chromatograms/chromatogram_zoomed.pdf",
+  width = 1600,
+  height = 900
+)
 
 end <- Sys.time()
 
