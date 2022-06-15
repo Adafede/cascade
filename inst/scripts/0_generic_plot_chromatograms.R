@@ -269,14 +269,38 @@ new_new_new
 
 new <- plotly::plot_ly() |>
   plotly::add_lines(
-    data = bpis_baselined |>
+    data = cads_baselined |>
       dplyr::filter(grepl(pattern = "UHR", x = id)),
     x = ~time,
     y = ~intensity,
+    name = "CAD",
+    line = list(
+      width = 1,
+      # dash = "dot",
+      color = "e31a1c"
+    )
+  ) |>
+  plotly::add_lines(
+    data = pdas_baselined |>
+      dplyr::filter(grepl(pattern = "UHR", x = id)),
+    x = ~time,
+    y = ~intensity,
+    name = "PDA",
+    line = list(
+      width = 1,
+      # dash = "dot",
+      color = "b2df8a"
+    )
+  ) |>
+  plotly::add_lines(
+    data = bpis_baselined |>
+      dplyr::filter(grepl(pattern = "UHR", x = id)),
+    x = ~time,
+    y = ~ -intensity,
     name = "MS Pos",
     line = list(
       width = 1,
-      dash = "dot",
+      # dash = "dot",
       color = "a6cee3"
     )
   ) |>
@@ -284,36 +308,12 @@ new <- plotly::plot_ly() |>
     data = bpis_neg_baselined |>
       dplyr::filter(grepl(pattern = "UHR", x = id)),
     x = ~time,
-    y = ~intensity,
+    y = ~ -intensity,
     name = "MS Neg",
     line = list(
       width = 1,
-      dash = "dot",
+      # dash = "dot",
       color = "1f78b4"
-    )
-  ) |>
-  plotly::add_lines(
-    data = pdas_baselined |>
-      dplyr::filter(grepl(pattern = "UHR", x = id)),
-    x = ~time,
-    y = ~ -intensity,
-    name = "PDA",
-    line = list(
-      width = 1,
-      dash = "dot",
-      color = "b2df8a"
-    )
-  ) |>
-  plotly::add_lines(
-    data = cads_baselined |>
-      dplyr::filter(grepl(pattern = "UHR", x = id)),
-    x = ~time,
-    y = ~ -intensity,
-    name = "CAD",
-    line = list(
-      width = 1,
-      dash = "dot",
-      color = "e31a1c"
     )
   ) |>
   plotly::layout(
@@ -321,6 +321,11 @@ new <- plotly::plot_ly() |>
     yaxis = list(title = "Intensity")
   )
 new
+
+new_zoom <- new |>
+  plotly::layout(xaxis = list(range = c(0.18, 0.33)),
+                 yaxis = list(range = c(-0.3, 0.3)))
+new_zoom
 
 #' WIP
 

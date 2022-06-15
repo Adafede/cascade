@@ -75,24 +75,28 @@ FEATURES <- "~/Downloads/test_quant.csv"
 EXPORT_DIR <- paths$inst$extdata$interim$peaks
 EXPORT_FILE_CAD <-
   paste(params$filename$mzml,
-        "featuresInformed",
-        "cad.tsv.gz",
-        sep = "_")
+    "featuresInformed",
+    "cad.tsv.gz",
+    sep = "_"
+  )
 EXPORT_FILE_CAD_2 <-
   paste(params$filename$mzml,
-        "featuresNotInformed",
-        "cad.tsv.gz",
-        sep = "_")
+    "featuresNotInformed",
+    "cad.tsv.gz",
+    sep = "_"
+  )
 EXPORT_FILE_PDA <-
   paste(params$filename$mzml,
-        "featuresInformed",
-        "pda.tsv.gz",
-        sep = "_")
+    "featuresInformed",
+    "pda.tsv.gz",
+    sep = "_"
+  )
 EXPORT_FILE_PDA_2 <-
   paste(params$filename$mzml,
-        "featuresNotInformed",
-        "pda.tsv.gz",
-        sep = "_")
+    "featuresNotInformed",
+    "pda.tsv.gz",
+    sep = "_"
+  )
 # GNPS_JOB <- "97d7c50031a84b9ba2747e883a5907cd"
 # TOYSET <- "~/data/20210701_10043/fractions"
 # TOYSET <- "~/../../Volumes/LaCie/data/20210701_10043/fractions"
@@ -143,13 +147,17 @@ files <- list.files(
 
 # files <- files[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = files)]
 
-names <- list.files(path = TOYSET,
-                    pattern = ".mzML",
-                    recursive = TRUE) |>
+names <- list.files(
+  path = TOYSET,
+  pattern = ".mzML",
+  recursive = TRUE
+) |>
   gsub(pattern = "[0-9]{6}_AR_[0-9]{2}_", replacement = "") |>
-  gsub(pattern = ".mzML",
-       replacement = "",
-       fixed = TRUE)
+  gsub(
+    pattern = ".mzML",
+    replacement = "",
+    fixed = TRUE
+  )
 
 # names <- names[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = names)]
 
@@ -158,9 +166,11 @@ log_debug(x = "loading feature table")
 feature_table <- readr::read_delim(file = FEATURES)
 
 log_debug(x = "loading raw files (can take long if loading multiple files)")
-dda_data <- MSnbase::readMSData(files = files,
-                                mode = "onDisk",
-                                msLevel. = 1)
+dda_data <- MSnbase::readMSData(
+  files = files,
+  mode = "onDisk",
+  msLevel. = 1
+)
 
 log_debug(x = "opening raw files objects and extracting chromatograms")
 chromatograms_all <- lapply(files, mzR::openMSfile) |>
@@ -210,11 +220,13 @@ df_features <- feature_table |>
     replacement = "",
     x = column
   )) |>
-  dplyr::select(feature_id = rowname,
-                rt,
-                mz,
-                sample = column,
-                intensity = value) |>
+  dplyr::select(
+    feature_id = rowname,
+    rt,
+    mz,
+    sample = column,
+    intensity = value
+  ) |>
   dplyr::mutate(
     rt_1 = as.numeric(rt),
     rt_2 = as.numeric(rt),
@@ -231,7 +243,7 @@ if (params$signal$detector$bpi == TRUE) {
   peaks_prelist_bpi <- preprocess_peaks(detector = "bpi")
 }
 if (params$signal$detector$cad == TRUE) {
-detector <- "cad"
+  detector <- "cad"
 }
 if (params$signal$detector$cad == TRUE) {
   chromatograms_list_cad <- preprocess_chromatograms()
