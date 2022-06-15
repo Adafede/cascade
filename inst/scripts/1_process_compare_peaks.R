@@ -73,6 +73,18 @@ ANNOTATIONS <- list.files(
 )
 FEATURES <- "~/Downloads/test_quant.csv"
 EXPORT_DIR <- paths$inst$extdata$interim$peaks
+EXPORT_FILE_BPI <-
+  paste(params$filename$mzml,
+    "featuresInformed",
+    "bpi.tsv.gz",
+    sep = "_"
+  )
+EXPORT_FILE_BPI_2 <-
+  paste(params$filename$mzml,
+    "featuresNotInformed",
+    "bpi.tsv.gz",
+    sep = "_"
+  )
 EXPORT_FILE_CAD <-
   paste(params$filename$mzml,
     "featuresInformed",
@@ -239,8 +251,12 @@ log_debug(x = "setting joining keys")
 data.table::setkey(df_features, rt_1, rt_2)
 
 if (params$signal$detector$bpi == TRUE) {
+  detector <- "bpi"
+}
+if (params$signal$detector$bpi == TRUE) {
   chromatograms_list_bpi <- preprocess_chromatograms(detector = "bpi")
   peaks_prelist_bpi <- preprocess_peaks(detector = "bpi")
+  peaks_list_pda <- process_peaks(detector = "bpi")
 }
 if (params$signal$detector$cad == TRUE) {
   detector <- "cad"
