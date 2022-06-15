@@ -11,6 +11,7 @@ source(file = "R/check_export_dir.R")
 source(file = "R/colors.R")
 source(file = "R/get_gnps.R")
 source(file = "R/get_params.R")
+source(file = "R/keep_best_candidates.R")
 source(file = "R/log_debug.R")
 source(file = "R/make_confident.R")
 source(file = "R/make_other.R")
@@ -19,6 +20,8 @@ source(file = "R/parse_cli_params.R")
 source(file = "R/parse_yaml_params.R")
 source(file = "R/parse_yaml_paths.R")
 source(file = "R/plot_histograms.R")
+source(file = "R/plot_results.R")
+source(file = "R/prepare_comparison.R")
 source(file = "R/prepare_hierarchy.R")
 source(file = "R/prepare_hierarchy_preparation.R")
 source(file = "R/prepare_plot.R")
@@ -36,122 +39,25 @@ log_debug(
 log_debug("Authors: \n", "AR")
 log_debug("Contributors: \n", "...")
 
-#' Paths
-ANNOTATIONS <-
-  file.path(
-    paths$inst$extdata$interim$annotations$path,
-    params$annotation$tool,
-    params$filename$annotation$tima
-  )
+#' Dirty generic paths and parameters
+source(file = "R/dirty_paths_params.R")
 
-EXPORT_DIR <- paths$inst$extdata$interim$peaks
-EXPORT_FILE_CAD <- list.files(
-  path = EXPORT_DIR,
-  pattern = paste(params$filename$mzml, "featuresInformed_cad", sep = "_"),
-  full.names = FALSE,
-  recursive = FALSE
-)
-EXPORT_FILE_CAD_2 <- list.files(
-  path = EXPORT_DIR,
-  pattern = paste(params$filename$mzml, "featuresNotInformed_cad", sep = "_"),
-  full.names = FALSE,
-  recursive = FALSE
-)
-EXPORT_FILE_PDA <- list.files(
-  path = EXPORT_DIR,
-  pattern = paste(params$filename$mzml, "featuresInformed_pda", sep = "_"),
-  full.names = FALSE,
-  recursive = FALSE
-)
-EXPORT_FILE_PDA_2 <- list.files(
-  path = EXPORT_DIR,
-  pattern = paste(params$filename$mzml, "featuresNotInformed_pda", sep = "_"),
-  full.names = FALSE,
-  recursive = FALSE
-)
-
-#' Parameters related to MS/CAD
-INTENSITY_MS_MIN <- params$chromato$intensity$ms1$min
-PEAK_SIMILARITY <- params$chromato$peak$similarity$filter
-PEAK_SIMILARITY_PREFILTER <-
-  params$chromato$peak$similarity$prefilter
-RT_TOL <- params$chromato$peak$tolerance$rt
-PPM <- params$chromato$peak$tolerance$ppm
-AREA_MIN <- params$chromato$peak$area$min
-
-#' Parameters for annotation
-CONFIDENCE_SCORE_MIN <- params$annotation$confidence$min
+#' Specific paths
 
 log_debug(x = "loading annotations")
-annotations <- readr::read_delim(file = ANNOTATIONS)
+annotations <- readr::read_delim(file = ANNOTATIONS) |>
+  dplyr::mutate(best_candidate = gsub(
+    pattern = "§",
+    replacement = "$",
+    x = best_candidate
+  ))
 
 log_debug(x = "keeping best annotations only")
-ms1_best_candidate <- annotations |>
-  dplyr::mutate_all(list(~ gsub(
-    pattern = "\\|.*",
-    replacement = "",
-    x = .x
-  ))) |>
-  splitstackshape::cSplit("best_candidate", sep = "§") |>
-  dplyr::distinct(
-    feature_id,
-    mz,
-    rt,
-    smiles_2D,
-    inchikey_2D,
-    score_biological,
-    score_chemical,
-    score_final,
-    best_candidate_organism,
-    consensus_1 = consensus_pat,
-    consensus_2 = consensus_sup,
-    consensus_3 = consensus_cla,
-    consistency_1 = consistency_pat,
-    consistency_2 = consistency_sup,
-    consistency_3 = consistency_cla,
-    best_candidate_1,
-    best_candidate_2,
-    best_candidate_3
-  ) |>
-  dplyr::mutate_all(list(~ y_as_na(x = ., y = ""))) |>
-  dplyr::mutate(
-    best_candidate_1 = if_else(
-      condition = is.na(smiles_2D),
-      true = "notAnnotated",
-      false = best_candidate_1
-    ),
-    best_candidate_2 = if_else(
-      condition = is.na(smiles_2D),
-      true = paste(best_candidate_1, "notAnnotated"),
-      false = best_candidate_2
-    ),
-    best_candidate_3 = if_else(
-      condition = is.na(smiles_2D),
-      true = paste(best_candidate_2, "notAnnotated"),
-      false = best_candidate_3
-    ),
-    best_candidate_1 = if_else(
-      condition = !is.na(smiles_2D) &
-        is.na(best_candidate_1),
-      true = "notClassified",
-      false = best_candidate_1
-    ),
-    best_candidate_2 = if_else(
-      condition = !is.na(smiles_2D) &
-        is.na(best_candidate_2),
-      true = paste(best_candidate_1, "notClassified"),
-      false = best_candidate_2
-    ),
-    best_candidate_3 = if_else(
-      condition = !is.na(smiles_2D) &
-        is.na(best_candidate_3),
-      true = paste(best_candidate_2, "notClassified"),
-      false = best_candidate_3
-    )
-  )
+best_candidates <- annotations |>
+  keep_best_candidates()
 
 log_debug(x = "adding metadata dirtily for now")
-candidates_metadata <- ms1_best_candidate |>
+candidates_metadata <- best_candidates |>
   dplyr::mutate(species = "Swertia chirayita") |>
   dplyr::mutate(feature_id = as.numeric(feature_id))
 
@@ -159,438 +65,34 @@ log_debug(x = "keeping only candidates above desired threshold")
 candidates_confident <- candidates_metadata |>
   make_confident(score = CONFIDENCE_SCORE_MIN)
 
+if (params$signal$detector$bpi == TRUE) {
+  detector <- "bpi"
+}
+if (params$signal$detector$bpi == TRUE) {
+  compared_peaks_list_bpi <- prepare_comparison(detector = "bpi")
+  plots_1_bpi <- plot_results_1(detector = "bpi")
+  plots_2_bpi <- plot_results_2(detector = "bpi")
+}
 if (params$signal$detector$cad == TRUE) {
-  log_debug(x = "loading compared peaks")
-  compared_peaks_cad <-
-    readr::read_delim(file = file.path(EXPORT_DIR, EXPORT_FILE_CAD))
-
-  outside_peaks_cad <-
-    readr::read_delim(file = file.path(EXPORT_DIR, EXPORT_FILE_CAD_2))
-
-  ms_peaks_cad <- compared_peaks_cad |>
-    dplyr::bind_rows(outside_peaks_cad)
-
-  log_debug(x = "joining compared peaks and candidates")
-  df_peaks_samples_full_cad <- compared_peaks_cad |>
-    dplyr::left_join(candidates_confident)
-
-  df_peaks_samples_min_cad <- compared_peaks_cad |>
-    dplyr::left_join(candidates_confident)
-
-  log_debug(x = "temporary fix") #' TODO
-  df_peaks_samples_full_cad <- df_peaks_samples_full_cad |>
-    dplyr::mutate(
-      id = sample,
-      integral = peak_area,
-      intensity = feature_area
-    )
-  df_peaks_samples_min_cad <- df_peaks_samples_min_cad |>
-    dplyr::mutate(
-      id = sample,
-      integral = peak_area,
-      intensity = feature_area,
-      peak_rt_apex = rt,
-      peak_area = 1
-    )
-
-  log_debug(x = "keeping peaks similarities above desired (pre-)threshold only")
-  df_new_with_cor_pre_cad <- df_peaks_samples_full_cad |>
-    dplyr::filter(comparison_score >= PEAK_SIMILARITY_PREFILTER) #' TODO check negative values
-
-  log_debug(x = "keeping multiple features only if none was reported in the species")
-  df_new_with_cor_pre_taxo_cad <- df_new_with_cor_pre_cad |>
-    dplyr::rowwise() |>
-    dplyr::mutate(taxo = ifelse(
-      test = grepl(
-        pattern = best_candidate_organism,
-        x = species
-      ),
-      yes = 1,
-      no = 0
-    )) |>
-    dplyr::mutate(taxo = ifelse(
-      test = is.na(taxo),
-      yes = 0,
-      no = taxo
-    )) |>
-    dplyr::mutate(taxo_2 = ifelse(
-      test = best_candidate_organism %in% species,
-      yes = 1,
-      no = 0
-    )) |>
-    dplyr::group_by(sample, peak_id) |> #' TODO switch to ID if needed
-    dplyr::mutate(sum = sum(taxo)) |>
-    dplyr::mutate(sum_2 = sum(taxo_2)) |>
-    dplyr::mutate(keep = ifelse(
-      test = taxo_2 == 1,
-      yes = "Y",
-      no = ifelse(
-        test = taxo == 1,
-        yes = ifelse(
-          test = sum != sum_2 & sum_2 == 0,
-          yes = "Y",
-          no = "N"
-        ),
-        no = ifelse(
-          test = sum == 0,
-          yes = "Y",
-          no = "N"
-        )
-      )
-    )) |>
-    dplyr::filter(keep == "Y") |> #' TODO decide if genus
-    dplyr::ungroup()
-
-  log_debug(x = "keeping peaks similarities with score above", PEAK_SIMILARITY)
-  df_new_with_cor_cad <- df_new_with_cor_pre_taxo_cad |>
-    dplyr::filter(comparison_score >= PEAK_SIMILARITY)
-
-  log_debug(x = "plotting histograms")
-  #' TODO harmonize 'others' among minor and major
-  df_histogram_ready_cad <- df_new_with_cor_pre_taxo_cad |>
-    make_other() |>
-    prepare_plot_2()
-  df_histogram_outside_ready_cad <- df_peaks_samples_min_cad |>
-    make_other() |>
-    prepare_plot_2()
-
-  df_histogram_ready_conf_cad <- df_new_with_cor_pre_taxo_cad |>
-    make_other() |>
-    no_other() |>
-    prepare_plot_2()
-  df_histogram_outside_ready_conf_cad <- df_peaks_samples_min_cad |>
-    make_other() |>
-    no_other() |>
-    prepare_plot_2()
-
-  df_histogram_ready_cad |>
-    plot_histograms_taxo()
-  # df_histogram_outside_ready_cad |>
-  #   plot_histograms_taxo()
-
-  df_histogram_ready_conf_cad |>
-    plot_histograms_confident()
-  #' keeping only distinct structures
-  df_histogram_ready_conf_cad |>
-    dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
-    plot_histograms_confident()
-  df_histogram_outside_ready_conf_cad |>
-    dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
-    plot_histograms_confident()
-
-  df_histogram_ready_cad |>
-    dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
-    plot_histograms_confident()
-  df_histogram_outside_ready_cad |>
-    dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
-    plot_histograms_confident()
-
-  final_table_taxed_with_new_cor_cad <-
-    df_new_with_cor_pre_taxo_cad |>
-    prepare_hierarchy(detector = "cad")
-  #' TODO check to use full table
-  final_table_taxed_with_new_cor_ms_pos_cad <-
-    df_new_with_cor_pre_taxo_cad |>
-    prepare_hierarchy(detector = "ms")
-
-  final_table_taxed_with_new_cor_conf_cad <-
-    df_new_with_cor_pre_taxo_cad |>
-    no_other() |>
-    prepare_hierarchy(detector = "cad")
-  final_table_taxed_with_new_cor_conf_ms_pos_cad <-
-    df_new_with_cor_pre_taxo_cad |>
-    no_other() |>
-    prepare_hierarchy(detector = "ms")
-
-  # samples_with_new_cor <-
-  #   prepare_plot(dataframe = final_table_taxed_with_new_cor)
-  #
-  # absolute_with_new_cor <-
-  #   plot_histograms(dataframe = samples_with_new_cor,
-  #                   label = "CAD intensity of correlated peaks within CAD peak",
-  #                   xlab = FALSE)
-  #
-  # absolute_with_new_cor
-
-  plotly::plot_ly(
-    data = final_table_taxed_with_new_cor_conf_cad,
-    ids = ~ids,
-    labels = ~labels,
-    parents = ~parents,
-    values = ~values,
-    maxdepth = 3,
-    type = "sunburst",
-    branchvalues = "total",
-    textinfo = "label+percent value+percent parent+percent root"
-  ) |>
-    plotly::layout(colorway = sunburst_colors)
-
-  plotly::plot_ly(
-    data = final_table_taxed_with_new_cor_conf_ms_pos_cad,
-    ids = ~ids,
-    labels = ~labels,
-    parents = ~parents,
-    values = ~values,
-    maxdepth = 3,
-    type = "sunburst",
-    branchvalues = "total",
-    textinfo = "label+percent value+percent parent+percent root"
-  ) |>
-    plotly::layout(colorway = sunburst_colors)
-
-  index <- final_table_taxed_with_new_cor_cad |>
-    dplyr::filter(parents == "") |>
-    dplyr::arrange(desc(values))
-
-  sunburst_grey_colors <- sunburst_colors
-  sunburst_grey_colors[[which(index$ids == "Other", arr.ind = TRUE)]] <-
-    grey_colors[[1]][[5]]
-
-  plotly::plot_ly(
-    data = final_table_taxed_with_new_cor_cad,
-    ids = ~ids,
-    labels = ~labels,
-    parents = ~parents,
-    values = ~values,
-    maxdepth = 3,
-    type = "sunburst",
-    branchvalues = "total",
-    textinfo = "label+percent value+percent parent+percent root"
-  ) |>
-    plotly::layout(colorway = sunburst_grey_colors)
-
-  plotly::plot_ly(
-    data = final_table_taxed_with_new_cor_ms_pos_cad,
-    ids = ~ids,
-    labels = ~labels,
-    parents = ~parents,
-    values = ~values,
-    maxdepth = 3,
-    type = "sunburst",
-    branchvalues = "total",
-    textinfo = "label+percent value+percent parent+percent root"
-  ) |>
-    plotly::layout(colorway = sunburst_grey_colors)
+  detector <- "cad"
 }
-
+if (params$signal$detector$cad == TRUE) {
+  compared_peaks_list_cad <- prepare_comparison()
+  plots_1_cad <- plot_results_1()
+  plots_2_cad <- plot_results_2()
+}
 if (params$signal$detector$pda == TRUE) {
-  log_debug(x = "loading compared peaks")
-  compared_peaks_pda <-
-    readr::read_delim(file = file.path(EXPORT_DIR, EXPORT_FILE_PDA))
-
-  outside_peaks_pda <-
-    readr::read_delim(file = file.path(EXPORT_DIR, EXPORT_FILE_PDA_2))
-
-  log_debug(x = "joining compared peaks and candidates")
-  df_peaks_samples_full_pda <- compared_peaks_pda |>
-    dplyr::left_join(candidates_confident)
-
-  df_peaks_samples_min_pda <- compared_peaks_pda |>
-    dplyr::left_join(candidates_confident)
-
-  log_debug(x = "temporary fix") #' TODO
-  df_peaks_samples_full_pda <- df_peaks_samples_full_pda |>
-    dplyr::mutate(
-      id = sample,
-      integral = peak_area,
-      intensity = feature_area
-    )
-  df_peaks_samples_min_pda <- df_peaks_samples_min_pda |>
-    dplyr::mutate(
-      id = sample,
-      integral = peak_area,
-      intensity = feature_area,
-      peak_rt_apex = rt,
-      peak_area = 1
-    )
-
-  log_debug(x = "keeping peaks similarities above desired (pre-)threshold only")
-  df_new_with_cor_pre_pda <- df_peaks_samples_full_pda |>
-    dplyr::filter(comparison_score >= PEAK_SIMILARITY_PREFILTER) #' TODO check negative values
-
-  log_debug(x = "keeping multiple features only if none was reported in the species")
-  df_new_with_cor_pre_taxo_pda <- df_new_with_cor_pre_pda |>
-    dplyr::rowwise() |>
-    dplyr::mutate(taxo = ifelse(
-      test = grepl(
-        pattern = best_candidate_organism,
-        x = species
-      ),
-      yes = 1,
-      no = 0
-    )) |>
-    dplyr::mutate(taxo = ifelse(
-      test = is.na(taxo),
-      yes = 0,
-      no = taxo
-    )) |>
-    dplyr::mutate(taxo_2 = ifelse(
-      test = best_candidate_organism %in% species,
-      yes = 1,
-      no = 0
-    )) |>
-    dplyr::group_by(sample, peak_id) |> #' TODO switch to ID if needed
-    dplyr::mutate(sum = sum(taxo)) |>
-    dplyr::mutate(sum_2 = sum(taxo_2)) |>
-    dplyr::mutate(keep = ifelse(
-      test = taxo_2 == 1,
-      yes = "Y",
-      no = ifelse(
-        test = taxo == 1,
-        yes = ifelse(
-          test = sum != sum_2 & sum_2 == 0,
-          yes = "Y",
-          no = "N"
-        ),
-        no = ifelse(
-          test = sum == 0,
-          yes = "Y",
-          no = "N"
-        )
-      )
-    )) |>
-    dplyr::filter(keep == "Y") |> #' TODO decide if genus
-    dplyr::ungroup()
-
-  log_debug(x = "keeping peaks similarities with score above", PEAK_SIMILARITY)
-  df_new_with_cor_pda <- df_new_with_cor_pre_taxo_pda |>
-    dplyr::filter(comparison_score >= PEAK_SIMILARITY)
-
-  log_debug(x = "plotting histograms")
-  #' TODO harmonize 'others' among minor and major
-  df_histogram_ready_pda <- df_new_with_cor_pre_taxo_pda |>
-    make_other() |>
-    prepare_plot_2()
-  df_histogram_outside_ready_pda <- df_peaks_samples_min_pda |>
-    make_other() |>
-    prepare_plot_2()
-
-  df_histogram_ready_conf_pda <- df_new_with_cor_pre_taxo_pda |>
-    make_other() |>
-    no_other() |>
-    prepare_plot_2()
-  df_histogram_outside_ready_conf_pda <- df_peaks_samples_min_pda |>
-    make_other() |>
-    no_other() |>
-    prepare_plot_2()
-
-  df_histogram_ready_pda |>
-    plot_histograms_taxo()
-  # df_histogram_outside_ready_pda |>
-  #   plot_histograms_taxo()
-
-  df_histogram_ready_conf_pda |>
-    plot_histograms_confident()
-  #' keeping only distinct structures
-  df_histogram_ready_conf_pda |>
-    dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
-    plot_histograms_confident()
-  df_histogram_outside_ready_conf_pda |>
-    dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
-    plot_histograms_confident()
-
-  df_histogram_ready_pda |>
-    dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
-    plot_histograms_confident()
-  df_histogram_outside_ready_pda |>
-    dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
-    plot_histograms_confident()
-
-  final_table_taxed_with_new_cor_pda <-
-    df_new_with_cor_pre_taxo_pda |>
-    prepare_hierarchy(detector = "cad")
-  #' TODO check to use full table
-  final_table_taxed_with_new_cor_ms_pos_pda <-
-    df_new_with_cor_pre_taxo_pda |>
-    prepare_hierarchy(detector = "ms")
-
-  final_table_taxed_with_new_cor_conf_pda <-
-    df_new_with_cor_pre_taxo_pda |>
-    no_other() |>
-    prepare_hierarchy(detector = "cad")
-  final_table_taxed_with_new_cor_conf_ms_pos_pda <-
-    df_new_with_cor_pre_taxo_pda |>
-    no_other() |>
-    prepare_hierarchy(detector = "ms")
-
-  # samples_with_new_cor <-
-  #   prepare_plot(dataframe = final_table_taxed_with_new_cor)
-  #
-  # absolute_with_new_cor <-
-  #   plot_histograms(dataframe = samples_with_new_cor,
-  #                   label = "PDA intensity of correlated peaks within PDA peak",
-  #                   xlab = FALSE)
-  #
-  # absolute_with_new_cor
-
-  plotly::plot_ly(
-    data = final_table_taxed_with_new_cor_conf_pda,
-    ids = ~ids,
-    labels = ~labels,
-    parents = ~parents,
-    values = ~values,
-    maxdepth = 3,
-    type = "sunburst",
-    branchvalues = "total",
-    textinfo = "label+percent value+percent parent+percent root"
-  ) |>
-    plotly::layout(colorway = sunburst_colors)
-
-  plotly::plot_ly(
-    data = final_table_taxed_with_new_cor_conf_ms_pos_pda,
-    ids = ~ids,
-    labels = ~labels,
-    parents = ~parents,
-    values = ~values,
-    maxdepth = 3,
-    type = "sunburst",
-    branchvalues = "total",
-    textinfo = "label+percent value+percent parent+percent root"
-  ) |>
-    plotly::layout(colorway = sunburst_colors)
-
-  index <- final_table_taxed_with_new_cor_pda |>
-    dplyr::filter(parents == "") |>
-    dplyr::arrange(desc(values))
-
-  sunburst_grey_colors <- sunburst_colors
-  sunburst_grey_colors[[which(index$ids == "Other", arr.ind = TRUE)]] <-
-    grey_colors[[1]][[5]]
-
-  plotly::plot_ly(
-    data = final_table_taxed_with_new_cor_pda,
-    ids = ~ids,
-    labels = ~labels,
-    parents = ~parents,
-    values = ~values,
-    maxdepth = 3,
-    type = "sunburst",
-    branchvalues = "total",
-    textinfo = "label+percent value+percent parent+percent root"
-  ) |>
-    plotly::layout(colorway = sunburst_grey_colors)
-
-  plotly::plot_ly(
-    data = final_table_taxed_with_new_cor_ms_pos_pda,
-    ids = ~ids,
-    labels = ~labels,
-    parents = ~parents,
-    values = ~values,
-    maxdepth = 3,
-    type = "sunburst",
-    branchvalues = "total",
-    textinfo = "label+percent value+percent parent+percent root"
-  ) |>
-    plotly::layout(colorway = sunburst_grey_colors)
+  detector <- "pda"
 }
-
-
-
-
+if (params$signal$detector$pda == TRUE) {
+  compared_peaks_list_pda <- prepare_comparison(detector = "pda")
+  plots_1_pda <- plot_results_1(detector = "pda")
+  plots_2_pda <- plot_results_2(detector = "pda")
+}
 
 #' Work in progress
 #' Add some metadata per peak
-df_meta <- df_new_with_cor_pre_taxo_cad |>
+df_meta <- compared_peaks_list_cad$peaks_maj_precor_taxo_cor |>
   dplyr::arrange(desc(intensity)) |>
   dplyr::distinct(
     id,
