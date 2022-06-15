@@ -15,6 +15,7 @@ process_peaks <- function(detector = "cad") {
   list_ms_chromatograms <<-
     parallel::mclapply(
       X = seq_along(switch(detector,
+        "bpi" = peaks_prelist_bpi$list_df_features_with_peaks_long,
         "cad" = peaks_prelist_cad$list_df_features_with_peaks_long,
         "pda" = peaks_prelist_pda$list_df_features_with_peaks_long
       )),
@@ -44,6 +45,7 @@ process_peaks <- function(detector = "cad") {
 
   log_debug(x = "selecting features with peaks")
   df_features_with_peaks <<- switch(detector,
+    "bpi" = peaks_prelist_bpi$list_df_features_with_peaks_long,
     "cad" = peaks_prelist_cad$list_df_features_with_peaks_long,
     "pda" = peaks_prelist_pda$list_df_features_with_peaks_long
   ) |>
@@ -75,6 +77,7 @@ process_peaks <- function(detector = "cad") {
     dplyr::distinct()
 
   df_features_without_peaks_scored <<- switch(detector,
+    "bpi" = peaks_prelist_bpi$df_features_without_peaks,
     "cad" = peaks_prelist_cad$df_features_without_peaks,
     "pda" = peaks_prelist_pda$df_features_without_peaks
   ) |>
@@ -111,6 +114,7 @@ process_peaks <- function(detector = "cad") {
   readr::write_tsv(
     x = df_features_with_peaks_scored,
     file = file.path(EXPORT_DIR, switch(detector,
+      "bpi" = EXPORT_FILE_BPI,
       "cad" = EXPORT_FILE_CAD,
       "pda" = EXPORT_FILE_PDA
     ))
@@ -118,6 +122,7 @@ process_peaks <- function(detector = "cad") {
   readr::write_tsv(
     x = df_features_without_peaks_scored,
     file = file.path(EXPORT_DIR, switch(detector,
+      "bpi" = EXPORT_FILE_BPI_2,
       "cad" = EXPORT_FILE_CAD_2,
       "pda" = EXPORT_FILE_PDA_2
     ))

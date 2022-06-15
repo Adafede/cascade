@@ -15,6 +15,7 @@ compare_peaks <- function(x) {
         if (length(list_ms_peaks[[x]][[z]]) > 1) {
           score <- MSnbase::compareChromatograms(
             x = switch(detector,
+              "bpi" = peaks_prelist_bpi$list_chromato_peaks,
               "cad" = peaks_prelist_cad$list_chromato_peaks,
               "pda" = peaks_prelist_pda$list_chromato_peaks
             )[[x]],
