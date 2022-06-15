@@ -51,41 +51,10 @@ log_debug(
 log_debug("Authors: \n", "AR")
 log_debug("Contributors: \n", "...")
 
-#' Paths
+#' Dirty generic paths and parameters
+source(file = "R/dirty_paths_params.R")
+#' Specific paths
 TOYSET <- "~/data/qcmix/"
-
-#' Generic parameters
-WORKERS <- params$workers
-
-#' Parameters for LC alignment
-TIME_MIN <- params$chromato$time$min
-TIME_MAX <- params$chromato$time$max
-CAD_SHIFT <- params$chromato$shift$cad
-PDA_SHIFT <- params$chromato$shift$pda
-ESTIMATED_SOLUBLITIY_LIMIT <- params$misc$solubility$limit
-
-#' Parameters for signal improvement
-FOURRIER_COMPONENTS <- params$signal$fourrier$components
-FREQUENCY <- params$signal$frequency
-RESAMPLE <- params$signal$resample
-
-#' Parameters adapted from Excel sheet from paper shortDOI: 10/ghmvhz
-sigma <- params$signal$sigma
-k2 <- sigma / params$signal$k2 # 30
-k4 <- sigma / params$signal$k4 # 200
-smoothing_width <- params$signal$smoothing
-baseline_adjust <- params$signal$baseline
-
-#' Parameters related to MS/CAD
-INTENSITY <- params$chromato$intensity$ms1$min
-PEAK_SIMILARITY <- params$chromato$peak$similarity$filter
-PEAK_SIMILARITY_PREFILTER <-
-  params$chromato$peak$similarity$prefilter
-RT_TOL <- params$chromato$peak$tolerance$rt
-PPM <- params$chromato$peak$tolerance$ppm
-
-#' Parameters for annotation
-CONFIDENCE_SCORE_MIN <- params$annotation$confidence$min
 
 files <- list.files(
   path = TOYSET,
