@@ -22,7 +22,8 @@ prepare_comparison <- function(detector = "cad") {
     dplyr::left_join(candidates_confident)
 
   peaks_min <- peaks_outside |>
-    dplyr::left_join(candidates_confident)
+    dplyr::left_join(candidates_confident) |>
+    dplyr::mutate(rt = as.numeric(rt))
 
   log_debug(x = "temporary fix") #' TODO
   peaks_maj <- peaks_maj |>
