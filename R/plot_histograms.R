@@ -60,17 +60,29 @@ plot_histograms <-
 #'
 #' @examples
 plot_histograms_confident <-
-  function(dataframe) {
+  function(dataframe, level = "max") {
     plot <- ggplot2::ggplot(
       dataframe,
       ggplot2::aes(
-        x = peak_rt,
-        y = peak_area,
+        x = switch(level,
+          "max" = peak_rt,
+          "min" = feature_rt
+        ),
+        y = switch(level,
+          "max" = peak_area,
+          "min" = feature_area
+        ),
         fill = name
       )
     ) +
       ggplot2::geom_col() +
-      ggplot2::geom_bar(color = "grey", stat = "identity") +
+      {
+        if (level == "max") {
+          ggplot2::geom_bar(color = "grey", stat = "identity")
+        } else {
+          ggplot2::geom_bar(stat = "identity")
+        }
+      } +
       ggplot2::scale_fill_manual(values = levels(dataframe$color) |>
         as.character()) +
       ggplot2::labs(fill = "Chemical Pathway - Superclass") +
@@ -87,7 +99,11 @@ plot_histograms_confident <-
         axis.text.y = ggplot2::element_text(face = "italic")
       ) +
       ggplot2::ylab("Area") +
-      ggplot2::xlab("Retention time [min]")
+      ggplot2::xlab("Retention time [min]") +
+      ggplot2::xlim(
+        max(TIME_MIN, params$chromato$time$min),
+        min(TIME_MAX, params$chromato$time$max)
+      )
 
     return(plot)
   }
@@ -101,17 +117,29 @@ plot_histograms_confident <-
 #'
 #' @examples
 plot_histograms_taxo <-
-  function(dataframe) {
+  function(dataframe, level = "max") {
     plot <- ggplot2::ggplot(
       dataframe,
       ggplot2::aes(
-        x = peak_rt,
-        y = peak_area,
+        x = switch(level,
+          "max" = peak_rt,
+          "min" = feature_rt
+        ),
+        y = switch(level,
+          "max" = peak_area,
+          "min" = feature_area
+        ),
         fill = name_2
       )
     ) +
       ggplot2::geom_col() +
-      ggplot2::geom_bar(color = "grey", stat = "identity") +
+      {
+        if (level == "max") {
+          ggplot2::geom_bar(color = "grey", stat = "identity")
+        } else {
+          ggplot2::geom_bar(stat = "identity")
+        }
+      } +
       ggplot2::scale_fill_manual(values = levels(dataframe$color_2) |>
         as.character()) +
       ggplot2::labs(fill = "Already reported in") +
@@ -128,7 +156,11 @@ plot_histograms_taxo <-
         axis.text.y = ggplot2::element_text(face = "italic")
       ) +
       ggplot2::ylab("Area") +
-      ggplot2::xlab("Retention time [min]")
+      ggplot2::xlab("Retention time [min]") +
+      ggplot2::xlim(
+        max(TIME_MIN, params$chromato$time$min),
+        min(TIME_MAX, params$chromato$time$max)
+      )
 
     return(plot)
   }

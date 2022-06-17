@@ -43,6 +43,8 @@ log_debug("Contributors: \n", "...")
 source(file = "R/dirty_paths_params.R")
 
 #' Specific paths
+TIME_MIN <- 0
+TIME_MAX <- 38
 
 log_debug(x = "loading annotations")
 annotations <- readr::read_delim(file = ANNOTATIONS) |>
