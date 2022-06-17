@@ -36,13 +36,13 @@ plot_results_1 <- function(detector = "cad") {
   histograms_taxo_maj <- df_histogram_maj |>
     plot_histograms_taxo()
   histograms_taxo_min <- df_histogram_min |>
-    plot_histograms_taxo()
+    plot_histograms_taxo(level = "min")
 
   log_debug(x = "... confident features")
   histograms_conf_maj <- df_histogram_maj_conf |>
     plot_histograms_confident()
   histograms_conf_min <- df_histogram_min_conf |>
-    plot_histograms_confident()
+    plot_histograms_confident(level = "min")
 
   log_debug(x = "... unique structures")
   histograms_unique_maj <- df_histogram_maj |>
@@ -50,7 +50,7 @@ plot_results_1 <- function(detector = "cad") {
     plot_histograms_confident()
   histograms_unique_min <- df_histogram_min |>
     dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
-    plot_histograms_confident()
+    plot_histograms_confident(level = "min")
 
   log_debug(x = "... confident structures")
   histograms_unique_conf_maj <- df_histogram_maj_conf |>
@@ -58,7 +58,7 @@ plot_results_1 <- function(detector = "cad") {
     plot_histograms_confident()
   histograms_unique_conf_min <- df_histogram_min_conf |>
     dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
-    plot_histograms_confident()
+    plot_histograms_confident(level = "min")
 
   returned_list <- list(
     histograms_taxo_maj,
