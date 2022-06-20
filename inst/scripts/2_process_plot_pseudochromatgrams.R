@@ -49,12 +49,20 @@ TIME_MIN <- 0
 TIME_MAX <- 38
 
 log_debug(x = "loading annotations")
-annotations <- readr::read_delim(file = ANNOTATIONS) |>
-  dplyr::mutate(best_candidate = gsub(
-    pattern = "§",
-    replacement = "$",
-    x = best_candidate
-  ))
+#' TODO add ionization mode?
+annotations <-
+  ANNOTATIONS |>
+  lapply(
+    FUN = function(x) {
+      readr::read_delim(file = x) |>
+        dplyr::mutate(best_candidate = gsub(
+          pattern = "§",
+          replacement = "$",
+          x = best_candidate
+        ))
+    }
+  ) |>
+  dplyr::bind_rows()
 
 log_debug(x = "keeping best annotations only")
 best_candidates <- annotations |>
