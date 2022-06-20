@@ -1,8 +1,13 @@
 filename: 
   mzml: 210705_AR_06_V_03_2_01
   annotation: 
-    tima: 210705_AR_06_V_03_2_01.tsv
+    tima: 
+      pos: 210705_AR_06_V_03_2_01.tsv
+      neg: 
 annotation:
+  mode:
+    neg: TRUE
+    pos: TRUE
   confidence:
     min: 0.5
   tool: tima
