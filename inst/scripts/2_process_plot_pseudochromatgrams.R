@@ -7,6 +7,7 @@ library(package = patchwork, quietly = TRUE)
 library(package = plotly, quietly = TRUE)
 library(package = readr, quietly = TRUE)
 
+source(file = "R/add_peak_metadata.R")
 source(file = "R/check_export_dir.R")
 source(file = "R/colors.R")
 source(file = "R/get_gnps.R")
@@ -20,6 +21,7 @@ source(file = "R/parse_cli_params.R")
 source(file = "R/parse_yaml_params.R")
 source(file = "R/parse_yaml_paths.R")
 source(file = "R/plot_histograms.R")
+source(file = "R/plot_peaks_statistics.R")
 source(file = "R/plot_results.R")
 source(file = "R/prepare_comparison.R")
 source(file = "R/prepare_hierarchy.R")
@@ -93,146 +95,24 @@ if (params$signal$detector$pda == TRUE) {
 }
 
 #' Work in progress
-#' Add some metadata per peak
-df_meta <- compared_peaks_list_cad$peaks_maj_precor_taxo_cor |>
-  dplyr::arrange(desc(intensity)) |>
-  dplyr::distinct(
-    id,
-    peak_id,
-    integral,
-    feature_id,
-    rt,
-    mz,
-    smiles_2D,
-    inchikey_2D,
-    best_candidate_1,
-    best_candidate_2,
-    best_candidate_3,
-    score_biological,
-    score_chemical,
-    score_final,
-    #' add consensus
-    sample,
-    species
-  ) |>
-  dplyr::group_by(id, peak_id) |>
-  dplyr::distinct(feature_id,
-    # smiles_2D,
-    # inchikey_2D,
-    # best_candidate_1,
-    # best_candidate_2,
-    # best_candidate_3,
-    .keep_all = TRUE
-  ) |>
-  dplyr::add_count(name = "featuresPerPeak") |>
-  dplyr::distinct(smiles_2D,
-    inchikey_2D,
-    # best_candidate_1,
-    # best_candidate_2,
-    # best_candidate_3,
-    .keep_all = TRUE
-  ) |>
-  dplyr::add_count(name = "structuresPerPeak") |>
-  dplyr::distinct(best_candidate_1,
-    best_candidate_2,
-    best_candidate_3,
-    .keep_all = TRUE
-  ) |>
-  dplyr::add_count(name = "chemicalClassesPerPeak") |>
-  dplyr::distinct(best_candidate_1,
-    best_candidate_2,
-    .keep_all = TRUE
-  ) |>
-  dplyr::add_count(name = "chemicalSuperclassesPerPeak") |>
-  dplyr::distinct(best_candidate_1,
-    .keep_all = TRUE
-  ) |>
-  dplyr::add_count(name = "chemicalPathwaysPerPeak") |>
-  dplyr::ungroup() |>
-  dplyr::distinct(
-    id,
-    peak_id,
-    featuresPerPeak,
-    structuresPerPeak,
-    chemicalClassesPerPeak,
-    chemicalSuperclassesPerPeak,
-    chemicalPathwaysPerPeak
-  )
+#' See how to do best also with non-annotated peaks, etc.
+df_meta_bpi <- compared_peaks_list_bpi$peaks_maj_precor_taxo_cor |>
+  add_peak_metadata()
 
-test_features <- df_meta |>
-  dplyr::group_by(featuresPerPeak) |>
-  dplyr::count()
-test_structures <- df_meta |>
-  dplyr::group_by(structuresPerPeak) |>
-  dplyr::count()
-test_classes <- df_meta |>
-  dplyr::group_by(chemicalClassesPerPeak) |>
-  dplyr::count()
-test_superclasses <- df_meta |>
-  dplyr::group_by(chemicalSuperclassesPerPeak) |>
-  dplyr::count()
-test_pathways <- df_meta |>
-  dplyr::group_by(chemicalPathwaysPerPeak) |>
-  dplyr::count()
+df_meta_cad <- compared_peaks_list_cad$peaks_maj_precor_taxo_cor |>
+  add_peak_metadata()
 
-plotly::plot_ly() |>
-  plotly::add_pie(
-    data = test_features,
-    name = "Features",
-    labels = ~featuresPerPeak,
-    values = ~n,
-    sort = FALSE,
-    type = "pie",
-    textposition = "inside",
-    domain = list(row = 0, column = 0)
-  ) |>
-  plotly::add_pie(
-    data = test_structures,
-    name = "Structures",
-    labels = ~structuresPerPeak,
-    values = ~n,
-    type = "pie",
-    textposition = "inside",
-    domain = list(row = 0, column = 1)
-  ) |>
-  plotly::add_pie(
-    data = test_classes,
-    name = "Classes",
-    labels = ~chemicalClassesPerPeak,
-    values = ~n,
-    type = "pie",
-    textposition = "inside",
-    domain = list(row = 0, column = 2)
-  ) |>
-  plotly::add_pie(
-    data = test_superclasses,
-    name = "Superclasses",
-    labels = ~chemicalSuperclassesPerPeak,
-    values = ~n,
-    type = "pie",
-    textposition = "inside",
-    domain = list(row = 1, column = 0)
-  ) |>
-  plotly::add_pie(
-    data = test_pathways,
-    name = "Pathways",
-    labels = ~chemicalPathwaysPerPeak,
-    values = ~n,
-    type = "pie",
-    textposition = "inside",
-    domain = list(row = 1, column = 1)
-  ) |>
-  plotly::layout(
-    title = "Peak analysis \n Features > Structures > Chemical classes > \n Superclasses > Pathways",
-    colorway = viridis::cividis(max(
-      nrow(test_features),
-      nrow(test_structures),
-      nrow(test_classes),
-      nrow(test_superclasses),
-      nrow(test_pathways)
-    )),
-    grid = list(rows = 2, columns = 3)
-  )
+df_meta_pda <- compared_peaks_list_pda$peaks_maj_precor_taxo_cor |>
+  add_peak_metadata()
+
+df_meta_bpi |>
+  plot_peaks_statistics()
+
+df_meta_cad |>
+  plot_peaks_statistics()
+
+df_meta_pda |>
+  plot_peaks_statistics()
 
 end <- Sys.time()
 
