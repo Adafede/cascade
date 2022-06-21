@@ -1,6 +1,6 @@
 #' Title
 #'
-#' @param df 
+#' @param df
 #'
 #' @return
 #' @export
@@ -22,13 +22,13 @@ plot_peaks_statistics <- function(df) {
   test_pathways <- df |>
     dplyr::group_by(chemicalPathwaysPerPeak) |>
     dplyr::count()
-  
+
   plotly::plot_ly() |>
     plotly::add_pie(
       data = test_features,
       name = "Features",
-      labels = ~ featuresPerPeak,
-      values = ~ n,
+      labels = ~featuresPerPeak,
+      values = ~n,
       sort = FALSE,
       type = "pie",
       textposition = "inside",
@@ -37,8 +37,8 @@ plot_peaks_statistics <- function(df) {
     plotly::add_pie(
       data = test_structures,
       name = "Structures",
-      labels = ~ structuresPerPeak,
-      values = ~ n,
+      labels = ~structuresPerPeak,
+      values = ~n,
       type = "pie",
       textposition = "inside",
       domain = list(row = 0, column = 1)
@@ -46,8 +46,8 @@ plot_peaks_statistics <- function(df) {
     plotly::add_pie(
       data = test_classes,
       name = "Classes",
-      labels = ~ chemicalClassesPerPeak,
-      values = ~ n,
+      labels = ~chemicalClassesPerPeak,
+      values = ~n,
       type = "pie",
       textposition = "inside",
       domain = list(row = 0, column = 2)
@@ -55,8 +55,8 @@ plot_peaks_statistics <- function(df) {
     plotly::add_pie(
       data = test_superclasses,
       name = "Superclasses",
-      labels = ~ chemicalSuperclassesPerPeak,
-      values = ~ n,
+      labels = ~chemicalSuperclassesPerPeak,
+      values = ~n,
       type = "pie",
       textposition = "inside",
       domain = list(row = 1, column = 0)
@@ -64,8 +64,8 @@ plot_peaks_statistics <- function(df) {
     plotly::add_pie(
       data = test_pathways,
       name = "Pathways",
-      labels = ~ chemicalPathwaysPerPeak,
-      values = ~ n,
+      labels = ~chemicalPathwaysPerPeak,
+      values = ~n,
       type = "pie",
       textposition = "inside",
       domain = list(row = 1, column = 1)
