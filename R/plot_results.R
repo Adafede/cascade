@@ -18,7 +18,7 @@ plot_results_1 <- function(detector = "cad") {
   df_histogram_maj <- list$peaks_maj_precor_taxo_cor |>
     make_other() |>
     prepare_plot_2()
-  df_histogram_min <- list$peaks_min |>
+  df_histogram_min <- list$peaks_min_precor_taxo_cor |>
     make_other() |>
     prepare_plot_2()
 
@@ -26,7 +26,7 @@ plot_results_1 <- function(detector = "cad") {
     make_other() |>
     no_other() |>
     prepare_plot_2()
-  df_histogram_min_conf <- list$peaks_min |>
+  df_histogram_min_conf <- list$peaks_min_precor_taxo_cor |>
     make_other() |>
     no_other() |>
     prepare_plot_2()

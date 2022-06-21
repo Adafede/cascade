@@ -18,32 +18,48 @@ prepare_comparison <- function(detector = "cad") {
     dplyr::bind_rows(peaks_outside)
 
   log_debug(x = "joining compared peaks and candidates")
+  log_debug(x = "temporary fix") #' TODO
+  temp_fix <- function(df) {
+    df_temp <- df |>
+      dplyr::left_join(candidates_confident) |>
+      dplyr::mutate(rt = as.numeric(rt))
+    return(df_temp)
+  }
+  temp_fix_2 <- function(df) {
+    df_temp <- df |>
+      dplyr::mutate(
+        id = sample,
+        integral = peak_area,
+        intensity = feature_area
+      )
+    return(df_temp)
+  }
+  temp_fix_3 <- function(df) {
+    df_temp <- df |>
+      dplyr::mutate(
+        peak_rt_apex = rt,
+        peak_area = 1
+      )
+    return(df_temp)
+  }
+
   peaks_maj <- peaks_compared |>
-    dplyr::left_join(candidates_confident)
+    temp_fix() |>
+    temp_fix_2()
 
   peaks_min <- peaks_outside |>
-    dplyr::left_join(candidates_confident) |>
-    dplyr::mutate(rt = as.numeric(rt))
-
-  log_debug(x = "temporary fix") #' TODO
-  peaks_maj <- peaks_maj |>
-    dplyr::mutate(
-      id = sample,
-      integral = peak_area,
-      intensity = feature_area
-    )
-  peaks_min <- peaks_min |>
-    dplyr::mutate(
-      id = sample,
-      integral = peak_area,
-      intensity = feature_area,
-      peak_rt_apex = rt,
-      peak_area = 1
-    )
+    temp_fix() |>
+    temp_fix_2() |>
+    temp_fix_3()
 
   log_debug(x = "keeping peaks similarities above desired (pre-)threshold only")
   peaks_maj_precor <- peaks_maj |>
     dplyr::filter(comparison_score >= PEAK_SIMILARITY_PREFILTER) #' TODO check negative values
+
+  peaks_min_precor <- peaks_maj |>
+    dplyr::anti_join(peaks_maj_precor) |>
+    temp_fix_2() |>
+    dplyr::bind_rows(peaks_min)
 
   log_debug(x = "keeping multiple features only if none was reported in the species")
   peaks_maj_precor_taxo <- peaks_maj_precor |>
@@ -89,25 +105,41 @@ prepare_comparison <- function(detector = "cad") {
     dplyr::filter(keep == "Y") |> #' TODO decide if genus
     dplyr::ungroup()
 
+  peaks_min_precor_taxo <- peaks_maj |>
+    dplyr::anti_join(peaks_maj_precor_taxo) |>
+    temp_fix_2() |>
+    dplyr::bind_rows(peaks_min)
+
   log_debug(x = "keeping peaks similarities with score above", PEAK_SIMILARITY)
   peaks_maj_precor_taxo_cor <- peaks_maj_precor_taxo |>
     dplyr::filter(comparison_score >= PEAK_SIMILARITY)
+
+  peaks_min_precor_taxo_cor <- peaks_maj |>
+    dplyr::anti_join(peaks_maj_precor_taxo_cor) |>
+    temp_fix_2() |>
+    dplyr::bind_rows(peaks_min)
 
   returned_list <- list(
     peaks_all,
     peaks_maj,
     peaks_min,
     peaks_maj_precor,
+    peaks_min_precor,
     peaks_maj_precor_taxo,
-    peaks_maj_precor_taxo_cor
+    peaks_min_precor_taxo,
+    peaks_maj_precor_taxo_cor,
+    peaks_min_precor_taxo_cor
   )
   names(returned_list) <- c(
     "peaks_all",
     "peaks_maj",
     "peaks_min",
     "peaks_maj_precor",
+    "peaks_min_precor",
     "peaks_maj_precor_taxo",
-    "peaks_maj_precor_taxo_cor"
+    "peaks_min_precor_taxo",
+    "peaks_maj_precor_taxo_cor",
+    "peaks_min_precor_taxo_cor"
   )
 
   return(returned_list)

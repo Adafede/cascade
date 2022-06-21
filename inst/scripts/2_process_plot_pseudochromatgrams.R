@@ -103,6 +103,16 @@ if (params$signal$detector$pda == TRUE) {
 }
 
 #' Work in progress
+test <-
+  ggpubr::ggarrange(
+    plots_1_cad$histograms_taxo_maj,
+    ncol = 1,
+    nrow = 2,
+    plots_1_cad$histograms_taxo_min,
+    align = "hv"
+  )
+
+#' Work in progress
 #' See how to do best also with non-annotated peaks, etc.
 df_meta_bpi <- compared_peaks_list_bpi$peaks_maj_precor_taxo_cor |>
   add_peak_metadata()
