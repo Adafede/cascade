@@ -1,12 +1,12 @@
 #' Title
 #'
-#' @param df 
+#' @param df
 #'
 #' @return
 #' @export
 #'
 #' @examples
-add_peak_metadata <- function(df){
+add_peak_metadata <- function(df) {
   df_meta <- df |>
     dplyr::arrange(desc(intensity)) |>
     dplyr::distinct(
@@ -30,35 +30,35 @@ add_peak_metadata <- function(df){
     ) |>
     dplyr::group_by(id, peak_id) |>
     dplyr::distinct(feature_id,
-                    # smiles_2D,
-                    # inchikey_2D,
-                    # best_candidate_1,
-                    # best_candidate_2,
-                    # best_candidate_3,
-                    .keep_all = TRUE
+      # smiles_2D,
+      # inchikey_2D,
+      # best_candidate_1,
+      # best_candidate_2,
+      # best_candidate_3,
+      .keep_all = TRUE
     ) |>
     dplyr::add_count(name = "featuresPerPeak") |>
     dplyr::distinct(smiles_2D,
-                    inchikey_2D,
-                    # best_candidate_1,
-                    # best_candidate_2,
-                    # best_candidate_3,
-                    .keep_all = TRUE
+      inchikey_2D,
+      # best_candidate_1,
+      # best_candidate_2,
+      # best_candidate_3,
+      .keep_all = TRUE
     ) |>
     dplyr::add_count(name = "structuresPerPeak") |>
     dplyr::distinct(best_candidate_1,
-                    best_candidate_2,
-                    best_candidate_3,
-                    .keep_all = TRUE
+      best_candidate_2,
+      best_candidate_3,
+      .keep_all = TRUE
     ) |>
     dplyr::add_count(name = "chemicalClassesPerPeak") |>
     dplyr::distinct(best_candidate_1,
-                    best_candidate_2,
-                    .keep_all = TRUE
+      best_candidate_2,
+      .keep_all = TRUE
     ) |>
     dplyr::add_count(name = "chemicalSuperclassesPerPeak") |>
     dplyr::distinct(best_candidate_1,
-                    .keep_all = TRUE
+      .keep_all = TRUE
     ) |>
     dplyr::add_count(name = "chemicalPathwaysPerPeak") |>
     dplyr::ungroup() |>
@@ -71,6 +71,6 @@ add_peak_metadata <- function(df){
       chemicalSuperclassesPerPeak,
       chemicalPathwaysPerPeak
     )
-  
+
   return(df_meta)
 }
