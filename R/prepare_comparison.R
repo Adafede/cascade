@@ -47,6 +47,24 @@ prepare_comparison <- function(detector = "cad") {
     temp_fix() |>
     temp_fix_2()
 
+  # peaks_maj_2 <- peaks_maj |>
+  #   dplyr::rowwise() |>
+  #   dplyr::mutate(acn = 5 + 95 / (acn_time / (pmin(
+  #     acn_time, (peak_rt_apex - dvol - 0.5)
+  #   )))) %>%
+  #   dplyr::mutate(peak_area_corrected = predict_response(acn = acn, peak_area = peak_area))
+  #
+  # test <- peaks_maj_2 |>
+  #   distinct(peak_id, peak_area, peak_rt_apex, peak_area_corrected)
+  #
+  # plotly::plot_ly(
+  #   test,
+  #   x =  ~ peak_rt_apex,
+  #   y =  ~ peak_area,
+  #   type = "bar"
+  # ) |>
+  #   plotly::add_bars(x =  ~ peak_rt_apex, y =  ~ peak_area_corrected)
+
   peaks_min <- peaks_outside |>
     temp_fix() |>
     temp_fix_2() |>
