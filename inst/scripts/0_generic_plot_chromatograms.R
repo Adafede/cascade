@@ -54,42 +54,43 @@ log_debug("Contributors: \n", "...")
 #' Dirty generic paths and parameters
 source(file = "R/dirty_paths_params.R")
 #' Specific paths
-TOYSET <- "~/data/qcmix/"
+TOYSET <- "inst/extdata/source/mzml/10043"
+TOYSET <- "inst/extdata/source/mzml/UHR"
 
 files <- list.files(
   path = TOYSET,
-  pattern = "Pos.mzML.gz",
+  pattern = "Pos.mzML",
   full.names = TRUE,
   recursive = TRUE
 )
 
 files_2 <- list.files(
   path = TOYSET,
-  pattern = "Neg.mzML.gz",
+  pattern = "Neg.mzML",
   full.names = TRUE,
   recursive = TRUE
 )
 
 names <- list.files(
   path = TOYSET,
-  pattern = "Pos.mzML.gz",
+  pattern = "Pos.mzML",
   recursive = TRUE
 ) |>
   gsub(pattern = "[0-9]{6}_AR_[0-9]{2}_", replacement = "") |>
   gsub(
-    pattern = ".mzML.gz",
+    pattern = ".mzML",
     replacement = "",
     fixed = TRUE
   )
 
 names_2 <- list.files(
   path = TOYSET,
-  pattern = "Neg.mzML.gz",
+  pattern = "Neg.mzML",
   recursive = TRUE
 ) |>
   gsub(pattern = "[0-9]{6}_AR_[0-9]{2}_", replacement = "") |>
   gsub(
-    pattern = ".mzML.gz",
+    pattern = ".mzML",
     replacement = "",
     fixed = TRUE
   )
@@ -239,7 +240,7 @@ new_new_new
 new <- plotly::plot_ly() |>
   plotly::add_lines(
     data = cads_baselined |>
-      dplyr::filter(grepl(pattern = "UHR", x = id)),
+      dplyr::filter(grepl(pattern = "10043", x = id)),
     x = ~time,
     y = ~intensity,
     name = "<b> CAD </b>",
@@ -251,7 +252,7 @@ new <- plotly::plot_ly() |>
   ) |>
   plotly::add_lines(
     data = pdas_baselined |>
-      dplyr::filter(grepl(pattern = "UHR", x = id)),
+      dplyr::filter(grepl(pattern = "10043", x = id)),
     x = ~time,
     y = ~intensity,
     name = "<b> PDA </b>",
@@ -263,7 +264,7 @@ new <- plotly::plot_ly() |>
   ) |>
   plotly::add_lines(
     data = bpis_baselined |>
-      dplyr::filter(grepl(pattern = "UHR", x = id)),
+      dplyr::filter(grepl(pattern = "10043", x = id)),
     x = ~time,
     y = ~ -intensity,
     name = "<b> MS Pos </b>",
@@ -275,7 +276,7 @@ new <- plotly::plot_ly() |>
   ) |>
   plotly::add_lines(
     data = bpis_neg_baselined |>
-      dplyr::filter(grepl(pattern = "UHR", x = id)),
+      dplyr::filter(grepl(pattern = "10043", x = id)),
     x = ~time,
     y = ~ -intensity,
     name = "<b> MS Neg </b>",
@@ -293,8 +294,8 @@ new
 
 new_zoom <- new |>
   plotly::layout(
-    xaxis = list(range = c(0.18, 0.33)),
-    yaxis = list(range = c(-0.3, 0.3))
+    xaxis = list(range = c(0.3, 0.6)),
+    yaxis = list(range = c(-0.25, 0.25))
   )
 new_zoom
 
