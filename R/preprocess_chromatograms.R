@@ -6,23 +6,10 @@
 #' @export
 #'
 #' @examples
-preprocess_chromatograms <- function(detector = "cad") {
-  list <- switch(detector,
-    "bpi" = chromatograms_all[c(TRUE, FALSE, FALSE)],
-    "cad" = chromatograms_all[c(FALSE, FALSE, TRUE)],
-    "pda" = chromatograms_all[c(FALSE, TRUE, FALSE)]
-  )
-  signal_name <- switch(detector,
-    "bpi" = "BasePeak_0",
-    "cad" = "UV.1_CAD_1_0",
-    "pda" = "PDA.1_TotalAbsorbance_0"
-  )
-  shift <- switch(detector,
-    "bpi" = 0,
-    "cad" = CAD_SHIFT,
-    "pda" = PDA_SHIFT
-  )
-
+preprocess_chromatograms <- function(detector = "cad",
+                                     list = chromatograms_all[c(FALSE, FALSE, TRUE)],
+                                     signal_name = "UV.1_CAD_1_0",
+                                     shift = CAD_SHIFT) {
   log_debug(x = "preprocessing", detector, "chromatograms")
   log_debug(x = "harmonizing names")
   chromatograms_original <-
@@ -37,18 +24,25 @@ preprocess_chromatograms <- function(detector = "cad") {
 
   chromatograms_original_long <-
     dplyr::bind_rows(chromatograms_original, .id = "id") |>
-    dplyr::mutate(time = time + shift)
+    dplyr::mutate(time = time + shift) |>
+    dplyr::mutate(intensity = intensity - (min(intensity))) |>
+    dplyr::mutate(intensity = intensity / max(intensity)) |>
+    dplyr::mutate(rt_1 = time, rt_2 = time) |>
+    data.table::data.table()
   chromatograms_improved_long <-
     dplyr::bind_rows(chromatograms_improved, .id = "id") |>
-    dplyr::mutate(time = time + shift)
+    dplyr::mutate(time = time + shift) |>
+    dplyr::mutate(intensity = intensity / max(intensity)) |>
+    dplyr::mutate(rt_1 = time, rt_2 = time) |>
+    data.table::data.table()
 
   # log_debug(x = "plotting improved chromatograms ...")
   # plot_improved <-
   #   plot_chromatogram(df = chromatograms_improved_long, text = detector)
 
-  log_debug(x = "baselining chromatograms ...")
-  chromatograms_baselined <-
-    transform_baseline(x = chromatograms_improved)
+  log_debug(x = "baselining chromatograms")
+  chromatograms_baselined <- chromatograms_improved |>
+    lapply(FUN = baseline_chromatogram)
 
   chromatograms_baselined_long <-
     dplyr::bind_rows(chromatograms_baselined, .id = "id") |>
@@ -56,7 +50,7 @@ preprocess_chromatograms <- function(detector = "cad") {
     dplyr::mutate(rt_1 = time, rt_2 = time) |>
     data.table::data.table()
 
-  # log_debug(x = "plotting baselined chromatograms ...")
+  # log_debug(x = "plotting baselined chromatograms")
   # plot_baselined <-
   #   plot_chromatogram(df = chromatograms_baselined_long, text = detector)
 
