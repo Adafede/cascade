@@ -23,7 +23,7 @@ check_and_load_packages_1 <- function(cran = packages_cran,
   installed_packages_cran <- cran %in% installed_packages
 
   return(lapply(X = cran[!installed_packages_cran], FUN = install.packages) |>
-           invisible())
+    invisible())
 }
 
 #' Title

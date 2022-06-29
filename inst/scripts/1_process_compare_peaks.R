@@ -16,6 +16,7 @@ library(package = purrr, quietly = TRUE)
 library(package = readr, quietly = TRUE)
 library(package = xcms, quietly = TRUE)
 
+source(file = "R/baseline_chromatogram.R")
 source(file = "R/change_intensity_name.R")
 source(file = "R/check_export_dir.R")
 source(file = "R/compare_peaks.R")
@@ -42,7 +43,6 @@ source(file = "R/prepare_rt.R")
 source(file = "R/preprocess_chromatograms.R")
 source(file = "R/preprocess_peaks.R")
 source(file = "R/process_peaks.R")
-source(file = "R/transform_baseline.R")
 source(file = "R/transform_ms.R")
 source(file = "R/y_as_na.R")
 
@@ -111,15 +111,18 @@ df_features <- feature_table |>
   prepare_features()
 
 if (params$signal$detector$bpi == TRUE) {
-  detector <- "bpi"
-}
-if (params$signal$detector$bpi == TRUE) {
-  chromatograms_list_bpi <- preprocess_chromatograms(detector = "bpi")
-  peaks_prelist_bpi <- preprocess_peaks(detector = "bpi")
-  peaks_list_pda <- process_peaks(detector = "bpi")
-}
-if (params$signal$detector$cad == TRUE) {
-  detector <- "cad"
+  chromatograms_list_bpi <- preprocess_chromatograms(
+    detector = "bpi",
+    list = chromatograms_all[c(TRUE, FALSE, FALSE)],
+    signal_name = "BasePeak_0",
+    shift = 0
+  )
+  peaks_prelist_bpi <- preprocess_peaks(
+    detector = "bpi",
+    list = chromatograms_list_bpi$chromatograms_baselined,
+    df_long = chromatograms_list_bpi$chromatograms_baselined_long
+  )
+  peaks_list_bpi <- process_peaks(detector = "bpi")
 }
 if (params$signal$detector$cad == TRUE) {
   chromatograms_list_cad <- preprocess_chromatograms()
@@ -127,15 +130,237 @@ if (params$signal$detector$cad == TRUE) {
   peaks_list_cad <- process_peaks()
 }
 if (params$signal$detector$pda == TRUE) {
-  detector <- "pda"
-}
-if (params$signal$detector$pda == TRUE) {
   #' TODO check if change for PDA doing baselining on normal and not improved
   chromatograms_list_pda <-
-    preprocess_chromatograms(detector = "pda")
-  peaks_prelist_pda <- preprocess_peaks(detector = "pda")
+    preprocess_chromatograms(
+      detector = "pda",
+      list = chromatograms_all[c(FALSE, TRUE, FALSE)],
+      signal_name = "PDA.1_TotalAbsorbance_0",
+      shift = PDA_SHIFT
+    )
+  peaks_prelist_pda <- preprocess_peaks(
+    detector = "pda",
+    list = chromatograms_list_pda$chromatograms_baselined,
+    df_long = chromatograms_list_pda$chromatograms_baselined_long
+  )
   peaks_list_pda <- process_peaks(detector = "pda")
 }
+
+#' TODO ADD PEAK PICKING COMPARISON
+
+peaks_original <-
+  preprocess_peaks(
+    list = chromatograms_list_cad$chromatograms_original,
+    df_long = chromatograms_list_cad$chromatograms_original_long
+  )
+peaks_improved <-
+  preprocess_peaks(
+    list = chromatograms_list_cad$chromatograms_improved,
+    df_long = chromatograms_list_cad$chromatograms_improved_long
+  )
+
+#' WIP
+suite_1_1 <- chromatograms_list_cad$chromatograms_original_long |>
+  dplyr::bind_rows() |>
+  dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
+  dplyr::filter(row_number() %% 10 == 1)
+
+suite_1_2 <- peaks_original$list_df_features_with_peaks_long |>
+  dplyr::bind_rows() |>
+  dplyr::filter(grepl(pattern = "V_03_2_01", x = id))
+
+suite_2_1 <- chromatograms_list_cad$chromatograms_improved_long |>
+  dplyr::bind_rows() |>
+  dplyr::filter(grepl(pattern = "V_03_2_01", x = id))
+
+suite_2_2 <- peaks_improved$list_df_features_with_peaks_long |>
+  dplyr::bind_rows() |>
+  dplyr::filter(grepl(pattern = "V_03_2_01", x = id))
+
+suite_3_1 <- chromatograms_list_cad$chromatograms_baselined_long |>
+  dplyr::bind_rows() |>
+  dplyr::filter(grepl(pattern = "V_03_2_01", x = id))
+
+suite_3_2 <- peaks_prelist_cad$list_df_features_with_peaks_long |>
+  dplyr::bind_rows() |>
+  dplyr::filter(grepl(pattern = "V_03_2_01", x = id))
+
+
+f_1 <- approxfun(
+  x = chromatograms_list_cad$chromatograms_original_long |>
+    dplyr::bind_rows() |>
+    dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
+    dplyr::pull(time),
+  y = chromatograms_list_cad$chromatograms_original_long |>
+    dplyr::bind_rows() |>
+    dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
+    dplyr::pull(intensity)
+)
+
+plotly::plot_ly(
+  data = suite_1_1,
+  x =  ~time,
+  y =  ~intensity,
+  type = "scatter",
+  mode = "line"
+) |>
+  plotly::add_trace(
+    data = suite_1_2,
+    x = ~rt_apex,
+    y = ~peak_max,
+    yaxis = "y2",
+    type = "scatter",
+    marker = list(color = "red")
+  ) |>
+  plotly::add_trace(
+    data = suite_1_2,
+    x = ~rt_min,
+    y = ~ f_1(rt_min),
+    yaxis = "y2",
+    type = "scatter",
+    marker = list(color = "green")
+  ) |>
+  plotly::add_trace(
+    data = suite_1_2,
+    x = ~rt_max,
+    y = ~ f_1(rt_max),
+    yaxis = "y2",
+    type = "scatter",
+    marker = list(color = "green")
+  ) |>
+  plotly::layout(
+    # yaxis = list(range = c(0, 1)),
+    yaxis2 = list(
+      # range = c(0, 1),
+      overlaying = "y",
+      side = "right"
+    )
+  )
+
+f_2 <- approxfun(
+  x = chromatograms_list_cad$chromatograms_improved_long |>
+    dplyr::bind_rows() |>
+    dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
+    dplyr::pull(time),
+  y = chromatograms_list_cad$chromatograms_improved_long |>
+    dplyr::bind_rows() |>
+    dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
+    dplyr::pull(intensity)
+)
+
+plotly::plot_ly(
+  suite_2_1,
+  x =  ~time,
+  y =  ~intensity,
+  type = "scatter",
+  mode = "line"
+) |>
+  plotly::add_trace(
+    data = suite_2_2,
+    x = ~rt_apex,
+    y = ~peak_max,
+    yaxis = "y2",
+    type = "scatter",
+    marker = list(color = "red")
+  ) |>
+  plotly::add_trace(
+    data = suite_2_2,
+    x = ~rt_min,
+    y = ~ f_2(rt_min),
+    yaxis = "y2",
+    type = "scatter",
+    marker = list(color = "green")
+  ) |>
+  plotly::add_trace(
+    data = suite_2_2,
+    x = ~rt_max,
+    y = ~ f_2(rt_max),
+    yaxis = "y2",
+    type = "scatter",
+    marker = list(color = "green")
+  ) |>
+  plotly::layout(
+    yaxis = list(range = c(0, 1)),
+    yaxis2 = list(
+      range = c(0, 1),
+      overlaying = "y",
+      side = "right"
+    )
+  )
+
+f_3 <- approxfun(
+  x = chromatograms_list_cad$chromatograms_baselined_long |>
+    dplyr::bind_rows() |>
+    dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
+    dplyr::pull(time),
+  y = chromatograms_list_cad$chromatograms_baselined_long |>
+    dplyr::bind_rows() |>
+    dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
+    dplyr::pull(intensity)
+)
+
+plotly::plot_ly(
+  suite_3_1,
+  x =  ~time,
+  y =  ~intensity,
+  type = "scatter",
+  mode = "line"
+) |>
+  plotly::add_trace(
+    data = suite_3_2,
+    x = ~rt_apex,
+    y = ~peak_max,
+    yaxis = "y2",
+    type = "scatter",
+    marker = list(color = "red")
+  ) |>
+  plotly::add_trace(
+    data = suite_3_2,
+    x = ~rt_min,
+    y = ~ f_3(rt_min),
+    yaxis = "y2",
+    type = "scatter",
+    marker = list(color = "green")
+  ) |>
+  plotly::add_trace(
+    data = suite_3_2,
+    x = ~rt_max,
+    y = ~ f_3(rt_max),
+    yaxis = "y2",
+    type = "scatter",
+    marker = list(color = "green")
+  ) |>
+  plotly::layout(
+    yaxis = list(range = c(0, 1)),
+    yaxis2 = list(
+      range = c(0, 1),
+      overlaying = "y",
+      side = "right"
+    )
+  )
+
+# Sa_2 <- chromatograms_list_cad$chromatograms_baselined_long |>
+#   dplyr::bind_rows() |>
+#   dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
+#   tibble::column_to_rownames(var = "time") |>
+#   dplyr::select("666" = intensity) |>
+#   as.matrix()
+#
+# new.ts_2 <- rownames(Sa_2) |> as.numeric()
+# new.lambdas_2 <- colnames(Sa_2) |> as.numeric()
+#
+# dat.pr <- list(Sa_2)
+# names(dat.pr) <- "666"
+#
+# pks_gau <-
+#   get_peaks(
+#     chrom_list = dat.pr,
+#     lambdas = new.lambdas_2,
+#     sd.max = 25,
+#     max.iter = 10000,
+#     fit = "gauss"
+#   )
+# plot(pks_gau, index = 1, lambda = '666')
 
 end <- Sys.time()
 

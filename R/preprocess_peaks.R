@@ -6,18 +6,9 @@
 #' @export
 #'
 #' @examples
-preprocess_peaks <- function(detector = "cad") {
-  list <- switch(detector,
-    "bpi" = chromatograms_list_bpi$chromatograms_baselined,
-    "cad" = chromatograms_list_cad$chromatograms_baselined,
-    "pda" = chromatograms_list_pda$chromatograms_baselined
-  )
-  df_long <- switch(detector,
-    "bpi" = chromatograms_list_bpi$chromatograms_baselined_long,
-    "cad" = chromatograms_list_cad$chromatograms_baselined_long,
-    "pda" = chromatograms_list_pda$chromatograms_baselined_long
-  )
-
+preprocess_peaks <- function(detector = "cad",
+                             list = chromatograms_list_cad$chromatograms_baselined,
+                             df_long = chromatograms_list_cad$chromatograms_baselined_long) {
   log_debug(x = "preprocessing", detector, "peaks")
   #' data.table call outside of future because buggy else
   peaks <- peaks_progress(list)

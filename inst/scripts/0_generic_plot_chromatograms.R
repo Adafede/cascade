@@ -110,7 +110,6 @@ chromatograms_2 <- lapply(objects_2, mzR::chromatograms)
 chromatograms_all <- purrr::flatten(chromatograms)
 chromatograms_all_2 <- purrr::flatten(chromatograms_2)
 
-
 chromatograms_bpi <- chromatograms_all[c(TRUE, FALSE, FALSE)]
 
 chromatograms_bpi_neg <- chromatograms_all_2[c(TRUE, FALSE, FALSE)]
