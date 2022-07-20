@@ -16,6 +16,12 @@ python python/peakonly.py -i inst/extdata/source/mzml/ -o inst/extdata/interim/p
 Rscript inst/scripts/peakonly2mzmine.R
 ```
 
-## Run MZmine (TODO)
+## Run MZmine
 
-...
+```
+bash bash/create_batch_file.sh inst/extdata/source/mzml/qcmix/191113_AR_QCmix_07_09_Pos.mzML
+```
+
+```
+mzmine --batch config/params/batch_191113_AR_QCmix_07_09_Pos_mzmine.xml
+```
