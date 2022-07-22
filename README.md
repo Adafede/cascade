@@ -19,7 +19,7 @@ Rscript inst/scripts/peakonly2mzmine.R
 ## Run MZmine
 
 ```
-bash bash/create_batch_file.sh inst/extdata/source/mzml/qcmix/191113_AR_QCmix_07_09_Pos.mzML
+bash bash/create_batch_file.sh inst/extdata/source/mzml/qcmix/191113_AR_QCmix_07_09_Pos.mzML pos
 ```
 
 ```
