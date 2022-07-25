@@ -392,9 +392,9 @@
         <parameter name="Text in identity" selected="false"/>
         <parameter name="Text in comment" selected="false"/>
         <parameter name="Keep or remove rows">Keep rows that match all criteria</parameter>
-        <parameter name="Feature with MS2 scan">false</parameter>
+        <parameter name="Feature with MS2 scan">true</parameter>
         <parameter name="Never remove feature with MS2">false</parameter>
-        <parameter name="Reset the feature number ID">false</parameter>
+        <parameter name="Reset the feature number ID">true</parameter>
         <parameter name="Mass defect" selected="false"/>
         <parameter name="Original feature list">KEEP</parameter>
     </batchstep>
@@ -923,7 +923,7 @@
         </parameter>
         <parameter name="Filter rows">ONLY WITH MS2</parameter>
         <parameter name="Feature intensity">Peak area</parameter>
-        <parameter name="CSV export">COMPREHENSIVE</parameter>
+        <parameter name="CSV export">ALL</parameter>
         <parameter name="Submit to GNPS" selected="false">
             <parameter name="Meta data file" selected="false"/>
             <parameter name="Export ion identity networks">true</parameter>
