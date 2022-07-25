@@ -1,9 +1,9 @@
-filename: 
-  mzml: 210705_AR_06_V_03_2_01
-  annotation: 
-    tima: 
-      pos: 210705_AR_06_V_03_2_01.tsv
-      neg: 
+filename:
+  mzml: 191109_AR_10043_enriched_UHR_Pos
+  annotation:
+    tima:
+      pos: 191109_AR_10043_enriched_UHR_Pos.tsv.gz
+      neg: 191109_AR_10043_enriched_UHR_Neg.tsv.gz
 annotation:
   mode:
     neg: TRUE
@@ -27,23 +27,23 @@ chromato:
       prefilter: 0.6
       filter: 0.8
     tolerance:
-      rt: 0.1
+      rt: 0.15
       ppm: 10
     area:
-      min: 0.005
+      min: 0.001
   shift:
     cad: 0.055
     pda: 0.090
   time:
-    min: 0
-    max: 150
+    min: 0.5
+    max: 127.5
 signal:
   detector:
     bpi: TRUE
     cad: TRUE
     pda: TRUE
   fourrier:
-    components: 0.05
+    components: 0.01
   frequency: 20
   resample: 0.1
   sigma: 0.05

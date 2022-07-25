@@ -7,8 +7,8 @@
 #'
 #' @examples
 preprocess_peaks <- function(detector = "cad",
-                             list = chromatograms_list_cad$chromatograms_baselined,
-                             df_long = chromatograms_list_cad$chromatograms_baselined_long) {
+                             list = chromatograms_list_cad$chromatograms_improved,
+                             df_long = chromatograms_list_cad$chromatograms_improved_long) {
   log_debug(x = "preprocessing", detector, "peaks")
   #' data.table call outside of future because buggy else
   peaks <- peaks_progress(list)

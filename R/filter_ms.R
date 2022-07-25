@@ -11,7 +11,13 @@ filter_ms <- function(x, shift) {
   MSnbase::filterFile(
     dda_data,
     dda_data@phenoData@data$sampleNames[grepl(
-      pattern = unique(x$id),
+      pattern = unique(
+        gsub(
+          pattern = ".*/",
+          replacement = "",
+          x = x$id
+        )
+      ),
       x = dda_data@phenoData@data$sampleNames
     )]
   ) |>

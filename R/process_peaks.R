@@ -51,12 +51,16 @@ process_peaks <- function(detector = "cad") {
   ) |>
     dplyr::bind_rows()
 
+  log_debug(x = "There are", nrow(df_features_with_peaks), "features with peaks")
+
   log_debug(x = "summarizing comparison scores")
-  comparison_scores <<- list_comparison_score |>
+  comparison_scores <- list_comparison_score |>
     purrr::flatten()
 
+  log_debug(x = "There are", length(comparison_scores), "scores calculated")
+
   log_debug(x = "joining")
-  df_features_with_peaks$comparison_score <<-
+  df_features_with_peaks$comparison_score <-
     as.numeric(comparison_scores)
 
   log_debug(x = "final aesthetics")
@@ -101,7 +105,7 @@ process_peaks <- function(detector = "cad") {
     df_features_with_peaks_scored,
     df_features_without_peaks_scored
   )
-  names(returned_list) <<- c(
+  names(returned_list) <- c(
     "df_features_with_peaks_scored",
     "df_features_without_peaks_scored"
   )
