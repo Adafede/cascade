@@ -47,7 +47,14 @@ EXPORT_FILE_PDA_2 <-
     sep = "_"
   )
 
-FEATURES <- "~/Downloads/test_quant.csv"
+# FEATURES <- "~/Downloads/test_quant.csv"
+FEATURES <-
+  paste0(
+    "inst/extdata/interim/mzmine/lists/",
+    params$filename$mzml,
+    "_gnps_quant.csv"
+  )
+
 
 # GNPS_JOB <- "97d7c50031a84b9ba2747e883a5907cd"
 

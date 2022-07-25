@@ -69,7 +69,7 @@ source(file = "R/dirty_paths_params.R")
 log_debug(x = "listing files")
 files <- list.files(
   path = TOYSET,
-  pattern = ".mzML",
+  pattern = paste0(params$filename$mzml, ".mzML"),
   full.names = TRUE,
   recursive = TRUE
 )
@@ -78,7 +78,7 @@ files <- list.files(
 
 names <- list.files(
   path = TOYSET,
-  pattern = ".mzML",
+  pattern = paste0(params$filename$mzml, ".mzML"),
   recursive = TRUE
 ) |>
   gsub(pattern = "[0-9]{6}_AR_[0-9]{2}_", replacement = "") |>
@@ -119,14 +119,16 @@ if (params$signal$detector$bpi == TRUE) {
   )
   peaks_prelist_bpi <- preprocess_peaks(
     detector = "bpi",
-    list = chromatograms_list_bpi$chromatograms_baselined,
-    df_long = chromatograms_list_bpi$chromatograms_baselined_long
+    list = chromatograms_list_bpi$chromatograms_improved,
+    df_long = chromatograms_list_bpi$chromatograms_improved_long
   )
+  detector = "bpi"
   peaks_list_bpi <- process_peaks(detector = "bpi")
 }
 if (params$signal$detector$cad == TRUE) {
   chromatograms_list_cad <- preprocess_chromatograms()
   peaks_prelist_cad <- preprocess_peaks()
+  detector = "cad"
   peaks_list_cad <- process_peaks()
 }
 if (params$signal$detector$pda == TRUE) {
@@ -140,13 +142,15 @@ if (params$signal$detector$pda == TRUE) {
     )
   peaks_prelist_pda <- preprocess_peaks(
     detector = "pda",
-    list = chromatograms_list_pda$chromatograms_baselined,
-    df_long = chromatograms_list_pda$chromatograms_baselined_long
+    list = chromatograms_list_pda$chromatograms_improved,
+    df_long = chromatograms_list_pda$chromatograms_improved_long
   )
+  detector = "pda"
   peaks_list_pda <- process_peaks(detector = "pda")
 }
 
 #' TODO ADD PEAK PICKING COMPARISON
+detector = "cad"
 
 peaks_original <-
   preprocess_peaks(
@@ -162,38 +166,38 @@ peaks_improved <-
 #' WIP
 suite_1_1 <- chromatograms_list_cad$chromatograms_original_long |>
   dplyr::bind_rows() |>
-  dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
+  # dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
   dplyr::filter(row_number() %% 10 == 1)
 
 suite_1_2 <- peaks_original$list_df_features_with_peaks_long |>
-  dplyr::bind_rows() |>
-  dplyr::filter(grepl(pattern = "V_03_2_01", x = id))
+  dplyr::bind_rows() # |>
+  # dplyr::filter(grepl(pattern = "V_03_2_01", x = id))
 
 suite_2_1 <- chromatograms_list_cad$chromatograms_improved_long |>
-  dplyr::bind_rows() |>
-  dplyr::filter(grepl(pattern = "V_03_2_01", x = id))
+  dplyr::bind_rows() # |>
+  # dplyr::filter(grepl(pattern = "V_03_2_01", x = id))
 
 suite_2_2 <- peaks_improved$list_df_features_with_peaks_long |>
-  dplyr::bind_rows() |>
-  dplyr::filter(grepl(pattern = "V_03_2_01", x = id))
+  dplyr::bind_rows() # |>
+  # dplyr::filter(grepl(pattern = "V_03_2_01", x = id))
 
 suite_3_1 <- chromatograms_list_cad$chromatograms_baselined_long |>
-  dplyr::bind_rows() |>
-  dplyr::filter(grepl(pattern = "V_03_2_01", x = id))
+  dplyr::bind_rows() # |>
+  # dplyr::filter(grepl(pattern = "V_03_2_01", x = id))
 
 suite_3_2 <- peaks_prelist_cad$list_df_features_with_peaks_long |>
-  dplyr::bind_rows() |>
-  dplyr::filter(grepl(pattern = "V_03_2_01", x = id))
+  dplyr::bind_rows() # |>
+  # dplyr::filter(grepl(pattern = "V_03_2_01", x = id))
 
 
 f_1 <- approxfun(
   x = chromatograms_list_cad$chromatograms_original_long |>
     dplyr::bind_rows() |>
-    dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
+    # dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
     dplyr::pull(time),
   y = chromatograms_list_cad$chromatograms_original_long |>
     dplyr::bind_rows() |>
-    dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
+    # dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
     dplyr::pull(intensity)
 )
 
@@ -228,23 +232,21 @@ plotly::plot_ly(
     type = "scatter",
     marker = list(color = "green")
   ) |>
-  plotly::layout(
-    # yaxis = list(range = c(0, 1)),
-    yaxis2 = list(
-      # range = c(0, 1),
+  plotly::layout( # yaxis = list(range = c(0, 1)),
+    yaxis2 = list( # range = c(0, 1),
       overlaying = "y",
       side = "right"
     )
   )
 
 f_2 <- approxfun(
-  x = chromatograms_list_cad$chromatograms_improved_long |>
+  x = chromatograms_list_cad$chromatograms_baselined_long |>
     dplyr::bind_rows() |>
-    dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
+    # dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
     dplyr::pull(time),
-  y = chromatograms_list_cad$chromatograms_improved_long |>
+  y = chromatograms_list_cad$chromatograms_baselined_long |>
     dplyr::bind_rows() |>
-    dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
+    # dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
     dplyr::pull(intensity)
 )
 
@@ -291,11 +293,11 @@ plotly::plot_ly(
 f_3 <- approxfun(
   x = chromatograms_list_cad$chromatograms_baselined_long |>
     dplyr::bind_rows() |>
-    dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
+    # dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
     dplyr::pull(time),
   y = chromatograms_list_cad$chromatograms_baselined_long |>
     dplyr::bind_rows() |>
-    dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
+    # dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
     dplyr::pull(intensity)
 )
 

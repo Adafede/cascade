@@ -16,8 +16,7 @@ peaks_progress <- function(xs) {
       found <-
         pracma::findpeaks(
           x$intensity,
-          npeaks = 2000,
-          threshold = 0.01,
+          threshold = 0.001,
           sortstr = TRUE
         )
       # points(x[, 2], x[, 1], pch = 20, col = "maroon") ## End(Not run)
