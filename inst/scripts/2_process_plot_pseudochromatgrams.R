@@ -45,8 +45,8 @@ log_debug("Contributors: \n", "...")
 source(file = "R/dirty_paths_params.R")
 
 #' Specific paths
-TIME_MIN <- 0
-TIME_MAX <- 38
+TIME_MIN <- 0.5
+TIME_MAX <- 127
 
 log_debug(x = "loading annotations")
 #' TODO add ionization mode?
