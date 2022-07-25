@@ -78,7 +78,7 @@ plot_histograms_confident <-
       ggplot2::geom_col() +
       {
         if (level == "max") {
-          ggplot2::geom_bar(color = "grey", stat = "identity")
+          ggplot2::geom_bar(stat = "identity") # color = "grey",
         } else {
           ggplot2::geom_bar(stat = "identity")
         }
@@ -135,7 +135,7 @@ plot_histograms_taxo <-
       ggplot2::geom_col() +
       {
         if (level == "max") {
-          ggplot2::geom_bar(color = "grey", stat = "identity")
+          ggplot2::geom_bar(stat = "identity") # color = "grey",
         } else {
           ggplot2::geom_bar(stat = "identity")
         }
