@@ -171,9 +171,25 @@ plot_results_2 <- function(detector = "cad") {
     temp_fix_duplicates(colname = "newrt") |>
     prepare_hierarchy(detector = "cad")
 
+
   #' TODO check to use full table
   table_taxo_maj_cor_ms <- list$peaks_maj_precor_taxo_cor |>
     prepare_hierarchy(detector = "ms")
+  table_taxo_maj_cor_ms_2 <- table_taxo_maj_cor_ms |>
+    dplyr::mutate(sample = gsub(
+      pattern = "_pos",
+      replacement = "",
+      x = sample,
+      ignore.case = TRUE
+    )) |>
+    dplyr::mutate(sample = gsub(
+      pattern = "_neg",
+      replacement = "",
+      x = sample,
+      ignore.case = TRUE
+    )) |>
+    dplyr::group_by(parents, ids, labels, species, sample) |>
+    dplyr::summarise(values = sum(values))
 
   log_debug(x = "... on confident")
   table_taxo_maj_cor_conf_signal <-
@@ -222,6 +238,11 @@ plot_results_2 <- function(detector = "cad") {
     quick_sb() |>
     plotly::layout(colorway = sunburst_colors)
 
+  sunburst_conf_signal_based_duo <-
+    table_taxo_maj_cor_conf_signal_2 |>
+    quick_sb() |>
+    plotly::layout(colorway = sunburst_colors)
+
   sunburst_conf_ms_based_pos <- table_taxo_maj_cor_conf_ms |>
     dplyr::filter(grepl(
       pattern = "_pos",
@@ -248,17 +269,21 @@ plot_results_2 <- function(detector = "cad") {
     )) |>
     dplyr::filter(parents == "") |>
     dplyr::arrange(desc(values))
-  index_ms_pos <- table_taxo_maj_cor_ms |>
+  index_signal_neg <- table_taxo_maj_cor_signal |>
     dplyr::filter(grepl(
-      pattern = "_pos",
+      pattern = "_neg",
       x = sample,
       ignore.case = TRUE
     )) |>
     dplyr::filter(parents == "") |>
     dplyr::arrange(desc(values))
-  index_signal_neg <- table_taxo_maj_cor_signal |>
+  index_signal_duo <- table_taxo_maj_cor_signal_2 |>
+    dplyr::filter(parents == "") |>
+    dplyr::arrange(desc(values))
+
+  index_ms_pos <- table_taxo_maj_cor_ms |>
     dplyr::filter(grepl(
-      pattern = "_neg",
+      pattern = "_pos",
       x = sample,
       ignore.case = TRUE
     )) |>
@@ -272,6 +297,10 @@ plot_results_2 <- function(detector = "cad") {
     )) |>
     dplyr::filter(parents == "") |>
     dplyr::arrange(desc(values))
+  index_ms_duo <- table_taxo_maj_cor_ms_2 |>
+    dplyr::filter(parents == "") |>
+    dplyr::arrange(desc(values))
+
   sunburst_grey_colors_signal_pos <- sunburst_colors
   sunburst_grey_colors_signal_pos[[which(index_signal_pos$ids == "Other", arr.ind = TRUE)]] <-
     grey_colors[[1]][[5]]
@@ -283,6 +312,12 @@ plot_results_2 <- function(detector = "cad") {
     grey_colors[[1]][[5]]
   sunburst_grey_colors_ms_neg <- sunburst_colors
   sunburst_grey_colors_ms_neg[[which(index_ms_neg$ids == "Other", arr.ind = TRUE)]] <-
+    grey_colors[[1]][[5]]
+  sunburst_grey_colors_signal_duo <- sunburst_colors
+  sunburst_grey_colors_signal_duo[[which(index_signal_duo$ids == "Other", arr.ind = TRUE)]] <-
+    grey_colors[[1]][[5]]
+  sunburst_grey_colors_ms_duo <- sunburst_colors
+  sunburst_grey_colors_ms_duo[[which(index_ms_duo$ids == "Other", arr.ind = TRUE)]] <-
     grey_colors[[1]][[5]]
 
   sunburst_signal_based_pos <- table_taxo_maj_cor_signal |>
@@ -302,6 +337,10 @@ plot_results_2 <- function(detector = "cad") {
     )) |>
     quick_sb() |>
     plotly::layout(colorway = sunburst_grey_colors_signal_neg)
+
+  sunburst_signal_based_duo <- table_taxo_maj_cor_signal_2 |>
+    quick_sb() |>
+    plotly::layout(colorway = sunburst_grey_colors_signal_duo)
 
   sunburst_ms_based_pos <- table_taxo_maj_cor_ms |>
     dplyr::filter(grepl(
@@ -329,7 +368,9 @@ plot_results_2 <- function(detector = "cad") {
     sunburst_signal_based_neg,
     sunburst_ms_based_neg,
     sunburst_conf_signal_based_neg,
-    sunburst_conf_ms_based_neg
+    sunburst_conf_ms_based_neg,
+    sunburst_signal_based_duo,
+    sunburst_conf_signal_based_duo
   )
   names(returned_list) <- c(
     "sunburst_signal_based_pos",
@@ -339,7 +380,9 @@ plot_results_2 <- function(detector = "cad") {
     "sunburst_signal_based_neg",
     "sunburst_ms_based_neg",
     "sunburst_conf_signal_based_neg",
-    "sunburst_conf_ms_based_neg"
+    "sunburst_conf_ms_based_neg",
+    "sunburst_signal_based_duo",
+    "sunburst_conf_signal_based_duo"
   )
 
   return(returned_list)
