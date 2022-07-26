@@ -123,25 +123,70 @@ test <-
 
 #' Work in progress
 #' See how to do best also with non-annotated peaks, etc.
-df_meta_bpi <-
+df_meta_bpi_pos <-
   compared_peaks_list_bpi$peaks_maj_precor_taxo_cor |>
+  dplyr::filter(grepl(
+    pattern = "_pos",
+    x = sample,
+    ignore.case = TRUE
+  )) |>
+  add_peak_metadata()
+df_meta_bpi_neg <-
+  compared_peaks_list_bpi$peaks_maj_precor_taxo_cor |>
+  dplyr::filter(grepl(
+    pattern = "_neg",
+    x = sample,
+    ignore.case = TRUE
+  )) |>
   add_peak_metadata()
 
-df_meta_cad <-
+df_meta_cad_pos <-
   compared_peaks_list_cad$peaks_maj_precor_taxo_cor |>
+  dplyr::filter(grepl(
+    pattern = "_pos",
+    x = sample,
+    ignore.case = TRUE
+  )) |>
+  add_peak_metadata()
+df_meta_cad_neg <-
+  compared_peaks_list_cad$peaks_maj_precor_taxo_cor |>
+  dplyr::filter(grepl(
+    pattern = "_neg",
+    x = sample,
+    ignore.case = TRUE
+  )) |>
   add_peak_metadata()
 
-df_meta_pda <-
+df_meta_pda_pos <-
   compared_peaks_list_pda$peaks_maj_precor_taxo_cor |>
+  dplyr::filter(grepl(
+    pattern = "_pos",
+    x = sample,
+    ignore.case = TRUE
+  )) |>
+  add_peak_metadata()
+df_meta_pda_neg <-
+  compared_peaks_list_pda$peaks_maj_precor_taxo_cor |>
+  dplyr::filter(grepl(
+    pattern = "_neg",
+    x = sample,
+    ignore.case = TRUE
+  )) |>
   add_peak_metadata()
 
-df_meta_bpi |>
+df_meta_bpi_pos |>
+  plot_peaks_statistics()
+df_meta_bpi_neg |>
   plot_peaks_statistics()
 
-df_meta_cad |>
+df_meta_cad_pos |>
+  plot_peaks_statistics()
+df_meta_cad_neg |>
   plot_peaks_statistics()
 
-df_meta_pda |>
+df_meta_pda_pos |>
+  plot_peaks_statistics()
+df_meta_pda_neg |>
   plot_peaks_statistics()
 
 end <- Sys.time()
