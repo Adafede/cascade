@@ -8,44 +8,75 @@ ANNOTATIONS <- list.files(
   full.names = TRUE,
   recursive = TRUE
 )
+ANNOTATIONS <- list.files(
+  path = file.path(
+    paths$inst$extdata$interim$annotations$path,
+    params$annotation$tool
+  ),
+  pattern = paste0(
+    params$filename$annotation$tima$pos,
+    "|",
+    params$filename$annotation$tima$neg
+  ),
+  full.names = TRUE,
+  recursive = TRUE
+)
 
 EXPORT_DIR <- paths$inst$extdata$interim$peaks
 EXPORT_FILE_BPI <-
-  paste(params$filename$mzml,
-    "featuresInformed",
-    "bpi.tsv.gz",
-    sep = "_"
-  )
+  list.files(EXPORT_DIR, pattern = "featuresInformed_bpi.tsv.gz")[grepl(
+    pattern = gsub(
+      pattern = "_.*$",
+      replacement = "",
+      x = params$filename$mzml
+    ),
+    x = list.files(EXPORT_DIR, pattern = "featuresInformed_bpi.tsv.gz")
+  )]
 EXPORT_FILE_BPI_2 <-
-  paste(params$filename$mzml,
-    "featuresNotInformed",
-    "bpi.tsv.gz",
-    sep = "_"
-  )
+  list.files(EXPORT_DIR, pattern = "featuresNotInformed_bpi.tsv.gz")[grepl(
+    pattern = gsub(
+      pattern = "_.*$",
+      replacement = "",
+      x = params$filename$mzml
+    ),
+    x = list.files(EXPORT_DIR, pattern = "featuresNotInformed_bpi.tsv.gz")
+  )]
 EXPORT_FILE_CAD <-
-  paste(params$filename$mzml,
-    "featuresInformed",
-    "cad.tsv.gz",
-    sep = "_"
-  )
+  list.files(EXPORT_DIR, pattern = "featuresInformed_cad.tsv.gz")[grepl(
+    pattern = gsub(
+      pattern = "_.*$",
+      replacement = "",
+      x = params$filename$mzml
+    ),
+    x = list.files(EXPORT_DIR, pattern = "featuresInformed_cad.tsv.gz")
+  )]
 EXPORT_FILE_CAD_2 <-
-  paste(params$filename$mzml,
-    "featuresNotInformed",
-    "cad.tsv.gz",
-    sep = "_"
-  )
+  list.files(EXPORT_DIR, pattern = "featuresNotInformed_cad.tsv.gz")[grepl(
+    pattern = gsub(
+      pattern = "_.*$",
+      replacement = "",
+      x = params$filename$mzml
+    ),
+    x = list.files(EXPORT_DIR, pattern = "featuresNotInformed_cad.tsv.gz")
+  )]
 EXPORT_FILE_PDA <-
-  paste(params$filename$mzml,
-    "featuresInformed",
-    "pda.tsv.gz",
-    sep = "_"
-  )
+  list.files(EXPORT_DIR, pattern = "featuresInformed_pda.tsv.gz")[grepl(
+    pattern = gsub(
+      pattern = "_.*$",
+      replacement = "",
+      x = params$filename$mzml
+    ),
+    x = list.files(EXPORT_DIR, pattern = "featuresInformed_pda.tsv.gz")
+  )]
 EXPORT_FILE_PDA_2 <-
-  paste(params$filename$mzml,
-    "featuresNotInformed",
-    "pda.tsv.gz",
-    sep = "_"
-  )
+  list.files(EXPORT_DIR, pattern = "featuresNotInformed_pda.tsv.gz")[grepl(
+    pattern = gsub(
+      pattern = "_.*$",
+      replacement = "",
+      x = params$filename$mzml
+    ),
+    x = list.files(EXPORT_DIR, pattern = "featuresNotInformed_pda.tsv.gz")
+  )]
 
 # FEATURES <- "~/Downloads/test_quant.csv"
 FEATURES <-

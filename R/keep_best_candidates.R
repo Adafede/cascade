@@ -32,7 +32,8 @@ keep_best_candidates <- function(df) {
       consistency_3 = consistency_cla,
       best_candidate_1,
       best_candidate_2,
-      best_candidate_3
+      best_candidate_3,
+      mode
     ) |>
     dplyr::mutate_all(list(~ y_as_na(x = ., y = ""))) |>
     dplyr::mutate(
