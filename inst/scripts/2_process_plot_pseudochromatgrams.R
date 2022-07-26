@@ -23,10 +23,12 @@ source(file = "R/parse_yaml_paths.R")
 source(file = "R/plot_histograms.R")
 source(file = "R/plot_peaks_statistics.R")
 source(file = "R/plot_results.R")
+source(file = "R/prehistograms_progress.R")
 source(file = "R/prepare_comparison.R")
 source(file = "R/prepare_hierarchy.R")
 source(file = "R/prepare_hierarchy_preparation.R")
 source(file = "R/prepare_plot.R")
+source(file = "R/treemaps_progress.R")
 source(file = "R/y_as_na.R")
 
 step <- "processing"
@@ -110,6 +112,47 @@ if (params$signal$detector$pda == TRUE) {
   plots_1_pda <- plot_results_1(detector = "pda")
   plots_2_pda <- plot_results_2(detector = "pda")
 }
+
+#' Work in progress
+hierarchies <- list()
+hierarchies$special <- prepare_hierarchy(
+  dataframe = compared_peaks_list_cad$peaks_maj |>
+    dplyr::mutate(sample = id, species = id) |>
+    dplyr::distinct(),
+  type = "analysis"
+)
+hierarchies$`UHR/191109_AR_10043_enriched_UHR_Neg` <- prepare_hierarchy(
+  dataframe = compared_peaks_list_cad$peaks_maj |>
+    dplyr::filter(id == "UHR/191109_AR_10043_enriched_UHR_Neg") |>
+    dplyr::mutate(sample = id, species = id) |>
+    dplyr::distinct(),
+  type = "analysis"
+)
+hierarchies$`UHR/191109_AR_10043_enriched_UHR_Pos` <- prepare_hierarchy(
+  dataframe = compared_peaks_list_cad$peaks_maj |>
+    dplyr::filter(id == "UHR/191109_AR_10043_enriched_UHR_Pos") |>
+    dplyr::mutate(sample = id, species = id) |>
+    dplyr::distinct(),
+  type = "analysis"
+)
+hierarchies$special <- prepare_hierarchy(
+  dataframe = compared_peaks_list_cad$peaks_maj |>
+    dplyr::mutate(sample = id, species = id) |>
+    dplyr::distinct(),
+  type = "analysis"
+)
+prehistograms <- prehistograms_progress(xs = hierarchies)
+treemaps <-
+  treemaps_progress(xs = names(hierarchies)[!grepl(
+    pattern = "_grouped",
+    x = names(hierarchies)
+  )], myWay = TRUE)
+treemaps$special |>
+  plotly::layout(
+    title = paste(
+      "Comparative analysis"
+    )
+  )
 
 #' Work in progress
 test <-
