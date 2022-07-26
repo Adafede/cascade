@@ -59,6 +59,15 @@ annotations <-
           pattern = "§",
           replacement = "$",
           x = best_candidate
+        )) |>
+        dplyr::mutate(mode = ifelse(
+          test = grepl(
+            pattern = "_pos.",
+            x = x,
+            ignore.case = TRUE
+          ),
+          yes = "pos",
+          no = "neg"
         ))
     }
   ) |>
@@ -114,13 +123,16 @@ test <-
 
 #' Work in progress
 #' See how to do best also with non-annotated peaks, etc.
-df_meta_bpi <- compared_peaks_list_bpi$peaks_maj_precor_taxo_cor |>
+df_meta_bpi <-
+  compared_peaks_list_bpi$peaks_maj_precor_taxo_cor |>
   add_peak_metadata()
 
-df_meta_cad <- compared_peaks_list_cad$peaks_maj_precor_taxo_cor |>
+df_meta_cad <-
+  compared_peaks_list_cad$peaks_maj_precor_taxo_cor |>
   add_peak_metadata()
 
-df_meta_pda <- compared_peaks_list_pda$peaks_maj_precor_taxo_cor |>
+df_meta_pda <-
+  compared_peaks_list_pda$peaks_maj_precor_taxo_cor |>
   add_peak_metadata()
 
 df_meta_bpi |>
