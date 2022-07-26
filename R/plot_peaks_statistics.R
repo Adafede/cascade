@@ -23,6 +23,60 @@ plot_peaks_statistics <- function(df) {
     dplyr::group_by(chemicalPathwaysPerPeak) |>
     dplyr::count()
 
+  test_full <- rbind(
+    test_features,
+    test_structures,
+    test_classes,
+    test_superclasses,
+    test_pathways
+  ) |>
+    dplyr::relocate(n, .before = 1) |>
+    tidyr::pivot_longer(2:6) |>
+    dplyr::filter(!is.na(value)) |>
+    dplyr::arrange(value) |>
+    dplyr::group_by(name) |>
+    dplyr::mutate(n = round(n / sum(n), 2))
+
+  test_full <- within(
+    test_full,
+    name <- factor(
+      name,
+      levels = c(
+        "featuresPerPeak",
+        "structuresPerPeak",
+        "chemicalClassesPerPeak",
+        "chemicalSuperclassesPerPeak",
+        "chemicalPathwaysPerPeak"
+      )
+    )
+  )
+
+  ggplot2::ggplot(
+    data = test_full,
+    ggplot2::aes(
+      x = name,
+      y = n,
+      fill = value,
+      cumulative = TRUE
+    )
+  ) +
+    ggplot2::geom_col() +
+    ggplot2::geom_text(ggplot2::aes(label = paste(value, ":", 100 * n, "%")),
+      color = "white",
+      position = ggplot2::position_stack(vjust = 0.5)
+    ) +
+    scale_fill_viridis_c(option = "E") +
+    ggplot2::theme_minimal() +
+    ggplot2::theme(
+      # axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks.x = element_blank(),
+      axis.ticks.y = element_blank(),
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      legend.position = "none"
+    )
+
   plotly::plot_ly() |>
     plotly::add_pie(
       data = test_features,
