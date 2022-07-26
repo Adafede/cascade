@@ -1,18 +1,51 @@
 prepare_comparison <- function(detector = "cad") {
   log_debug(x = "loading compared peaks")
-  peaks_compared <-
-    readr::read_delim(file = file.path(EXPORT_DIR, switch(detector,
-      "bpi" = EXPORT_FILE_BPI,
-      "cad" = EXPORT_FILE_CAD,
-      "pda" = EXPORT_FILE_PDA
-    )))
+  path_1 <- switch(detector,
+    "bpi" = EXPORT_FILE_BPI,
+    "cad" = EXPORT_FILE_CAD,
+    "pda" = EXPORT_FILE_PDA
+  )
+  path_2 <- switch(detector,
+    "bpi" = EXPORT_FILE_BPI_2,
+    "cad" = EXPORT_FILE_CAD_2,
+    "pda" = EXPORT_FILE_PDA_2
+  )
+  peaks_compared <- path_1 |>
+    lapply(
+      FUN = function(x) {
+        readr::read_delim(file = file.path(EXPORT_DIR, x)) |>
+          dplyr::mutate(
+            mode = ifelse(
+              test = grepl(
+                pattern = "_pos_",
+                x = x,
+                ignore.case = TRUE
+              ),
+              yes = "pos",
+              no = "neg"
+            ),
+            peak_area = peak_area / max(peak_area)
+          )
+      }
+    ) |>
+    dplyr::bind_rows()
 
-  peaks_outside <-
-    readr::read_delim(file = file.path(EXPORT_DIR, switch(detector,
-      "bpi" = EXPORT_FILE_BPI_2,
-      "cad" = EXPORT_FILE_CAD_2,
-      "pda" = EXPORT_FILE_PDA_2
-    )))
+  peaks_outside <- path_2 |>
+    lapply(
+      FUN = function(x) {
+        readr::read_delim(file = file.path(EXPORT_DIR, x)) |>
+          dplyr::mutate(mode = ifelse(
+            test = grepl(
+              pattern = "_pos_",
+              x = x,
+              ignore.case = TRUE
+            ),
+            yes = "pos",
+            no = "neg"
+          ))
+      }
+    ) |>
+    dplyr::bind_rows()
 
   peaks_all <- peaks_compared |>
     dplyr::bind_rows(peaks_outside)
@@ -38,7 +71,7 @@ prepare_comparison <- function(detector = "cad") {
     df_temp <- df |>
       dplyr::mutate(
         peak_rt_apex = rt,
-        peak_area = 1
+        peak_area = 0.001
       )
     return(df_temp)
   }

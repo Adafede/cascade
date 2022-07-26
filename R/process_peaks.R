@@ -9,7 +9,7 @@
 process_peaks <- function(detector = "cad") {
   log_debug(x = "processing", detector, "peaks")
   log_debug(x = "extracting ms chromatograms (longest step)")
-  log_debug(x = "count approx 1 minute per 100 features (increasing with features number)")
+  log_debug(x = "count approx 1 minute per 500 features (increasing with features number)")
   log_debug(x = "varies a lot depending on features distribution")
 
   list_ms_chromatograms <<-

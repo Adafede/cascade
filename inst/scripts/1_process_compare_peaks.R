@@ -211,45 +211,45 @@ detection_before <- plotly::plot_ly(suite_1_1) |>
     name = "signal",
     line = list(color = "1f78b4")
   ) |>
-  plotly::add_trace(
-    data = suite_1_2,
-    x = ~rt_apex,
-    y = ~peak_max,
-    yaxis = "y2",
-    type = "scatter",
-    marker = list(
-      color = "ff7f00",
-      symbol = "star"
-    ),
-    name = "detected maximum",
-    line = list(color = "1f78b4", width = 0)
-  ) |>
-  plotly::add_trace(
-    data = suite_1_2,
-    x = ~rt_min,
-    y = ~ f_1(rt_min),
-    yaxis = "y2",
-    type = "scatter",
-    marker = list(
-      color = "33a02c",
-      symbol = "triangle-right"
-    ),
-    name = "detected minimum (start)",
-    line = list(color = "1f78b4", width = 0)
-  ) |>
-  plotly::add_trace(
-    data = suite_1_2,
-    x = ~rt_max,
-    y = ~ f_1(rt_max),
-    yaxis = "y2",
-    type = "scatter",
-    marker = list(
-      color = "33a02c",
-      symbol = "triangle-left"
-    ),
-    name = "detected minimum (end)",
-    line = list(color = "1f78b4", width = 0)
-  ) |>
+  # plotly::add_trace(
+  #   data = suite_1_2,
+  #   x = ~rt_apex,
+  #   y = ~peak_max,
+  #   yaxis = "y2",
+  #   type = "scatter",
+  #   marker = list(
+  #     color = "ff7f00",
+  #     symbol = "star"
+  #   ),
+  #   name = "detected maximum",
+  #   line = list(color = "1f78b4", width = 0)
+  # ) |>
+  # plotly::add_trace(
+  #   data = suite_1_2,
+  #   x = ~rt_min,
+  #   y = ~ f_1(rt_min),
+  #   yaxis = "y2",
+  #   type = "scatter",
+  #   marker = list(
+  #     color = "33a02c",
+  #     symbol = "triangle-right"
+  #   ),
+  #   name = "detected minimum (start)",
+  #   line = list(color = "1f78b4", width = 0)
+  # ) |>
+  # plotly::add_trace(
+  #   data = suite_1_2,
+  #   x = ~rt_max,
+  #   y = ~ f_1(rt_max),
+  #   yaxis = "y2",
+  #   type = "scatter",
+  #   marker = list(
+  #     color = "33a02c",
+  #     symbol = "triangle-left"
+  #   ),
+  #   name = "detected minimum (end)",
+  #   line = list(color = "1f78b4", width = 0)
+  # ) |>
   plotly::layout(
     yaxis = list(
       # range = c(0, 1),
@@ -360,8 +360,8 @@ detection_after <- plotly::plot_ly(suite_2_1) |>
       showticklabels = FALSE,
       overlaying = "y",
       side = "right"
-    ),
-    showlegend = FALSE
+    )
+    # showlegend = FALSE
   )
 
 detection_after

@@ -1,5 +1,5 @@
 filename:
-  mzml: 191109_AR_10043_enriched_UHR_Pos
+  mzml: 191109_AR_10043_enriched_UHR_Neg
   annotation:
     tima:
       pos: 191109_AR_10043_enriched_UHR_Pos.tsv.gz
@@ -30,7 +30,7 @@ chromato:
       rt: 0.15
       ppm: 10
     area:
-      min: 0.001
+      min: 0.005
   shift:
     cad: 0.055
     pda: 0.090
