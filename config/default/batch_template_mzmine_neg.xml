@@ -7,7 +7,7 @@
             <parameter name="MS1 detector (Advanced)" selected="false" selected_item="Centroid">
                 <module name="Centroid">
                     <parameter name="Noise level">0.0</parameter>
-                    <parameter name="Detect isotope signals below noise level" selected="false">
+                    <parameter name="Detect isotope signals below noise level" selected="true">
                         <parameter name="Chemical elements">H,C,N,O,S,P</parameter>
                         <parameter name="m/z tolerance">
                             <absolutetolerance>0.0</absolutetolerance>
@@ -18,7 +18,7 @@
                 </module>
                 <module name="Exact mass">
                     <parameter name="Noise level"/>
-                    <parameter name="Detect isotope signals below noise level" selected="false">
+                    <parameter name="Detect isotope signals below noise level" selected="true">
                         <parameter name="Chemical elements">H,C,N,O,S,P</parameter>
                         <parameter name="m/z tolerance">
                             <absolutetolerance>0.0</absolutetolerance>
@@ -42,7 +42,7 @@
                 </module>
                 <module name="Auto">
                     <parameter name="Noise level">100000.0</parameter>
-                    <parameter name="Detect isotope signals below noise level" selected="false">
+                    <parameter name="Detect isotope signals below noise level" selected="true">
                         <parameter name="Chemical elements">H,C,N,O,S,P</parameter>
                         <parameter name="m/z tolerance">
                             <absolutetolerance>0.0</absolutetolerance>
@@ -55,7 +55,7 @@
             <parameter name="MS2 detector (Advanced)" selected="false" selected_item="Centroid">
                 <module name="Centroid">
                     <parameter name="Noise level">0.0</parameter>
-                    <parameter name="Detect isotope signals below noise level" selected="false">
+                    <parameter name="Detect isotope signals below noise level" selected="true">
                         <parameter name="Chemical elements">H,C,N,O,S,P</parameter>
                         <parameter name="m/z tolerance">
                             <absolutetolerance>0.0</absolutetolerance>
@@ -66,7 +66,7 @@
                 </module>
                 <module name="Exact mass">
                     <parameter name="Noise level"/>
-                    <parameter name="Detect isotope signals below noise level" selected="false">
+                    <parameter name="Detect isotope signals below noise level" selected="true">
                         <parameter name="Chemical elements">H,C,N,O,S,P</parameter>
                         <parameter name="m/z tolerance">
                             <absolutetolerance>0.0</absolutetolerance>
@@ -90,7 +90,7 @@
                 </module>
                 <module name="Auto">
                     <parameter name="Noise level">0.0</parameter>
-                    <parameter name="Detect isotope signals below noise level" selected="false">
+                    <parameter name="Detect isotope signals below noise level" selected="true">
                         <parameter name="Chemical elements">H,C,N,O,S,P</parameter>
                         <parameter name="m/z tolerance">
                             <absolutetolerance>0.0</absolutetolerance>
@@ -112,7 +112,7 @@
         <parameter name="Mass detector" selected_item="Auto">
             <module name="Centroid">
                 <parameter name="Noise level">0.0</parameter>
-                <parameter name="Detect isotope signals below noise level" selected="false">
+                <parameter name="Detect isotope signals below noise level" selected="true">
                     <parameter name="Chemical elements">H,C,N,O,S,P</parameter>
                     <parameter name="m/z tolerance">
                         <absolutetolerance>0.0</absolutetolerance>
@@ -123,7 +123,7 @@
             </module>
             <module name="Exact mass">
                 <parameter name="Noise level"/>
-                <parameter name="Detect isotope signals below noise level" selected="false">
+                <parameter name="Detect isotope signals below noise level" selected="true">
                     <parameter name="Chemical elements">H,C,N,O,S,P</parameter>
                     <parameter name="m/z tolerance">
                         <absolutetolerance>0.0</absolutetolerance>
@@ -168,7 +168,7 @@
         <parameter name="Mass detector" selected_item="Auto">
             <module name="Centroid">
                 <parameter name="Noise level">0.0</parameter>
-                <parameter name="Detect isotope signals below noise level" selected="false">
+                <parameter name="Detect isotope signals below noise level" selected="true">
                     <parameter name="Chemical elements">H,C,N,O,S,P</parameter>
                     <parameter name="m/z tolerance">
                         <absolutetolerance>0.0</absolutetolerance>
@@ -179,7 +179,7 @@
             </module>
             <module name="Exact mass">
                 <parameter name="Noise level"/>
-                <parameter name="Detect isotope signals below noise level" selected="false">
+                <parameter name="Detect isotope signals below noise level" selected="true">
                     <parameter name="Chemical elements">H,C,N,O,S,P</parameter>
                     <parameter name="m/z tolerance">
                         <absolutetolerance>0.0</absolutetolerance>
@@ -203,7 +203,7 @@
             </module>
             <module name="Auto">
                 <parameter name="Noise level">0.0</parameter>
-                <parameter name="Detect isotope signals below noise level" selected="false">
+                <parameter name="Detect isotope signals below noise level" selected="true">
                     <parameter name="Chemical elements">H,C,N,O,S,P</parameter>
                     <parameter name="m/z tolerance">
                         <absolutetolerance>0.0</absolutetolerance>
