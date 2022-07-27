@@ -26,13 +26,13 @@ preprocess_chromatograms <- function(detector = "cad",
     dplyr::bind_rows(chromatograms_original, .id = "id") |>
     dplyr::mutate(time = time + shift) |>
     dplyr::mutate(intensity = intensity - (min(intensity))) |>
-    dplyr::mutate(intensity = intensity / max(intensity)) |>
+    # dplyr::mutate(intensity = intensity / max(intensity)) |>
     dplyr::mutate(rt_1 = time, rt_2 = time) |>
     data.table::data.table()
   chromatograms_improved_long <-
     dplyr::bind_rows(chromatograms_improved, .id = "id") |>
     dplyr::mutate(time = time + shift) |>
-    dplyr::mutate(intensity = intensity / max(intensity)) |>
+    # dplyr::mutate(intensity = intensity / max(intensity)) |>
     dplyr::mutate(rt_1 = time, rt_2 = time) |>
     data.table::data.table()
 
@@ -46,7 +46,8 @@ preprocess_chromatograms <- function(detector = "cad",
 
   chromatograms_baselined_long <-
     dplyr::bind_rows(chromatograms_baselined, .id = "id") |>
-    dplyr::mutate(intensity = intensity / max(intensity)) |>
+    dplyr::mutate(intensity = intensity - (min(intensity))) |>
+    # dplyr::mutate(intensity = intensity / max(intensity)) |>
     dplyr::mutate(rt_1 = time, rt_2 = time) |>
     data.table::data.table()
 
