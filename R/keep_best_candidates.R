@@ -20,6 +20,7 @@ keep_best_candidates <- function(df) {
       rt,
       smiles_2D,
       inchikey_2D,
+      molecular_formula,
       score_biological,
       score_chemical,
       score_final,
