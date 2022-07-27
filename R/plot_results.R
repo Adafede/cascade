@@ -1,17 +1,26 @@
 #' Title
 #'
 #' @param detector
+#' @param mode
 #'
 #' @return
 #' @export
 #'
 #' @examples
-plot_results_1 <- function(detector = "cad") {
-  list <- switch(detector,
-    "bpi" = compared_peaks_list_bpi,
-    "cad" = compared_peaks_list_cad,
-    "pda" = compared_peaks_list_pda
-  )
+plot_results_1 <- function(detector = "cad", mode = "pos") {
+  if (mode == "pos") {
+    list <- switch(detector,
+      "bpi" = compared_peaks_list_bpi_pos,
+      "cad" = compared_peaks_list_cad_pos,
+      "pda" = compared_peaks_list_pda_pos
+    )
+  } else {
+    list <- switch(detector,
+      "bpi" = compared_peaks_list_bpi_neg,
+      "cad" = compared_peaks_list_cad_neg,
+      "pda" = compared_peaks_list_pda_neg
+    )
+  }
 
   log_debug(x = "preparing histograms")
   #' TODO harmonize 'others' among minor and major

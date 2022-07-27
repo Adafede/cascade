@@ -14,18 +14,16 @@ prepare_comparison <- function(detector = "cad") {
     lapply(
       FUN = function(x) {
         readr::read_delim(file = file.path(EXPORT_DIR, x)) |>
-          dplyr::mutate(
-            mode = ifelse(
-              test = grepl(
-                pattern = "_pos_",
-                x = x,
-                ignore.case = TRUE
-              ),
-              yes = "pos",
-              no = "neg"
+          # dplyr::mutate(peak_area = peak_area / max(peak_area))|>
+          dplyr::mutate(mode = ifelse(
+            test = grepl(
+              pattern = "_pos_",
+              x = x,
+              ignore.case = TRUE
             ),
-            peak_area = peak_area / max(peak_area)
-          )
+            yes = "pos",
+            no = "neg"
+          ))
       }
     ) |>
     dplyr::bind_rows()
