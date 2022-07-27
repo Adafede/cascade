@@ -198,9 +198,11 @@ if (params$signal$detector$cad == TRUE) {
   plots_1_cad_neg <- plot_results_1(mode = "neg")
   plots_2_cad <- plot_results_2()
 }
+
 if (params$signal$detector$pda == TRUE) {
   detector <- "pda"
 }
+
 if (params$signal$detector$pda == TRUE) {
   compared_peaks_list_pda <- prepare_comparison(detector = "pda")
   compared_peaks_list_pda_pos <- compared_peaks_list_pda |>
@@ -251,7 +253,6 @@ fig_minmaj
 #   )
 # test_taxo_3
 
-#' Work in progress
 hierarchies <- list()
 hierarchies$peaks_maj <-
   prepare_hierarchy(
@@ -302,70 +303,70 @@ treemaps$special
 
 #' Work in progress
 #' See how to do best also with non-annotated peaks, etc.
-df_meta_bpi_pos <-
-  compared_peaks_list_bpi$peaks_maj_precor_taxo_cor |>
-  dplyr::filter(grepl(
-    pattern = "_pos",
-    x = sample,
-    ignore.case = TRUE
-  )) |>
+df_meta_bpi_pos <- compared_peaks_list_bpi$peaks_all |>
+  dplyr::filter(mode == "pos") |>
+  dplyr::full_join(
+    best_candidates |>
+      dplyr::filter(mode == "pos") |>
+      dplyr::mutate(feature_id = as.numeric(feature_id))
+  ) |>
   add_peak_metadata()
-df_meta_bpi_neg <-
-  compared_peaks_list_bpi$peaks_maj_precor_taxo_cor |>
-  dplyr::filter(grepl(
-    pattern = "_neg",
-    x = sample,
-    ignore.case = TRUE
-  )) |>
-  add_peak_metadata()
-
-df_meta_cad_pos <-
-  compared_peaks_list_cad$peaks_maj_precor_taxo_cor |>
-  dplyr::filter(grepl(
-    pattern = "_pos",
-    x = sample,
-    ignore.case = TRUE
-  )) |>
-  add_peak_metadata()
-df_meta_cad_neg <-
-  compared_peaks_list_cad$peaks_maj_precor_taxo_cor |>
-  dplyr::filter(grepl(
-    pattern = "_neg",
-    x = sample,
-    ignore.case = TRUE
-  )) |>
+df_meta_bpi_neg <- compared_peaks_list_bpi$peaks_all |>
+  dplyr::filter(mode == "neg") |>
+  dplyr::full_join(
+    best_candidates |>
+      dplyr::filter(mode == "neg") |>
+      dplyr::mutate(feature_id = as.numeric(feature_id))
+  ) |>
   add_peak_metadata()
 
-df_meta_pda_pos <-
-  compared_peaks_list_pda$peaks_maj_precor_taxo_cor |>
-  dplyr::filter(grepl(
-    pattern = "_pos",
-    x = sample,
-    ignore.case = TRUE
-  )) |>
+df_meta_cad_pos <- compared_peaks_list_cad$peaks_all |>
+  dplyr::filter(mode == "pos") |>
+  dplyr::full_join(
+    best_candidates |>
+      dplyr::filter(mode == "pos") |>
+      dplyr::mutate(feature_id = as.numeric(feature_id))
+  ) |>
   add_peak_metadata()
-df_meta_pda_neg <-
-  compared_peaks_list_pda$peaks_maj_precor_taxo_cor |>
-  dplyr::filter(grepl(
-    pattern = "_neg",
-    x = sample,
-    ignore.case = TRUE
-  )) |>
+df_meta_cad_neg <- compared_peaks_list_cad$peaks_all |>
+  dplyr::filter(mode == "neg") |>
+  dplyr::full_join(
+    best_candidates |>
+      dplyr::filter(mode == "neg") |>
+      dplyr::mutate(feature_id = as.numeric(feature_id))
+  ) |>
   add_peak_metadata()
 
-df_meta_bpi_pos |>
+df_meta_pda_pos <- compared_peaks_list_pda$peaks_all |>
+  dplyr::filter(mode == "pos") |>
+  dplyr::full_join(
+    best_candidates |>
+      dplyr::filter(mode == "pos") |>
+      dplyr::mutate(feature_id = as.numeric(feature_id))
+  ) |>
+  add_peak_metadata()
+df_meta_pda_neg <- compared_peaks_list_pda$peaks_all |>
+  dplyr::filter(mode == "neg") |>
+  dplyr::full_join(
+    best_candidates |>
+      dplyr::filter(mode == "neg") |>
+      dplyr::mutate(feature_id = as.numeric(feature_id))
+  ) |>
+  add_peak_metadata()
+
+plots_bpi_pos <- df_meta_bpi_pos |>
   plot_peaks_statistics()
-df_meta_bpi_neg |>
+plots_bpi_neg <- df_meta_bpi_neg |>
   plot_peaks_statistics()
 
-df_meta_cad_pos |>
+plots_cad_pos <- df_meta_cad_pos |>
   plot_peaks_statistics()
-df_meta_cad_neg |>
+plots_cad_neg <- df_meta_cad_neg |>
   plot_peaks_statistics()
 
-df_meta_pda_pos |>
+plots_pda_pos <- df_meta_pda_pos |>
   plot_peaks_statistics()
-df_meta_pda_neg |>
+plots_pda_neg <- df_meta_pda_neg |>
   plot_peaks_statistics()
 
 #' export
