@@ -59,7 +59,7 @@ signal_sharpening <- function(Time = timeow,
 
   sharpened <- smooth_1[5:length(smooth_1)] - (k2 * smooth_3[3:length(smooth_3)]) + (k4 * smooth_4)
   sharpened[is.na(sharpened)] <- 0
-  sharpened <- sharpened / max(sharpened)
+  # sharpened <- sharpened / max(sharpened)
 
   return(sharpened)
 }

@@ -16,16 +16,23 @@ plot_histograms <-
            label,
            y = "values",
            xlab = TRUE) {
-    absolute <- ggplot2::ggplot(
-      dataframe,
-      ggplot2::aes(
-        x = sample,
-        y = get(y),
-        fill = ids
-      )
-    ) +
-      ggplot2::geom_col() +
-      ggplot2::geom_bar(color = "grey", stat = "identity") +
+    absolute <- ggplot2::ggplot() +
+      ggplot2::geom_line(
+        data = chromatograms_list_cad$chromatograms_improved_long,
+        mapping = ggplot2::aes(x = time, y = intensity),
+        col = "black",
+        size = 0.1
+      ) +
+      ggplot2::geom_bar(
+        data = dataframe,
+        mapping = ggplot2::aes(
+          x = sample,
+          y = get(y),
+          fill = ids
+        ),
+        color = "grey",
+        stat = "identity"
+      ) +
       ggplot2::scale_fill_manual(
         values = levels(dataframe$color) |>
           as.character(),
@@ -54,6 +61,7 @@ plot_histograms <-
 #' Title
 #'
 #' @param dataframe
+#' @param level
 #'
 #' @return
 #' @export
@@ -61,26 +69,46 @@ plot_histograms <-
 #' @examples
 plot_histograms_confident <-
   function(dataframe, level = "max") {
-    plot <- ggplot2::ggplot(
-      dataframe,
-      ggplot2::aes(
-        x = switch(level,
-          "max" = peak_rt,
-          "min" = feature_rt
-        ),
-        y = switch(level,
-          "max" = peak_area,
-          "min" = feature_area
-        ),
-        fill = name
-      )
-    ) +
-      ggplot2::geom_col() +
+    plot <- ggplot2::ggplot() +
+      ggplot2::geom_line(
+        data = chromatograms_list_cad$chromatograms_improved_long,
+        mapping = ggplot2::aes(x = time, y = intensity),
+        col = "black",
+        size = 0.1
+      ) +
       {
         if (level == "max") {
-          ggplot2::geom_bar(stat = "identity") # color = "grey",
+          ggplot2::geom_bar(
+            data = dataframe,
+            mapping = ggplot2::aes(
+              x = switch(level,
+                "max" = peak_rt,
+                "min" = feature_rt
+              ),
+              y = switch(level,
+                "max" = peak_area,
+                "min" = feature_area
+              ),
+              fill = name
+            ), stat = "identity"
+          ) # color = "grey",
         } else {
-          ggplot2::geom_bar(stat = "identity")
+          ggplot2::geom_bar(
+            data = dataframe,
+            mapping = ggplot2::aes(
+              x = switch(level,
+                "max" = peak_rt,
+                "min" = feature_rt
+              ),
+              y = switch(level,
+                "max" = peak_area,
+                "min" = feature_area
+              ),
+              fill = name
+            ),
+            stat = "identity",
+            width = 1
+          )
         }
       } +
       ggplot2::scale_fill_manual(values = levels(dataframe$color) |>
@@ -93,12 +121,12 @@ plot_histograms_confident <-
         # legend.position = "bottom",
         # axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
         panel.grid.major = element_blank(),
-        # panel.grid.minor = element_blank(),
+        panel.grid.minor = element_blank(),
         # panel.background = element_blank(),
         axis.line = element_line(colour = "black"),
         axis.text.y = ggplot2::element_text(face = "italic")
       ) +
-      ggplot2::ylab("Area") +
+      ggplot2::ylab("Intensity") +
       ggplot2::xlab("Retention time [min]") +
       ggplot2::xlim(
         max(TIME_MIN, params$chromato$time$min),
@@ -111,6 +139,7 @@ plot_histograms_confident <-
 #' Title
 #'
 #' @param dataframe
+#' @param level
 #'
 #' @return
 #' @export
@@ -118,26 +147,46 @@ plot_histograms_confident <-
 #' @examples
 plot_histograms_taxo <-
   function(dataframe, level = "max") {
-    plot <- ggplot2::ggplot(
-      dataframe,
-      ggplot2::aes(
-        x = switch(level,
-          "max" = peak_rt,
-          "min" = feature_rt
-        ),
-        y = switch(level,
-          "max" = peak_area,
-          "min" = feature_area
-        ),
-        fill = name_2
-      )
-    ) +
-      ggplot2::geom_col() +
+    plot <- ggplot2::ggplot() +
+      ggplot2::geom_line(
+        data = chromatograms_list_cad$chromatograms_improved_long,
+        mapping = ggplot2::aes(x = time, y = intensity),
+        col = "black",
+        size = 0.1
+      ) +
       {
         if (level == "max") {
-          ggplot2::geom_bar(stat = "identity") # color = "grey",
+          ggplot2::geom_bar(
+            data = dataframe,
+            mapping = ggplot2::aes(
+              x = switch(level,
+                "max" = peak_rt,
+                "min" = feature_rt
+              ),
+              y = switch(level,
+                "max" = peak_area,
+                "min" = feature_area
+              ),
+              fill = name_2
+            ), stat = "identity"
+          ) # color = "grey",
         } else {
-          ggplot2::geom_bar(stat = "identity")
+          ggplot2::geom_bar(
+            data = dataframe,
+            mapping = ggplot2::aes(
+              x = switch(level,
+                "max" = peak_rt,
+                "min" = feature_rt
+              ),
+              y = switch(level,
+                "max" = peak_area,
+                "min" = feature_area
+              ),
+              fill = name_2
+            ),
+            stat = "identity",
+            width = 1
+          )
         }
       } +
       ggplot2::scale_fill_manual(values = levels(dataframe$color_2) |>
@@ -150,12 +199,12 @@ plot_histograms_taxo <-
         # legend.position = "bottom",
         # axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
         panel.grid.major = element_blank(),
-        # panel.grid.minor = element_blank(),
+        panel.grid.minor = element_blank(),
         # panel.background = element_blank(),
         axis.line = element_line(colour = "black"),
         axis.text.y = ggplot2::element_text(face = "italic")
       ) +
-      ggplot2::ylab("Area") +
+      ggplot2::ylab("Intensity") +
       ggplot2::xlab("Retention time [min]") +
       ggplot2::xlim(
         max(TIME_MIN, params$chromato$time$min),

@@ -118,14 +118,14 @@ prepare_plot_2 <- function(dataframe) {
     dplyr::ungroup() |>
     dplyr::distinct(
       peak_id,
-      peak_rt_apex,
-      feature_id,
-      integral,
+      inchikey_2D,
       best_candidate_1,
       best_candidate_2,
       best_candidate_3,
       .keep_all = TRUE
     ) |>
+    dplyr::group_by(peak_id) |>
+    dplyr::mutate(peak_area = peak_area / max(row_number())) |>
     dplyr::mutate(best_candidate_1 = ifelse(
       test = !is.na(best_candidate_1),
       yes = best_candidate_1,
