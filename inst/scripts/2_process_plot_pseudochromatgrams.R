@@ -310,6 +310,10 @@ df_meta_bpi_pos <- compared_peaks_list_bpi$peaks_all |>
       dplyr::filter(mode == "pos") |>
       dplyr::mutate(feature_id = as.numeric(feature_id))
   ) |>
+  dplyr::left_join(
+    compared_peaks_list_bpi$peaks_maj_precor_taxo_cor |>
+      dplyr::distinct(sample, peak_id, mode, feature_id, keep)
+  ) |>
   add_peak_metadata()
 df_meta_bpi_neg <- compared_peaks_list_bpi$peaks_all |>
   dplyr::filter(mode == "neg") |>
@@ -317,6 +321,10 @@ df_meta_bpi_neg <- compared_peaks_list_bpi$peaks_all |>
     best_candidates |>
       dplyr::filter(mode == "neg") |>
       dplyr::mutate(feature_id = as.numeric(feature_id))
+  ) |>
+  dplyr::left_join(
+    compared_peaks_list_bpi$peaks_maj_precor_taxo_cor |>
+      dplyr::distinct(sample, peak_id, mode, feature_id, keep)
   ) |>
   add_peak_metadata()
 
@@ -327,6 +335,10 @@ df_meta_cad_pos <- compared_peaks_list_cad$peaks_all |>
       dplyr::filter(mode == "pos") |>
       dplyr::mutate(feature_id = as.numeric(feature_id))
   ) |>
+  dplyr::left_join(
+    compared_peaks_list_cad$peaks_maj_precor_taxo_cor |>
+      dplyr::distinct(sample, peak_id, mode, feature_id, keep)
+  ) |>
   add_peak_metadata()
 df_meta_cad_neg <- compared_peaks_list_cad$peaks_all |>
   dplyr::filter(mode == "neg") |>
@@ -334,6 +346,10 @@ df_meta_cad_neg <- compared_peaks_list_cad$peaks_all |>
     best_candidates |>
       dplyr::filter(mode == "neg") |>
       dplyr::mutate(feature_id = as.numeric(feature_id))
+  ) |>
+  dplyr::left_join(
+    compared_peaks_list_cad$peaks_maj_precor_taxo_cor |>
+      dplyr::distinct(sample, peak_id, mode, feature_id, keep)
   ) |>
   add_peak_metadata()
 
@@ -344,6 +360,10 @@ df_meta_pda_pos <- compared_peaks_list_pda$peaks_all |>
       dplyr::filter(mode == "pos") |>
       dplyr::mutate(feature_id = as.numeric(feature_id))
   ) |>
+  dplyr::left_join(
+    compared_peaks_list_pda$peaks_maj_precor_taxo_cor |>
+      dplyr::distinct(sample, peak_id, mode, feature_id, keep)
+  ) |>
   add_peak_metadata()
 df_meta_pda_neg <- compared_peaks_list_pda$peaks_all |>
   dplyr::filter(mode == "neg") |>
@@ -351,6 +371,10 @@ df_meta_pda_neg <- compared_peaks_list_pda$peaks_all |>
     best_candidates |>
       dplyr::filter(mode == "neg") |>
       dplyr::mutate(feature_id = as.numeric(feature_id))
+  ) |>
+  dplyr::left_join(
+    compared_peaks_list_pda$peaks_maj_precor_taxo_cor |>
+      dplyr::distinct(sample, peak_id, mode, feature_id, keep)
   ) |>
   add_peak_metadata()
 
