@@ -36,10 +36,8 @@ paths <- parse_yaml_paths()
 params <- ""
 params <- get_params(step = step)
 
-log_debug(
-  "This program performs",
-  "TODO"
-)
+log_debug("This program performs",
+          "TODO")
 log_debug("Authors: \n", "AR")
 log_debug("Contributors: \n", "...")
 
@@ -96,17 +94,13 @@ names <- list.files(
   recursive = TRUE
 ) |>
   gsub(pattern = "[0-9]{6}_AR_[0-9]{2}_", replacement = "") |>
-  gsub(
-    pattern = ".mzML",
-    replacement = "",
-    fixed = TRUE
-  )
+  gsub(pattern = ".mzML",
+       replacement = "",
+       fixed = TRUE)
 log_debug(x = "loading raw files (can take long if loading multiple files)")
-dda_data <- MSnbase::readMSData(
-  files = files,
-  mode = "onDisk",
-  msLevel. = 1
-)
+dda_data <- MSnbase::readMSData(files = files,
+                                mode = "onDisk",
+                                msLevel. = 1)
 log_debug(x = "opening raw files objects and extracting chromatograms")
 chromatograms_all <- lapply(files, mzR::openMSfile) |>
   lapply(mzR::chromatograms) |>
@@ -295,14 +289,10 @@ hierarchies$special <- prepare_hierarchy(
   detector = "cad"
 )
 treemaps <-
-  treemaps_progress_noTitle(xs = names(hierarchies)[!grepl(
-    pattern = "_grouped",
-    x = names(hierarchies)
-  )])
+  treemaps_progress_noTitle(xs = names(hierarchies)[!grepl(pattern = "_grouped",
+                                                           x = names(hierarchies))])
 treemaps$special
 
-#' Work in progress
-#' See how to do best also with non-annotated peaks, etc.
 df_meta_bpi_pos <- compared_peaks_list_bpi$peaks_all |>
   dplyr::filter(mode == "pos") |>
   dplyr::full_join(
@@ -394,10 +384,8 @@ plots_pda_neg <- df_meta_pda_neg |>
   plot_peaks_statistics()
 
 #' export
-ggplot2::ggsave(
-  filename = "~/git/cascade/data/paper/cascade-5.pdf",
-  plot = fig_taxo
-)
+ggplot2::ggsave(filename = "~/git/cascade/data/paper/cascade-5.pdf",
+                plot = fig_taxo)
 ggplot2::ggsave(
   filename = "~/git/cascade/data/paper/cascade-6-a.pdf",
   plot = fig_minmaj,
