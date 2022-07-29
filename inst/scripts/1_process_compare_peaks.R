@@ -155,30 +155,38 @@ detector <- "cad"
 peaks_original <-
   preprocess_peaks(
     list = chromatograms_list_cad$chromatograms_original,
-    df_long = chromatograms_list_cad$chromatograms_original_long
+    df_long = chromatograms_list_cad$chromatograms_original_long |>
+      dplyr::mutate(intensity = intensity / max(intensity))
   )
 peaks_improved <-
   preprocess_peaks(
     list = chromatograms_list_cad$chromatograms_improved,
-    df_long = chromatograms_list_cad$chromatograms_improved_long
+    df_long = chromatograms_list_cad$chromatograms_improved_long |>
+      dplyr::mutate(intensity = intensity / max(intensity))
   )
 
 #' WIP
 suite_1_1 <- chromatograms_list_cad$chromatograms_original_long |>
   dplyr::bind_rows() |>
-  # dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
-  dplyr::filter(row_number() %% 10 == 1)
+  dplyr::mutate(intensity = intensity / max(intensity)) # |>
+# dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
+# dplyr::filter(row_number() %% 10 == 1)
 
 suite_1_2 <- peaks_original$list_df_features_with_peaks_long |>
   dplyr::bind_rows() # |>
 # dplyr::filter(grepl(pattern = "V_03_2_01", x = id))
 
 suite_2_1 <- chromatograms_list_cad$chromatograms_improved_long |>
-  dplyr::bind_rows() # |>
+  dplyr::bind_rows() |>
+  dplyr::mutate(intensity = intensity / max(intensity)) # |>
 # dplyr::filter(grepl(pattern = "V_03_2_01", x = id))
 
 suite_2_2 <- peaks_improved$list_df_features_with_peaks_long |>
-  dplyr::bind_rows() # |>
+  dplyr::bind_rows() |>
+  dplyr::mutate(
+    intensity = intensity / max(intensity),
+    peak_max = peak_max / max(peak_max)
+  ) # |>
 # dplyr::filter(grepl(pattern = "V_03_2_01", x = id))
 
 suite_3_1 <- chromatograms_list_cad$chromatograms_baselined_long |>
@@ -186,17 +194,23 @@ suite_3_1 <- chromatograms_list_cad$chromatograms_baselined_long |>
 # dplyr::filter(grepl(pattern = "V_03_2_01", x = id))
 
 suite_3_2 <- peaks_prelist_cad$list_df_features_with_peaks_long |>
-  dplyr::bind_rows() # |>
+  dplyr::bind_rows() |>
+  dplyr::mutate(
+    intensity = intensity / max(intensity),
+    peak_max = peak_max / max(peak_max)
+  ) # |>
 # dplyr::filter(grepl(pattern = "V_03_2_01", x = id))
 
 
 f_1 <- approxfun(
   x = chromatograms_list_cad$chromatograms_original_long |>
     dplyr::bind_rows() |>
+    dplyr::mutate(intensity = intensity / max(intensity)) |>
     # dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
     dplyr::pull(time),
   y = chromatograms_list_cad$chromatograms_original_long |>
     dplyr::bind_rows() |>
+    dplyr::mutate(intensity = intensity / max(intensity)) |>
     # dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
     dplyr::pull(intensity)
 )
@@ -209,7 +223,7 @@ detection_before <- plotly::plot_ly(suite_1_1) |>
     type = "scatter",
     mode = "line",
     name = "signal",
-    line = list(color = "1f78b4")
+    line = list(color = "1f78b4", width = 1)
   ) |>
   # plotly::add_trace(
   #   data = suite_1_2,
@@ -268,8 +282,9 @@ detection_before <- plotly::plot_ly(suite_1_1) |>
     ),
     xaxis = list(
       range = c(0.5, 127),
-      title = "Time",
+      title = "Time [min]",
       showticklabels = FALSE,
+      showgrid = FALSE,
       overlaying = "y",
       side = "right"
     ),
@@ -281,10 +296,12 @@ detection_before
 f_2 <- approxfun(
   x = chromatograms_list_cad$chromatograms_improved_long |>
     dplyr::bind_rows() |>
+    dplyr::mutate(intensity = intensity / max(intensity)) |>
     # dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
     dplyr::pull(time),
   y = chromatograms_list_cad$chromatograms_improved_long |>
     dplyr::bind_rows() |>
+    dplyr::mutate(intensity = intensity / max(intensity)) |>
     # dplyr::filter(grepl(pattern = "V_03_2_01", x = id)) |>
     dplyr::pull(intensity)
 )
@@ -297,7 +314,7 @@ detection_after <- plotly::plot_ly(suite_2_1) |>
     type = "scatter",
     mode = "line",
     name = "signal",
-    line = list(color = "1f78b4")
+    line = list(color = "1f78b4", width = 1)
   ) |>
   plotly::add_trace(
     data = suite_2_2,
@@ -350,21 +367,188 @@ detection_after <- plotly::plot_ly(suite_2_1) |>
     yaxis2 = list(
       range = c(0, 1),
       title = "",
+      showline = FALSE,
+      showticklabels = FALSE,
+      showgrid = FALSE,
+      overlaying = "y",
+      side = "right"
+    ),
+    xaxis = list(
+      range = c(0.5, 127),
+      title = "Time [min]",
+      showticklabels = FALSE,
+      showgrid = FALSE,
+      overlaying = "y",
+      side = "right"
+    ),
+    showlegend = FALSE
+  )
+detection_after
+detection_before_zoom <- plotly::plot_ly(suite_1_1) |>
+  plotly::add_trace(
+    data = suite_1_1,
+    x =  ~time,
+    y =  ~intensity,
+    type = "scatter",
+    mode = "line",
+    name = "signal",
+    line = list(color = "1f78b4", width = 3)
+  ) |>
+  # plotly::add_trace(
+  #   data = suite_1_2,
+  #   x = ~rt_apex,
+  #   y = ~peak_max,
+  #   yaxis = "y2",
+  #   type = "scatter",
+  #   marker = list(
+  #     color = "ff7f00",
+  #     symbol = "star"
+  #   ),
+  #   name = "detected maximum",
+  #   line = list(color = "1f78b4", width = 0)
+  # ) |>
+  # plotly::add_trace(
+  #   data = suite_1_2,
+  #   x = ~rt_min,
+  #   y = ~ f_1(rt_min),
+  #   yaxis = "y2",
+  #   type = "scatter",
+  #   marker = list(
+  #     color = "33a02c",
+  #     symbol = "triangle-right"
+  #   ),
+  #   name = "detected minimum (start)",
+  #   line = list(color = "1f78b4", width = 0)
+  # ) |>
+  # plotly::add_trace(
+  #   data = suite_1_2,
+  #   x = ~rt_max,
+  #   y = ~ f_1(rt_max),
+  #   yaxis = "y2",
+  #   type = "scatter",
+  #   marker = list(
+  #     color = "33a02c",
+  #     symbol = "triangle-left"
+  #   ),
+  #   name = "detected minimum (end)",
+  #   line = list(color = "1f78b4", width = 0)
+  # ) |>
+  plotly::layout(
+    yaxis = list(
+      # range = c(0, 1),
+      title = "Normalized Intensity",
+      zeroline = FALSE,
+      showline = FALSE,
+      showticklabels = FALSE,
+      showgrid = FALSE
+    ),
+    yaxis2 = list(
+      # range = c(0, 1),
+      title = "",
       showticklabels = FALSE,
       overlaying = "y",
       side = "right"
     ),
     xaxis = list(
       range = c(0.5, 127),
-      title = "Time",
+      title = "Time [min]",
       showticklabels = FALSE,
+      showgrid = FALSE,
       overlaying = "y",
       side = "right"
-    )
-    # showlegend = FALSE
+    ),
+    showlegend = FALSE
+  ) |>
+  plotly::layout(
+    yaxis = list(range = c(0.05, 0.4)),
+    yaxis2 = list(range = c(0.05, 0.4)),
+    xaxis = list(range = c(18, 27))
   )
-
-detection_after
+detection_before_zoom
+detection_after_zoom <- plotly::plot_ly(suite_2_1) |>
+  plotly::add_trace(
+    suite_2_1,
+    x =  ~time,
+    y =  ~intensity,
+    type = "scatter",
+    mode = "line",
+    name = "signal",
+    line = list(color = "1f78b4", width = 3)
+  ) |>
+  plotly::add_trace(
+    data = suite_2_2,
+    x = ~rt_apex,
+    y = ~peak_max,
+    yaxis = "y2",
+    type = "scatter",
+    marker = list(
+      color = "ff7f00",
+      symbol = "star"
+    ),
+    name = "detected maximum",
+    line = list(color = "1f78b4", width = 0)
+  ) |>
+  plotly::add_trace(
+    data = suite_2_2,
+    x = ~rt_min,
+    y = ~ f_2(rt_min),
+    yaxis = "y2",
+    type = "scatter",
+    marker = list(
+      color = "33a02c",
+      symbol = "triangle-right"
+    ),
+    name = "detected minimum (start)",
+    line = list(color = "1f78b4", width = 0)
+  ) |>
+  plotly::add_trace(
+    data = suite_2_2,
+    x = ~rt_max,
+    y = ~ f_2(rt_max),
+    yaxis = "y2",
+    type = "scatter",
+    marker = list(
+      color = "33a02c",
+      symbol = "triangle-left"
+    ),
+    name = "detected minimum (end)",
+    line = list(color = "1f78b4", width = 0)
+  ) |>
+  plotly::layout(
+    yaxis = list(
+      range = c(0, 1),
+      title = "Normalized Intensity",
+      zeroline = FALSE,
+      showline = FALSE,
+      showticklabels = FALSE,
+      showgrid = FALSE
+    ),
+    yaxis2 = list(
+      range = c(0, 1),
+      title = "",
+      showline = FALSE,
+      showticklabels = FALSE,
+      showgrid = FALSE,
+      overlaying = "y",
+      side = "right"
+    ),
+    xaxis = list(
+      range = c(0.5, 127),
+      title = "Time [min]",
+      showticklabels = FALSE,
+      showgrid = FALSE,
+      overlaying = "y",
+      side = "right"
+    ),
+    showlegend = FALSE
+  ) |>
+  plotly::layout(
+    yaxis = list(range = c(0.05, 0.4)),
+    yaxis2 = list(range = c(0.05, 0.4)),
+    xaxis = list(range = c(18, 27)),
+    showlegend = FALSE
+  )
+detection_after_zoom
 
 # f_3 <- approxfun(
 #   x = chromatograms_list_cad$chromatograms_baselined_long |>
@@ -439,20 +623,34 @@ detection_after
 #   )
 # plot(pks_gau, index = 1, lambda = '666')
 
-# plotly::save_image(
-#   p = detection_before,
-#   file = "data/chromatograms/detection_before.pdf",
-#   height = 450,
-#   width = 800,
-#   scale = 3
-# )
-# plotly::save_image(
-#   p = detection_after,
-#   file = "data/chromatograms/detection_after.pdf",
-#   height = 450,
-#   width = 800,
-#   scale = 3
-# )
+plotly::save_image(
+  p = detection_before,
+  file = "data/chromatograms/detection_before.pdf",
+  height = 450,
+  width = 800,
+  scale = 3
+)
+plotly::save_image(
+  p = detection_after,
+  file = "data/chromatograms/detection_after.pdf",
+  height = 450,
+  width = 800,
+  scale = 3
+)
+plotly::save_image(
+  p = detection_before_zoom,
+  file = "data/chromatograms/detection_before_zoom.pdf",
+  height = 450,
+  width = 800,
+  scale = 3
+)
+plotly::save_image(
+  p = detection_after_zoom,
+  file = "data/chromatograms/detection_after_zoom.pdf",
+  height = 450,
+  width = 800,
+  scale = 3
+)
 
 end <- Sys.time()
 
