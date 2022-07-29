@@ -286,15 +286,67 @@ new <- plotly::plot_ly() |>
     )
   ) |>
   plotly::layout(
-    xaxis = list(title = "<b> Time (normalized) </b>"),
-    yaxis = list(title = "<b> Intensity (normalized) </b>")
+    xaxis = list(title = "<b> Time [minutes] </b>"),
+    yaxis = list(title = "<b> Normalized Intensity </b>")
   )
 new
 
-new_zoom <- new |>
+new_zoom <- plotly::plot_ly() |>
+  plotly::add_lines(
+    data = cads_baselined |>
+      dplyr::filter(grepl(pattern = "10043", x = id)),
+    x = ~time,
+    y = ~intensity,
+    name = "<b> CAD </b>",
+    line = list(
+      width = 3,
+      # dash = "dot",
+      color = "e31a1c"
+    )
+  ) |>
+  plotly::add_lines(
+    data = pdas_baselined |>
+      dplyr::filter(grepl(pattern = "10043", x = id)),
+    x = ~time,
+    y = ~intensity,
+    name = "<b> PDA </b>",
+    line = list(
+      width = 3,
+      # dash = "dot",
+      color = "b2df8a"
+    )
+  ) |>
+  plotly::add_lines(
+    data = bpis_baselined |>
+      dplyr::filter(grepl(pattern = "10043", x = id)),
+    x = ~time,
+    y = ~ -intensity,
+    name = "<b> MS Pos </b>",
+    line = list(
+      width = 3,
+      # dash = "dot",
+      color = "a6cee3"
+    )
+  ) |>
+  plotly::add_lines(
+    data = bpis_neg_baselined |>
+      dplyr::filter(grepl(pattern = "10043", x = id)),
+    x = ~time,
+    y = ~ -intensity,
+    name = "<b> MS Neg </b>",
+    line = list(
+      width = 3,
+      # dash = "dot",
+      color = "1f78b4"
+    )
+  ) |>
   plotly::layout(
-    xaxis = list(range = c(0.3, 0.6)),
-    yaxis = list(range = c(-0.25, 0.25))
+    xaxis = list(title = "<b> Time [minutes] </b>"),
+    yaxis = list(title = "<b> Normalized Intensity </b>")
+  ) |>
+  plotly::layout(
+    xaxis = list(range = c(0.3 * 127, 0.425 * 127)),
+    yaxis = list(range = c(-0.2, 0.2))
   )
 new_zoom
 
