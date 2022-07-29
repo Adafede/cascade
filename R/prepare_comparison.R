@@ -1,14 +1,14 @@
 prepare_comparison <- function(detector = "cad") {
   log_debug(x = "loading compared peaks")
   path_1 <- switch(detector,
-    "bpi" = EXPORT_FILE_BPI,
-    "cad" = EXPORT_FILE_CAD,
-    "pda" = EXPORT_FILE_PDA
+    "bpi" = IMPORT_FILE_BPI,
+    "cad" = IMPORT_FILE_CAD,
+    "pda" = IMPORT_FILE_PDA
   )
   path_2 <- switch(detector,
-    "bpi" = EXPORT_FILE_BPI_2,
-    "cad" = EXPORT_FILE_CAD_2,
-    "pda" = EXPORT_FILE_PDA_2
+    "bpi" = IMPORT_FILE_BPI_2,
+    "cad" = IMPORT_FILE_CAD_2,
+    "pda" = IMPORT_FILE_PDA_2
   )
   peaks_compared <- path_1 |>
     lapply(

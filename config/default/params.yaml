@@ -1,5 +1,5 @@
 filename:
-  mzml: 191109_AR_10043_enriched_UHR_Neg
+  mzml: 191109_AR_10043_enriched_UHR_Pos
   annotation:
     tima:
       pos: 191109_AR_10043_enriched_UHR_Pos.tsv.gz
