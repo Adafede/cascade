@@ -5,6 +5,7 @@ library(package = dplyr, quietly = TRUE)
 library(package = ggalluvial, quietly = TRUE)
 library(package = ggfittext, quietly = TRUE)
 library(package = ggplot2, quietly = TRUE)
+library(package = ggpubr, quietly = TRUE)
 library(package = parallel, quietly = TRUE)
 library(package = patchwork, quietly = TRUE)
 library(package = plotly, quietly = TRUE)
@@ -395,22 +396,48 @@ plots_pda_neg <- df_meta_pda_neg |>
   plot_peaks_statistics()
 
 #' export
-ggplot2::ggsave(
-  filename = "~/git/cascade/data/paper/cascade-5.pdf",
-  plot = fig_taxo
-)
-ggplot2::ggsave(
-  filename = "~/git/cascade/data/paper/cascade-6-a.pdf",
-  plot = fig_minmaj,
-  width = 32,
-  height = 18,
-  limitsize = FALSE
-)
-plotly::save_image(
-  p = treemaps$special,
-  file = "data/paper/cascade-6-b.pdf",
-  width = 1600,
-  height = 900
+# ggplot2::ggsave(
+#   filename = "~/git/cascade/data/paper/cascade-5.pdf",
+#   plot = fig_taxo
+# )
+# ggplot2::ggsave(
+#   filename = "~/git/cascade/data/paper/cascade-6.pdf",
+#   plot = ggpubr::ggarrange(
+#     plots_cad_pos[[1]],
+#     plots_cad_pos[[3]],
+#     labels = "AUTO",
+#     nrow = 2,
+#     common.legend = FALSE,
+#     legend = "bottom"
+#   ),
+#   width = 8,
+#   height = 9,
+#   limitsize = FALSE
+# )
+# ggplot2::ggsave(
+#   filename = "~/git/cascade/data/paper/cascade-7-a.pdf",
+#   plot = fig_minmaj,
+#   width = 32,
+#   height = 18,
+#   limitsize = FALSE
+# )
+# plotly::save_image(
+#   p = treemaps$special,
+#   file = "data/paper/cascade-7-b.pdf",
+#   width = 1600,
+#   height = 900
+# )
+
+#' WIP
+readr::write_csv(
+  x = compared_peaks_list_cad_pos[["peaks_maj_precor_taxo_cor"]] |>
+    dplyr::select(
+      peak_id,
+      peak_area,
+      comparison_score,
+      feature_id
+    ),
+  file = "inst/extdata/interim/peaks/191109_AR_10043_enriched_UHR_Pos_featuresInformed_filtered_cad.csv"
 )
 
 end <- Sys.time()
