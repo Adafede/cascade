@@ -72,12 +72,12 @@ plot_peaks_statistics <- function(df) {
         stratum = get(leg),
       )
     ) +
-      geom_stratum(
+      ggalluvial::geom_stratum(
         color = "black",
         ggplot2::aes(fill = get(leg)),
         decreasing = TRUE
       ) +
-      geom_flow(
+      ggalluvial::geom_flow(
         ggplot2::aes(
           fill = get(leg),
           colour = get(leg)
