@@ -623,34 +623,34 @@ detection_after_zoom
 #   )
 # plot(pks_gau, index = 1, lambda = '666')
 
-plotly::save_image(
-  p = detection_before,
-  file = "data/chromatograms/detection_before.pdf",
-  height = 450,
-  width = 800,
-  scale = 3
-)
-plotly::save_image(
-  p = detection_after,
-  file = "data/chromatograms/detection_after.pdf",
-  height = 450,
-  width = 800,
-  scale = 3
-)
-plotly::save_image(
-  p = detection_before_zoom,
-  file = "data/chromatograms/detection_before_zoom.pdf",
-  height = 450,
-  width = 800,
-  scale = 3
-)
-plotly::save_image(
-  p = detection_after_zoom,
-  file = "data/chromatograms/detection_after_zoom.pdf",
-  height = 450,
-  width = 800,
-  scale = 3
-)
+# plotly::save_image(
+#   p = detection_before,
+#   file = "data/chromatograms/detection_before.pdf",
+#   height = 450,
+#   width = 800,
+#   scale = 3
+# )
+# plotly::save_image(
+#   p = detection_after,
+#   file = "data/chromatograms/detection_after.pdf",
+#   height = 450,
+#   width = 800,
+#   scale = 3
+# )
+# plotly::save_image(
+#   p = detection_before_zoom,
+#   file = "data/chromatograms/detection_before_zoom.pdf",
+#   height = 450,
+#   width = 800,
+#   scale = 3
+# )
+# plotly::save_image(
+#   p = detection_after_zoom,
+#   file = "data/chromatograms/detection_after_zoom.pdf",
+#   height = 450,
+#   width = 800,
+#   scale = 3
+# )
 
 end <- Sys.time()
 
