@@ -19,7 +19,7 @@ plot_histograms <-
     absolute <- ggplot2::ggplot() +
       ggplot2::geom_line(
         data = chromatograms_list_cad$chromatograms_improved_long,
-        mapping = ggplot2::aes(x = time, y = intensity),
+        mapping = ggplot2::aes(x = time, y = intensity / max(intensity)),
         col = "black",
         size = 0.1
       ) +
@@ -72,7 +72,7 @@ plot_histograms_confident <-
     plot <- ggplot2::ggplot() +
       ggplot2::geom_line(
         data = chromatograms_list_cad$chromatograms_improved_long,
-        mapping = ggplot2::aes(x = time, y = intensity),
+        mapping = ggplot2::aes(x = time, y = intensity / max(intensity)),
         col = "black",
         size = 0.1
       ) +
@@ -86,11 +86,12 @@ plot_histograms_confident <-
                 "min" = feature_rt
               ),
               y = switch(level,
-                "max" = peak_area,
-                "min" = feature_area
+                "max" = peak_area / max(peak_area),
+                "min" = feature_area / max(feature_area)
               ),
               fill = name
-            ), stat = "identity"
+            ),
+            stat = "identity"
           ) # color = "grey",
         } else {
           ggplot2::geom_bar(
@@ -101,8 +102,8 @@ plot_histograms_confident <-
                 "min" = feature_rt
               ),
               y = switch(level,
-                "max" = peak_area,
-                "min" = feature_area
+                "max" = peak_area / max(peak_area),
+                "min" = feature_area / max(feature_area)
               ),
               fill = name
             ),
@@ -150,7 +151,7 @@ plot_histograms_taxo <-
     plot <- ggplot2::ggplot() +
       ggplot2::geom_line(
         data = chromatograms_list_cad$chromatograms_improved_long,
-        mapping = ggplot2::aes(x = time, y = intensity),
+        mapping = ggplot2::aes(x = time, y = intensity / max(intensity)),
         col = "black",
         size = 0.1
       ) +
@@ -164,11 +165,12 @@ plot_histograms_taxo <-
                 "min" = feature_rt
               ),
               y = switch(level,
-                "max" = peak_area,
-                "min" = feature_area
+                "max" = peak_area / max(peak_area),
+                "min" = feature_area / max(feature_area)
               ),
               fill = name_2
-            ), stat = "identity"
+            ),
+            stat = "identity"
           ) # color = "grey",
         } else {
           ggplot2::geom_bar(
@@ -179,8 +181,8 @@ plot_histograms_taxo <-
                 "min" = feature_rt
               ),
               y = switch(level,
-                "max" = peak_area,
-                "min" = feature_area
+                "max" = peak_area / max(peak_area),
+                "min" = feature_area / max(feature_area)
               ),
               fill = name_2
             ),
