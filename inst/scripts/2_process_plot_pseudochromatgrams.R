@@ -1,5 +1,6 @@
 start <- Sys.time()
 
+library(package = baseline, quietly = TRUE)
 library(package = data.table, quietly = TRUE)
 library(package = dplyr, quietly = TRUE)
 library(package = ggalluvial, quietly = TRUE)
@@ -40,10 +41,8 @@ paths <- parse_yaml_paths()
 params <- ""
 params <- get_params(step = step)
 
-log_debug(
-  "This program performs",
-  "TODO"
-)
+log_debug("This program performs",
+          "TODO")
 log_debug("Authors: \n", "AR")
 log_debug("Contributors: \n", "...")
 
@@ -53,7 +52,7 @@ source(file = "R/dirty_paths_params.R")
 #' Specific paths
 TIME_MIN <- 0.5
 TIME_MAX <- 127
-
+THESIS <- TRUE
 
 ###
 #' DIRTY FROM 1_process_compare_peaks.R
@@ -100,21 +99,36 @@ names <- list.files(
   recursive = TRUE
 ) |>
   gsub(pattern = "[0-9]{6}_AR_[0-9]{2}_", replacement = "") |>
-  gsub(
-    pattern = ".mzML",
-    replacement = "",
-    fixed = TRUE
-  )
+  gsub(pattern = ".mzML",
+       replacement = "",
+       fixed = TRUE)
 log_debug(x = "loading raw files (can take long if loading multiple files)")
-dda_data <- MSnbase::readMSData(
-  files = files,
-  mode = "onDisk",
-  msLevel. = 1
-)
+dda_data <- MSnbase::readMSData(files = files,
+                                mode = "onDisk",
+                                msLevel. = 1)
+
+if (THESIS == TRUE) {
+  dda_data_neg <-
+    MSnbase::readMSData(
+      files = files |> gsub(pattern = "_Pos", replacement = "_Neg"),
+      mode = "onDisk",
+      msLevel. = 1
+    )
+}
+
 log_debug(x = "opening raw files objects and extracting chromatograms")
 chromatograms_all <- lapply(files, mzR::openMSfile) |>
   lapply(mzR::chromatograms) |>
   purrr::flatten()
+
+if (THESIS == TRUE) {
+  chromatograms_all_neg <-
+    lapply(files |> gsub(pattern = "_Pos", replacement = "_Neg"),
+           mzR::openMSfile) |>
+    lapply(mzR::chromatograms) |>
+    purrr::flatten()
+}
+
 chromatograms_list_bpi <- preprocess_chromatograms(
   detector = "bpi",
   list = chromatograms_all[c(TRUE, FALSE, FALSE)],
@@ -129,9 +143,26 @@ chromatograms_list_pda <-
     signal_name = "PDA.1_TotalAbsorbance_0",
     shift = PDA_SHIFT
   )
-###
+
+if (THESIS == TRUE) {
+  chromatograms_list_bpi_neg <- preprocess_chromatograms(
+    detector = "bpi",
+    list = chromatograms_all_neg[c(TRUE, FALSE, FALSE)],
+    signal_name = "BasePeak_0",
+    shift = 0
+  )
+  chromatograms_list_cad_neg <-
+    preprocess_chromatograms(list = chromatograms_all_neg[c(FALSE, FALSE, TRUE)])
+  chromatograms_list_pda_neg <-
+    preprocess_chromatograms(
+      detector = "pda",
+      list = chromatograms_all_neg[c(FALSE, TRUE, FALSE)],
+      signal_name = "PDA.1_TotalAbsorbance_0",
+      shift = PDA_SHIFT
+    )
+}
+
 log_debug(x = "loading annotations")
-#' TODO add ionization mode?
 annotations <-
   ANNOTATIONS |>
   lapply(
@@ -299,10 +330,8 @@ hierarchies$special <- prepare_hierarchy(
   detector = "cad"
 )
 treemaps <-
-  treemaps_progress_noTitle(xs = names(hierarchies)[!grepl(
-    pattern = "_grouped",
-    x = names(hierarchies)
-  )])
+  treemaps_progress_noTitle(xs = names(hierarchies)[!grepl(pattern = "_grouped",
+                                                           x = names(hierarchies))])
 treemaps$special
 
 df_meta_bpi_pos <- compared_peaks_list_bpi$peaks_all |>
@@ -431,15 +460,255 @@ plots_pda_neg <- df_meta_pda_neg |>
 #' WIP
 readr::write_csv(
   x = compared_peaks_list_cad_pos[["peaks_maj_precor_taxo_cor"]] |>
-    dplyr::select(
-      peak_id,
-      peak_area,
-      comparison_score,
-      feature_id
-    ),
+    dplyr::select(peak_id,
+                  peak_area,
+                  comparison_score,
+                  feature_id),
   file = "inst/extdata/interim/peaks/191109_AR_10043_enriched_UHR_Pos_featuresInformed_filtered_cad.csv"
 )
 
-end <- Sys.time()
+#' WIP2
+example_peak <- compared_peaks_list_cad[["peaks_all"]] |>
+  dplyr::filter(!is.na(peak_id)) |>
+  dplyr::mutate(newrt = round(peak_rt_apex, 1)) |>
+  dplyr::select(
+    peak_id,
+    peak_rt_min,
+    peak_rt_max,
+    newrt,
+    feature_id,
+    feature_rt,
+    feature_mz,
+    comparison_score,
+    mode
+  ) |>
+  dplyr::group_by(newrt) |>
+  dplyr::add_count(sort = TRUE) |>
+  dplyr::ungroup() |>
+  dplyr::filter(n == unique(n)[3]) |>
+  dplyr::filter(newrt == max(newrt)) # avoid equal n
 
+list_mz_pos <- example_peak |>
+  dplyr::filter(mode == "pos") |>
+  dplyr::pull(feature_mz) |>
+  as.list()
+list_mz_neg <- example_peak |>
+  dplyr::filter(mode == "neg") |>
+  dplyr::pull(feature_mz) |>
+  as.list()
+rt_min <- example_peak |>
+  dplyr::filter(peak_rt_min == min(peak_rt_min)) |>
+  dplyr::distinct(peak_rt_min) |>
+  dplyr::pull(peak_rt_min)
+rt_max <- example_peak |>
+  dplyr::filter(peak_rt_max == max(peak_rt_max)) |>
+  dplyr::distinct(peak_rt_max) |>
+  dplyr::pull(peak_rt_max)
+
+aa_pos <- lapply(
+  X = seq_along(list_mz_pos),
+  FUN = function(x) {
+    chromatogram(
+      object = dda_data,
+      rt = c((rt_min) * 60, (rt_max) * 60),
+      mz = list_mz_pos[[x]] + c(0.01, -0.01)
+    )
+  }
+)
+aa_neg <- lapply(
+  X = seq_along(list_mz_neg),
+  FUN = function(x) {
+    chromatogram(
+      object = dda_data_neg,
+      rt = c((rt_min) * 60, (rt_max) * 60),
+      mz = list_mz_neg[[x]] + c(0.01, -0.01)
+    )
+  }
+)
+
+bb_pos <- lapply(
+  X = seq_along(aa_pos),
+  FUN = function(x) {
+    time <- aa_pos[[x]][[1]]@rtime / 60
+    intensity <-
+      aa_pos[[x]][[1]]@intensity # / max(aa_pos[[x]][[1]]@intensity)
+    mz <- round(aa_pos[[x]][[1]]@mz, 1)
+    return(data.frame(time, intensity, mz = mean(mz)))
+  }
+)
+bb_neg <- lapply(
+  X = seq_along(aa_neg),
+  FUN = function(x) {
+    time <- aa_neg[[x]][[1]]@rtime / 60
+    intensity <-
+      aa_neg[[x]][[1]]@intensity # / max(aa_neg[[x]][[1]]@intensity)
+    mz <- round(aa_neg[[x]][[1]]@mz, 1)
+    return(data.frame(time, intensity, mz = mean(mz)))
+  }
+)
+
+temp_df <- example_peak |>
+  dplyr::mutate(mz = round(feature_mz, 1)) |>
+  dplyr::distinct(feature_id, comparison_score, mz) |>
+  dplyr::mutate(comparison_score = ifelse(test = comparison_score < 0,
+                                          yes = 0,
+                                          no = comparison_score)) |>
+  dplyr::left_join(best_candidates |>
+                     dplyr::select(-mz) |>
+                     dplyr::mutate(feature_id = as.numeric(feature_id))) |>
+  dplyr::group_by(molecular_formula) |>
+  dplyr::add_count(name = "mf") |>
+  dplyr::group_by(inchikey_2D) |>
+  dplyr::add_count(name = "ik") |>
+  dplyr::rowwise() |>
+  dplyr::mutate(
+    molecular_formula = ifelse(test = mf >= 2,
+                               yes = molecular_formula,
+                               no = "other"),
+    inchikey_2D = ifelse(test = ik >= 2,
+                         yes = inchikey_2D,
+                         no = "other")
+  ) |>
+  dplyr::ungroup()
+
+
+cc_pos <- bind_rows(bb_pos) |>
+  dplyr::filter(!is.na(intensity)) |>
+  dplyr::filter(time >= rt_min & time <= rt_max) |>
+  dplyr::mutate(intensity = intensity / max(intensity)) |>
+  dplyr::mutate(mode = "pos") |>
+  dplyr::left_join(temp_df)
+cc_neg <- bind_rows(bb_neg) |>
+  dplyr::filter(!is.na(intensity)) |>
+  dplyr::filter(time >= rt_min & time <= rt_max) |>
+  dplyr::mutate(intensity = -intensity / max(intensity)) |>
+  dplyr::mutate(mode = "neg") |>
+  dplyr::left_join(temp_df)
+
+cc_cad_pos <- chromatograms_list_cad$chromatograms_improved_long |>
+  # cc_cad_pos <- chromatograms_list_cad$chromatograms_original_long |>
+  dplyr::mutate(time = time + params$chromato$shift$cad) |>
+  dplyr::filter(time >= rt_min & time <= rt_max) |>
+  dplyr::mutate(
+    mz = 0,
+    comparison_score = 0,
+    molecular_formula = NA,
+    inchikey_2D = NA,
+    score_biological = 0
+  ) |>
+  dplyr::mutate(intensity = intensity / max(intensity))
+
+cc_cad_neg <-
+  chromatograms_list_cad_neg$chromatograms_improved_long |>
+  # cc_cad_neg <- chromatograms_list_cad_neg$chromatograms_original_long |>
+  dplyr::mutate(time = time + params$chromato$shift$cad) |>
+  dplyr::filter(time >= rt_min & time <= rt_max) |>
+  dplyr::mutate(
+    mz = 0,
+    comparison_score = 0,
+    molecular_formula = NA,
+    inchikey_2D = NA,
+    score_biological = 0
+  ) |>
+  dplyr::mutate(intensity = -intensity / max(intensity))
+
+plot_comparison <- ggplot2::ggplot(
+  data = NULL,
+  mapping = ggplot2::aes(
+    x = time,
+    y = intensity,
+    group = mz,
+    # color = as.character(inchikey_2D)
+    color = comparison_score
+  )
+) +
+  ggplot2::geom_line(data = cc_pos) +
+  ggplot2::geom_line(data = cc_neg) +
+  ggplot2::geom_line(data = cc_cad_pos) +
+  ggplot2::geom_line(data = cc_cad_neg) +
+  viridis::scale_color_viridis(option = "D",
+                               name = "Peak Similarity") +
+  ggplot2::theme_bw() +
+  ggplot2::theme(complete = FALSE,
+                 # legend.position = "none",
+                 validate = TRUE) +
+  xlab("Time [min]") +
+  ylab("Normalized Intensity")
+
+plot_taxo <- ggplot2::ggplot(
+  data = NULL,
+  mapping = ggplot2::aes(
+    x = time,
+    y = intensity,
+    group = mz,
+    # color = as.character(inchikey_2D)
+    color = as.numeric(score_biological)
+  )
+) +
+  ggplot2::geom_line(data = cc_pos) +
+  ggplot2::geom_line(data = cc_neg) +
+  ggplot2::geom_line(data = cc_cad_pos) +
+  ggplot2::geom_line(data = cc_cad_neg) +
+  viridis::scale_color_viridis(option = "D",
+                               name = "Biological Score") +
+  ggplot2::theme_bw() +
+  ggplot2::theme(complete = FALSE,
+                 # legend.position = "none",
+                 validate = TRUE) +
+  xlab("Time [min]") +
+  ylab("Normalized Intensity")
+
+plot_mf <- ggplot2::ggplot(
+  data = NULL,
+  mapping = ggplot2::aes(
+    x = time,
+    y = intensity,
+    group = mz,
+    # color = as.character(inchikey_2D)
+    color = molecular_formula
+  )
+) +
+  ggplot2::geom_line(data = cc_pos) +
+  ggplot2::geom_line(data = cc_neg) +
+  ggplot2::geom_line(data = cc_cad_pos) +
+  ggplot2::geom_line(data = cc_cad_neg) +
+  ggplot2::scale_color_brewer(palette = "Paired",
+                              name = "Molecular Formula") +
+  ggplot2::theme_bw() +
+  ggplot2::theme(complete = FALSE,
+                 # legend.position = "none",
+                 validate = TRUE) +
+  xlab("Time [min]") +
+  ylab("Normalized Intensity")
+
+plot_ik <- ggplot2::ggplot(
+  data = NULL,
+  mapping = ggplot2::aes(
+    x = time,
+    y = intensity,
+    group = mz,
+    # color = as.character(inchikey_2D)
+    color = inchikey_2D
+  )
+) +
+  ggplot2::geom_line(data = cc_pos) +
+  ggplot2::geom_line(data = cc_neg) +
+  ggplot2::geom_line(data = cc_cad_pos) +
+  ggplot2::geom_line(data = cc_cad_neg) +
+  ggplot2::scale_color_brewer(palette = "Paired",
+                              name = "2D Structure") +
+  ggplot2::theme_bw() +
+  ggplot2::theme(complete = FALSE,
+                 # legend.position = "none",
+                 validate = TRUE) +
+  xlab(label = "Time [min]") +
+  ylab(label = "Normalized Intensity")
+
+ggpubr::ggarrange(plot_compparison,
+                  plot_taxo,
+                  plot_mf,
+                  plot_ik,
+                  labels = "AUTO",
+                  align = "hv")
+end <- Sys.time()
 log_debug("Script finished in", format(end - start))

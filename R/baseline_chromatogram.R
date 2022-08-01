@@ -13,7 +13,7 @@ baseline_chromatogram <- function(df) {
 
   intensity[is.na(intensity)] <- 0
 
-  intensity_baseline <- baseline(
+  intensity_baseline <- baseline::baseline(
     spectra = t(intensity),
     method = "peakDetection"
   )
