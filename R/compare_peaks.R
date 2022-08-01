@@ -20,7 +20,7 @@ compare_peaks <- function(x) {
               "pda" = peaks_prelist_pda$list_chromato_peaks
             )[[x]],
             y = list_ms_peaks[[x]][[z]],
-            ALIGNFUNARGS = list(method = "approx")
+            method = "closest"
           )
         } else {
           score <- 0
