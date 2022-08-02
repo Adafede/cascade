@@ -474,7 +474,7 @@ rt_max <- example_peak |>
 aa_pos <- lapply(
   X = seq_along(list_mz_pos),
   FUN = function(x) {
-    chromatogram(
+    mzR::chromatogram(
       object = dda_data,
       rt = c((rt_min) * 60, (rt_max) * 60),
       mz = list_mz_pos[[x]] + c(0.01, -0.01)
@@ -484,7 +484,7 @@ aa_pos <- lapply(
 aa_neg <- lapply(
   X = seq_along(list_mz_neg),
   FUN = function(x) {
-    chromatogram(
+    mzR::chromatogram(
       object = dda_data_neg,
       rt = c((rt_min) * 60, (rt_max) * 60),
       mz = list_mz_neg[[x]] + c(0.01, -0.01)
@@ -559,11 +559,11 @@ cc_cad_pos <- chromatograms_list_cad$chromatograms_improved_long |>
   dplyr::mutate(time = time + params$chromato$shift$cad) |>
   dplyr::filter(time >= rt_min & time <= rt_max) |>
   dplyr::mutate(
-    mz = 0,
-    comparison_score = 0,
+    mz = "cad signal",
+    comparison_score = "cad signal",
     molecular_formula = "cad signal",
     inchikey_2D = "cad signal",
-    score_biological = 0
+    score_biological = "cad signal"
   ) |>
   dplyr::mutate(intensity = intensity / max(intensity))
 
@@ -573,11 +573,11 @@ cc_cad_neg <-
   dplyr::mutate(time = time + params$chromato$shift$cad) |>
   dplyr::filter(time >= rt_min & time <= rt_max) |>
   dplyr::mutate(
-    mz = 0,
-    comparison_score = 0,
+    mz = "cad signal",
+    comparison_score = "cad signal",
     molecular_formula = "cad signal",
     inchikey_2D = "cad signal",
-    score_biological = 0
+    score_biological = "cad signal"
   ) |>
   dplyr::mutate(intensity = -intensity / max(intensity))
 
@@ -593,8 +593,16 @@ plot_comparison <- ggplot2::ggplot(
 ) +
   ggplot2::geom_line(data = cc_pos) +
   ggplot2::geom_line(data = cc_neg) +
-  ggplot2::geom_line(data = cc_cad_pos, color = "black") +
-  ggplot2::geom_line(data = cc_cad_neg, color = "black") +
+  ggplot2::geom_line(
+    data = cc_cad_pos,
+    color = "black",
+    linetype = "dashed"
+  ) +
+  ggplot2::geom_line(
+    data = cc_cad_neg,
+    color = "black",
+    linetype = "dashed"
+  ) +
   viridis::scale_color_viridis(
     option = "D",
     name = "Peak Similarity"
@@ -620,8 +628,16 @@ plot_taxo <- ggplot2::ggplot(
 ) +
   ggplot2::geom_line(data = cc_pos) +
   ggplot2::geom_line(data = cc_neg) +
-  ggplot2::geom_line(data = cc_cad_pos, color = "black") +
-  ggplot2::geom_line(data = cc_cad_neg, color = "black") +
+  ggplot2::geom_line(
+    data = cc_cad_pos,
+    color = "black",
+    linetype = "dashed"
+  ) +
+  ggplot2::geom_line(
+    data = cc_cad_neg,
+    color = "black",
+    linetype = "dashed"
+  ) +
   viridis::scale_color_viridis(
     option = "D",
     name = "Biological Score"
@@ -647,8 +663,16 @@ plot_mf <- ggplot2::ggplot(
 ) +
   ggplot2::geom_line(data = cc_pos) +
   ggplot2::geom_line(data = cc_neg) +
-  ggplot2::geom_line(data = cc_cad_pos, color = "black") +
-  ggplot2::geom_line(data = cc_cad_neg, color = "black") +
+  ggplot2::geom_line(
+    data = cc_cad_pos,
+    color = "black",
+    linetype = "dashed"
+  ) +
+  ggplot2::geom_line(
+    data = cc_cad_neg,
+    color = "black",
+    linetype = "dashed"
+  ) +
   ggplot2::scale_color_brewer(
     palette = "Paired",
     name = "Molecular Formula"
@@ -674,8 +698,16 @@ plot_ik <- ggplot2::ggplot(
 ) +
   ggplot2::geom_line(data = cc_pos) +
   ggplot2::geom_line(data = cc_neg) +
-  ggplot2::geom_line(data = cc_cad_pos, color = "black") +
-  ggplot2::geom_line(data = cc_cad_neg, color = "black") +
+  ggplot2::geom_line(
+    data = cc_cad_pos,
+    color = "black",
+    linetype = "dashed"
+  ) +
+  ggplot2::geom_line(
+    data = cc_cad_neg,
+    color = "black",
+    linetype = "dashed"
+  ) +
   ggplot2::scale_color_brewer(
     palette = "Paired",
     name = "2D Structure"
@@ -693,10 +725,10 @@ plot_ik <- ggplot2::ggplot(
 # ggplot2::ggsave(
 #   filename = "~/git/cascade/data/paper/cascade-4.pdf",
 #   plot = ggpubr::ggarrange(
-#     plot_compparison,
-#     plot_taxo,
+#     plot_comparison,
 #     plot_mf,
 #     plot_ik,
+#     plot_taxo,
 #     labels = "AUTO",
 #     align = "hv"
 #   ),
