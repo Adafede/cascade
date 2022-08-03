@@ -605,7 +605,7 @@ plot_comparison <- ggplot2::ggplot(
   ) +
   viridis::scale_color_viridis(
     option = "D",
-    name = "Peak Similarity"
+    name = "Peak Similarity Score"
   ) +
   ggplot2::theme_bw() +
   ggplot2::theme(
@@ -640,7 +640,7 @@ plot_taxo <- ggplot2::ggplot(
   ) +
   viridis::scale_color_viridis(
     option = "D",
-    name = "Biological Score"
+    name = "Taxonomic Distance Score"
   ) +
   ggplot2::theme_bw() +
   ggplot2::theme(
@@ -732,8 +732,8 @@ plot_ik <- ggplot2::ggplot(
 #     labels = "AUTO",
 #     align = "hv"
 #   ),
-#   width = 12,
-#   height = 13.5,
+#   width = 9,
+#   height = 9,
 #   limitsize = FALSE
 # )
 # ggplot2::ggsave(
