@@ -471,7 +471,7 @@
                     <subpart charge="-1" mass_difference="-1.007276" mol_formula="H" name="H" type="ADDUCT"/>
                 </adduct_type>
                 <adduct_type selected="false">
-                    <subpart charge="1" mass_difference="-5.4858E-4" mol_formula="" name="e" type="ADDUCT"/>
+                    <subpart charge="1" mass_difference="-5.4858E-4" mol_formula="" name="" type="ADDUCT"/>
                 </adduct_type>
                 <adduct_type selected="true">
                     <subpart charge="1" mass_difference="1.007276" mol_formula="H" name="H" type="ADDUCT"/>
@@ -539,9 +539,6 @@
                 <modification_type selected="true">
                     <subpart charge="0" mass_difference="-18.010565" mol_formula="H2O" name="H2O" type="NEUTRAL_LOSS"/>
                     <subpart charge="0" mass_difference="-18.010565" mol_formula="H2O" name="H2O" type="NEUTRAL_LOSS"/>
-                </modification_type>
-                <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-46.00548" mol_formula="C2H2O2" name="C2H2O2" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
                     <subpart charge="0" mass_difference="-146.05791" mol_formula="C6H10O4" name="C6H10O4" type="NEUTRAL_LOSS"/>
@@ -667,7 +664,7 @@
                     <subpart charge="-1" mass_difference="-1.007276" mol_formula="H" name="H" type="ADDUCT"/>
                 </adduct_type>
                 <adduct_type selected="false">
-                    <subpart charge="1" mass_difference="-5.4858E-4" mol_formula="" name="e" type="ADDUCT"/>
+                    <subpart charge="1" mass_difference="-5.4858E-4" mol_formula="" name="" type="ADDUCT"/>
                 </adduct_type>
                 <adduct_type selected="true">
                     <subpart charge="1" mass_difference="1.007276" mol_formula="H" name="H" type="ADDUCT"/>
