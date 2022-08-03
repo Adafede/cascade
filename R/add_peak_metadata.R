@@ -29,34 +29,28 @@ add_peak_metadata <- function(df) {
     ) |>
     dplyr::group_by(sample, peak_id) |>
     dplyr::distinct(feature_id,
-      .keep_all = TRUE
-    ) |>
+                    .keep_all = TRUE) |>
     dplyr::add_count(name = "featuresPerPeak") |>
     dplyr::distinct(molecular_formula,
-      smiles_2D,
-      inchikey_2D,
-      .keep_all = TRUE
-    ) |>
+                    smiles_2D,
+                    inchikey_2D,
+                    .keep_all = TRUE) |>
     dplyr::add_count(name = "molecularFormulasPerPeak") |>
     dplyr::distinct(smiles_2D,
-      inchikey_2D,
-      .keep_all = TRUE
-    ) |>
+                    inchikey_2D,
+                    .keep_all = TRUE) |>
     dplyr::add_count(name = "structuresPerPeak") |>
     dplyr::distinct(best_candidate_1,
-      best_candidate_2,
-      best_candidate_3,
-      .keep_all = TRUE
-    ) |>
+                    best_candidate_2,
+                    best_candidate_3,
+                    .keep_all = TRUE) |>
     dplyr::add_count(name = "chemicalClassesPerPeak") |>
     dplyr::distinct(best_candidate_1,
-      best_candidate_2,
-      .keep_all = TRUE
-    ) |>
+                    best_candidate_2,
+                    .keep_all = TRUE) |>
     dplyr::add_count(name = "chemicalSuperclassesPerPeak") |>
     dplyr::distinct(best_candidate_1,
-      .keep_all = TRUE
-    ) |>
+                    .keep_all = TRUE) |>
     dplyr::add_count(name = "chemicalPathwaysPerPeak") |>
     dplyr::ungroup() |>
     dplyr::distinct(
@@ -93,34 +87,28 @@ add_peak_metadata <- function(df) {
     ) |>
     dplyr::group_by(sample, peak_id) |>
     dplyr::distinct(feature_id,
-      .keep_all = TRUE
-    ) |>
+                    .keep_all = TRUE) |>
     dplyr::add_count(name = "correlatedFeaturesPerPeak") |>
     dplyr::distinct(molecular_formula,
-      smiles_2D,
-      inchikey_2D,
-      .keep_all = TRUE
-    ) |>
+                    smiles_2D,
+                    inchikey_2D,
+                    .keep_all = TRUE) |>
     dplyr::add_count(name = "correlatedMolecularFormulasPerPeak") |>
     dplyr::distinct(smiles_2D,
-      inchikey_2D,
-      .keep_all = TRUE
-    ) |>
+                    inchikey_2D,
+                    .keep_all = TRUE) |>
     dplyr::add_count(name = "correlatedStructuresPerPeak") |>
     dplyr::distinct(best_candidate_1,
-      best_candidate_2,
-      best_candidate_3,
-      .keep_all = TRUE
-    ) |>
+                    best_candidate_2,
+                    best_candidate_3,
+                    .keep_all = TRUE) |>
     dplyr::add_count(name = "correlatedChemicalClassesPerPeak") |>
     dplyr::distinct(best_candidate_1,
-      best_candidate_2,
-      .keep_all = TRUE
-    ) |>
+                    best_candidate_2,
+                    .keep_all = TRUE) |>
     dplyr::add_count(name = "correlatedChemicalSuperclassesPerPeak") |>
     dplyr::distinct(best_candidate_1,
-      .keep_all = TRUE
-    ) |>
+                    .keep_all = TRUE) |>
     dplyr::add_count(name = "correlatedChemicalPathwaysPerPeak") |>
     dplyr::ungroup() |>
     dplyr::distinct(
@@ -158,34 +146,28 @@ add_peak_metadata <- function(df) {
     ) |>
     dplyr::group_by(sample, peak_id) |>
     dplyr::distinct(feature_id,
-      .keep_all = TRUE
-    ) |>
+                    .keep_all = TRUE) |>
     dplyr::add_count(name = "finalFeaturesPerPeak") |>
     dplyr::distinct(molecular_formula,
-      smiles_2D,
-      inchikey_2D,
-      .keep_all = TRUE
-    ) |>
+                    smiles_2D,
+                    inchikey_2D,
+                    .keep_all = TRUE) |>
     dplyr::add_count(name = "finalMolecularFormulasPerPeak") |>
     dplyr::distinct(smiles_2D,
-      inchikey_2D,
-      .keep_all = TRUE
-    ) |>
+                    inchikey_2D,
+                    .keep_all = TRUE) |>
     dplyr::add_count(name = "finalStructuresPerPeak") |>
     dplyr::distinct(best_candidate_1,
-      best_candidate_2,
-      best_candidate_3,
-      .keep_all = TRUE
-    ) |>
+                    best_candidate_2,
+                    best_candidate_3,
+                    .keep_all = TRUE) |>
     dplyr::add_count(name = "finalChemicalClassesPerPeak") |>
     dplyr::distinct(best_candidate_1,
-      best_candidate_2,
-      .keep_all = TRUE
-    ) |>
+                    best_candidate_2,
+                    .keep_all = TRUE) |>
     dplyr::add_count(name = "finalChemicalSuperclassesPerPeak") |>
     dplyr::distinct(best_candidate_1,
-      .keep_all = TRUE
-    ) |>
+                    .keep_all = TRUE) |>
     dplyr::add_count(name = "finalChemicalPathwaysPerPeak") |>
     dplyr::ungroup() |>
     dplyr::distinct(
@@ -200,13 +182,11 @@ add_peak_metadata <- function(df) {
     )
 
   my_bins <- function(x) {
-    case_when(
-      x == 0 ~ "0",
-      x == 1 ~ "01",
-      x > 1 & x <= 5 ~ "02-05",
-      x > 5 & x <= 10 ~ "06-10",
-      x > 10 ~ "10+"
-    )
+    case_when(x == 0 ~ "0",
+              x == 1 ~ "01",
+              x > 1 & x <= 5 ~ "02-05",
+              x > 5 & x <= 10 ~ "06-10",
+              x > 10 ~ "10+")
   }
 
   df_meta_full <- df_meta |>
@@ -216,14 +196,18 @@ add_peak_metadata <- function(df) {
 
   df_meta_full[is.na(df_meta_full)] <- 0
 
+  df_meta_full <-
+    cbind(df_meta_full,
+          setNames(df_meta_full[colnames(df_meta_full)[grepl(pattern = "PerPeak",
+                                                             x = colnames(df_meta_full))]],
+                   paste0(colnames(df_meta_full)[grepl(pattern = "PerPeak",
+                                                       x = colnames(df_meta_full))],
+                          "_old")))
+
   df_meta_full <- df_meta_full |>
-    dplyr::mutate_at(
-      .vars = colnames(df_meta_full)[grepl(
-        pattern = "PerPeak",
-        x = colnames(df_meta_full)
-      )],
-      .funs = my_bins
-    )
+    dplyr::mutate_at(.vars = colnames(df_meta_full)[grepl(pattern = "PerPeak$",
+                                                          x = colnames(df_meta_full))],
+                     .funs = my_bins)
 
   return(df_meta_full)
 }
