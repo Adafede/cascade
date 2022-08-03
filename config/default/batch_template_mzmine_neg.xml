@@ -689,11 +689,11 @@
                     <subpart charge="0" mass_difference="-43.989829" mol_formula="CO2" name="CO2" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-44.99766" mol_formula="CHO2" name="CHO2" type="NEUTRAL_LOSS"/>
-                </modification_type>
-                <modification_type selected="true">
                     <subpart charge="0" mass_difference="-27.994915" mol_formula="CO" name="CO" type="NEUTRAL_LOSS"/>
                     <subpart charge="0" mass_difference="-18.010565" mol_formula="H2O" name="H2O" type="NEUTRAL_LOSS"/>
+                </modification_type>
+                <modification_type selected="true">
+                    <subpart charge="0" mass_difference="-46.00548" mol_formula="CH2O2" name="CH2O2" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
                     <subpart charge="0" mass_difference="-46.04187" mol_formula="C2H6O" name="C2H6O" type="NEUTRAL_LOSS"/>
@@ -711,7 +711,7 @@
                 <modification_type selected="true">
                     <subpart charge="0" mass_difference="-14.01565" mol_formula="CH2" name="CH2" type="NEUTRAL_LOSS"/>
                     <subpart charge="0" mass_difference="-15.02348" mol_formula="CH3" name="CH3" type="NEUTRAL_LOSS"/>
-                    <subpart charge="0" mass_difference="-44.99766" mol_formula="CHO2" name="CHO2" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-46.00548" mol_formula="CH2O2" name="CH2O2" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
                     <subpart charge="0" mass_difference="-87.06841" mol_formula="C4H9NO" name="C4H9NO" type="NEUTRAL_LOSS"/>
