@@ -986,6 +986,6 @@
         <parameter name="Project file">
             <current_file>inst/extdata/interim/mzmine/projects/MYFILENAME.mzmine</current_file>
         </parameter>
-        <parameter name="Project type">Referencing (small)</parameter>
+        <parameter name="Project type">Standalone (large/flexible)</parameter>
     </batchstep>
 </batch>
