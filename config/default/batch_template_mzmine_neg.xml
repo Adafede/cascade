@@ -468,7 +468,7 @@
             <parameter name="Maximum molecules/cluster">2</parameter>
             <parameter name="Adducts">
                 <adduct_type selected="true">
-                    <subpart charge="-1" mass_difference="5.4858E-4" mol_formula="" name="e" type="ADDUCT"/>
+                    <subpart charge="-1" mass_difference="5.4858E-4" mol_formula="" name="" type="ADDUCT"/>
                 </adduct_type>
                 <adduct_type selected="true">
                     <subpart charge="-1" mass_difference="-1.007276" mol_formula="H" name="H" type="ADDUCT"/>
@@ -488,13 +488,13 @@
                     <subpart charge="-1" mass_difference="78.918886" mol_formula="Br" name="Br" type="ADDUCT"/>
                 </adduct_type>
                 <adduct_type selected="true">
-                    <subpart charge="-1" mass_difference="44.99820285" mol_formula="HCO2" name="FA" type="ADDUCT"/>
+                    <subpart charge="-1" mass_difference="44.99820285" mol_formula="CHO2" name="CHO2" type="ADDUCT"/>
                 </adduct_type>
                 <modification_type selected="true">
                     <subpart charge="0" mass_difference="-15.023475" mol_formula="CH3" name="CH3" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-17.026549" mol_formula="H3N" name="NH3" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-17.026549" mol_formula="H3N" name="H3N" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
                     <subpart charge="0" mass_difference="-18.010565" mol_formula="H2O" name="H2O" type="NEUTRAL_LOSS"/>
@@ -507,13 +507,13 @@
                     <subpart charge="0" mass_difference="-46.00548" mol_formula="C2H2O2" name="C2H2O2" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-146.05791" mol_formula="C6H10O4" name="desoxyhexoseH2O" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-146.05791" mol_formula="C6H10O4" name="C6H10O4" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-162.052825" mol_formula="C6H10O5" name="hexoseH2O" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-162.052825" mol_formula="C6H10O5" name="C6H10O5" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="41.026549" mol_formula="C2H3N" name="acetonitrile" type="CLUSTER"/>
+                    <subpart charge="0" mass_difference="41.026549" mol_formula="C2H3N" name="C2H3N" type="CLUSTER"/>
                 </modification_type>
             </parameter>
         </parameter>
@@ -545,7 +545,7 @@
             <parameter name="Maximum molecules/cluster">2</parameter>
             <parameter name="Adducts">
                 <adduct_type selected="true">
-                    <subpart charge="-1" mass_difference="5.4858E-4" mol_formula="" name="e" type="ADDUCT"/>
+                    <subpart charge="-1" mass_difference="5.4858E-4" mol_formula="" name="" type="ADDUCT"/>
                 </adduct_type>
                 <adduct_type selected="true">
                     <subpart charge="-1" mass_difference="-1.007276" mol_formula="H" name="H" type="ADDUCT"/>
@@ -565,7 +565,7 @@
                     <subpart charge="-1" mass_difference="78.918886" mol_formula="Br" name="Br" type="ADDUCT"/>
                 </adduct_type>
                 <adduct_type selected="true">
-                    <subpart charge="-1" mass_difference="44.99820285" mol_formula="HCO2" name="FA" type="ADDUCT"/>
+                    <subpart charge="-1" mass_difference="44.99820285" mol_formula="CHO2" name="CHO2" type="ADDUCT"/>
                 </adduct_type>
             </parameter>
         </parameter>
@@ -590,7 +590,7 @@
             <parameter name="Maximum molecules/cluster">2</parameter>
             <parameter name="Adducts">
                 <adduct_type selected="true">
-                    <subpart charge="-1" mass_difference="5.4858E-4" mol_formula="" name="e" type="ADDUCT"/>
+                    <subpart charge="-1" mass_difference="5.4858E-4" mol_formula="" name="" type="ADDUCT"/>
                 </adduct_type>
                 <adduct_type selected="true">
                     <subpart charge="-1" mass_difference="-1.007276" mol_formula="H" name="H" type="ADDUCT"/>
@@ -610,7 +610,7 @@
                     <subpart charge="-1" mass_difference="78.918886" mol_formula="Br" name="Br" type="ADDUCT"/>
                 </adduct_type>
                 <adduct_type selected="true">
-                    <subpart charge="-1" mass_difference="44.99820285" mol_formula="HCO2" name="FA" type="ADDUCT"/>
+                    <subpart charge="-1" mass_difference="44.99820285" mol_formula="CHO2" name="CHO2" type="ADDUCT"/>
                 </adduct_type>
                 <modification_type selected="true">
                     <subpart charge="0" mass_difference="-15.0109" mol_formula="HN" name="NH" type="NEUTRAL_LOSS"/>
@@ -619,7 +619,7 @@
                     <subpart charge="0" mass_difference="-15.023475" mol_formula="CH3" name="CH3" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-17.026549" mol_formula="H3N" name="NH3" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-17.026549" mol_formula="H3N" name="H3N" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
                     <subpart charge="0" mass_difference="-18.010565" mol_formula="H2O" name="H2O" type="NEUTRAL_LOSS"/>
@@ -647,10 +647,10 @@
                     <subpart charge="0" mass_difference="-18.010565" mol_formula="H2O" name="H2O" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-27.0109" mol_formula="CHN" name="HCN" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-27.0109" mol_formula="CHN" name="CHN" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-27.994915" mol_formula="CO:" name="CO" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-27.994915" mol_formula="CO" name="CO" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
                     <subpart charge="0" mass_difference="-27.994915" mol_formula="CO" name="CO" type="NEUTRAL_LOSS"/>
@@ -673,13 +673,13 @@
                     <subpart charge="0" mass_difference="-30.01057" mol_formula="CH2O" name="CH2O" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-32.02621" mol_formula="CH4O" name="CH3OH" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-32.02621" mol_formula="CH4O" name="CH4O" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
                     <subpart charge="0" mass_difference="-42.010565" mol_formula="C2H2O" name="C2H2O" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-43.00581" mol_formula="CHON" name="CHNO" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-43.00581" mol_formula="CHON" name="CHON" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
                     <subpart charge="0" mass_difference="-43.989829" mol_formula="CO2" name="CO2" type="NEUTRAL_LOSS"/>
@@ -689,7 +689,7 @@
                     <subpart charge="0" mass_difference="-43.989829" mol_formula="CO2" name="CO2" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-44.99766" mol_formula="CHO2" name="COOH" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-44.99766" mol_formula="CHO2" name="CHO2" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
                     <subpart charge="0" mass_difference="-27.994915" mol_formula="CO" name="CO" type="NEUTRAL_LOSS"/>
@@ -699,7 +699,7 @@
                     <subpart charge="0" mass_difference="-46.04187" mol_formula="C2H6O" name="C2H6O" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-60.02113" mol_formula="C2H4O2" name="CH3COOH" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-60.02113" mol_formula="C2H4O2" name="C2H4O2" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
                     <subpart charge="0" mass_difference="-66.0317" mol_formula="CH6O3" name="CH6O3" type="NEUTRAL_LOSS"/>
@@ -711,34 +711,34 @@
                 <modification_type selected="true">
                     <subpart charge="0" mass_difference="-14.01565" mol_formula="CH2" name="CH2" type="NEUTRAL_LOSS"/>
                     <subpart charge="0" mass_difference="-15.02348" mol_formula="CH3" name="CH3" type="NEUTRAL_LOSS"/>
-                    <subpart charge="0" mass_difference="-44.99766" mol_formula="CHO2" name="COOH" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-44.99766" mol_formula="CHO2" name="CHO2" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
                     <subpart charge="0" mass_difference="-87.06841" mol_formula="C4H9NO" name="C4H9NO" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-88.01604" mol_formula="C3H4O3" name="pyruvic" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-88.01604" mol_formula="C3H4O3" name="C3H4O3" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-88.05243" mol_formula="C4H8O2" name="butyric" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-88.05243" mol_formula="C4H8O2" name="C4H8O2" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-89.04768" mol_formula="C3H7NO2" name="alanine" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-89.04768" mol_formula="C3H7NO2" name="C3H7NO2" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-90.031695" mol_formula="C3H6O3" name="crossRingSugar" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-90.031695" mol_formula="C3H6O3" name="C3H6O3" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-97.96738" mol_formula="H2O4S" name="sulfuric" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-97.96738" mol_formula="H2O4S" name="H2O4S" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-97.9769" mol_formula="H3O4P" name="phosphoric" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-97.9769" mol_formula="H3O4P" name="H3O4P" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-102.06808" mol_formula="C5H10O2" name="valeric" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-102.06808" mol_formula="C5H10O2" name="C5H10O2" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-104.01096" mol_formula="C3H4O4" name="malonic" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-104.01096" mol_formula="C3H4O4" name="C3H4O4" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
                     <subpart charge="0" mass_difference="-43.989829" mol_formula="CO2" name="CO2" type="NEUTRAL_LOSS"/>
@@ -749,7 +749,7 @@
                     <subpart charge="0" mass_difference="-108.04226" mol_formula="C3H8O4" name="C3H8O4" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-115.06333" mol_formula="C5H9NO2" name="proline" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-115.06333" mol_formula="C5H9NO2" name="C5H9NO2" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
                     <subpart charge="0" mass_difference="-15.023475" mol_formula="CH3" name="CH3" type="NEUTRAL_LOSS"/>
@@ -758,7 +758,7 @@
                     <subpart charge="0" mass_difference="-43.989829" mol_formula="CO2" name="CO2" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-120.04226" mol_formula="C4H8O4" name="crossRingSugar2" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-120.04226" mol_formula="C4H8O4" name="C4H8O4" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
                     <subpart charge="0" mass_difference="-43.989829" mol_formula="CO2" name="CO2" type="NEUTRAL_LOSS"/>
@@ -767,128 +767,128 @@
                     <subpart charge="0" mass_difference="-18.010565" mol_formula="H2O" name="H2O" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-126.03169" mol_formula="C6H6O3" name="C6H6O3(HRF)" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-126.03169" mol_formula="C6H6O3" name="C6H6O3" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-132.04226" mol_formula="C5H8O4" name="pentose-H2O" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-132.04226" mol_formula="C5H8O4" name="C5H8O4" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-136.05243" mol_formula="C8H8O2" name="RDA-1" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-136.05243" mol_formula="C8H8O2" name="C8H8O2" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-144.04226" mol_formula="C6H8O4" name="C6H8O4(HRF)" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-144.04226" mol_formula="C6H8O4" name="C6H8O4" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-146.03678" mol_formula="C9H6O2" name="coumaroyl" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-146.03678" mol_formula="C9H6O2" name="C9H6O2" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-146.05791" mol_formula="C6H10O4" name="desoxyhexoseH2O" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-146.05791" mol_formula="C6H10O4" name="C6H10O4" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-146.05791" mol_formula="C6H10O4" name="desoxyhexoseH2O" type="NEUTRAL_LOSS"/>
-                    <subpart charge="0" mass_difference="-146.05791" mol_formula="C6H10O4" name="desoxyhexoseH2O" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-146.05791" mol_formula="C6H10O4" name="C6H10O4" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-146.05791" mol_formula="C6H10O4" name="C6H10O4" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-148.05243" mol_formula="C9H8O2" name="cinnamoyl" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-148.05243" mol_formula="C9H8O2" name="C9H8O2" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-152.01096" mol_formula="C7H4O4" name="galloyl" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-152.01096" mol_formula="C7H4O4" name="C7H4O4" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-152.04734" mol_formula="C8H8O3" name="RDA-2" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-152.04734" mol_formula="C8H8O3" name="C8H8O3" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-162.03169" mol_formula="C9H6O3" name="caffeoyl" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-162.03169" mol_formula="C9H6O3" name="C9H6O3" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-162.05282" mol_formula="C6H10O5" name="hexoseH2O" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-162.05282" mol_formula="C6H10O5" name="C6H10O5" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-162.05282" mol_formula="C6H10O5" name="hexoseH2O" type="NEUTRAL_LOSS"/>
-                    <subpart charge="0" mass_difference="-162.05282" mol_formula="C6H10O5" name="hexoseH2O" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-162.05282" mol_formula="C6H10O5" name="C6H10O5" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-162.05282" mol_formula="C6H10O5" name="C6H10O5" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-162.05282" mol_formula="C6H10O5" name="hexoseH2O" type="NEUTRAL_LOSS"/>
-                    <subpart charge="0" mass_difference="-162.05282" mol_formula="C6H10O5" name="hexoseH2O" type="NEUTRAL_LOSS"/>
-                    <subpart charge="0" mass_difference="-162.05282" mol_formula="C6H10O5" name="hexoseH2O" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-162.05282" mol_formula="C6H10O5" name="C6H10O5" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-162.05282" mol_formula="C6H10O5" name="C6H10O5" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-162.05282" mol_formula="C6H10O5" name="C6H10O5" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-168.04226" mol_formula="C8H8O4" name="RDA-3" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-168.04226" mol_formula="C8H8O4" name="C8H8O4" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-170.05791" mol_formula="C8H10O4" name="RDA-2H2O" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-170.05791" mol_formula="C8H10O4" name="C8H10O4" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-176.03209" mol_formula="C6H8O6" name="glucuronicH2O" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-176.03209" mol_formula="C6H8O6" name="C6H8O6" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-176.04734" mol_formula="C10H8O3" name="feruloyl" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-176.04734" mol_formula="C10H8O3" name="C10H8O3" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-179.07937" mol_formula="C6H13NO5" name="hexoseNH2" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-179.07937" mol_formula="C6H13NO5" name="C6H13NO5" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-180.06339" mol_formula="C6H12O6" name="hexose" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-180.06339" mol_formula="C6H12O6" name="C6H12O6" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-192.06339" mol_formula="C7H12O6" name="quinoyl" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-192.06339" mol_formula="C7H12O6" name="C7H12O6" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-197.08994" mol_formula="C6H12O6" name="hexoseNH2H2O" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-197.08994" mol_formula="C6H12O6" name="C6H12O6" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-198.07395" mol_formula="C6H14O7" name="hexoseH2O" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-198.07395" mol_formula="C6H14O7" name="C6H14O7" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-204.06339" mol_formula="C8H12O6" name="acetylhexoseH2O" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-204.06339" mol_formula="C8H12O6" name="C8H12O6" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-206.05791" mol_formula="C11H10O4" name="sinapoyl" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-206.05791" mol_formula="C11H10O4" name="C11H10O4" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-238.22967" mol_formula="C16H30O" name="pamlitoyl" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-238.22967" mol_formula="C16H30O" name="C16H30O" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-248.05322" mol_formula="C9H12O8" name="malonylhexose" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-248.05322" mol_formula="C9H12O8" name="C9H12O8" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-266.07904" mol_formula="C13H14O6" name="benzoylhexose" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-266.07904" mol_formula="C13H14O6" name="C13H14O6" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-308.0896" mol_formula="C15H16O7" name="coumaroylhexose" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-308.0896" mol_formula="C15H16O7" name="C15H16O7" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-314.06378" mol_formula="C13H14O9" name="galloylhexose" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-314.06378" mol_formula="C13H14O9" name="C13H14O9" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-324.08452" mol_formula="C15H16O8" name="caffeoylhexose" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-324.08452" mol_formula="C15H16O8" name="C15H16O8" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-338.10017" mol_formula="C16H18O8" name="feruloylhexose" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-338.10017" mol_formula="C16H18O8" name="C16H18O8" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="-368.11073" mol_formula="C17H20O9" name="sinapoylhexose" type="NEUTRAL_LOSS"/>
+                    <subpart charge="0" mass_difference="-368.11073" mol_formula="C17H20O9" name="C17H20O9" type="NEUTRAL_LOSS"/>
                 </modification_type>
                 <modification_type selected="true">
                     <subpart charge="0" mass_difference="15.99491462" mol_formula="O" name="O" type="CLUSTER"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="45.05785" mol_formula="C2H7N" name="ethylamine" type="CLUSTER"/>
+                    <subpart charge="0" mass_difference="45.05785" mol_formula="C2H7N" name="C2H7N" type="CLUSTER"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="46.005479" mol_formula="CH2O2" name="formic" type="CLUSTER"/>
+                    <subpart charge="0" mass_difference="46.005479" mol_formula="CH2O2" name="CH2O2" type="CLUSTER"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="60.021129" mol_formula="C2H4O2" name="acetic" type="CLUSTER"/>
+                    <subpart charge="0" mass_difference="60.021129" mol_formula="C2H4O2" name="C2H4O2" type="CLUSTER"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="32.026215" mol_formula="CH4O" name="methanol" type="CLUSTER"/>
+                    <subpart charge="0" mass_difference="32.026215" mol_formula="CH4O" name="CH4O" type="CLUSTER"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="41.026549" mol_formula="C2H3N" name="acetonitrile" type="CLUSTER"/>
+                    <subpart charge="0" mass_difference="41.026549" mol_formula="C2H3N" name="C2H3N" type="CLUSTER"/>
                 </modification_type>
                 <modification_type selected="true">
-                    <subpart charge="0" mass_difference="60.058064" mol_formula="C3H8O" name="isopropanol" type="CLUSTER"/>
+                    <subpart charge="0" mass_difference="60.058064" mol_formula="C3H8O" name="C3H8O" type="CLUSTER"/>
                 </modification_type>
             </parameter>
         </parameter>
