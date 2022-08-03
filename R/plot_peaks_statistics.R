@@ -25,12 +25,15 @@ plot_peaks_statistics <- function(df) {
     )
 
   inner_f <- function(variable) {
-    leg <- paste("Number of", variable, "per peak")
+    leg <- paste("Number of", variable, "per CAD peak")
     var <- variable |>
       gsub(pattern = " ", replacement = "") |>
       tolower()
 
-    df_pretreated <- df |>
+    df_2 <-
+      df[colnames(df)[!grepl(pattern = "_old", x = colnames(df))]]
+
+    df_pretreated <- df_2 |>
       tidyr::pivot_longer(
         cols = 14:19,
         names_to = "names_3",
