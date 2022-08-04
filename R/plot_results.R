@@ -180,7 +180,6 @@ plot_results_2 <- function(detector = "cad") {
     temp_fix_duplicates(colname = "newrt") |>
     prepare_hierarchy(detector = "cad")
 
-
   #' TODO check to use full table
   table_taxo_maj_cor_ms <- list$peaks_maj_precor_taxo_cor |>
     prepare_hierarchy(detector = "ms")
@@ -206,11 +205,13 @@ plot_results_2 <- function(detector = "cad") {
     no_other() |>
     temp_fix_duplicates() |>
     prepare_hierarchy(detector = "cad")
-  table_taxo_maj_cor_conf_signal_2 <-
+  table_taxo_maj_cor_conf_signal_1 <-
     list$peaks_maj_precor_taxo_cor |>
     no_other() |>
     temp_fix_posneg() |>
-    temp_fix_duplicates(colname = "newrt") |>
+    temp_fix_duplicates(colname = "newrt")
+  table_taxo_maj_cor_conf_signal_2 <-
+    table_taxo_maj_cor_conf_signal_1 |>
     prepare_hierarchy(detector = "cad")
   table_taxo_maj_cor_conf_ms <- list$peaks_maj_precor_taxo_cor |>
     no_other() |>
@@ -379,7 +380,8 @@ plot_results_2 <- function(detector = "cad") {
     sunburst_conf_signal_based_neg,
     sunburst_conf_ms_based_neg,
     sunburst_signal_based_duo,
-    sunburst_conf_signal_based_duo
+    sunburst_conf_signal_based_duo,
+    table_taxo_maj_cor_conf_signal_1
   )
   names(returned_list) <- c(
     "sunburst_signal_based_pos",
@@ -391,7 +393,8 @@ plot_results_2 <- function(detector = "cad") {
     "sunburst_conf_signal_based_neg",
     "sunburst_conf_ms_based_neg",
     "sunburst_signal_based_duo",
-    "sunburst_conf_signal_based_duo"
+    "sunburst_conf_signal_based_duo",
+    "table_taxo_maj_cor_conf_signal_1"
   )
 
   return(returned_list)

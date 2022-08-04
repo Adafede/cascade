@@ -757,19 +757,22 @@ plot_ik <- ggplot2::ggplot(
 #   height = 9,
 #   limitsize = FALSE
 # )
-ggplot2::ggsave(
-  filename = "~/git/cascade/data/paper/cascade-7-a.pdf",
-  plot = fig_minmaj,
-  width = 12,
-  height = 6,
-  limitsize = FALSE
-)
+# ggplot2::ggsave(
+#   filename = "~/git/cascade/data/paper/cascade-7-a.pdf",
+#   plot = fig_minmaj,
+#   width = 12,
+#   height = 6,
+#   limitsize = FALSE
+# )
 # plotly::save_image(
 #   p = treemaps$special,
 #   file = "data/paper/cascade-7-b.pdf",
 #   width = 1600,
 #   height = 900
 # )
+
+# readr::write_tsv(x = plots_2_cad[["table_taxo_maj_cor_conf_signal_1"]],
+#                  file = "data/paper/final_table.tsv")
 
 end <- Sys.time()
 log_debug("Script finished in", format(end - start))
