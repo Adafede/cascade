@@ -66,14 +66,16 @@ prepare_plot <- function(dataframe, organism = "species") {
       yes = grey_colors[[1]][subgroup],
       no = nice_colors[[group]][subgroup]
     )) |>
-    dplyr::mutate(relative = values / tot)
+    dplyr::mutate(relative = values / tot) |>
+    dplyr::ungroup()
 
   quickfix <- samples |>
     dplyr::filter(is.na(color)) |>
     dplyr::group_by(group, subgroup) |>
     dplyr::mutate(subsub = cur_group_id()) |>
     dplyr::mutate(color = paste0("#00", sprintf("%04d", subsub))) |>
-    dplyr::select(-subsub)
+    dplyr::select(-subsub) |>
+    dplyr::ungroup()
 
   samples <-
     rbind(samples |> dplyr::filter(!is.na(color)), quickfix)
@@ -293,7 +295,8 @@ prepare_plot_2 <- function(dataframe) {
           )
         )
       )
-    ))
+    )) |>
+    dplyr::ungroup()
 
   dataframe_prep$color <-
     forcats::fct_reorder2(

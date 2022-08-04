@@ -277,7 +277,7 @@ fig_minmaj <-
     nrow = 1,
     plots_1_cad_pos$histograms_unique_conf_min,
     align = "hv",
-    # common.legend = TRUE,
+    common.legend = TRUE,
     legend = "bottom"
   )
 fig_minmaj
@@ -317,7 +317,9 @@ hierarchies$peaks_min <-
       dplyr::mutate(sample = id, species = id) |>
       dplyr::distinct() |>
       make_other() |>
-      no_other(),
+      no_other() |>
+      dplyr::mutate(intensity = 1),
+    # because MS intensity not OK
     type = "analysis",
     detector = "ms"
   )
@@ -336,7 +338,8 @@ hierarchies$special <- prepare_hierarchy(
     dplyr::distinct(),
   type = "analysis",
   detector = "cad"
-)
+) |>
+  dplyr::arrange(sample)
 treemaps <-
   treemaps_progress_noTitle(xs = names(hierarchies)[!grepl(
     pattern = "_grouped",
@@ -754,13 +757,13 @@ plot_ik <- ggplot2::ggplot(
 #   height = 9,
 #   limitsize = FALSE
 # )
-# ggplot2::ggsave(
-#   filename = "~/git/cascade/data/paper/cascade-7-a.pdf",
-#   plot = fig_minmaj,
-#   width = 32,
-#   height = 18,
-#   limitsize = FALSE
-# )
+ggplot2::ggsave(
+  filename = "~/git/cascade/data/paper/cascade-7-a.pdf",
+  plot = fig_minmaj,
+  width = 12,
+  height = 6,
+  limitsize = FALSE
+)
 # plotly::save_image(
 #   p = treemaps$special,
 #   file = "data/paper/cascade-7-b.pdf",

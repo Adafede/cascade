@@ -31,12 +31,13 @@ plot_histograms <-
           fill = ids
         ),
         color = "grey",
-        stat = "identity"
+        stat = "identity",
+        width = 1
       ) +
       ggplot2::scale_fill_manual(
         values = levels(dataframe$color) |>
           as.character(),
-        guide = ggplot2::guide_legend(reverse = TRUE, ncol = 1)
+        guide = ggplot2::guide_legend(reverse = TRUE)
       ) +
       {
         if (xlab == TRUE) {
@@ -69,6 +70,13 @@ plot_histograms <-
 #' @examples
 plot_histograms_confident <-
   function(dataframe, level = "max") {
+    dataframe <- dataframe |>
+      dplyr::group_by(peak_area) |>
+      dplyr::mutate(n = max(dplyr::row_number())) |>
+      dplyr::group_by(feature_area) |>
+      dplyr::mutate(m = max(dplyr::row_number())) |>
+      dplyr::ungroup()
+
     plot <- ggplot2::ggplot() +
       ggplot2::geom_line(
         data = chromatograms_list_cad$chromatograms_improved_long,
@@ -86,12 +94,13 @@ plot_histograms_confident <-
                 "min" = feature_rt
               ),
               y = switch(level,
-                "max" = peak_area / max(peak_area),
-                "min" = feature_area / max(feature_area)
+                "max" = peak_area / max(peak_area * n),
+                "min" = feature_area / max(feature_area * m)
               ),
               fill = name
             ),
-            stat = "identity"
+            stat = "identity",
+            width = 1
           ) # color = "grey",
         } else {
           ggplot2::geom_bar(
@@ -102,8 +111,8 @@ plot_histograms_confident <-
                 "min" = feature_rt
               ),
               y = switch(level,
-                "max" = peak_area / max(peak_area),
-                "min" = feature_area / max(feature_area)
+                "max" = peak_area / max(peak_area * n),
+                "min" = feature_area / max(feature_area * m)
               ),
               fill = name
             ),
@@ -148,6 +157,13 @@ plot_histograms_confident <-
 #' @examples
 plot_histograms_taxo <-
   function(dataframe, level = "max") {
+    dataframe <- dataframe |>
+      dplyr::group_by(peak_area) |>
+      dplyr::mutate(n = max(dplyr::row_number())) |>
+      dplyr::group_by(feature_area) |>
+      dplyr::mutate(m = max(dplyr::row_number())) |>
+      dplyr::ungroup()
+
     plot <- ggplot2::ggplot() +
       ggplot2::geom_line(
         data = chromatograms_list_cad$chromatograms_improved_long,
@@ -165,12 +181,13 @@ plot_histograms_taxo <-
                 "min" = feature_rt
               ),
               y = switch(level,
-                "max" = peak_area / max(peak_area),
-                "min" = feature_area / max(feature_area)
+                "max" = peak_area / max(peak_area * n),
+                "min" = feature_area / max(feature_area * m)
               ),
               fill = name_2
             ),
-            stat = "identity"
+            stat = "identity",
+            width = 1
           ) # color = "grey",
         } else {
           ggplot2::geom_bar(
@@ -181,8 +198,8 @@ plot_histograms_taxo <-
                 "min" = feature_rt
               ),
               y = switch(level,
-                "max" = peak_area / max(peak_area),
-                "min" = feature_area / max(feature_area)
+                "max" = peak_area / max(peak_area * n),
+                "min" = feature_area / max(feature_area * m)
               ),
               fill = name_2
             ),
