@@ -85,9 +85,11 @@ comparison <- params$organisms$comparison |>
   as.character()
 
 genera <-
-  names(qids)[!grepl(pattern = " ",
-                     x = names(qids),
-                     fixed = TRUE)]
+  names(qids)[!grepl(
+    pattern = " ",
+    x = names(qids),
+    fixed = TRUE
+  )]
 
 query_part_1 <- readr::read_file(paths$inst$scripts$sparql$review_1)
 query_part_2 <- readr::read_file(paths$inst$scripts$sparql$review_2)
@@ -180,11 +182,14 @@ message("... for grouped taxa")
 hierarchies_grouped <- hierarchies_grouped_progress(xs = tables)
 message("... combining")
 names(hierarchies_grouped) <- ifelse(
-  test = !grepl(pattern = "\\W+",
-                x = names(hierarchies_grouped)),
+  test = !grepl(
+    pattern = "\\W+",
+    x = names(hierarchies_grouped)
+  ),
   yes = paste(names(hierarchies_grouped),
-              "grouped",
-              sep = "_"),
+    "grouped",
+    sep = "_"
+  ),
   no = names(hierarchies_grouped)
 )
 hierarchies_grouped <- purrr::compact(hierarchies_grouped)
@@ -235,17 +240,19 @@ if (!is.null(comparison)) {
 treemaps_progress <- function(xs, type = "treemap") {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(
-    X = setNames(object = xs,
-                 nm = xs),
+    X = setNames(
+      object = xs,
+      nm = xs
+    ),
     FUN = function(x) {
       p()
       if (x != "special") {
         plotly::plot_ly(
           data = hierarchies[[x]],
-          ids = ~ ids,
-          labels = ~ labels,
-          parents = ~ parents,
-          values = ~ values,
+          ids = ~ids,
+          labels = ~labels,
+          parents = ~parents,
+          values = ~values,
           maxdepth = 3,
           type = type,
           branchvalues = "total",
@@ -262,10 +269,10 @@ treemaps_progress <- function(xs, type = "treemap") {
         plotly::plot_ly() |>
           plotly::add_trace(
             data = hierarchies[[unique(hierarchies[[x]]$species)[1]]],
-            ids = ~ ids,
-            labels = ~ labels,
-            parents = ~ parents,
-            values = ~ values,
+            ids = ~ids,
+            labels = ~labels,
+            parents = ~parents,
+            values = ~values,
             maxdepth = 3,
             type = type,
             branchvalues = "total",
@@ -274,10 +281,10 @@ treemaps_progress <- function(xs, type = "treemap") {
           ) |>
           plotly::add_trace(
             data = hierarchies[[unique(hierarchies[[x]]$species)[2]]],
-            ids = ~ ids,
-            labels = ~ labels,
-            parents = ~ parents,
-            values = ~ values,
+            ids = ~ids,
+            labels = ~labels,
+            parents = ~parents,
+            values = ~values,
             maxdepth = 3,
             type = type,
             branchvalues = "total",
@@ -308,26 +315,40 @@ treemaps_progress <- function(xs, type = "treemap") {
 }
 message("Generating treemaps")
 treemaps <-
-  treemaps_progress(xs = names(hierarchies)[!grepl(pattern = "_grouped",
-                                                   x = names(hierarchies))])
+  treemaps_progress(xs = names(hierarchies)[!grepl(
+    pattern = "_grouped",
+    x = names(hierarchies)
+  )])
 
 message("Generating sunbursts")
 sunbursts <-
-  treemaps_progress(xs = names(hierarchies)[!grepl(pattern = "_grouped",
-                                                   x = names(hierarchies))],
-                    type = "sunburst")
+  treemaps_progress(
+    xs = names(hierarchies)[!grepl(
+      pattern = "_grouped",
+      x = names(hierarchies)
+    )],
+    type = "sunburst"
+  )
 
 message("Filtering treemaps")
 treemaps <-
-  within(treemaps,
-         rm(list = names(treemaps)[grepl(pattern = "ae$",
-                                         x = names(treemaps))]))
+  within(
+    treemaps,
+    rm(list = names(treemaps)[grepl(
+      pattern = "ae$",
+      x = names(treemaps)
+    )])
+  )
 
 message("Filtering sunbursts")
 sunbursts <-
-  within(sunbursts,
-         rm(list = names(sunbursts)[grepl(pattern = "ae$",
-                                          x = names(sunbursts))]))
+  within(
+    sunbursts,
+    rm(list = names(sunbursts)[grepl(
+      pattern = "ae$",
+      x = names(sunbursts)
+    )])
+  )
 
 plotly::save_image(
   p = treemaps$special,
