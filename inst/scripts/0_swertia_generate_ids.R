@@ -285,19 +285,19 @@ treemaps_progress <- function(xs, type = "treemap") {
             domain = list(row = 0, column = 1)
           ) |>
           plotly::layout(
-            title = paste(
-              "Comparative analysis",
-              "\n",
-              unique(hierarchies[[x]]$species)[1],
-              "(",
-              nrow(tables[[unique(hierarchies[[x]]$species)[1]]] |> dplyr::distinct(structure)),
-              ")",
-              "                                 ",
-              unique(hierarchies[[x]]$species)[2],
-              "(",
-              nrow(tables[[unique(hierarchies[[x]]$species)[2]]] |> dplyr::distinct(structure)),
-              ")"
-            ),
+            # title = paste(
+            #   "Comparative analysis",
+            #   "\n",
+            #   unique(hierarchies[[x]]$species)[1],
+            #   "(",
+            #   nrow(tables[[unique(hierarchies[[x]]$species)[1]]] |> dplyr::distinct(structure)),
+            #   ")",
+            #   "                                 ",
+            #   unique(hierarchies[[x]]$species)[2],
+            #   "(",
+            #   nrow(tables[[unique(hierarchies[[x]]$species)[2]]] |> dplyr::distinct(structure)),
+            #   ")"
+            # ),
             grid = list(rows = 1, columns = 2),
             colorway = sunburst_colors,
             margin = list(t = 40)

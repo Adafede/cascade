@@ -41,10 +41,8 @@ paths <- parse_yaml_paths()
 params <- ""
 params <- get_params(step = step)
 
-log_debug(
-  "This program performs",
-  "TODO"
-)
+log_debug("This program performs",
+          "TODO")
 log_debug("Authors: \n", "AR")
 log_debug("Contributors: \n", "...")
 
@@ -101,17 +99,13 @@ names <- list.files(
   recursive = TRUE
 ) |>
   gsub(pattern = "[0-9]{6}_AR_[0-9]{2}_", replacement = "") |>
-  gsub(
-    pattern = ".mzML",
-    replacement = "",
-    fixed = TRUE
-  )
+  gsub(pattern = ".mzML",
+       replacement = "",
+       fixed = TRUE)
 log_debug(x = "loading raw files (can take long if loading multiple files)")
-dda_data <- MSnbase::readMSData(
-  files = files,
-  mode = "onDisk",
-  msLevel. = 1
-)
+dda_data <- MSnbase::readMSData(files = files,
+                                mode = "onDisk",
+                                msLevel. = 1)
 
 if (THESIS == TRUE) {
   dda_data_neg <-
@@ -129,10 +123,8 @@ chromatograms_all <- lapply(files, mzR::openMSfile) |>
 
 if (THESIS == TRUE) {
   chromatograms_all_neg <-
-    lapply(
-      files |> gsub(pattern = "_Pos", replacement = "_Neg"),
-      mzR::openMSfile
-    ) |>
+    lapply(files |> gsub(pattern = "_Pos", replacement = "_Neg"),
+           mzR::openMSfile) |>
     lapply(mzR::chromatograms) |>
     purrr::flatten()
 }
@@ -341,10 +333,8 @@ hierarchies$special <- prepare_hierarchy(
 ) |>
   dplyr::arrange(sample)
 treemaps <-
-  treemaps_progress_noTitle(xs = names(hierarchies)[!grepl(
-    pattern = "_grouped",
-    x = names(hierarchies)
-  )])
+  treemaps_progress_noTitle(xs = names(hierarchies)[!grepl(pattern = "_grouped",
+                                                           x = names(hierarchies))])
 treemaps$special
 
 df_meta_bpi_pos <- compared_peaks_list_bpi$peaks_all |>
@@ -520,12 +510,11 @@ temp_df <- example_peak |>
   dplyr::mutate(mz = round(feature_mz, 1)) |>
   dplyr::distinct(feature_id, comparison_score, mz) |>
   dplyr::mutate(comparison_score = ifelse(test = comparison_score < 0,
-    yes = 0,
-    no = comparison_score
-  )) |>
+                                          yes = 0,
+                                          no = comparison_score)) |>
   dplyr::left_join(best_candidates |>
-    dplyr::select(-mz) |>
-    dplyr::mutate(feature_id = as.numeric(feature_id))) |>
+                     dplyr::select(-mz) |>
+                     dplyr::mutate(feature_id = as.numeric(feature_id))) |>
   dplyr::group_by(molecular_formula) |>
   dplyr::add_count(name = "mf") |>
   dplyr::group_by(inchikey_2D) |>
@@ -533,13 +522,11 @@ temp_df <- example_peak |>
   dplyr::rowwise() |>
   dplyr::mutate(
     molecular_formula = ifelse(test = mf >= 2,
-      yes = molecular_formula,
-      no = "other"
-    ),
+                               yes = molecular_formula,
+                               no = "other"),
     inchikey_2D = ifelse(test = ik >= 2,
-      yes = inchikey_2D,
-      no = "other"
-    )
+                         yes = inchikey_2D,
+                         no = "other")
   ) |>
   dplyr::ungroup()
 
@@ -596,26 +583,18 @@ plot_comparison <- ggplot2::ggplot(
 ) +
   ggplot2::geom_line(data = cc_pos) +
   ggplot2::geom_line(data = cc_neg) +
-  ggplot2::geom_line(
-    data = cc_cad_pos,
-    color = "black",
-    linetype = "dashed"
-  ) +
-  ggplot2::geom_line(
-    data = cc_cad_neg,
-    color = "black",
-    linetype = "dashed"
-  ) +
-  viridis::scale_color_viridis(
-    option = "D",
-    name = "Peak Similarity Score"
-  ) +
+  ggplot2::geom_line(data = cc_cad_pos,
+                     color = "black",
+                     linetype = "dashed") +
+  ggplot2::geom_line(data = cc_cad_neg,
+                     color = "black",
+                     linetype = "dashed") +
+  viridis::scale_color_viridis(option = "D",
+                               name = "Peak Similarity Score") +
   ggplot2::theme_bw() +
-  ggplot2::theme(
-    complete = FALSE,
-    # legend.position = "none",
-    validate = TRUE
-  ) +
+  ggplot2::theme(complete = FALSE,
+                 # legend.position = "none",
+                 validate = TRUE) +
   xlab("Time [min]") +
   ylab("Normalized Intensity")
 
@@ -631,26 +610,18 @@ plot_taxo <- ggplot2::ggplot(
 ) +
   ggplot2::geom_line(data = cc_pos) +
   ggplot2::geom_line(data = cc_neg) +
-  ggplot2::geom_line(
-    data = cc_cad_pos,
-    color = "black",
-    linetype = "dashed"
-  ) +
-  ggplot2::geom_line(
-    data = cc_cad_neg,
-    color = "black",
-    linetype = "dashed"
-  ) +
-  viridis::scale_color_viridis(
-    option = "D",
-    name = "Taxonomic Distance Score"
-  ) +
+  ggplot2::geom_line(data = cc_cad_pos,
+                     color = "black",
+                     linetype = "dashed") +
+  ggplot2::geom_line(data = cc_cad_neg,
+                     color = "black",
+                     linetype = "dashed") +
+  viridis::scale_color_viridis(option = "D",
+                               name = "Taxonomic Distance Score") +
   ggplot2::theme_bw() +
-  ggplot2::theme(
-    complete = FALSE,
-    # legend.position = "none",
-    validate = TRUE
-  ) +
+  ggplot2::theme(complete = FALSE,
+                 # legend.position = "none",
+                 validate = TRUE) +
   xlab("Time [min]") +
   ylab("Normalized Intensity")
 
@@ -666,26 +637,18 @@ plot_mf <- ggplot2::ggplot(
 ) +
   ggplot2::geom_line(data = cc_pos) +
   ggplot2::geom_line(data = cc_neg) +
-  ggplot2::geom_line(
-    data = cc_cad_pos,
-    color = "black",
-    linetype = "dashed"
-  ) +
-  ggplot2::geom_line(
-    data = cc_cad_neg,
-    color = "black",
-    linetype = "dashed"
-  ) +
-  ggplot2::scale_color_brewer(
-    palette = "Paired",
-    name = "Molecular Formula"
-  ) +
+  ggplot2::geom_line(data = cc_cad_pos,
+                     color = "black",
+                     linetype = "dashed") +
+  ggplot2::geom_line(data = cc_cad_neg,
+                     color = "black",
+                     linetype = "dashed") +
+  ggplot2::scale_color_brewer(palette = "Paired",
+                              name = "Molecular Formula") +
   ggplot2::theme_bw() +
-  ggplot2::theme(
-    complete = FALSE,
-    # legend.position = "none",
-    validate = TRUE
-  ) +
+  ggplot2::theme(complete = FALSE,
+                 # legend.position = "none",
+                 validate = TRUE) +
   xlab("Time [min]") +
   ylab("Normalized Intensity")
 
@@ -701,26 +664,18 @@ plot_ik <- ggplot2::ggplot(
 ) +
   ggplot2::geom_line(data = cc_pos) +
   ggplot2::geom_line(data = cc_neg) +
-  ggplot2::geom_line(
-    data = cc_cad_pos,
-    color = "black",
-    linetype = "dashed"
-  ) +
-  ggplot2::geom_line(
-    data = cc_cad_neg,
-    color = "black",
-    linetype = "dashed"
-  ) +
-  ggplot2::scale_color_brewer(
-    palette = "Paired",
-    name = "2D Structure"
-  ) +
+  ggplot2::geom_line(data = cc_cad_pos,
+                     color = "black",
+                     linetype = "dashed") +
+  ggplot2::geom_line(data = cc_cad_neg,
+                     color = "black",
+                     linetype = "dashed") +
+  ggplot2::scale_color_brewer(palette = "Paired",
+                              name = "2D Structure") +
   ggplot2::theme_bw() +
-  ggplot2::theme(
-    complete = FALSE,
-    # legend.position = "none",
-    validate = TRUE
-  ) +
+  ggplot2::theme(complete = FALSE,
+                 # legend.position = "none",
+                 validate = TRUE) +
   xlab(label = "Time [min]") +
   ylab(label = "Normalized Intensity")
 
@@ -773,6 +728,12 @@ plot_ik <- ggplot2::ggplot(
 
 # readr::write_tsv(x = plots_2_cad[["table_taxo_maj_cor_conf_signal_1"]],
 #                  file = "data/paper/final_table.tsv")
+# readr::write_csv(
+#   x = candidates_confident |>
+#     dplyr::filter(mode == "pos"),
+#   file = "data/paper/confident_candidates.csv",
+#   na = ""
+# )
 
 end <- Sys.time()
 log_debug("Script finished in", format(end - start))
