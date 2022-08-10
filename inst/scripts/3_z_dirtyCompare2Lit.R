@@ -6,6 +6,15 @@ path_peaks_neg <-
 path_annotations_final <- "data/paper/final_table.tsv"
 path_lotus <- "inst/extdata/source/libraries/lotus.csv.gz"
 
+source(file = "R/get_params.R")
+source(file = "R/parse_cli_params.R")
+source(file = "R/parse_yaml_params.R")
+source(file = "R/parse_yaml_params.R")
+step <- "processing"
+paths <- parse_yaml_paths()
+params <- ""
+params <- get_params(step = step)
+
 #' import
 tables_peaks_pos <- readr::read_delim(
   file = path_peaks_pos,
@@ -50,7 +59,7 @@ table_peaks <- tables_peaks_pos |>
 
 data.table::setkey(table_peaks, rt_min, rt_max)
 
-table_processed <- table_initial |>
+table_processed <- table_annotations_initial |>
   dplyr::select(
     peak_rt_apex,
     peak_area,
@@ -91,7 +100,7 @@ table_medium <-
   dplyr::ungroup() |>
   dplyr::distinct(newrt, newarea, .keep_all = TRUE) |>
   dplyr::arrange(newrt) |>
-  dplyr::mutate(diff = newrt - lag(newrt)) |> # eliminate rounding duplicates
+  dplyr::mutate(diff = newrt - dplyr::lag(newrt)) |> # eliminate rounding duplicates
   dplyr::filter(!is.na(diff) &
     diff > params$chromato$peak$tolerance$rt / 2) |>
   dplyr::mutate(peak_id = dplyr::row_number()) |>
@@ -112,7 +121,7 @@ table_medium <-
   ) |>
   dplyr::mutate(
     peak_rt = round(x = peak_rt, digits = 2),
-    peak_area = round(x = peak_area / sum(peak_area), digits = 2),
+    peak_area = round(x = 100 * peak_area / sum(peak_area), digits = 2),
     feature_rt = round(x = feature_rt, digits = 2),
     score_final = round(x = score_final, digits = 2)
   )
