@@ -8,7 +8,7 @@ path_lotus <- "inst/extdata/source/libraries/lotus.csv.gz"
 
 source(file = "R/get_params.R")
 source(file = "R/parse_cli_params.R")
-source(file = "R/parse_yaml_params.R")
+source(file = "R/parse_yaml_paths.R")
 source(file = "R/parse_yaml_params.R")
 step <- "processing"
 paths <- parse_yaml_paths()
