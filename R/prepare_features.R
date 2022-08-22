@@ -20,6 +20,7 @@ prepare_features <- function(df) {
       rt = "row retention time",
       mz = "row m/z",
       everything(),
+      # TODO improve if Sirius
       -"correlation group ID",
       -"annotation network number",
       -"best ion",
