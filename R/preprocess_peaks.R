@@ -31,7 +31,10 @@ preprocess_peaks <- function(detector = "cad",
 
   df_features_with_peaks <- df_features_peaks |>
     dplyr::select(-rt_1, -rt_2) |>
-    dplyr::filter(!is.na(peak_id))
+    dplyr::filter(!is.na(peak_id)) |>
+    # CHECK
+    dplyr::filter(id == sample) |>
+    dplyr::distinct()
 
   # df_new_with_cad <- df_new_with_cad |> #' TODO DONT FORGET
   #   dplyr::distinct(id, peak_id, feature_id, .keep_all = TRUE) |> #' TODO DONT FORGET
