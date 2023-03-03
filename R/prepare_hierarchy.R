@@ -747,11 +747,12 @@ prepare_hierarchy <-
       dplyr::select(-any_of(c(
         "values", "sample", "intensity", "species", "organism"
       ))) |>
-      dplyr::left_join(final_table_3 |>
-        dplyr::select(any_of(
-          c("values", "sample", "parents", "species")
-        )),
-      by = c("ids" = "parents")
+      dplyr::left_join(
+        final_table_3 |>
+          dplyr::select(any_of(
+            c("values", "sample", "parents", "species")
+          )),
+        by = c("ids" = "parents")
       ) |>
       dplyr::group_by(dplyr::across(dplyr::any_of(
         c("parents", "ids", "labels", "sample", "species")
@@ -763,11 +764,12 @@ prepare_hierarchy <-
       dplyr::select(-any_of(c(
         "values", "sample", "intensity", "species", "organism"
       ))) |>
-      dplyr::left_join(final_table_2 |>
-        dplyr::select(any_of(
-          c("values", "sample", "parents", "species")
-        )),
-      by = c("ids" = "parents")
+      dplyr::left_join(
+        final_table_2 |>
+          dplyr::select(any_of(
+            c("values", "sample", "parents", "species")
+          )),
+        by = c("ids" = "parents")
       ) |>
       dplyr::group_by(dplyr::across(dplyr::any_of(
         c("parents", "ids", "labels", "sample", "species")
