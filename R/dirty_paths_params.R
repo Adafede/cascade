@@ -116,7 +116,7 @@ IMPORT_FILE_PDA_2 <-
 # FEATURES <- "~/Downloads/test_quant.csv"
 FEATURES <-
   paste0(
-    "inst/extdata/interim/mzmine/lists/",
+    "data/interim/mzmine/lists/",
     params$filename$mzml,
     "_gnps_quant.csv"
   )
