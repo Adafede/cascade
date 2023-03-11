@@ -1,7 +1,7 @@
 #' Paths
 ANNOTATIONS <- list.files(
   path = file.path(
-    paths$inst$extdata$interim$annotations$path,
+    paths$data$interim$annotations,
     params$annotation$tool
   ),
   pattern = params$filename$mzml,
@@ -10,7 +10,7 @@ ANNOTATIONS <- list.files(
 )
 ANNOTATIONS <- list.files(
   path = file.path(
-    paths$inst$extdata$interim$annotations$path,
+    paths$data$interim$annotations,
     params$annotation$tool
   ),
   pattern = paste0(
@@ -21,7 +21,7 @@ ANNOTATIONS <- list.files(
   full.names = TRUE,
   recursive = TRUE
 )
-EXPORT_DIR <- paths$inst$extdata$interim$peaks
+EXPORT_DIR <- paths$data$interim$peaks
 EXPORT_FILE_BPI <-
   paste(params$filename$mzml,
     "featuresInformed",
@@ -127,7 +127,7 @@ FEATURES <-
 # TOYSET <- "~/data/20210701_10043/fractions"
 # TOYSET <- "~/../../Volumes/LaCie/data/20210701_10043/fractions"
 # TOYSET <- "~/data/20210701_10043/test"
-TOYSET <- paths$inst$extdata$source$mzml$path
+TOYSET <- paths$data$source$mzml$path
 
 #' Generic parameters
 WORKERS <- params$workers
