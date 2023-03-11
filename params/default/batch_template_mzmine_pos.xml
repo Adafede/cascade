@@ -1097,7 +1097,7 @@
     <batchstep method="io.github.mzmine.modules.io.export_features_gnps.fbmn.GnpsFbmnExportAndSubmitModule" parameter_version="2">
         <parameter name="Feature lists" type="BATCH_LAST_FEATURELISTS"/>
         <parameter name="Filename">
-            <current_file>inst/extdata/interim/mzmine/lists/MYFILENAME_gnps</current_file>
+            <current_file>data/interim/mzmine/lists/MYFILENAME_gnps</current_file>
         </parameter>
         <parameter name="Merge MS/MS (experimental)" selected="true">
             <parameter name="Select spectra to merge">across samples</parameter>
@@ -1130,7 +1130,7 @@
     <batchstep method="io.github.mzmine.modules.io.export_features_sirius.SiriusExportModule" parameter_version="1">
         <parameter name="Feature lists" type="BATCH_LAST_FEATURELISTS"/>
         <parameter name="Filename">
-            <current_file>inst/extdata/interim/mzmine/mgfs/MYFILENAME_sirius.mgf</current_file>
+            <current_file>data/interim/mzmine/mgfs/MYFILENAME_sirius.mgf</current_file>
         </parameter>
         <parameter name="Merge MS/MS" selected="true">
             <parameter name="Select spectra to merge">across samples</parameter>
