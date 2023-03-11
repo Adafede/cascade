@@ -16,9 +16,6 @@ signal_sharpening(
 \arguments{
 \item{Baseline_adjust}{}
 }
-\value{
-
-}
 \description{
 Title
 }

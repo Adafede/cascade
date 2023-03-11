@@ -9,9 +9,6 @@ read_edges(id)
 \arguments{
 \item{id}{}
 }
-\value{
-
-}
 \description{
 Title
 }

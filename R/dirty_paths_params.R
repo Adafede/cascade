@@ -1,4 +1,12 @@
-#' Paths
+source(file = "r/parse_yaml_paths.R")
+source(file = "r/get_params.R")
+
+## Paths
+step <- "processing"
+paths <- parse_yaml_paths()
+params <- ""
+params <- get_params(step = step)
+
 ANNOTATIONS <- list.files(
   path = file.path(
     paths$data$interim$annotations,

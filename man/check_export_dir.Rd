@@ -9,9 +9,6 @@ check_export_dir(dir)
 \arguments{
 \item{dir}{}
 }
-\value{
-
-}
 \description{
 Title
 }

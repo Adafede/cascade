@@ -1,4 +1,6 @@
 require(package = docopt, quietly = TRUE)
+source(file = "r/parse_cli_params.R")
+source(file = "r/parse_yaml_params.R")
 
 #' Title
 #'

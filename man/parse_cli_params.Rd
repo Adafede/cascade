@@ -6,9 +6,6 @@
 \usage{
 parse_cli_params()
 }
-\value{
-
-}
 \description{
 Title
 }

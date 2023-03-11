@@ -9,9 +9,6 @@ treemaps_progress(xs, type = "treemap")
 \arguments{
 \item{type}{}
 }
-\value{
-
-}
 \description{
 Title
 }

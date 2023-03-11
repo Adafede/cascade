@@ -26,7 +26,7 @@ improve_signal <-
         intensity_fourier = nucleR::filterFFT(
           intensity,
           pcKeepComp = fourier_components,
-          #pcKeepComp = 0.01,
+          # pcKeepComp = 0.01,
           showPowerSpec = FALSE,
           useOptim = TRUE
         )

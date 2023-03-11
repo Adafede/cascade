@@ -9,9 +9,6 @@ prettyTables_progress(xs)
 \arguments{
 \item{xs}{}
 }
-\value{
-
-}
 \description{
 Title
 }

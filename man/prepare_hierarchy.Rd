@@ -14,9 +14,6 @@ prepare_hierarchy(
 \arguments{
 \item{rescale}{}
 }
-\value{
-
-}
 \description{
 Title
 }
