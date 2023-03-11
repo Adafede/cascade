@@ -12,6 +12,3 @@ prepare_hierarchy_preparation(dataframe)
 \description{
 Title
 }
-\examples{
-add this step
-}

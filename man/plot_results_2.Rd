@@ -12,7 +12,3 @@ plot_results_2(detector = "cad")
 \description{
 Title
 }
-\examples{
-TODO check to use full table
-TODO remove redundancy
-}

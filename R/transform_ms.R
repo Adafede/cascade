@@ -19,7 +19,7 @@ transform_ms <- function(x) {
         min(intensity))) |>
       dplyr::filter(intensity >= 0.1) |>
       dplyr::mutate(rtime = (rtime - min(rtime)) / (max(rtime) -
-        min(rtime))) |> #' see https://github.com/sneumann/xcms/issues/593
+        min(rtime))) |> ## see https://github.com/sneumann/xcms/issues/593
       dplyr::arrange(rtime)
     return(df)
   })

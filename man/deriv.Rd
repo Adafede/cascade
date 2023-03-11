@@ -9,9 +9,6 @@ deriv(x, y)
 \arguments{
 \item{y}{}
 }
-\value{
-
-}
 \description{
 Title
 }

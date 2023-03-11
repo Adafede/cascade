@@ -12,6 +12,3 @@ y_as_na(x, y)
 \description{
 Title
 }
-\examples{
-since ifelse wont work with factors
-}
