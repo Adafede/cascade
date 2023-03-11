@@ -7,10 +7,7 @@
 prepare_plot(dataframe, organism = "species")
 }
 \arguments{
-\item{dataframe}{}
-}
-\value{
-
+\item{organism}{}
 }
 \description{
 Title

@@ -16,9 +16,6 @@ improve_signal(
 \arguments{
 \item{resample}{}
 }
-\value{
-
-}
 \description{
 Title
 }

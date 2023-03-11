@@ -9,9 +9,6 @@ y_as_na(x, y)
 \arguments{
 \item{y}{}
 }
-\value{
-
-}
 \description{
 Title
 }

@@ -9,9 +9,9 @@ hierarchies_grouped_progress(xs)
 \arguments{
 \item{xs}{}
 }
-\value{
-
-}
 \description{
 Title
+}
+\examples{
+dirty workaround
 }

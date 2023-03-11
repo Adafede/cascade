@@ -6,9 +6,6 @@
 \usage{
 load_lotus()
 }
-\value{
-
-}
 \description{
 Title
 }
