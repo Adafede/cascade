@@ -40,7 +40,7 @@ chromato:
     max: 127.5
 signal:
   detector:
-    bpi: TRUE
+    bpi: FALSE
     cad: TRUE
     pda: TRUE
   fourrier:
