@@ -12,6 +12,3 @@ hierarchies_grouped_progress(xs)
 \description{
 Title
 }
-\examples{
-dirty workaround
-}

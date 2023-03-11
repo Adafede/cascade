@@ -16,7 +16,3 @@ preprocess_peaks(
 \description{
 Title
 }
-\examples{
-data.table call outside of future because buggy else
-data.table call outside of future because buggy else
-}

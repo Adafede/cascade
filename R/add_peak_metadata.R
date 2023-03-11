@@ -23,7 +23,7 @@ add_peak_metadata <- function(df) {
       score_biological,
       score_chemical,
       score_final,
-      #' add consensus
+      ## add consensus
       sample,
       keep
     ) |>
@@ -87,7 +87,7 @@ add_peak_metadata <- function(df) {
       score_biological,
       score_chemical,
       score_final,
-      #' add consensus
+      ## add consensus
       sample,
       keep
     ) |>
@@ -152,7 +152,7 @@ add_peak_metadata <- function(df) {
       score_biological,
       score_chemical,
       score_final,
-      #' add consensus
+      ## add consensus
       sample,
       keep
     ) |>

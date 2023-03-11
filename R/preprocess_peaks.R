@@ -10,12 +10,12 @@ preprocess_peaks <- function(detector = "cad",
                              list = chromatograms_list_cad$chromatograms_improved,
                              df_long = chromatograms_list_cad$chromatograms_improved_long) {
   log_debug(x = "preprocessing", detector, "peaks")
-  #' data.table call outside of future because buggy else
+  ## data.table call outside of future because buggy else
   peaks <- peaks_progress(list)
 
   names(peaks) <- names
 
-  #' data.table call outside of future because buggy else
+  ## data.table call outside of future because buggy else
   peaks_long <- dplyr::bind_rows(peaks, .id = "id") |>
     data.table::data.table()
 
@@ -33,17 +33,17 @@ preprocess_peaks <- function(detector = "cad",
     dplyr::select(-rt_1, -rt_2) |>
     dplyr::filter(!is.na(peak_id))
 
-  # df_new_with_cad <- df_new_with_cad |> #' TODO DONT FORGET
-  #   dplyr::distinct(id, peak_id, feature_id, .keep_all = TRUE) |> #' TODO DONT FORGET
-  #   sample_n(500) #' TODO DONT FORGET
+  # df_new_with_cad <- df_new_with_cad |> ## TODO DONT FORGET
+  #   dplyr::distinct(id, peak_id, feature_id, .keep_all = TRUE) |> ## TODO DONT FORGET
+  #   sample_n(500) ## TODO DONT FORGET
 
   log_debug(x = "selecting features outside peaks")
   df_features_without_peaks <- df_features_peaks |>
     dplyr::filter(is.na(peak_id)) |>
     dplyr::filter(sample %in% df_features_with_peaks$sample)
 
-  # df_new_without <- df_new_without |> #' TODO DONT FORGET
-  #   dplyr::distinct(id, peak_id, feature_id, .keep_all = TRUE) #' TODO DONT FORGET
+  # df_new_without <- df_new_without |> ## TODO DONT FORGET
+  #   dplyr::distinct(id, peak_id, feature_id, .keep_all = TRUE) ## TODO DONT FORGET
 
   log_debug(x = "splitting by file")
   list_df_features_with_peaks <- df_features_with_peaks |>
