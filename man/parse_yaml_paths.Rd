@@ -6,9 +6,6 @@
 \usage{
 parse_yaml_paths()
 }
-\value{
-
-}
 \description{
 Title
 }

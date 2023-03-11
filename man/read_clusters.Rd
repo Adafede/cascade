@@ -9,9 +9,6 @@ read_clusters(id)
 \arguments{
 \item{id}{}
 }
-\value{
-
-}
 \description{
 Title
 }

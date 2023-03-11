@@ -9,9 +9,6 @@ second_der(x, y)
 \arguments{
 \item{y}{}
 }
-\value{
-
-}
 \description{
 Title
 }

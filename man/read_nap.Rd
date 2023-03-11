@@ -9,9 +9,6 @@ read_nap(id)
 \arguments{
 \item{id}{}
 }
-\value{
-
-}
 \description{
 Title
 }
