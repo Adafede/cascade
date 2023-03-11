@@ -49,7 +49,7 @@ signal:
   sigma: 0.05
   k2: 250
   k4: 1250000
-  smoothing: 5
+  smoothing: 8
   baseline: 0
 structures:
   dimensionality: 2
