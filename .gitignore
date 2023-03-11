@@ -46,7 +46,7 @@ vignettes/*.pdf
 .vscode
 
 # Repo specific
-config/params/**
+params/params/**
 data/**
 inst/extdata/**
 https:/**
