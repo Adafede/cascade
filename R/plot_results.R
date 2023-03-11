@@ -180,7 +180,7 @@ plot_results_2 <- function(detector = "cad") {
     temp_fix_duplicates(colname = "newrt") |>
     prepare_hierarchy(detector = "cad")
 
-  #' TODO check to use full table
+  ## TODO check to use full table
   table_taxo_maj_cor_ms <- list$peaks_maj_precor_taxo_cor |>
     prepare_hierarchy(detector = "ms")
   table_taxo_maj_cor_ms_2 <- table_taxo_maj_cor_ms |>
@@ -227,7 +227,7 @@ plot_results_2 <- function(detector = "cad") {
   #
   # absolute_with_new_cor
 
-  #' TODO remove redundancy
+  ## TODO remove redundancy
   sunburst_conf_signal_based_pos <-
     table_taxo_maj_cor_conf_signal |>
     dplyr::filter(grepl(

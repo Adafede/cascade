@@ -49,7 +49,7 @@ prepare_comparison <- function(detector = "cad") {
     dplyr::bind_rows(peaks_outside)
 
   log_debug(x = "joining compared peaks and candidates")
-  log_debug(x = "temporary fix") #' TODO
+  log_debug(x = "temporary fix") ## TODO
   temp_fix <- function(df) {
     df_temp <- df |>
       dplyr::left_join(candidates_confident) |>
@@ -103,7 +103,7 @@ prepare_comparison <- function(detector = "cad") {
 
   log_debug(x = "keeping peaks similarities above desired (pre-)threshold only")
   peaks_maj_precor <- peaks_maj |>
-    dplyr::filter(comparison_score >= PEAK_SIMILARITY_PREFILTER) #' TODO check negative values
+    dplyr::filter(comparison_score >= PEAK_SIMILARITY_PREFILTER) ## TODO check negative values
 
   peaks_min_precor <- peaks_maj |>
     dplyr::anti_join(peaks_maj_precor) |>
@@ -131,7 +131,7 @@ prepare_comparison <- function(detector = "cad") {
       yes = 1,
       no = 0
     )) |>
-    dplyr::group_by(sample, peak_id) |> #' TODO switch to ID if needed
+    dplyr::group_by(sample, peak_id) |> ## TODO switch to ID if needed
     dplyr::mutate(sum = sum(taxo)) |>
     dplyr::mutate(sum_2 = sum(taxo_2)) |>
     dplyr::mutate(keep = ifelse(
@@ -151,7 +151,7 @@ prepare_comparison <- function(detector = "cad") {
         )
       )
     )) |>
-    dplyr::filter(keep == "Y") |> #' TODO decide if genus
+    dplyr::filter(keep == "Y") |> ## TODO decide if genus
     dplyr::ungroup()
 
   peaks_min_precor_taxo <- peaks_maj |>

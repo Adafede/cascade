@@ -137,29 +137,29 @@ FEATURES <-
 # TOYSET <- "~/data/20210701_10043/test"
 TOYSET <- paths$data$source$mzml$path
 
-#' Generic parameters
+## Generic parameters
 WORKERS <- params$workers
 
-#' Parameters for LC alignment
+## Parameters for LC alignment
 TIME_MIN <- params$chromato$time$min
 TIME_MAX <- params$chromato$time$max
 CAD_SHIFT <- params$chromato$shift$cad
 PDA_SHIFT <- params$chromato$shift$pda
 ESTIMATED_SOLUBLITIY_LIMIT <- params$misc$solubility$limit
 
-#' Parameters for signal improvement
+## Parameters for signal improvement
 FOURRIER_COMPONENTS <- params$signal$fourrier$components
 FREQUENCY <- params$signal$frequency
 RESAMPLE <- params$signal$resample
 
-#' Parameters adapted from Excel sheet from paper shortDOI: 10/ghmvhz
+## Parameters adapted from Excel sheet from paper shortDOI: 10/ghmvhz
 sigma <- params$signal$sigma
 k2 <- sigma / params$signal$k2 # 30
 k4 <- sigma / params$signal$k4 # 200
 smoothing_width <- params$signal$smoothing
 baseline_adjust <- params$signal$baseline
 
-#' Parameters related to MS/CAD
+## Parameters related to MS/CAD
 INTENSITY_MS_MIN <- params$chromato$intensity$ms1$min
 PEAK_SIMILARITY <- params$chromato$peak$similarity$filter
 PEAK_SIMILARITY_PREFILTER <-
@@ -168,5 +168,5 @@ RT_TOL <- params$chromato$peak$tolerance$rt
 PPM <- params$chromato$peak$tolerance$ppm
 AREA_MIN <- params$chromato$peak$area$min
 
-#' Parameters for annotation
+## Parameters for annotation
 CONFIDENCE_SCORE_MIN <- params$annotation$confidence$min

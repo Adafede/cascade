@@ -17,7 +17,3 @@ prepare_hierarchy(
 \description{
 Title
 }
-\examples{
-dirty temp fix because of bad npclassifier naming
-Comment these if
-}
