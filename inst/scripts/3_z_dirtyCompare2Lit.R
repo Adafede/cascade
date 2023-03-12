@@ -1,10 +1,10 @@
 #' paths
 path_peaks_pos <-
-  "inst/extdata/interim/peaks/191109_AR_10043_enriched_UHR_Pos_featuresInformed_cad.tsv.gz"
+  "data/interim/peaks/191109_AR_10043_enriched_UHR_Pos_featuresInformed_cad.tsv.gz"
 path_peaks_neg <-
-  "inst/extdata/interim/peaks/191109_AR_10043_enriched_UHR_Neg_featuresInformed_cad.tsv.gz"
+  "data/interim/peaks/191109_AR_10043_enriched_UHR_Neg_featuresInformed_cad.tsv.gz"
 path_annotations_final <- "data/paper/final_table.tsv"
-path_lotus <- "inst/extdata/source/libraries/lotus.csv.gz"
+path_lotus <- "data/source/libraries/lotus.csv.gz"
 
 source(file = "R/get_params.R")
 source(file = "R/parse_cli_params.R")
@@ -222,3 +222,4 @@ gt::gtsave(
   data = test,
   filename = "data/paper/prettyTable_2.html"
 )
+
