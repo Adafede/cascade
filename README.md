@@ -13,3 +13,9 @@ It has just been opened for the sake of transparency.
 
 3. Run `Rscript inst/scripts/1_process_compare_peaks.R`
 
+4. Run annotation (TODO)
+
+5. Run `Rscript inst/scripts/2_process_plot_pseudochromatgrams.R`
+
+...
+

@@ -121,7 +121,7 @@ organisms:
 references:
   date:
     start: 1900
-    end: 2022
+    end: 2023
 queries:
   limit: 50000
 workers: 10
