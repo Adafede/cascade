@@ -54,51 +54,63 @@ preprocess_peaks <- function(detector = "cad",
 
   log_debug(x = "splitting by peak")
   list_df_features_with_peaks_per_peak <-
-    parallel::mclapply(
+    mclapply(
       X = list_df_features_with_peaks,
-      FUN = dplyr::group_split,
-      peak_id
+      FUN = function(x) {
+        x <- x |>
+          dplyr::group_split(peak_id)
+        return(x)
+      },
+      mc.cores = detectCores() / 2
     )
 
   list_df_features_with_peaks_long <-
     list_df_features_with_peaks_per_peak |>
-    purrr::flatten()
+    flatten()
 
   log_debug(x = "retrieving ms files")
   list_dda_with_peak <-
-    parallel::mclapply(
+    mclapply(
       X = list_df_features_with_peaks_long,
-      FUN = filter_ms,
-      shift = CAD_SHIFT
+      FUN = function(x) {
+        x <- x |>
+          filter_ms(shift = CAD_SHIFT)
+        return(x)
+      },
+      mc.cores = detectCores() / 2
     )
 
   log_debug(x = "normalizing chromato")
   list_chromato_with_peak <-
-    parallel::mclapply(
+    mclapply(
       X = list_df_features_with_peaks_long,
       FUN = normalize_chromato,
-      list = list
+      list = list,
+      mc.cores = detectCores() / 2
     )
 
   log_debug(x = "preparing peaks chromato")
   list_chromato_peaks <-
-    parallel::mclapply(
+    mclapply(
       X = list_chromato_with_peak,
-      FUN = prepare_peaks
+      FUN = prepare_peaks,
+      mc.cores = detectCores() / 2
     )
 
   log_debug(x = "preparing rt")
   list_rtr <-
-    parallel::mclapply(
+    mclapply(
       X = list_df_features_with_peaks_long,
-      FUN = prepare_rt
+      FUN = prepare_rt,
+      mc.cores = detectCores() / 2
     )
 
   log_debug(x = "preparing mz")
   list_mzr <-
-    parallel::mclapply(
+    mclapply(
       X = list_df_features_with_peaks_long,
-      FUN = prepare_mz
+      FUN = prepare_mz,
+      mc.cores = detectCores() / 2
     )
 
   returned_list <- list(

@@ -14,13 +14,13 @@ transform_ms <- function(x) {
         intensity = x[[z]][1]@intensity,
         rtime = x[[z]][1]@rtime
       ) |>
-      dplyr::filter(!is.na(intensity)) |>
-      dplyr::mutate(intensity = (intensity - min(intensity)) / (max(intensity) -
+      filter(!is.na(intensity)) |>
+      mutate(intensity = (intensity - min(intensity)) / (max(intensity) -
         min(intensity))) |>
-      dplyr::filter(intensity >= 0.1) |>
-      dplyr::mutate(rtime = (rtime - min(rtime)) / (max(rtime) -
+      filter(intensity >= 0.1) |>
+      mutate(rtime = (rtime - min(rtime)) / (max(rtime) -
         min(rtime))) |> ## see https://github.com/sneumann/xcms/issues/593
-      dplyr::arrange(rtime)
+      arrange(rtime)
     return(df)
   })
   return(y)
