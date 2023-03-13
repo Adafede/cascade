@@ -1,6 +1,6 @@
 filename:
-  # mzml: M_[0-9]{2}_01 # 191109_AR_10043_enriched_UHR_Pos
-  mzml: 191109_AR_10043_enriched_UHR_Pos
+  # mzml: M_[0-9]{2}_01
+  mzml: 191107_AR_10043_Pos
   annotation:
     tima:
       pos: 191109_AR_10043_enriched_UHR_Pos.tsv.gz
@@ -69,7 +69,6 @@ organisms:
   group: organism_taxonomy_08genus
   subgroup: organism_taxonomy_09species
   wikidata:
-    # Actinobacteria: Q26262282
     # Asteraceae: Q25400
     # Simaroubaceae: Q156679
     # Gentianaceae: Q157216
@@ -81,6 +80,7 @@ organisms:
     # Gentiana lutea: Q158572
     # Quassia: Q1947702
     # Quassia amara: Q135389
+    # Aloe: Q127134
     # Aloe ferox: Q1194889
     # Sambucus nigra: Q22701
     # Coriandrum sativum: Q41611
@@ -102,14 +102,6 @@ organisms:
     # Ginkgo biloba: Q43284
     # Panax ginseng: Q182881
     # Salvia officinalis: Q1111359
-    # Saxifraga: Q156146
-    # Dendrobium: Q133778
-    # Dendrobium chrysanthum: Q5223343
-    # Dendrobium fimbriatum: Q7990065
-    # Trichoderma: Q135322
-    # Trichoderma yunnanense: Q108442404
-    # Papiliotrema: Q7132982
-    # Papiliotrema rajasthanensis: Q27866418
   comparison:
     # - Arnica montana
     # - Cinchona succirubra
