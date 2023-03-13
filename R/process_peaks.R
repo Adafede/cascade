@@ -13,34 +13,39 @@ process_peaks <- function(detector = "cad") {
   log_debug(x = "varies a lot depending on features distribution")
 
   list_ms_chromatograms <<-
-    parallel::mclapply(
+    mclapply(
       X = seq_along(switch(detector,
         "bpi" = peaks_prelist_bpi$list_df_features_with_peaks_long,
         "cad" = peaks_prelist_cad$list_df_features_with_peaks_long,
         "pda" = peaks_prelist_pda$list_df_features_with_peaks_long
       )),
-      FUN = extract_ms
+      FUN = extract_ms,
+      mc.preschedule = FALSE,
+      mc.cores = detectCores() / 2
     )
 
   log_debug(x = "transforming ms chromatograms")
   list_ms_chromatograms_transformed <<-
-    parallel::mclapply(
+    mclapply(
       X = list_ms_chromatograms,
-      FUN = transform_ms
+      FUN = transform_ms,
+      mc.cores = detectCores() / 2
     )
 
   log_debug(x = "extracting ms peaks")
   list_ms_peaks <<-
-    parallel::mclapply(
+    mclapply(
       X = list_ms_chromatograms_transformed,
-      FUN = extract_ms_peak
+      FUN = extract_ms_peak,
+      mc.cores = detectCores() / 2
     )
 
   log_debug(x = "comparing peaks")
   list_comparison_score <<-
-    parallel::mclapply(
+    mclapply(
       X = seq_along(list_ms_peaks),
-      FUN = compare_peaks
+      FUN = compare_peaks,
+      mc.cores = detectCores() / 2
     )
 
   log_debug(x = "selecting features with peaks")
@@ -55,7 +60,7 @@ process_peaks <- function(detector = "cad") {
 
   log_debug(x = "summarizing comparison scores")
   comparison_scores <- list_comparison_score |>
-    purrr::flatten()
+    flatten()
 
   log_debug(x = "There are", length(comparison_scores), "scores calculated")
 

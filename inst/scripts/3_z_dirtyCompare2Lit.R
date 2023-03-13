@@ -222,4 +222,3 @@ gt::gtsave(
   data = test,
   filename = "data/paper/prettyTable_2.html"
 )
-
