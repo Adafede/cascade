@@ -8,7 +8,7 @@
 #' @examples
 transform_ms <- function(x) {
   feature <- seq_along(x)
-  y <- mclapply(X = feature, function(z) {
+  y <- future_lapply(X = feature, function(z) {
     df <-
       data.frame(
         intensity = x[[z]][1]@intensity,
