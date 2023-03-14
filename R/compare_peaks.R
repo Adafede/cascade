@@ -9,7 +9,7 @@
 compare_peaks <- function(x) {
   if (length(list_ms_peaks[[x]]) != 0) {
     feature <- seq_along(list_ms_peaks[[x]])
-    y <- mclapply(
+    y <- future_lapply(
       X = feature,
       FUN = function(z) {
         if (length(list_ms_peaks[[x]][[z]]) > 1) {

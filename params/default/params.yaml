@@ -1,6 +1,7 @@
 filename:
   # mzml: M_[0-9]{2}_01
-  mzml: 191107_AR_10043_Pos
+  mzml: 191109_AR_10043_enriched_UHR_Neg
+  # mzml: 191113_AR_10043_apolar_Pos
   annotation:
     tima:
       pos: 191109_AR_10043_enriched_UHR_Pos.tsv.gz
