@@ -1,12 +1,14 @@
+INPUT=$1
 sirius \
---output $1 \
+--input $1 \
+--output ${INPUT%.*} \
 config \
 --IsotopeSettings.filter true \
 --FormulaSearchDB BIO,COCONUT \
 --Timeout.secondsPerTree 0 \
 --FormulaSettings.enforced HCNOPS \
 --Timeout.secondsPerInstance 0 \
---AdductSettings.detectable "[M - H4O2 + H]+, [M + H]+, [M + H3N + H]+, [M + Na]+, [M + K]+, [M - H2O + H]+" \
+--AdductSettings.detectable "[M + H]+, [M + H4N]+, [M + Na]+, [M + K]+, [M - H + Na2]+, [M - H + K2]+, [M - CH3 + H]+, [M - H2O + H]+, [M - H4O2 + H]+, [M - H6O3 + H]+, [M - H8O4 + H]+, [M - H10O5 + H]+, [M - CO + H]+, [M - C2O2 + H]+, [M - C3O3 + H]+, [M - C2H4 + H]+, [M - C2H5 + H]+, [M - CH2O + H]+, [M - CH4O + H]+, [M - C2H2O + H]+, [M - CO2 + H]+, [M - C2O4 + H]+, [M - CH2O2 + H]+, [M - C2H6O + H]+, [M - C2H4O2 + H]+, [M - CH6O3 + H]+, [M - C2H2O3 + H]+, [M - C3H7O2 + H]+, [M - C3H4O3 + H]+, [M - C4H8O2 + H]+, [M - H2O4S + H]+, [M - H3O4P + H]+, [M - C5H10O2 + H]+, [M - C3H4O4 + H]+, [M - C5H8O4 + H]+, [M - C9H6O2 + H]+, [M - C6H10O4 + H]+, [M - C12H20O8 + H]+, [M - C9H8O2 + H]+, [M - C7H4O4 + H]+, [M - C9H6O3 + H]+, [M - C6H10O5 + H]+, [M - C12H20O10 + H]+, [M - C18H30O15 + H]+" \
 --UseHeuristic.mzToUseHeuristicOnly 650 \
 --AlgorithmProfile orbitrap \
 --IsotopeMs2Settings IGNORE \
