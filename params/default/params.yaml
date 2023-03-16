@@ -1,7 +1,7 @@
 filename:
   # mzml: M_[0-9]{2}_01
-  mzml: 191109_AR_10043_enriched_UHR_Neg
-  # mzml: 191113_AR_10043_apolar_Pos
+  # mzml: 191109_AR_10043_enriched_UHR_Pos
+  mzml: 191107_AR_10042_Neg
   annotation:
     tima:
       pos: 191109_AR_10043_enriched_UHR_Pos.tsv.gz
@@ -34,8 +34,10 @@ chromato:
     area:
       min: 0.005
   shift:
-    cad: 0.055
-    pda: 0.090
+    # cad: 0.055 # old
+    # pda: 0.090 # old
+    cad: 0.065
+    pda: 0.080
   time:
     min: 0.5
     max: 127.5
@@ -46,8 +48,8 @@ signal:
     pda: TRUE
   fourrier:
     components: 0.01
-  frequency: 20
-  resample: 0.1
+  frequency: 2
+  resample: 1
   sigma: 0.05
   k2: 250
   k4: 1250000

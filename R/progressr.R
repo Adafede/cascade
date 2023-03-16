@@ -1,7 +1,10 @@
 library(future)
 library(progressr)
-
-plan(multisession)
+strat <- ifelse(test = .Platform$OS.type == "unix",
+  yes = "multicore",
+  no = "multisession"
+)
+plan(strategy = strat)
 handlers(global = TRUE)
 handlers(
   handler_txtprogressbar(enable = TRUE),
