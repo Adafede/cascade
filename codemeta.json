@@ -94,6 +94,12 @@
     },
     "3": {
       "@type": "SoftwareApplication",
+      "identifier": "chromatographR",
+      "name": "chromatographR",
+      "version": ">= 0.4.7"
+    },
+    "4": {
+      "@type": "SoftwareApplication",
       "identifier": "data.table",
       "name": "data.table",
       "version": ">= 1.14.8",
@@ -105,7 +111,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=data.table"
     },
-    "4": {
+    "5": {
       "@type": "SoftwareApplication",
       "identifier": "docopt",
       "name": "docopt",
@@ -118,7 +124,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=docopt"
     },
-    "5": {
+    "6": {
       "@type": "SoftwareApplication",
       "identifier": "dplyr",
       "name": "dplyr",
@@ -131,7 +137,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=dplyr"
     },
-    "6": {
+    "7": {
       "@type": "SoftwareApplication",
       "identifier": "future",
       "name": "future",
@@ -144,7 +150,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=future"
     },
-    "7": {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "future.apply",
       "name": "future.apply",
@@ -157,7 +163,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=future.apply"
     },
-    "8": {
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "MSnbase",
       "name": "MSnbase",
@@ -170,7 +176,7 @@
       },
       "sameAs": "https://bioconductor.org/packages/release/bioc/html/MSnbase.html"
     },
-    "9": {
+    "10": {
       "@type": "SoftwareApplication",
       "identifier": "nucleR",
       "name": "nucleR",
@@ -183,12 +189,12 @@
       },
       "sameAs": "https://bioconductor.org/packages/release/bioc/html/nucleR.html"
     },
-    "10": {
+    "11": {
       "@type": "SoftwareApplication",
       "identifier": "parallel",
       "name": "parallel"
     },
-    "11": {
+    "12": {
       "@type": "SoftwareApplication",
       "identifier": "plotly",
       "name": "plotly",
@@ -201,7 +207,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=plotly"
     },
-    "12": {
+    "13": {
       "@type": "SoftwareApplication",
       "identifier": "pracma",
       "name": "pracma",
@@ -214,7 +220,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=pracma"
     },
-    "13": {
+    "14": {
       "@type": "SoftwareApplication",
       "identifier": "progressr",
       "name": "progressr",
@@ -227,7 +233,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=progressr"
     },
-    "14": {
+    "15": {
       "@type": "SoftwareApplication",
       "identifier": "purrr",
       "name": "purrr",
@@ -240,7 +246,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=purrr"
     },
-    "15": {
+    "16": {
       "@type": "SoftwareApplication",
       "identifier": "readr",
       "name": "readr",
@@ -253,7 +259,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=readr"
     },
-    "16": {
+    "17": {
       "@type": "SoftwareApplication",
       "identifier": "xcms",
       "name": "xcms",
@@ -266,7 +272,7 @@
       },
       "sameAs": "https://bioconductor.org/packages/release/bioc/html/xcms.html"
     },
-    "17": {
+    "18": {
       "@type": "SoftwareApplication",
       "identifier": "yaml",
       "name": "yaml",
@@ -281,5 +287,5 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "32616091.93KB"
+  "fileSize": "32725209.798KB"
 }

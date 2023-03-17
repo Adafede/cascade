@@ -63,14 +63,16 @@ TIME_MAX <- 21.3
 
 files <- list.files(
   path = TOYSET,
-  pattern = "10043_Pos",
+  # pattern = "10043_enriched_UHR_Pos",
+  pattern = "10043_apolar_Pos",
   full.names = TRUE,
   recursive = TRUE
 )
 
 files_2 <- list.files(
   path = TOYSET,
-  pattern = "10043_Neg",
+  # pattern = "10043_enriched_UHR_Neg",
+  pattern = "10043_apolar_Neg",
   full.names = TRUE,
   recursive = TRUE
 )
@@ -184,67 +186,9 @@ cads_baselined <- chromatograms_cad_baselined |>
 pdas_baselined <- chromatograms_pda_baselined |>
   normalize_chromatograms_list()
 
-uhr <- plotly::plot_ly() |>
-  plotly::add_lines(
-    data = cads_baselined |>
-      dplyr::filter(grepl(pattern = "UHR", x = id)),
-    x = ~time,
-    y = ~intensity,
-    name = "very long",
-    line = list(
-      width = 1,
-      color = "ff7f00"
-    )
-  )
-semi <- plotly::plot_ly() |>
-  plotly::add_lines(
-    data = cads_baselined |>
-      dplyr::filter(grepl(pattern = "21", x = id)),
-    x = ~time,
-    y = ~intensity,
-    name = "long",
-    line = list(
-      width = 1,
-      color = "cab2d6"
-    )
-  )
-short <- plotly::plot_ly() |>
-  plotly::add_lines(
-    data = cads_baselined |>
-      dplyr::filter(grepl(pattern = "09_P", x = id)),
-    x = ~time,
-    y = ~intensity,
-    name = "short",
-    line = list(
-      width = 1,
-      color = "b15928"
-    )
-  )
-
-new_new_new <- plotly::subplot(
-  short,
-  semi,
-  uhr,
-  shareX = TRUE,
-  shareY = TRUE,
-  titleY = FALSE,
-  titleX = FALSE,
-  nrows = 3
-) |>
-  plotly::layout(
-    yaxis = list(range = c(0, 0.2)),
-    yaxis2 = list(
-      title = "Intensity",
-      range = c(0, 0.2)
-    ),
-    yaxis3 = list(range = c(0, 0.2)),
-    xaxis = list(title = "Time")
-  )
-new_new_new
-
 new <- plotly::plot_ly() |>
   plotly::add_lines(
-    data = chromatograms_cad_ready[[1]] |> normalize_chromatograms_list(),
+    data = chromatograms_cad_improved[[1]] |> normalize_chromatograms_list(shift = CAD_SHIFT, time = TRUE),
     x = ~time,
     y = ~intensity,
     name = "<b> CAD </b>",
@@ -255,7 +199,7 @@ new <- plotly::plot_ly() |>
     )
   ) |>
   plotly::add_lines(
-    data = chromatograms_pda_ready[[1]] |> normalize_chromatograms_list(),
+    data = chromatograms_pda_improved[[1]] |> normalize_chromatograms_list(shift = PDA_SHIFT, time = TRUE),
     x = ~time,
     y = ~intensity,
     name = "<b> PDA </b>",
@@ -266,7 +210,7 @@ new <- plotly::plot_ly() |>
     )
   ) |>
   plotly::add_lines(
-    data = chromatograms_bpi_ready[[1]] |> normalize_chromatograms_list(),
+    data = chromatograms_bpi_improved[[1]] |> normalize_chromatograms_list(time = TRUE),
     x = ~time,
     y = ~ -intensity,
     name = "<b> MS Pos </b>",
@@ -277,7 +221,7 @@ new <- plotly::plot_ly() |>
     )
   ) |>
   plotly::add_lines(
-    data = chromatograms_bpi_neg_ready[[1]] |> normalize_chromatograms_list(),
+    data = chromatograms_bpi_neg_improved[[1]] |> normalize_chromatograms_list(time = TRUE),
     x = ~time,
     y = ~ -intensity,
     name = "<b> MS Neg </b>",
@@ -292,112 +236,3 @@ new <- plotly::plot_ly() |>
     yaxis = list(title = "<b> Normalized Intensity </b>")
   )
 new
-
-new_zoom <- plotly::plot_ly() |>
-  plotly::add_lines(
-    data = cads_baselined |>
-      dplyr::filter(grepl(pattern = "1", x = id)),
-    x = ~time,
-    y = ~intensity,
-    name = "<b> CAD </b>",
-    line = list(
-      width = 1,
-      # dash = "dot",
-      color = "e31a1c"
-    )
-  ) |>
-  plotly::add_lines(
-    data = pdas_baselined |>
-      dplyr::filter(grepl(pattern = "1", x = id)),
-    x = ~time,
-    y = ~intensity,
-    name = "<b> PDA </b>",
-    line = list(
-      width = 1,
-      # dash = "dot",
-      color = "b2df8a"
-    )
-  ) |>
-  plotly::add_lines(
-    data = bpis_baselined |>
-      dplyr::filter(grepl(pattern = "1", x = id)),
-    x = ~time,
-    y = ~ -intensity,
-    name = "<b> MS Pos </b>",
-    line = list(
-      width = 1,
-      # dash = "dot",
-      color = "a6cee3"
-    )
-  ) |>
-  plotly::add_lines(
-    data = bpis_neg_baselined |>
-      dplyr::filter(grepl(pattern = "1", x = id)),
-    x = ~time,
-    y = ~ -intensity,
-    name = "<b> MS Neg </b>",
-    line = list(
-      width = 1,
-      # dash = "dot",
-      color = "1f78b4"
-    )
-  ) |>
-  plotly::layout(
-    xaxis = list(title = "<b> Time [minutes] </b>"),
-    yaxis = list(title = "<b> Normalized Intensity </b>")
-  ) |>
-  plotly::layout(
-    xaxis = list(range = c(0.3 * 127, 0.425 * 127)),
-    yaxis = list(range = c(-0.2, 0.2))
-  )
-new_zoom
-
-# reticulate::install_miniconda()
-# reticulate::conda_install('r-reticulate', 'python-kaleido')
-# reticulate::conda_install('r-reticulate', 'plotly', channel = 'plotly')
-# reticulate::use_miniconda('r-reticulate')
-
-
-test <- plotly::plot_ly() |>
-  plotly::add_lines(
-    data = cads_improved |>
-      dplyr::filter(grepl(pattern = "1", x = id)),
-    x = ~ chromatograms_cad_ready[[1]]$time,
-    y = ~ chromatograms_cad_ready[[1]]$intensity,
-    name = "<b> CAD </b>",
-    line = list(
-      width = 1,
-      # dash = "dot",
-      color = "e31a1c"
-    )
-  ) |>
-  plotly::add_lines(
-    data = pdas_improved |>
-      dplyr::filter(grepl(pattern = "1", x = id)),
-    x = ~ chromatograms_cad_improved[[1]]$time,
-    y = ~ chromatograms_cad_improved[[1]]$intensity,
-    name = "<b> PDA </b>",
-    line = list(
-      width = 1,
-      # dash = "dot",
-      color = "b2df8a"
-    )
-  )
-test
-
-plotly::save_image(
-  p = new,
-  file = "data/chromatograms/chromatogram_full.pdf",
-  width = 1600,
-  height = 900
-)
-plotly::save_image(
-  p = new_zoom,
-  file = "data/chromatograms/chromatogram_zoomed.pdf",
-  width = 1600,
-  height = 900
-)
-
-end <- Sys.time()
-
-log_debug("Script finished in", format(end - start))
