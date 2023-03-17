@@ -21,6 +21,8 @@ improve_signal <-
            frequency = FREQUENCY,
            resample = RESAMPLE) {
     df_fourier <- df |>
+      ## in case we have negative intensity
+      dplyr::mutate(intensity = intensity + 10) |>
       dplyr::mutate(intensity = intensity - (min(intensity))) |>
       dplyr::mutate(
         intensity_fourier = nucleR::filterFFT(
