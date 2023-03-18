@@ -32,7 +32,6 @@ source(file = "R/format_gt.R")
 source(file = "R/hierarchies_progress.R")
 source(file = "R/hierarchies_grouped_progress.R")
 source(file = "R/histograms_progress.R")
-source(file = "R/load_lotus.R")
 source(file = "R/make_2D.R")
 source(file = "R/make_chromatographiable.R")
 source(file = "R/molinfo.R")
@@ -52,13 +51,10 @@ source(file = "R/subtables_progress.R")
 source(file = "R/tables_progress.R")
 source(file = "R/treemaps_progress.R")
 source(file = "R/wiki_progress.R")
+source(file = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_last_version_from_zenodo.R")
 
 check_and_load_packages_1()
 check_and_load_packages_2()
-
-devtools::source_url(
-  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_lotus.R"
-)
 
 handlers(global = TRUE)
 handlers("progress")
@@ -66,7 +62,11 @@ handlers("progress")
 paths <- parse_yaml_paths()
 params <- parse_yaml_params()
 
-load_lotus()
+get_last_version_from_zenodo(
+  doi = paths$url$lotus$doi,
+  pattern = paths$urls$lotus$pattern,
+  path = paths$data$source$libraries$lotus
+)
 
 exports <-
   list(

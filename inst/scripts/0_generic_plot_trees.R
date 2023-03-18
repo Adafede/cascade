@@ -24,20 +24,16 @@ packages_github <- c("KarstensLab/microshades")
 source(file = "R/check_and_load_packages.R")
 source(file = "R/check_export_dir.R")
 source(file = "R/colors.R")
-source(file = "R/load_lotus.R")
 source(file = "R/make_2D.R")
 source(file = "R/make_chromatographiable.R")
 source(file = "R/parse_yaml_params.R")
 source(file = "R/parse_yaml_paths.R")
 source(file = "R/prepare_hierarchy.R")
 source(file = "R/prepare_plot.R")
+source(file = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_last_version_from_zenodo.R")
 
 check_and_load_packages_1()
 check_and_load_packages_2()
-
-devtools::source_url(
-  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_lotus.R"
-)
 
 paths <- parse_yaml_paths()
 params <- parse_yaml_params()
@@ -49,10 +45,14 @@ export_name <-
     no = "full"
   )
 
-load_lotus()
+get_last_version_from_zenodo(
+  doi = paths$url$lotus$doi,
+  pattern = paths$urls$lotus$pattern,
+  path = paths$data$source$libraries$lotus
+)
 
 lotus <-
-  readr::read_delim(file = paths$inst$extdata$source$libraries$lotus) |>
+  readr::read_delim(file = paths$data$source$libraries$lotus) |>
   data.table::data.table()
 
 if (params$structures$dimensionality == 2) {
