@@ -1,6 +1,7 @@
 start <- Sys.time()
 
 library(package = baseline, quietly = TRUE)
+library(package = BiocParallel, quietly = TRUE)
 library(package = chromatographR, quietly = TRUE)
 library(package = data.table, quietly = TRUE)
 library(package = docopt, quietly = TRUE)
