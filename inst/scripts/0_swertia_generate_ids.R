@@ -51,6 +51,7 @@ source(file = "R/subtables_progress.R")
 source(file = "R/tables_progress.R")
 source(file = "R/treemaps_progress.R")
 source(file = "R/wiki_progress.R")
+source(file = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_file.R")
 source(file = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_last_version_from_zenodo.R")
 
 check_and_load_packages_1()
