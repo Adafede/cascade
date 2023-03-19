@@ -57,12 +57,11 @@ TIME_MAX <- 127
 THESIS <- TRUE
 
 ###
-#' DIRTY FROM 1_process_compare_peaks.R
+## DIRTY FROM 1_process_compare_peaks.R
 source(file = "R/baseline_chromatogram.R")
 source(file = "R/change_intensity_name.R")
 source(file = "R/check_export_dir.R")
 source(file = "R/compare_peaks.R")
-source(file = "R/extract_ms.R")
 source(file = "R/extract_ms_peak.R")
 source(file = "R/filter_ms.R")
 source(file = "R/get_gnps.R")
@@ -116,7 +115,9 @@ dda_data <- MSnbase::readMSData(
 if (THESIS == TRUE) {
   dda_data_neg <-
     MSnbase::readMSData(
-      files = files |> gsub(pattern = "_Pos", replacement = "_Neg"),
+      files = files |>
+        gsub(pattern = "_Pos", replacement = "_Neg") |>
+        gsub(pattern = "191113",replacement = "191107"),
       mode = "onDisk",
       msLevel. = 1
     )
@@ -130,7 +131,8 @@ chromatograms_all <- lapply(files, mzR::openMSfile) |>
 if (THESIS == TRUE) {
   chromatograms_all_neg <-
     lapply(
-      files |> gsub(pattern = "_Pos", replacement = "_Neg"),
+      files |> gsub(pattern = "_Pos", replacement = "_Neg")|>
+        gsub(pattern = "191113",replacement = "191107"),
       mzR::openMSfile
     ) |>
     lapply(mzR::chromatograms) |>
