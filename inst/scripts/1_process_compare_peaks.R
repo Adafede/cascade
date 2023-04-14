@@ -2,7 +2,14 @@ start <- Sys.time()
 
 library(package = baseline, quietly = TRUE)
 library(package = BiocParallel, quietly = TRUE)
-library(package = chromatographR, quietly = TRUE)
+# library(package = chromatographR, quietly = TRUE)
+## Getting it this way only to avoid
+## "Found more than one class "cluster" in cache issue
+source(file = "https://raw.githubusercontent.com/ethanbass/chromatographR/master/R/utils.R")
+source(file = "https://raw.githubusercontent.com/ethanbass/chromatographR/master/R/fit_peaks.R")
+source(file = "https://raw.githubusercontent.com/ethanbass/chromatographR/master/R/get_peaks.R")
+source(file = "https://raw.githubusercontent.com/ethanbass/chromatographR/master/R/get_purity.R")
+source(file = "https://raw.githubusercontent.com/ethanbass/chromatographR/master/R/preprocess.R")
 library(package = data.table, quietly = TRUE)
 library(package = docopt, quietly = TRUE)
 library(package = dplyr, quietly = TRUE)
@@ -47,6 +54,7 @@ source(file = "R/process_peaks.R")
 source(file = "R/progressr.R")
 source(file = "R/transform_ms.R")
 source(file = "R/y_as_na.R")
+source(file = "R/zzz.R")
 
 step <- "processing"
 paths <- parse_yaml_paths()

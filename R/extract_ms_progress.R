@@ -7,11 +7,12 @@
 #'
 #' @examples
 extract_ms_progress <- function(xs) {
-  p <- progressor(along = xs)
-  future_lapply(
+  # p <- progressor(along = xs)
+  pbapply::pblapply(
+  # lapply(
     X = xs,
     FUN = function(x) {
-      p()
+      # p()
       lapply(
         X = seq_along(
           1:nrow(peaks_prelist$list_df_features_with_peaks_long[[x]])

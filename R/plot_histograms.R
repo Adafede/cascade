@@ -164,10 +164,17 @@ plot_histograms_taxo <-
       dplyr::mutate(m = max(dplyr::row_number())) |>
       dplyr::ungroup()
 
+    if (mode == "neg") {
+      dataframe$peak_area <- -1 * dataframe$peak_area
+      dataframe$feature_area <- -1 * dataframe$feature_area
+      chromatograms_list_cad$chromatograms_improved_long$intensity <-
+        -1 * chromatograms_list_cad$chromatograms_improved_long$intensity
+    }
+
     plot <- ggplot2::ggplot() +
       ggplot2::geom_line(
         data = chromatograms_list_cad$chromatograms_improved_long,
-        mapping = ggplot2::aes(x = time, y = intensity / max(intensity)),
+        mapping = ggplot2::aes(x = time, y = intensity / max(abs(intensity))),
         col = "black",
         size = 0.1
       ) +
@@ -181,8 +188,8 @@ plot_histograms_taxo <-
                 "min" = feature_rt
               ),
               y = switch(level,
-                "max" = peak_area / max(peak_area * n),
-                "min" = feature_area / max(feature_area * m)
+                "max" = peak_area / max(abs(peak_area * n)),
+                "min" = feature_area / max(abs(feature_area * m))
               ),
               fill = name_2
             ),
@@ -198,8 +205,8 @@ plot_histograms_taxo <-
                 "min" = feature_rt
               ),
               y = switch(level,
-                "max" = peak_area / max(peak_area * n),
-                "min" = feature_area / max(feature_area * m)
+                "max" = peak_area / max(abs(peak_area * n)),
+                "min" = feature_area / max(abs(feature_area * m))
               ),
               fill = name_2
             ),
