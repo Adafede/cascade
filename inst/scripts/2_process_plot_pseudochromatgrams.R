@@ -117,7 +117,7 @@ if (THESIS == TRUE) {
     MSnbase::readMSData(
       files = files |>
         gsub(pattern = "_Pos", replacement = "_Neg") |>
-        gsub(pattern = "191113",replacement = "191107"),
+        gsub(pattern = "191113", replacement = "191107"),
       mode = "onDisk",
       msLevel. = 1
     )
@@ -131,8 +131,8 @@ chromatograms_all <- lapply(files, mzR::openMSfile) |>
 if (THESIS == TRUE) {
   chromatograms_all_neg <-
     lapply(
-      files |> gsub(pattern = "_Pos", replacement = "_Neg")|>
-        gsub(pattern = "191113",replacement = "191107"),
+      files |> gsub(pattern = "_Pos", replacement = "_Neg") |>
+        gsub(pattern = "191113", replacement = "191107"),
       mzR::openMSfile
     ) |>
     lapply(mzR::chromatograms) |>
@@ -233,6 +233,10 @@ if (params$signal$detector$bpi == TRUE) {
 if (params$signal$detector$cad == TRUE) {
   detector <- "cad"
 }
+
+# mode weirdly loaded,
+mode <- "pos"
+
 if (params$signal$detector$cad == TRUE) {
   compared_peaks_list_cad <- prepare_comparison()
   compared_peaks_list_cad_pos <- compared_peaks_list_cad |>
@@ -302,6 +306,8 @@ hierarchies <- list()
 hierarchies$peaks_maj <-
   prepare_hierarchy(
     dataframe = compared_peaks_list_cad$peaks_maj_precor_taxo_cor |>
+      # dplyr::filter(id == "bitter/191113_AR_10043_Pos") |>
+      # dplyr::filter(id == "bitter/TODO") |>
       dplyr::filter(id == "UHR/191109_AR_10043_enriched_UHR_Pos") |>
       dplyr::mutate(id = "peaks_maj") |>
       dplyr::mutate(sample = id, species = id) |>
@@ -327,6 +333,8 @@ hierarchies$peaks_min <-
   )
 hierarchies$special <- prepare_hierarchy(
   dataframe = compared_peaks_list_cad$peaks_maj_precor_taxo_cor |>
+    # dplyr::filter(id == "bitter/191113_AR_10043_Pos") |>
+    # dplyr::filter(id == "bitter/TODO") |>
     dplyr::filter(id == "UHR/191109_AR_10043_enriched_UHR_Pos") |>
     dplyr::mutate(id = "peaks_maj") |>
     dplyr::mutate(sample = id, species = id) |>

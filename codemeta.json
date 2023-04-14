@@ -3,16 +3,17 @@
   "@type": "SoftwareSourceCode",
   "identifier": "cascade",
   "description": "What the package does (one paragraph).",
-  "name": "cascade: What the Package Does (One Line, Title Case)",
+  "name": "cascade: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts",
+  "codeRepository": "https://github.com/adafede/cascade",
   "issueTracker": "https://github.com/adafede/cascade/issues",
-  "license": "`use_mit_license()`, `use_gpl3_license()` or friends to pick a\n    license",
+  "license": "CRAPL",
   "version": "0.0.0.9000",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.2.2 (2022-10-31)",
+  "runtimePlatform": "R version 4.2.3 (2023-03-15)",
   "author": [
     {
       "@type": "Person",
@@ -49,7 +50,7 @@
       "@type": "SoftwareApplication",
       "identifier": "testthat",
       "name": "testthat",
-      "version": ">= 3.1.6",
+      "version": ">= 3.1.7",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -94,11 +95,24 @@
     },
     "3": {
       "@type": "SoftwareApplication",
-      "identifier": "chromatographR",
-      "name": "chromatographR",
-      "version": ">= 0.4.7"
+      "identifier": "BiocParallel",
+      "name": "BiocParallel",
+      "version": ">= 1.32.6",
+      "provider": {
+        "@id": "https://www.bioconductor.org",
+        "@type": "Organization",
+        "name": "Bioconductor",
+        "url": "https://www.bioconductor.org"
+      },
+      "sameAs": "https://bioconductor.org/packages/release/bioc/html/BiocParallel.html"
     },
     "4": {
+      "@type": "SoftwareApplication",
+      "identifier": "chromatographR",
+      "name": "chromatographR",
+      "version": ">= 0.4.8"
+    },
+    "5": {
       "@type": "SoftwareApplication",
       "identifier": "data.table",
       "name": "data.table",
@@ -111,7 +125,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=data.table"
     },
-    "5": {
+    "6": {
       "@type": "SoftwareApplication",
       "identifier": "docopt",
       "name": "docopt",
@@ -124,11 +138,11 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=docopt"
     },
-    "6": {
+    "7": {
       "@type": "SoftwareApplication",
       "identifier": "dplyr",
       "name": "dplyr",
-      "version": ">= 1.1.0",
+      "version": ">= 1.1.1",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -137,7 +151,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=dplyr"
     },
-    "7": {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "future",
       "name": "future",
@@ -150,7 +164,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=future"
     },
-    "8": {
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "future.apply",
       "name": "future.apply",
@@ -163,7 +177,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=future.apply"
     },
-    "9": {
+    "10": {
       "@type": "SoftwareApplication",
       "identifier": "MSnbase",
       "name": "MSnbase",
@@ -176,7 +190,7 @@
       },
       "sameAs": "https://bioconductor.org/packages/release/bioc/html/MSnbase.html"
     },
-    "10": {
+    "11": {
       "@type": "SoftwareApplication",
       "identifier": "nucleR",
       "name": "nucleR",
@@ -189,12 +203,25 @@
       },
       "sameAs": "https://bioconductor.org/packages/release/bioc/html/nucleR.html"
     },
-    "11": {
+    "12": {
       "@type": "SoftwareApplication",
       "identifier": "parallel",
       "name": "parallel"
     },
-    "12": {
+    "13": {
+      "@type": "SoftwareApplication",
+      "identifier": "pbapply",
+      "name": "pbapply",
+      "version": ">= 1.7.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=pbapply"
+    },
+    "14": {
       "@type": "SoftwareApplication",
       "identifier": "plotly",
       "name": "plotly",
@@ -207,7 +234,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=plotly"
     },
-    "13": {
+    "15": {
       "@type": "SoftwareApplication",
       "identifier": "pracma",
       "name": "pracma",
@@ -220,7 +247,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=pracma"
     },
-    "14": {
+    "16": {
       "@type": "SoftwareApplication",
       "identifier": "progressr",
       "name": "progressr",
@@ -233,7 +260,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=progressr"
     },
-    "15": {
+    "17": {
       "@type": "SoftwareApplication",
       "identifier": "purrr",
       "name": "purrr",
@@ -246,7 +273,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=purrr"
     },
-    "16": {
+    "18": {
       "@type": "SoftwareApplication",
       "identifier": "readr",
       "name": "readr",
@@ -259,7 +286,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=readr"
     },
-    "17": {
+    "19": {
       "@type": "SoftwareApplication",
       "identifier": "xcms",
       "name": "xcms",
@@ -272,7 +299,7 @@
       },
       "sameAs": "https://bioconductor.org/packages/release/bioc/html/xcms.html"
     },
-    "18": {
+    "20": {
       "@type": "SoftwareApplication",
       "identifier": "yaml",
       "name": "yaml",
@@ -287,5 +314,6 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "32725209.798KB"
+  "fileSize": "34379828.98KB",
+  "readme": "https://github.com/Adafede/cascade/blob/main/README.md"
 }

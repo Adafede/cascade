@@ -6,28 +6,28 @@ source(file = "r/get_params.R")
 step <- "processing"
 params <- get_params(step = step)
 
-ANNOTATIONS <- list.files(
-  path = file.path(
+# ANNOTATIONS <- list.files(
+#   path = file.path(
+#     paths$data$interim$annotations,
+#     params$annotation$tool
+#   ),
+#   pattern = params$filename$mzml,
+#   full.names = TRUE,
+#   recursive = TRUE
+# )
+ANNOTATIONS <-
+  list.dirs(path = file.path(
     paths$data$interim$annotations,
     params$annotation$tool
-  ),
-  pattern = params$filename$mzml,
-  full.names = TRUE,
-  recursive = TRUE
-)
-ANNOTATIONS <- list.files(
-  path = file.path(
-    paths$data$interim$annotations,
-    params$annotation$tool
-  ),
+  ))
+ANNOTATIONS <- file.path(ANNOTATIONS[ANNOTATIONS |> grepl(
   pattern = paste0(
     params$filename$annotation$tima$pos,
     "|",
     params$filename$annotation$tima$neg
-  ),
-  full.names = TRUE,
-  recursive = TRUE
-)
+  ) |> gsub(pattern = ".tsv.gz", replacement = "")
+)], "annotations.tsv")
+
 EXPORT_DIR <- paths$data$interim$peaks
 EXPORT_FILE_BPI <-
   paste(params$filename$mzml,
@@ -66,58 +66,54 @@ EXPORT_FILE_PDA_2 <-
     sep = "_"
   )
 IMPORT_FILE_BPI <-
-  list.files(EXPORT_DIR, pattern = "featuresInformed_bpi.tsv.gz")[grepl(
-    pattern = gsub(
-      pattern = "_.*$",
-      replacement = "",
-      x = params$filename$mzml
-    ),
-    x = list.files(EXPORT_DIR, pattern = "featuresInformed_bpi.tsv.gz")
+  list.files(EXPORT_DIR, pattern = "featuresInformed_bpi.tsv.gz")
+IMPORT_FILE_BPI <-
+  IMPORT_FILE_BPI[grepl(
+    pattern = params$filename$mzml |>
+      paste0(collapse = "|"),
+    IMPORT_FILE_BPI
   )]
 IMPORT_FILE_BPI_2 <-
-  list.files(EXPORT_DIR, pattern = "featuresNotInformed_bpi.tsv.gz")[grepl(
-    pattern = gsub(
-      pattern = "_.*$",
-      replacement = "",
-      x = params$filename$mzml
-    ),
-    x = list.files(EXPORT_DIR, pattern = "featuresNotInformed_bpi.tsv.gz")
+  list.files(EXPORT_DIR, pattern = "featuresNotInformed_bpi.tsv.gz")
+IMPORT_FILE_BPI_2 <-
+  IMPORT_FILE_BPI_2[grepl(
+    pattern = params$filename$mzml |>
+      paste0(collapse = "|"),
+    IMPORT_FILE_BPI_2
   )]
+
 IMPORT_FILE_CAD <-
-  list.files(EXPORT_DIR, pattern = "featuresInformed_cad.tsv.gz")[grepl(
-    pattern = gsub(
-      pattern = "_.*$",
-      replacement = "",
-      x = params$filename$mzml
-    ),
-    x = list.files(EXPORT_DIR, pattern = "featuresInformed_cad.tsv.gz")
+  list.files(EXPORT_DIR, pattern = "featuresInformed_cad.tsv.gz")
+IMPORT_FILE_CAD <-
+  IMPORT_FILE_CAD[grepl(
+    pattern = params$filename$mzml |>
+      paste0(collapse = "|"),
+    IMPORT_FILE_CAD
   )]
 IMPORT_FILE_CAD_2 <-
-  list.files(EXPORT_DIR, pattern = "featuresNotInformed_cad.tsv.gz")[grepl(
-    pattern = gsub(
-      pattern = "_.*$",
-      replacement = "",
-      x = params$filename$mzml
-    ),
-    x = list.files(EXPORT_DIR, pattern = "featuresNotInformed_cad.tsv.gz")
+  list.files(EXPORT_DIR, pattern = "featuresNotInformed_cad.tsv.gz")
+IMPORT_FILE_CAD_2 <-
+  IMPORT_FILE_CAD_2[grepl(
+    pattern = params$filename$mzml |>
+      paste0(collapse = "|"),
+    IMPORT_FILE_CAD_2
   )]
+
 IMPORT_FILE_PDA <-
-  list.files(EXPORT_DIR, pattern = "featuresInformed_pda.tsv.gz")[grepl(
-    pattern = gsub(
-      pattern = "_.*$",
-      replacement = "",
-      x = params$filename$mzml
-    ),
-    x = list.files(EXPORT_DIR, pattern = "featuresInformed_pda.tsv.gz")
+  list.files(EXPORT_DIR, pattern = "featuresInformed_pda.tsv.gz")
+IMPORT_FILE_PDA <-
+  IMPORT_FILE_PDA[grepl(
+    pattern = params$filename$mzml |>
+      paste0(collapse = "|"),
+    IMPORT_FILE_PDA
   )]
 IMPORT_FILE_PDA_2 <-
-  list.files(EXPORT_DIR, pattern = "featuresNotInformed_pda.tsv.gz")[grepl(
-    pattern = gsub(
-      pattern = "_.*$",
-      replacement = "",
-      x = params$filename$mzml
-    ),
-    x = list.files(EXPORT_DIR, pattern = "featuresNotInformed_pda.tsv.gz")
+  list.files(EXPORT_DIR, pattern = "featuresNotInformed_pda.tsv.gz")
+IMPORT_FILE_PDA_2 <-
+  IMPORT_FILE_PDA_2[grepl(
+    pattern = params$filename$mzml |>
+      paste0(collapse = "|"),
+    IMPORT_FILE_PDA_2
   )]
 
 # FEATURES <- "~/Downloads/test_quant.csv"
