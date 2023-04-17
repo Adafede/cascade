@@ -9,7 +9,7 @@
 extract_ms_progress <- function(xs) {
   # p <- progressor(along = xs)
   pbapply::pblapply(
-  # lapply(
+    # lapply(
     X = xs,
     FUN = function(x) {
       # p()

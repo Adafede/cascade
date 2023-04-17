@@ -179,6 +179,11 @@ annotations <-
     FUN = function(x) {
       readr::read_delim(file = x) |>
         dplyr::mutate(best_candidate = gsub(
+          pattern = "\\$",
+          replacement = "or",
+          x = best_candidate
+        )) |>
+        dplyr::mutate(best_candidate = gsub(
           pattern = "§",
           replacement = "$",
           x = best_candidate
@@ -234,7 +239,7 @@ if (params$signal$detector$cad == TRUE) {
   detector <- "cad"
 }
 
-# mode weirdly loaded,
+# mode weirdly loaded
 mode <- "pos"
 
 if (params$signal$detector$cad == TRUE) {
@@ -336,11 +341,13 @@ hierarchies$special <- prepare_hierarchy(
     # dplyr::filter(id == "bitter/191113_AR_10043_Pos") |>
     # dplyr::filter(id == "bitter/TODO") |>
     dplyr::filter(id == "UHR/191109_AR_10043_enriched_UHR_Pos") |>
+    dplyr::filter(mode == "pos") |>
     dplyr::mutate(id = "peaks_maj") |>
     dplyr::mutate(sample = id, species = id) |>
     dplyr::select(-taxo, -taxo_2, -sum, -sum_2, -keep) |>
     rbind(
       compared_peaks_list_cad$peaks_min_precor_taxo_cor |>
+        dplyr::filter(id == "UHR/191109_AR_10043_enriched_UHR_Pos") |>
         dplyr::filter(mode == "pos") |>
         dplyr::mutate(id = "peaks_min") |>
         dplyr::mutate(sample = id, species = id)
@@ -357,95 +364,107 @@ treemaps <-
   )])
 treemaps$special
 
-df_meta_bpi_pos <- compared_peaks_list_bpi$peaks_all |>
-  dplyr::filter(mode == "pos") |>
-  dplyr::full_join(
-    best_candidates |>
-      dplyr::filter(mode == "pos") |>
-      dplyr::mutate(feature_id = as.numeric(feature_id))
-  ) |>
-  dplyr::left_join(
-    compared_peaks_list_bpi$peaks_maj_precor_taxo_cor |>
-      dplyr::distinct(sample, peak_id, mode, feature_id, keep)
-  ) |>
-  add_peak_metadata()
-df_meta_bpi_neg <- compared_peaks_list_bpi$peaks_all |>
-  dplyr::filter(mode == "neg") |>
-  dplyr::full_join(
-    best_candidates |>
-      dplyr::filter(mode == "neg") |>
-      dplyr::mutate(feature_id = as.numeric(feature_id))
-  ) |>
-  dplyr::left_join(
-    compared_peaks_list_bpi$peaks_maj_precor_taxo_cor |>
-      dplyr::distinct(sample, peak_id, mode, feature_id, keep)
-  ) |>
-  add_peak_metadata()
+if (params$signal$detector$bpi == TRUE) {
+  df_meta_bpi_pos <- compared_peaks_list_bpi$peaks_all |>
+    dplyr::filter(mode == "pos") |>
+    dplyr::full_join(
+      best_candidates |>
+        dplyr::filter(mode == "pos") |>
+        dplyr::mutate(feature_id = as.numeric(feature_id))
+    ) |>
+    dplyr::left_join(
+      compared_peaks_list_bpi$peaks_maj_precor_taxo_cor |>
+        dplyr::distinct(sample, peak_id, mode, feature_id, keep)
+    ) |>
+    add_peak_metadata()
+  df_meta_bpi_neg <- compared_peaks_list_bpi$peaks_all |>
+    dplyr::filter(mode == "neg") |>
+    dplyr::full_join(
+      best_candidates |>
+        dplyr::filter(mode == "neg") |>
+        dplyr::mutate(feature_id = as.numeric(feature_id))
+    ) |>
+    dplyr::left_join(
+      compared_peaks_list_bpi$peaks_maj_precor_taxo_cor |>
+        dplyr::distinct(sample, peak_id, mode, feature_id, keep)
+    ) |>
+    add_peak_metadata()
+}
 
-df_meta_cad_pos <- compared_peaks_list_cad$peaks_all |>
-  dplyr::filter(mode == "pos") |>
-  dplyr::full_join(
-    best_candidates |>
-      dplyr::filter(mode == "pos") |>
-      dplyr::mutate(feature_id = as.numeric(feature_id))
-  ) |>
-  dplyr::left_join(
-    compared_peaks_list_cad$peaks_maj_precor_taxo_cor |>
-      dplyr::distinct(sample, peak_id, mode, feature_id, keep)
-  ) |>
-  add_peak_metadata()
-df_meta_cad_neg <- compared_peaks_list_cad$peaks_all |>
-  dplyr::filter(mode == "neg") |>
-  dplyr::full_join(
-    best_candidates |>
-      dplyr::filter(mode == "neg") |>
-      dplyr::mutate(feature_id = as.numeric(feature_id))
-  ) |>
-  dplyr::left_join(
-    compared_peaks_list_cad$peaks_maj_precor_taxo_cor |>
-      dplyr::distinct(sample, peak_id, mode, feature_id, keep)
-  ) |>
-  add_peak_metadata()
+if (params$signal$detector$cad == TRUE) {
+  df_meta_cad_pos <- compared_peaks_list_cad$peaks_all |>
+    dplyr::filter(mode == "pos") |>
+    dplyr::full_join(
+      best_candidates |>
+        dplyr::filter(mode == "pos") |>
+        dplyr::mutate(feature_id = as.numeric(feature_id))
+    ) |>
+    dplyr::left_join(
+      compared_peaks_list_cad$peaks_maj_precor_taxo_cor |>
+        dplyr::distinct(sample, peak_id, mode, feature_id, keep)
+    ) |>
+    add_peak_metadata()
+  df_meta_cad_neg <- compared_peaks_list_cad$peaks_all |>
+    dplyr::filter(mode == "neg") |>
+    dplyr::full_join(
+      best_candidates |>
+        dplyr::filter(mode == "neg") |>
+        dplyr::mutate(feature_id = as.numeric(feature_id))
+    ) |>
+    dplyr::left_join(
+      compared_peaks_list_cad$peaks_maj_precor_taxo_cor |>
+        dplyr::distinct(sample, peak_id, mode, feature_id, keep)
+    ) |>
+    add_peak_metadata()
+}
 
-df_meta_pda_pos <- compared_peaks_list_pda$peaks_all |>
-  dplyr::filter(mode == "pos") |>
-  dplyr::full_join(
-    best_candidates |>
-      dplyr::filter(mode == "pos") |>
-      dplyr::mutate(feature_id = as.numeric(feature_id))
-  ) |>
-  dplyr::left_join(
-    compared_peaks_list_pda$peaks_maj_precor_taxo_cor |>
-      dplyr::distinct(sample, peak_id, mode, feature_id, keep)
-  ) |>
-  add_peak_metadata()
-df_meta_pda_neg <- compared_peaks_list_pda$peaks_all |>
-  dplyr::filter(mode == "neg") |>
-  dplyr::full_join(
-    best_candidates |>
-      dplyr::filter(mode == "neg") |>
-      dplyr::mutate(feature_id = as.numeric(feature_id))
-  ) |>
-  dplyr::left_join(
-    compared_peaks_list_pda$peaks_maj_precor_taxo_cor |>
-      dplyr::distinct(sample, peak_id, mode, feature_id, keep)
-  ) |>
-  add_peak_metadata()
+if (params$signal$detector$pda == TRUE) {
+  df_meta_pda_pos <- compared_peaks_list_pda$peaks_all |>
+    dplyr::filter(mode == "pos") |>
+    dplyr::full_join(
+      best_candidates |>
+        dplyr::filter(mode == "pos") |>
+        dplyr::mutate(feature_id = as.numeric(feature_id))
+    ) |>
+    dplyr::left_join(
+      compared_peaks_list_pda$peaks_maj_precor_taxo_cor |>
+        dplyr::distinct(sample, peak_id, mode, feature_id, keep)
+    ) |>
+    add_peak_metadata()
+  df_meta_pda_neg <- compared_peaks_list_pda$peaks_all |>
+    dplyr::filter(mode == "neg") |>
+    dplyr::full_join(
+      best_candidates |>
+        dplyr::filter(mode == "neg") |>
+        dplyr::mutate(feature_id = as.numeric(feature_id))
+    ) |>
+    dplyr::left_join(
+      compared_peaks_list_pda$peaks_maj_precor_taxo_cor |>
+        dplyr::distinct(sample, peak_id, mode, feature_id, keep)
+    ) |>
+    add_peak_metadata()
+}
 
-plots_bpi_pos <- df_meta_bpi_pos |>
-  plot_peaks_statistics()
-plots_bpi_neg <- df_meta_bpi_neg |>
-  plot_peaks_statistics()
+if (params$signal$detector$bpi) {
+  plots_bpi_pos <- df_meta_bpi_pos |>
+    plot_peaks_statistics()
+  plots_bpi_neg <- df_meta_bpi_neg |>
+    plot_peaks_statistics()
+}
 
-plots_cad_pos <- df_meta_cad_pos |>
-  plot_peaks_statistics()
-plots_cad_neg <- df_meta_cad_neg |>
-  plot_peaks_statistics()
+if (params$signal$detector$cad) {
+  plots_cad_pos <- df_meta_cad_pos |>
+    plot_peaks_statistics()
+  plots_cad_neg <- df_meta_cad_neg |>
+    plot_peaks_statistics()
+}
 
-plots_pda_pos <- df_meta_pda_pos |>
-  plot_peaks_statistics()
-plots_pda_neg <- df_meta_pda_neg |>
-  plot_peaks_statistics()
+if (params$signal$detector$pda) {
+  plots_pda_pos <- df_meta_pda_pos |>
+    plot_peaks_statistics()
+  plots_pda_neg <- df_meta_pda_neg |>
+    plot_peaks_statistics()
+}
 
 example_peak <- compared_peaks_list_cad[["peaks_all"]] |>
   dplyr::filter(!is.na(peak_id)) |>
@@ -504,7 +523,6 @@ aa_neg <- lapply(
     )
   }
 )
-
 bb_pos <- lapply(
   X = seq_along(aa_pos),
   FUN = function(x) {
@@ -542,30 +560,37 @@ temp_df <- example_peak |>
   dplyr::add_count(name = "ik") |>
   dplyr::rowwise() |>
   dplyr::mutate(
-    molecular_formula = ifelse(test = mf >= 2,
+    molecular_formula = ifelse(
+      test = mf >= 2 &
+        comparison_score >= 0.5 &
+        score_biological >= 0.6,
       yes = molecular_formula,
       no = "other"
     ),
-    inchikey_2D = ifelse(test = ik >= 2,
+    inchikey_2D = ifelse(
+      test = ik >= 2 &
+        comparison_score >= 0.5 &
+        score_biological >= 0.6,
       yes = inchikey_2D,
       no = "other"
     )
   ) |>
   dplyr::ungroup()
 
-
 cc_pos <- bind_rows(bb_pos) |>
   dplyr::filter(!is.na(intensity)) |>
   dplyr::filter(time >= rt_min & time <= rt_max) |>
   dplyr::mutate(intensity = intensity / max(intensity)) |>
   dplyr::mutate(mode = "pos") |>
-  dplyr::left_join(temp_df)
+  dplyr::left_join(temp_df) |>
+  dplyr::filter(!is.na(inchikey_2D))
 cc_neg <- bind_rows(bb_neg) |>
   dplyr::filter(!is.na(intensity)) |>
   dplyr::filter(time >= rt_min & time <= rt_max) |>
   dplyr::mutate(intensity = -intensity / max(intensity)) |>
   dplyr::mutate(mode = "neg") |>
-  dplyr::left_join(temp_df)
+  dplyr::left_join(temp_df) |>
+  dplyr::filter(!is.na(inchikey_2D))
 
 cc_cad_pos <- chromatograms_list_cad$chromatograms_improved_long |>
   # cc_cad_pos <- chromatograms_list_cad$chromatograms_original_long |>
@@ -686,8 +711,8 @@ plot_mf <- ggplot2::ggplot(
     color = "black",
     linetype = "dashed"
   ) +
-  ggplot2::scale_color_brewer(
-    palette = "Paired",
+  ggplot2::scale_color_manual(
+    values = c("#4E79A7", "#BAB0AC"),
     name = "Molecular Formula"
   ) +
   ggplot2::theme_bw() +
@@ -721,8 +746,8 @@ plot_ik <- ggplot2::ggplot(
     color = "black",
     linetype = "dashed"
   ) +
-  ggplot2::scale_color_brewer(
-    palette = "Paired",
+  ggplot2::scale_color_manual(
+    values = c("#4E79A7", "#BAB0AC", "#A0CBE8"),
     name = "2D Structure"
   ) +
   ggplot2::theme_bw() +
@@ -739,9 +764,9 @@ plot_ik <- ggplot2::ggplot(
 #   filename = "~/git/cascade/data/paper/cascade-4.pdf",
 #   plot = ggpubr::ggarrange(
 #     plot_comparison,
+#     plot_taxo,
 #     plot_mf,
 #     plot_ik,
-#     plot_taxo,
 #     labels = "AUTO",
 #     align = "hv"
 #   ),
@@ -749,22 +774,18 @@ plot_ik <- ggplot2::ggplot(
 #   height = 9,
 #   limitsize = FALSE
 # )
-# ggplot2::ggsave(
-#   filename = "~/git/cascade/data/paper/cascade-6.pdf",
-#   plot = fig_taxo
-# )
+# ggplot2::ggsave(filename = "~/git/cascade/data/paper/cascade-6.pdf",
+#                 plot = fig_taxo)
 # ggplot2::ggsave(
 #   filename = "~/git/cascade/data/paper/cascade-5.pdf",
-#   plot = ggpubr::ggarrange(
-#     plots_cad_pos[[1]],
+#   plot = ggpubr::ggarrange(# plots_cad_pos[[1]],
 #     plots_cad_pos[[3]],
-#     labels = "AUTO",
-#     nrow = 2,
+#     # labels = "AUTO",
+#     # nrow = 2,
 #     common.legend = FALSE,
-#     legend = "bottom"
-#   ),
+#     legend = "bottom"),
 #   width = 8,
-#   height = 9,
+#   height = 4.5,
 #   limitsize = FALSE
 # )
 # ggplot2::ggsave(
@@ -780,8 +801,8 @@ plot_ik <- ggplot2::ggplot(
 #   width = 1600,
 #   height = 900
 # )
-
-# readr::write_tsv(x = plots_2_cad[["table_taxo_maj_cor_conf_signal_1"]],
+# readr::write_tsv(x = plots_2_cad[["table_taxo_maj_cor_conf_signal_1"]] |>
+#                    dplyr::filter(mode == "pos"),
 #                  file = "data/paper/final_table.tsv")
 # readr::write_csv(
 #   x = candidates_confident |>

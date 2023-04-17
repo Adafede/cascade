@@ -52,8 +52,7 @@ table_peaks <- tables_peaks_pos |>
   dplyr::bind_rows(table_peaks_neg) |>
   dplyr::mutate(
     rt_min = peak_rt_apex - params$chromato$peak$tolerance$rt / 2,
-    rt_max = peak_rt_apex + params$chromato$peak$tolerance$rt /
-      2
+    rt_max = peak_rt_apex + params$chromato$peak$tolerance$rt / 2
   ) |>
   data.table::data.table()
 
@@ -123,6 +122,7 @@ table_medium <-
     peak_rt = round(x = peak_rt, digits = 2),
     peak_area = round(x = 100 * peak_area / sum(peak_area), digits = 2),
     feature_rt = round(x = feature_rt, digits = 2),
+    feature_mz = round(x = feature_rt, digits = 4),
     score_final = round(x = score_final, digits = 2)
   )
 
@@ -153,7 +153,49 @@ table_final <- table_medium |>
       test = Structure == "NA",
       yes = "",
       no = Structure
-    )
+    ),
+    score_final = ifelse(
+      test = score_final > 1,
+      yes = as.character(">1.00"),
+      no = as.character(score_final)
+    ),
+    best_candidate_organism = gsub(
+      pattern = "Swertia chirayita",
+      replacement = "S. chirayita",
+      x = best_candidate_organism
+    ),
+    best_candidate_1 = ifelse(
+      test = best_candidate_1 == "Shikimates and Phenylpropanoids",
+      yes = "Shik \\& PAL",
+      no = best_candidate_1
+    ),
+    best_candidate_2 = ifelse(
+      test = best_candidate_2 == "Fatty Acids and Conjugates",
+      yes = "FA \\& conj.",
+      no = best_candidate_2
+    ),
+    best_candidate_2 = ifelse(
+      test = best_candidate_2 == "Polycyclic aromatic polyketides",
+      yes = "Polyc. aro. polyk.",
+      no = best_candidate_2
+    ),
+    best_candidate_2 = ifelse(
+      test = best_candidate_2 == "Phenylethanoids (C6-C2)",
+      yes = "$\\phi$ eth. (C6-C2)",
+      no = best_candidate_2
+    ),
+    best_candidate_3 = best_candidate_3 |>
+      gsub(pattern = "sesquiterpenoids", replacement = "sesquiter.") |>
+      gsub(pattern = "triterpenoids", replacement = "triter.") |>
+      gsub(pattern = "diterpenoids", replacement = "diter.") |>
+      gsub(pattern = "monoterpenoids", replacement = "monoter.") |>
+      gsub(pattern = " and ", replacement = " \\& ", fixed = TRUE) |>
+      gsub(pattern = "Phyllocladane", replacement = "Phyllocl.") |>
+      gsub(pattern = "Anthraquinones", replacement = "Anthraq.") |>
+      gsub(pattern = "Taraxastane", replacement = "Taraxa.") |>
+      gsub(pattern = "Kaurane", replacement = "Kaur.") |>
+      gsub(pattern = "Ursane", replacement = "Urs.") |>
+      gsub(pattern = "Moretane", replacement = "Moret.")
   ) |>
   dplyr::ungroup() |>
   dplyr::distinct() |>
@@ -170,7 +212,7 @@ table_final <- table_medium |>
     `Chemical Pathway` = best_candidate_1,
     `Chemical Superclass` = best_candidate_2,
     `Chemical Class` = best_candidate_3,
-    `Nearest Organism with Structure Reported` = best_candidate_organism,
+    `Closest Organism with Structure Reported` = best_candidate_organism,
     `Reference(s)` = reference
   )
 
@@ -213,7 +255,14 @@ prettyTable <- table_final |>
 
 prettyTable
 
-readr::write_tsv(x = table_final, file = "data/paper/prettyTable.tsv", na = "")
+table_final_2 <- table_final |>
+  dplyr::rowwise() |>
+  dplyr::mutate(Structure = ifelse(
+    test = !is.na(`InChIKey 2D`),
+    yes = paste0("\\includegraphics[width=0.33333in,height=0.075in]{images/", `InChIKey 2D`, ".pdf}"),
+    no = NA
+  ))
+readr::write_tsv(x = table_final_2, file = "data/paper/prettyTable.tsv", na = "")
 gt::gtsave(
   data = prettyTable,
   filename = "data/paper/prettyTable.html"

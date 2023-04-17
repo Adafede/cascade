@@ -14,6 +14,23 @@ keep_best_candidates <- function(df) {
       x = .x
     ))) |>
     splitstackshape::cSplit("best_candidate", sep = "$") |>
+    dplyr::mutate(
+      best_candidate_1 = gsub(
+        pattern = " or .*",
+        replacement = "",
+        x = best_candidate_1
+      ),
+      best_candidate_2 = gsub(
+        pattern = " or .*",
+        replacement = "",
+        x = best_candidate_2
+      ),
+      best_candidate_3 = gsub(
+        pattern = " or .*",
+        replacement = "",
+        x = best_candidate_3
+      )
+    ) |>
     dplyr::distinct(
       feature_id,
       mz,
