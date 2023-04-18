@@ -28,6 +28,9 @@ tables_progress <- function(xs) {
           tidyr::fill(c("taxa", "taxaLabels", "references", "referencesLabels"),
             .direction = "downup"
           ) %>%
+          dplyr::group_by(structureLabel) %>%
+          dplyr::add_count(sort = TRUE) %>%
+          dplyr::select(-n) %>%
           dplyr::group_by(chemical_class) %>%
           dplyr::add_count(sort = TRUE) %>%
           dplyr::select(-n) %>%

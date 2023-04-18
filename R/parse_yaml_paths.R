@@ -1,25 +1,25 @@
-require(package = purrr, quietly = TRUE)
-require(package = yaml, quietly = TRUE)
-
-source(file = "R/log_debug.R")
-
-#' Title
+#' @title Parse YAML paths
 #'
-#' @return
+#' @description This function parses YAML paths
+#'
+#' @param file The file name of the YAML file containing the paths (default is "paths.yaml")
+#'
+#' @return A list containing the paths specified in the YAML file
+#'
 #' @export
 #'
-#' @examples
-parse_yaml_paths <- function() {
-  log_debug("Loading paths")
-  suppressWarnings(paths <- yaml::read_yaml(
-    file = "paths.yaml",
-    handlers = list(
-      seq = function(x) {
-        purrr::flatten(x)
-      }
+#' @examples NULL
+parse_yaml_paths <- function(file = "paths.yaml") {
+  # Read the YAML file containing the paths
+  suppressWarnings(
+    paths <- yaml::read_yaml(
+      file = file
     )
-  ))
+  )
+
+  # Set the working directory to the base directory specified in the YAML file
   setwd(paths$base_dir)
 
+  # Return the list of paths
   return(paths)
 }

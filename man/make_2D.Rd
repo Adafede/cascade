@@ -9,9 +9,6 @@ make_2D(df)
 \arguments{
 \item{df}{}
 }
-\value{
-
-}
 \description{
 Title
 }

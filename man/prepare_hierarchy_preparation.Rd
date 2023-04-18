@@ -9,12 +9,6 @@ prepare_hierarchy_preparation(dataframe)
 \arguments{
 \item{dataframe}{}
 }
-\value{
-
-}
 \description{
 Title
-}
-\examples{
-add this step
 }

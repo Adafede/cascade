@@ -13,17 +13,17 @@ parse_yaml_params <- function() {
   log_debug("Loading yaml parameters")
   suppressWarnings(params <-
     yaml::read_yaml(
-      file = paths$config$default$file,
+      file = paths$params$default$file,
       handlers = list(
         seq = function(x) {
           purrr::flatten(x)
         }
       )
     ))
-  if (file.exists(paths$config$params$file)) {
+  if (file.exists(paths$params$user$file)) {
     suppressWarnings(params <-
       yaml::read_yaml(
-        file = paths$config$params$file,
+        file = paths$params$user$file,
         handlers = list(
           seq = function(x) {
             purrr::flatten(x)

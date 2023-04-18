@@ -11,5 +11,5 @@ prepare_peaks <- function(x) {
     intensity = x$intensity,
     rtime = (x$time - min(x$time)) /
       (max(x$time) - min(x$time))
-  ) #' see https://github.com/sneumann/xcms/issues/593
+  ) ## see https://github.com/sneumann/xcms/issues/593
 }

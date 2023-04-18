@@ -1,6 +1,6 @@
 library(microshades, quietly = TRUE)
 
-#' Colors
+## Colors
 nice_colors <- list(
   microshades_palette("micro_cvd_green", lightest = FALSE),
   microshades_palette("micro_cvd_orange", lightest = FALSE),
@@ -16,7 +16,7 @@ nice_colors <- list(
   # microshades_palette("micro_gray", lightest = FALSE)
 )
 
-#' Grey
+## Grey
 grey_colors <- list(
   microshades_palette("micro_cvd_gray", lightest = FALSE),
   microshades_palette("micro_gray", lightest = FALSE)
@@ -34,7 +34,16 @@ for (i in seq_len(length(grey_colors))) {
   sunburst_colors_grey[i] <- grey_colors[[i]][5]
 }
 
-#' Qualitative
+## From microshades
+cvd_green <- c("#4E7705", "#6D9F06", "#97CE2F", "#BDEC6F", "#DDFFA0")
+cvd_orange <- c("#9D654C", "#C17754", "#F09163", "#FCB076", "#FFD5AF")
+cvd_blue <- c("#098BD9", "#56B4E9", "#7DCCFF", "#BCE1FF", "#E7F4FF")
+cvd_turquoise <- c("#148F77", "#009E73", "#43BA8F", "#48C9B0", "#A3E4D7")
+cvd_purple <- c("#7D3560", "#A1527F", "#CC79A7", "#E794C1", "#EFB6D6")
+orange <- c("#ff7f00", "#fe9929", "#fdae6b", "#fec44f", "#feeda0")
+purple <- c("#6a51a3", "#807dba", "#9e9ac8", "#bcbddc", "#dadaeb")
+
+## Qualitative
 paired <- c(
   "#a6cee3",
   "#1f78b4",
@@ -48,6 +57,21 @@ paired <- c(
   "#6a3d9a",
   "#ffff99",
   "#b15928"
+)
+
+minibits <- c(
+  "#817",
+  "#a35",
+  "#c66",
+  "#e94",
+  "#ed0",
+  "#9d5",
+  "#4d8",
+  "#2cb",
+  "#0bc",
+  "#09c",
+  "#36b",
+  "#639"
 )
 
 tableau20 <- c(

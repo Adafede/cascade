@@ -9,9 +9,6 @@ log_debug(...)
 \arguments{
 \item{...}{}
 }
-\value{
-
-}
 \description{
 Title
 }

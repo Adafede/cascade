@@ -1,4 +1,6 @@
 require(package = docopt, quietly = TRUE)
+source(file = "r/parse_cli_params.R")
+source(file = "r/parse_yaml_params.R")
 
 #' Title
 #'
@@ -11,9 +13,9 @@ require(package = docopt, quietly = TRUE)
 get_params <- function(step) {
   doc_path <<- file.path(paths$inst$scripts$docopt, paste0(step, ".txt"))
   default_path <<-
-    file.path(paths$config$default$path, paste0(step, ".yaml"))
+    file.path(paths$params$default$path, paste0(step, ".yaml"))
   params_path <<-
-    file.path(paths$config$params$path, paste0(step, ".yaml"))
+    file.path(paths$params$user$path, paste0(step, ".yaml"))
 
   doc <<- readChar(
     con = doc_path,

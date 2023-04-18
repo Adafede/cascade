@@ -9,11 +9,11 @@
 compare_peaks <- function(x) {
   if (length(list_ms_peaks[[x]]) != 0) {
     feature <- seq_along(list_ms_peaks[[x]])
-    y <- parallel::mclapply(
+    y <- future_lapply(
       X = feature,
       FUN = function(z) {
         if (length(list_ms_peaks[[x]][[z]]) > 1) {
-          score <- MSnbase::compareChromatograms(
+          score <- compareChromatograms(
             x = switch(detector,
               "bpi" = peaks_prelist_bpi$list_chromato_peaks,
               "cad" = peaks_prelist_cad$list_chromato_peaks,

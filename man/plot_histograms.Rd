@@ -7,10 +7,7 @@
 plot_histograms(dataframe, label, y = "values", xlab = TRUE)
 }
 \arguments{
-\item{label}{}
-}
-\value{
-
+\item{xlab}{}
 }
 \description{
 Title

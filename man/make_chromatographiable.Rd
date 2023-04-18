@@ -15,9 +15,6 @@ make_chromatographiable(
 \arguments{
 \item{logp_max}{}
 }
-\value{
-
-}
 \description{
 Title
 }

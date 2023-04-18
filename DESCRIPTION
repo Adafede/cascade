@@ -1,12 +1,122 @@
 Package: cascade
-Title: What the Package Does (One Line, Title Case)
+Title: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts
 Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+Authors@R: c(
+    person("Adriano", "Rutz", , "rutz@imsb.biol.ethz.ch", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-0443-9902"))
+  )
+Maintainer: Adriano Rutz <rutz@imsb.biol.ethz.ch>
 Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+License: CRAPL
+URL: https://github.com/adafede/cascade
+BugReports: https://github.com/adafede/cascade/issues
+Depends:
+    R (>= 4.1.0)
+Imports:
+    baseline (>= 1.3.4),
+    BiocParallel (>= 1.32.6),
+    chromatographR (>= 0.4.8),
+    data.table (>= 1.14.8),
+    docopt (>= 0.7.1),
+    dplyr (>= 1.1.1),
+    future (>= 1.32.0),
+    future.apply (>= 1.10.0),
+    MSnbase (>= 2.24.2),
+    nucleR (>= 2.30.0),
+    parallel,
+    pbapply (>= 1.7.0),
+    plotly (>= 4.10.1),
+    pracma (>= 2.4.2),
+    progressr (>= 0.13.0),
+    purrr (>= 1.0.1),
+    readr (>= 2.1.4),
+    xcms (>= 3.20.0),
+    yaml (>= 2.3.7)
+Suggests:
+    knitr (>= 1.42),
+    testthat (>= 3.1.7),
+    visNetwork (>= 2.1.2)
+Config/testthat/edition: 3
 Encoding: UTF-8
+LazyData: true
+ByteCompile: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
+Collate:
+    'add_peak_metadata.R'
+    'baseline_chromatogram.R'
+    'baseline_chromatograms_progress.R'
+    'change_intensity_name.R'
+    'check_and_load_packages.R'
+    'check_export_dir.R'
+    'colors.R'
+    'compare_peaks.R'
+    'correct_acn.R'
+    'deriv.R'
+    'dirty_paths_params.R'
+    'extract_ms_peak.R'
+    'extract_ms_progress.R'
+    'filter_ms.R'
+    'format_gt.R'
+    'get_gnps.R'
+    'get_params.R'
+    'hierarchies_grouped_progress.R'
+    'hierarchies_progress.R'
+    'histograms_progress.R'
+    'improve_signal.R'
+    'improve_signals_progress.R'
+    'join_peaks.R'
+    'keep_best_candidates.R'
+    'log_debug.R'
+    'make_2D.R'
+    'make_chromatographiable.R'
+    'make_confident.R'
+    'make_other.R'
+    'middle_pts.R'
+    'molinfo.R'
+    'no_other.R'
+    'normalize_chromato.R'
+    'normalize_chromatograms_list.R'
+    'parse_cli_params.R'
+    'parse_yaml_params.R'
+    'parse_yaml_paths.R'
+    'peaks_progress.R'
+    'plot_chromatogram.R'
+    'plot_histograms.R'
+    'plot_peaks_statistics.R'
+    'plot_results.R'
+    'prehistograms_progress.R'
+    'prepare_comparison.R'
+    'prepare_features.R'
+    'prepare_hierarchy.R'
+    'prepare_hierarchy_preparation.R'
+    'prepare_mz.R'
+    'prepare_peaks.R'
+    'prepare_plot.R'
+    'prepare_rt.R'
+    'preprocess_chromatograms.R'
+    'preprocess_peaks.R'
+    'prettyTables_progress.R'
+    'process_peaks.R'
+    'progressr.R'
+    'queries_progress.R'
+    'save_histograms_progress.R'
+    'save_prettySubtables_progress.R'
+    'save_prettyTables_progress.R'
+    'save_treemaps_progress.R'
+    'second_der.R'
+    'signal_sharpening.R'
+    'sqlFromFile.R'
+    'subtables_progress.R'
+    'tables_progress.R'
+    'transform_baseline.R'
+    'transform_ms.R'
+    'treemaps_progress.R'
+    'wiki_progress.R'
+    'y_as_na.R'
+    'zzz.R'
+VignetteBuilder: 
+    knitr
+biocViews: metabolite annotation, semi-quantitative, natural products, computational metabolomics, specialized metabolome
+X-schema.org-keywords: metabolite annotation, semi-quantitative, natural products, computational metabolomics, specialized metabolome
+Language: en-US

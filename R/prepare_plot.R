@@ -118,6 +118,7 @@ prepare_plot <- function(dataframe, organism = "species") {
 prepare_plot_2 <- function(dataframe) {
   dataframe_prep <- dataframe |>
     dplyr::ungroup() |>
+    dplyr::filter(!is.na(inchikey_2D)) |>
     dplyr::distinct(
       peak_id,
       inchikey_2D,

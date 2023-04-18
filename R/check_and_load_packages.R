@@ -62,17 +62,18 @@ check_and_load_packages_2 <- function(cran = packages_cran,
     lapply(X = github[!installed_packages_github], FUN = remotes::install_github)
   }
 
-  return(lapply(c(
-    cran,
-    bioconductor,
-    gsub(
-      pattern = ".*/",
-      replacement = "",
-      x = github
-    )
-  ),
-  require,
-  character.only = TRUE
+  return(lapply(
+    c(
+      cran,
+      bioconductor,
+      gsub(
+        pattern = ".*/",
+        replacement = "",
+        x = github
+      )
+    ),
+    require,
+    character.only = TRUE
   ) |>
     invisible())
 }
