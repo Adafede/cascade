@@ -2,13 +2,19 @@
 % Please edit documentation in R/parse_yaml_paths.R
 \name{parse_yaml_paths}
 \alias{parse_yaml_paths}
-\title{Title}
+\title{Parse YAML paths}
 \usage{
-parse_yaml_paths()
+parse_yaml_paths(file = "paths.yaml")
+}
+\arguments{
+\item{file}{The file name of the YAML file containing the paths (default is "paths.yaml")}
 }
 \value{
-
+A list containing the paths specified in the YAML file
 }
 \description{
-Title
+This function parses YAML paths
+}
+\examples{
+NULL
 }

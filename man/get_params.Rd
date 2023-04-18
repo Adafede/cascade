@@ -9,9 +9,6 @@ get_params(step)
 \arguments{
 \item{step}{}
 }
-\value{
-
-}
 \description{
 Title
 }

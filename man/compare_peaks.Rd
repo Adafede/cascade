@@ -4,13 +4,10 @@
 \alias{compare_peaks}
 \title{Title}
 \usage{
-compare_peaks(ms_peak)
+compare_peaks(x)
 }
 \arguments{
-\item{ms_peak}{}
-}
-\value{
-
+\item{x}{}
 }
 \description{
 Title

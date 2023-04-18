@@ -9,9 +9,6 @@ middle_pts(x)
 \arguments{
 \item{x}{}
 }
-\value{
-
-}
 \description{
 Title
 }

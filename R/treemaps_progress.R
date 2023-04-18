@@ -67,12 +67,14 @@ treemaps_progress <- function(xs, type = "treemap") {
               "\n",
               unique(hierarchies[[x]]$species)[1],
               "(",
-              nrow(tables[[unique(hierarchies[[x]]$species)[1]]] |> dplyr::distinct(structure)),
+              nrow(tables[[unique(hierarchies[[x]]$species)[1]]] |>
+                dplyr::distinct(structure)),
               ")",
               "                                 ",
               unique(hierarchies[[x]]$species)[2],
               "(",
-              nrow(tables[[unique(hierarchies[[x]]$species)[2]]] |> dplyr::distinct(structure)),
+              nrow(tables[[unique(hierarchies[[x]]$species)[2]]] |>
+                dplyr::distinct(structure)),
               ")"
             ),
             grid = list(rows = 1, columns = 2),

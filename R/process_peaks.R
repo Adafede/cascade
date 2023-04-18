@@ -12,50 +12,46 @@ process_peaks <- function(detector = "cad") {
   log_debug(x = "count approx 1 minute per 500 features (increasing with features number)")
   log_debug(x = "varies a lot depending on features distribution")
 
+  peaks_prelist <<- switch(detector,
+    "bpi" = peaks_prelist_bpi,
+    "cad" = peaks_prelist_cad,
+    "pda" = peaks_prelist_pda
+  )
+
   list_ms_chromatograms <<-
-    parallel::mclapply(
-      X = seq_along(switch(detector,
-        "bpi" = peaks_prelist_bpi$list_df_features_with_peaks_long,
-        "cad" = peaks_prelist_cad$list_df_features_with_peaks_long,
-        "pda" = peaks_prelist_pda$list_df_features_with_peaks_long
-      )),
-      FUN = extract_ms
-    )
+    extract_ms_progress(xs = seq_along(peaks_prelist$list_df_features_with_peaks_long))
 
   log_debug(x = "transforming ms chromatograms")
   list_ms_chromatograms_transformed <<-
-    parallel::mclapply(
+    future_lapply(
       X = list_ms_chromatograms,
       FUN = transform_ms
     )
 
   log_debug(x = "extracting ms peaks")
   list_ms_peaks <<-
-    parallel::mclapply(
+    future_lapply(
       X = list_ms_chromatograms_transformed,
       FUN = extract_ms_peak
     )
 
   log_debug(x = "comparing peaks")
   list_comparison_score <<-
-    parallel::mclapply(
+    future_lapply(
       X = seq_along(list_ms_peaks),
       FUN = compare_peaks
     )
 
   log_debug(x = "selecting features with peaks")
-  df_features_with_peaks <<- switch(detector,
-    "bpi" = peaks_prelist_bpi$list_df_features_with_peaks_long,
-    "cad" = peaks_prelist_cad$list_df_features_with_peaks_long,
-    "pda" = peaks_prelist_pda$list_df_features_with_peaks_long
-  ) |>
-    dplyr::bind_rows()
+  df_features_with_peaks <<-
+    peaks_prelist$list_df_features_with_peaks_long |>
+    bind_rows()
 
   log_debug(x = "There are", nrow(df_features_with_peaks), "features with peaks")
 
   log_debug(x = "summarizing comparison scores")
   comparison_scores <- list_comparison_score |>
-    purrr::flatten()
+    flatten()
 
   log_debug(x = "There are", length(comparison_scores), "scores calculated")
 
@@ -65,7 +61,7 @@ process_peaks <- function(detector = "cad") {
 
   log_debug(x = "final aesthetics")
   df_features_with_peaks_scored <<- df_features_with_peaks |>
-    dplyr::select(
+    select(
       sample = id,
       peak_id,
       peak_rt_min = rt_min,
@@ -78,15 +74,12 @@ process_peaks <- function(detector = "cad") {
       feature_area = intensity,
       comparison_score
     ) |>
-    dplyr::distinct()
+    distinct()
 
-  df_features_without_peaks_scored <<- switch(detector,
-    "bpi" = peaks_prelist_bpi$df_features_without_peaks,
-    "cad" = peaks_prelist_cad$df_features_without_peaks,
-    "pda" = peaks_prelist_pda$df_features_without_peaks
-  ) |>
-    dplyr::mutate(comparison_score = NA) |>
-    dplyr::select(
+  df_features_without_peaks_scored <<-
+    peaks_prelist$df_features_without_peaks |>
+    mutate(comparison_score = NA) |>
+    select(
       sample = id,
       peak_id,
       peak_rt_min = rt_min,
@@ -99,7 +92,7 @@ process_peaks <- function(detector = "cad") {
       feature_area = intensity,
       comparison_score
     ) |>
-    dplyr::distinct()
+    distinct()
 
   returned_list <<- list(
     df_features_with_peaks_scored,
@@ -115,7 +108,7 @@ process_peaks <- function(detector = "cad") {
 
   log_debug(x = "exporting to ...")
   log_debug(x = EXPORT_DIR)
-  readr::write_tsv(
+  write_tsv(
     x = df_features_with_peaks_scored,
     file = file.path(EXPORT_DIR, switch(detector,
       "bpi" = EXPORT_FILE_BPI,
@@ -123,7 +116,7 @@ process_peaks <- function(detector = "cad") {
       "pda" = EXPORT_FILE_PDA
     ))
   )
-  readr::write_tsv(
+  write_tsv(
     x = df_features_without_peaks_scored,
     file = file.path(EXPORT_DIR, switch(detector,
       "bpi" = EXPORT_FILE_BPI_2,
