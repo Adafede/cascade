@@ -9,9 +9,6 @@ read_results(id)
 \arguments{
 \item{id}{}
 }
-\value{
-
-}
 \description{
 Title
 }

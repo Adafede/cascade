@@ -1,16 +1,21 @@
 base_dir: ./
-config:
-  path: config
-  default:
-    path: config/default
-    file: config/default/params.yaml
-  params:
-    path: config/params
-    file: config/params/params.yaml
 data:
   path: data
   histograms:
     path: data/histograms
+  interim:
+    path: data/interim
+    annotations: data/interim/annotations
+    mzmine: data/interim/mzmine
+    peakonly: data/interim/peakonly
+    peaks: data/interim/peaks
+  source:
+    path: data/source
+    libraries:
+      path: data/source/libraries
+      lotus: data/source/libraries/lotus.csv.gz
+    mzml:
+      path: data/source/mzml
   sunbursts:
     path: data/sunbursts
   tables:
@@ -21,23 +26,6 @@ data:
     path: data/trees
 inst:
   path: intst
-  extdata:
-    path: inst/extdata
-    interim:
-      path: inst/extdata/interim
-      annotations:
-        path: inst/extdata/interim/annotations
-        tima: inst/extdata/interim/annotations/tima
-      mzmine: inst/extdata/interim/mzmine
-      peakonly: inst/extdata/interim/peakonly
-      peaks: inst/extdata/interim/peaks
-    source:
-      path: inst/extdata/source
-      libraries:
-        path: inst/extdata/source/libraries
-        lotus: inst/extdata/source/libraries/lotus.csv.gz
-      mzml:
-        path: inst/extdata/source/mzml
   scripts: 
     path: inst/scripts
     docopt:
@@ -48,10 +36,27 @@ inst:
       review_2: inst/scripts/sparql/get_review_table_part_2.sql
       review_3: inst/scripts/sparql/get_review_table_part_3.sql
       review_4: inst/scripts/sparql/get_review_table_part_4.sql
+params:
+  path: params
+  default:
+    path: params/default
+    file: params/default/params.yaml
+  prepare_config: params/prepare_config.yaml
+  user:
+    path: params/user
+    file: params/user/params.yaml
 tests:
   path: tests
 r:
   path: R
 urls:
-  lotus: https://zenodo.org/record/6378204/files/220318_frozen_metadata.csv.gz?download=1
+  lotus:
+    doi: 10.5281/zenodo.5794106
+    pattern: frozen_metadata.csv.gz
+    metadata_doi: 10.5281/zenodo.6378223
+    metadata_pattern:
+      organisms: organism_metadata.tsv.gz
+      references: reference_metadata.tsv.gz
+      structures: structure_metadata.tsv.gz
   npc_json: https://raw.githubusercontent.com/mwang87/NP-Classifier/7e4e2001a1416b96968240650dc7d70f1275fdb5/Classifier/dict/index_v1.json
+  

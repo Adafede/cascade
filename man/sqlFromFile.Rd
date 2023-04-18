@@ -9,9 +9,6 @@ sqlFromFile(file)
 \arguments{
 \item{file}{}
 }
-\value{
-
-}
 \description{
 Title
 }

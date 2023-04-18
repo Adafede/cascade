@@ -6,9 +6,6 @@
 \usage{
 parse_yaml_params()
 }
-\value{
-
-}
 \description{
 Title
 }

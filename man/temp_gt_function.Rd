@@ -9,9 +9,6 @@ temp_gt_function(table, title, subtitle)
 \arguments{
 \item{table}{}
 }
-\value{
-
-}
 \description{
 Title
 }

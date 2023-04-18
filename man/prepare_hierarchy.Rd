@@ -14,13 +14,6 @@ prepare_hierarchy(
 \arguments{
 \item{rescale}{}
 }
-\value{
-
-}
 \description{
 Title
-}
-\examples{
-dirty temp fix because of bad npclassifier naming
-Comment these if
 }

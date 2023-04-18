@@ -9,9 +9,6 @@ make_confident(df, score)
 \arguments{
 \item{score}{}
 }
-\value{
-
-}
 \description{
 Title
 }

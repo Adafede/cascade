@@ -21,6 +21,9 @@ plot_results_1 <- function(detector = "cad", mode = "pos") {
       "pda" = compared_peaks_list_pda_neg
     )
   }
+  if (mode == "neg") {
+    list$peaks_maj_precor_taxo_cor$feature_area <- -(list$peaks_maj_precor_taxo_cor$feature_area)
+  }
 
   log_debug(x = "preparing histograms")
   #' TODO harmonize 'others' among minor and major
@@ -180,7 +183,7 @@ plot_results_2 <- function(detector = "cad") {
     temp_fix_duplicates(colname = "newrt") |>
     prepare_hierarchy(detector = "cad")
 
-  #' TODO check to use full table
+  ## TODO check to use full table
   table_taxo_maj_cor_ms <- list$peaks_maj_precor_taxo_cor |>
     prepare_hierarchy(detector = "ms")
   table_taxo_maj_cor_ms_2 <- table_taxo_maj_cor_ms |>
@@ -227,7 +230,7 @@ plot_results_2 <- function(detector = "cad") {
   #
   # absolute_with_new_cor
 
-  #' TODO remove redundancy
+  ## TODO remove redundancy
   sunburst_conf_signal_based_pos <-
     table_taxo_maj_cor_conf_signal |>
     dplyr::filter(grepl(
@@ -289,7 +292,8 @@ plot_results_2 <- function(detector = "cad") {
     dplyr::arrange(desc(values))
   index_signal_duo <- table_taxo_maj_cor_signal_2 |>
     dplyr::filter(parents == "") |>
-    dplyr::arrange(desc(values))
+    dplyr::arrange(desc(values)) |>
+    dplyr::distinct(ids, labels, .keep_all = TRUE)
 
   index_ms_pos <- table_taxo_maj_cor_ms |>
     dplyr::filter(grepl(
@@ -309,7 +313,8 @@ plot_results_2 <- function(detector = "cad") {
     dplyr::arrange(desc(values))
   index_ms_duo <- table_taxo_maj_cor_ms_2 |>
     dplyr::filter(parents == "") |>
-    dplyr::arrange(desc(values))
+    dplyr::arrange(desc(values)) |>
+    dplyr::distinct(ids, labels, .keep_all = TRUE)
 
   sunburst_grey_colors_signal_pos <- sunburst_colors
   sunburst_grey_colors_signal_pos[[which(index_signal_pos$ids == "Other", arr.ind = TRUE)]] <-

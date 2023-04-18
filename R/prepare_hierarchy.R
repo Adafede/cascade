@@ -118,7 +118,7 @@ prepare_hierarchy <-
         ))
     }
 
-    #' dirty temp fix because of bad npclassifier naming
+    ## dirty temp fix because of bad npclassifier naming
     dataframe2 <- dataframe2 |>
       dplyr::rowwise() |>
       dplyr::mutate(safety = ifelse(
@@ -242,7 +242,7 @@ prepare_hierarchy <-
       dplyr::ungroup() |>
       dplyr::distinct() |>
       dplyr::group_by(ids) |>
-      dplyr::add_count() |> #' for ambiguous classes
+      dplyr::add_count() |> ## for ambiguous classes
       dplyr::filter(parents != "" |
         !is.na(ids) |
         !is.na(labels)) |>
@@ -364,7 +364,7 @@ prepare_hierarchy <-
 
     if (nrow(top_parents_table > length(nice_colors))) {
       top_parents_table <- top_parents_table |>
-        head(length(nice_colors)) #' in case of equal numbers among classes
+        head(length(nice_colors)) ## in case of equal numbers among classes
     }
 
     top_parents <- top_parents_table$labels
@@ -624,8 +624,8 @@ prepare_hierarchy <-
       table_new <- table_new |>
         dplyr::rowwise() |>
         dplyr::filter(grepl(pattern = id, x = sample) |
-          #' Comment these if
-          is.na(id)) |> #' using wrong feature table
+          ## Comment these if
+          is.na(id)) |> ## using wrong feature table
         dplyr::ungroup() |>
         dplyr::mutate(intensity = switch(detector,
           "ms" = intensity,
@@ -747,11 +747,12 @@ prepare_hierarchy <-
       dplyr::select(-any_of(c(
         "values", "sample", "intensity", "species", "organism"
       ))) |>
-      dplyr::left_join(final_table_3 |>
-        dplyr::select(any_of(
-          c("values", "sample", "parents", "species")
-        )),
-      by = c("ids" = "parents")
+      dplyr::left_join(
+        final_table_3 |>
+          dplyr::select(any_of(
+            c("values", "sample", "parents", "species")
+          )),
+        by = c("ids" = "parents")
       ) |>
       dplyr::group_by(dplyr::across(dplyr::any_of(
         c("parents", "ids", "labels", "sample", "species")
@@ -763,11 +764,12 @@ prepare_hierarchy <-
       dplyr::select(-any_of(c(
         "values", "sample", "intensity", "species", "organism"
       ))) |>
-      dplyr::left_join(final_table_2 |>
-        dplyr::select(any_of(
-          c("values", "sample", "parents", "species")
-        )),
-      by = c("ids" = "parents")
+      dplyr::left_join(
+        final_table_2 |>
+          dplyr::select(any_of(
+            c("values", "sample", "parents", "species")
+          )),
+        by = c("ids" = "parents")
       ) |>
       dplyr::group_by(dplyr::across(dplyr::any_of(
         c("parents", "ids", "labels", "sample", "species")
@@ -789,12 +791,12 @@ prepare_hierarchy <-
       if (rescale == TRUE) {
         final_table <- final_table |>
           dplyr::group_by(sample, species) |>
-          dplyr::mutate(values = values / (sum(values) / 3)) |> #' because 3 levels
+          dplyr::mutate(values = values / (sum(values) / 3)) |> ## because 3 levels
           dplyr::ungroup()
       } else {
         final_table <- final_table |>
           dplyr::group_by(sample) |>
-          dplyr::mutate(values = values / 3) |> #' because 3 levels
+          dplyr::mutate(values = values / 3) |> ## because 3 levels
           dplyr::ungroup()
       }
     }
