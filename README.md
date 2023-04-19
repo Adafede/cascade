@@ -14,7 +14,7 @@ It has just been opened for the sake of transparency.
 
 2. Run `mzmine -b <PATH_TO_BATCH_CREATED_IN_1>`
 
-3. Run `Rscript inst/scripts/install.R`)
+3. Run `Rscript inst/scripts/install.R`
 
 4. Run `Rscript inst/scripts/1_process_compare_peaks.R`
 
