@@ -13,7 +13,7 @@
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.2.3 (2023-03-15)",
+  "runtimePlatform": "R version 4.3.0 (2023-04-21)",
   "author": [
     {
       "@type": "Person",
@@ -110,7 +110,8 @@
       "@type": "SoftwareApplication",
       "identifier": "chromatographR",
       "name": "chromatographR",
-      "version": ">= 0.4.8"
+      "version": ">= 0.4.8",
+      "sameAs": "https://github.com/ethanbass/chromatographR"
     },
     "5": {
       "@type": "SoftwareApplication",
@@ -314,6 +315,8 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "34379828.98KB",
-  "readme": "https://github.com/Adafede/cascade/blob/main/README.md"
+  "keywords": ["metaboliteannotation", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
+  "fileSize": "34474754.857KB",
+  "readme": "https://github.com/Adafede/cascade/blob/main/README.md",
+  "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html#maturing"
 }
