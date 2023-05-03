@@ -97,7 +97,7 @@
       "@type": "SoftwareApplication",
       "identifier": "BiocParallel",
       "name": "BiocParallel",
-      "version": ">= 1.32.6",
+      "version": ">= 1.34.0",
       "provider": {
         "@id": "https://www.bioconductor.org",
         "@type": "Organization",
@@ -143,7 +143,7 @@
       "@type": "SoftwareApplication",
       "identifier": "dplyr",
       "name": "dplyr",
-      "version": ">= 1.1.1",
+      "version": ">= 1.1.2",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -182,7 +182,7 @@
       "@type": "SoftwareApplication",
       "identifier": "MSnbase",
       "name": "MSnbase",
-      "version": ">= 2.24.2",
+      "version": ">= 2.26.0",
       "provider": {
         "@id": "https://www.bioconductor.org",
         "@type": "Organization",
@@ -195,7 +195,7 @@
       "@type": "SoftwareApplication",
       "identifier": "nucleR",
       "name": "nucleR",
-      "version": ">= 2.30.0",
+      "version": ">= 2.32.0",
       "provider": {
         "@id": "https://www.bioconductor.org",
         "@type": "Organization",
@@ -291,7 +291,7 @@
       "@type": "SoftwareApplication",
       "identifier": "xcms",
       "name": "xcms",
-      "version": ">= 3.20.0",
+      "version": ">= 3.22.0",
       "provider": {
         "@id": "https://www.bioconductor.org",
         "@type": "Organization",
