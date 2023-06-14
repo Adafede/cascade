@@ -316,7 +316,7 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteannotation", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
-  "fileSize": "34474754.857KB",
+  "fileSize": "34474802.556KB",
   "readme": "https://github.com/Adafede/cascade/blob/main/README.md",
   "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html#maturing"
 }
