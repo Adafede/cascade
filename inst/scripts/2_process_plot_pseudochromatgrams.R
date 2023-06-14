@@ -801,8 +801,7 @@ plot_ik <- ggplot2::ggplot(
 #   width = 1600,
 #   height = 900
 # )
-# readr::write_tsv(x = plots_2_cad[["table_taxo_maj_cor_conf_signal_1"]] |>
-#                    dplyr::filter(mode == "pos"),
+# readr::write_tsv(x = plots_2_cad[["table_taxo_maj_cor_conf_signal_1"]],
 #                  file = "data/paper/final_table.tsv")
 # readr::write_csv(
 #   x = candidates_confident |>
