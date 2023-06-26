@@ -735,13 +735,11 @@ plot_ik <- ggplot2::ggplot(
   )
 ) +
   ggplot2::geom_line(data = cc_pos |>
-                       dplyr::mutate(inchikey_2D =gsub("MIJYXULNPSFWEK","oleanolic acid",inchikey_2D)) |>
-                       dplyr::mutate(inchikey_2D =gsub("WCGUUGGRBIKTOS","ursolic acid",inchikey_2D))
-                                       ) +
-  ggplot2::geom_line(data = cc_neg|>
-                       dplyr::mutate(inchikey_2D =gsub("MIJYXULNPSFWEK","oleanolic acid",inchikey_2D)) |>
-                       dplyr::mutate(inchikey_2D =gsub("WCGUUGGRBIKTOS","ursolic acid",inchikey_2D))
-  ) +
+    dplyr::mutate(inchikey_2D = gsub("MIJYXULNPSFWEK", "oleanolic acid", inchikey_2D)) |>
+    dplyr::mutate(inchikey_2D = gsub("WCGUUGGRBIKTOS", "ursolic acid", inchikey_2D))) +
+  ggplot2::geom_line(data = cc_neg |>
+    dplyr::mutate(inchikey_2D = gsub("MIJYXULNPSFWEK", "oleanolic acid", inchikey_2D)) |>
+    dplyr::mutate(inchikey_2D = gsub("WCGUUGGRBIKTOS", "ursolic acid", inchikey_2D))) +
   ggplot2::geom_line(
     data = cc_cad_pos,
     color = "black",
