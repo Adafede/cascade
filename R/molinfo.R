@@ -10,7 +10,7 @@ require(package = gt, quietly = TRUE)
 #' @examples
 molinfo <- function(x) {
   gt::web_image(
-    url = paste0("https://molinfo-de.nprod.net/molecule/smiles/", x, ".svg"),
+    url = paste0("https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=", x, "&annotate=cip&r=0"),
     height = as.numeric(75)
   )
 }
