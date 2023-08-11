@@ -190,8 +190,7 @@ prepare_hierarchy <-
         replacement = "",
         x = ids
       )) |>
-      dplyr::mutate_at(
-        vars(-group_cols()),
+      dplyr::mutate_all(
         ~ gsub(
           x = .x,
           pattern = "-NA$",
@@ -212,16 +211,14 @@ prepare_hierarchy <-
           x = join
         )
       ) |>
-      dplyr::mutate_at(
-        vars(-group_cols()),
+      dplyr::mutate_all(
         ~ gsub(
           x = .x,
           pattern = "-NA$",
           replacement = "",
         )
       ) |>
-      dplyr::mutate_at(
-        vars(-group_cols()),
+      dplyr::mutate_all(
         ~ gsub(
           x = .x,
           pattern = "^NA$",
@@ -555,8 +552,7 @@ prepare_hierarchy <-
           new_labels = best_candidate_3
         ) |>
         dplyr::select(chemical_pathway, parents, ids, labels, new_labels) |>
-        dplyr::mutate_at(
-          vars(-group_cols()),
+        dplyr::mutate_all(
           ~ gsub(
             x = .x,
             pattern = "-NA$",
@@ -592,8 +588,7 @@ prepare_hierarchy <-
         ) |>
         dplyr::select(chemical_pathway, parents, ids, labels, new_labels) |>
         dplyr::distinct() |>
-        dplyr::mutate_at(
-          vars(-group_cols()),
+        dplyr::mutate_all(
           ~ gsub(
             x = .x,
             pattern = "-NA$",
