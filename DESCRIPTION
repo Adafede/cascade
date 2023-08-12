@@ -32,8 +32,6 @@ Imports:
     readr (>= 2.1.4),
     xcms (>= 3.22.0),
     yaml (>= 2.3.7)
-Remotes:
-    ethanbass/chromatographR
 Suggests:
     knitr (>= 1.42),
     testthat (>= 3.1.7),
