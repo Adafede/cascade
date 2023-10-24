@@ -107,6 +107,7 @@ organisms:
     # Ginkgo biloba: Q43284
     # Panax ginseng: Q182881
     # Salvia officinalis: Q1111359
+    # Orchidaceae: Q25308
   comparison:
     # - Arnica montana
     # - Cinchona succirubra
