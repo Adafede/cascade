@@ -21,3 +21,43 @@ It has just been opened for the sake of transparency.
 5. Run annotation (in tima-r)
 
 6. Run `Rscript inst/scripts/2_process_plot_pseudochromatgrams.R`
+
+
+## Main Citations
+
+### CASCADE
+
+<https://doi.org/10.1021/acs.jafc.3c03099>
+
+According to which steps you used, please give credit to the authors of the tools/resources used.
+
+### TIMA
+
+General: <https://doi.org/10.3389/fpls.2019.01329>
+
+⚠️ Do not forget to cite which version you used: <https://doi.org/10.5281/zenodo.5797920>
+
+### LOTUS
+
+General: <https://doi.org/10.7554/eLife.70780>
+
+⚠️ Do not forget to cite which version you used: <https://doi.org/10.5281/zenodo.5794106>
+
+### ISDB
+
+General: <https://doi.org/10.1021/acs.analchem.5b04804>
+
+⚠️ Do not forget to cite which version you used: <https://doi.org/10.5281/zenodo.5607185>
+
+### MZmine3
+
+General: <https://doi.org/10.1038/s41587-023-01690-2>
+
+### SIRIUS
+
+General: <https://doi.org/10.1038/s41592-019-0344-8>
+
+- *CSI:FingerId*: <https://doi.org/10.1073/pnas.1509788112>
+- *ZODIAC*: <https://doi.org/10.1038/s42256-020-00234-6>
+- *CANOPUS*: <https://doi.org/10.1038/s41587-020-0740-8>
+- *COSMIC*: <https://doi.org/10.1038/s41587-021-01045-9>
