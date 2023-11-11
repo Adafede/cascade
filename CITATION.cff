@@ -4,7 +4,7 @@ authors:
   - family-names: Rutz
     given-names: Adriano
     orcid: https://orcid.org/0000-0003-0443-9902
-title: Automated Composition Assessment of Natural Extracts: Untargeted Mass Spectrometry-Based Metabolite Profiling Integrating Semiquantitative Detection
+title: "Automated Composition Assessment of Natural Extracts: Untargeted Mass Spectrometry-Based Metabolite Profiling Integrating Semiquantitative Detection"
 url: "https://github.com/Adafede/cascade"
 preferred-citation:
   type: article
@@ -15,10 +15,9 @@ preferred-citation:
   - family-names: Wolfender
     given-names: Jean-Luc
     orcid: https://orcid.org/0000-0002-0125-952X
-  title: Automated Composition Assessment of Natural Extracts: Untargeted Mass Spectrometry-Based Metabolite Profiling Integrating Semiquantitative Detection
+  title: "Automated Composition Assessment of Natural Extracts: Untargeted Mass Spectrometry-Based Metabolite Profiling Integrating Semiquantitative Detection"
   year: 2023
   journal: Journal of Agricultural and Food Chemistry
-  volume: 72
   doi: 10.1021/acs.jafc.3c03099
   url: "https://doi.org/10.1021/acs.jafc.3c03099"
   identifiers:
