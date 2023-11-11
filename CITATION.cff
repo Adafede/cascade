@@ -21,7 +21,7 @@ preferred-citation:
   doi: 10.1021/acs.jafc.3c03099
   url: "https://doi.org/10.1021/acs.jafc.3c03099"
   identifiers:
-    - type: "doi"
-      value: "10.1021/acs.jafc.3c03099"
-    - type: "url"
-      value: "https://doi.org/10.1021/acs.jafc.3c03099"
+  - type: "doi"
+    value: "10.1021/acs.jafc.3c03099"
+  - type: "url"
+    value: "https://doi.org/10.1021/acs.jafc.3c03099"
