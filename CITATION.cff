@@ -18,10 +18,4 @@ preferred-citation:
   title: Automated Composition Assessment of Natural Extracts: Untargeted Mass Spectrometry-Based Metabolite Profiling Integrating Semiquantitative Detection
   year: 2023
   journal: Journal of Agricultural and Food Chemistry
-  doi: 10.3389/fpls.2019.01329
-  url: "https://doi.org/10.1021/acs.jafc.3c03099"
-  identifiers:
-    - type: "doi"
-      value: "10.1021/acs.jafc.3c03099"
-    - type: "url"
-      value: "https://doi.org/10.1021/acs.jafc.3c03099"
+  doi: 10.1021/acs.jafc.3c03099
