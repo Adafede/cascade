@@ -230,7 +230,7 @@ if (!is.null(comparison)) {
   )
 }
 
-prepared_plots  <- hierarchies |>
+prepared_plots <- hierarchies |>
   lapply(prepare_plot)
 
 plots <- prepared_plots |>
