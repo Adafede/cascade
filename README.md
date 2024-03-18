@@ -1,7 +1,7 @@
 # CASCADE
 
 <!-- badges: start -->
-[![Lifecycle:Maturing](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 <!-- badges: end -->
 
 **C**ontextualizing untargeted **A**nnotation with **S**emi-quantitative **C**harged **A**erosol **D**etection for pertinent characterization of natural **E**xtracts.
