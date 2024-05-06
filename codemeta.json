@@ -97,7 +97,7 @@
       "@type": "SoftwareApplication",
       "identifier": "BiocParallel",
       "name": "BiocParallel",
-      "version": ">= 1.37.1",
+      "version": ">= 1.38.0",
       "provider": {
         "@id": "https://www.bioconductor.org",
         "@type": "Organization",
@@ -181,7 +181,7 @@
       "@type": "SoftwareApplication",
       "identifier": "MSnbase",
       "name": "MSnbase",
-      "version": ">= 2.29.4",
+      "version": ">= 2.30.1",
       "provider": {
         "@id": "https://www.bioconductor.org",
         "@type": "Organization",
@@ -194,7 +194,7 @@
       "@type": "SoftwareApplication",
       "identifier": "nucleR",
       "name": "nucleR",
-      "version": ">= 2.35.0",
+      "version": ">= 2.36.0",
       "provider": {
         "@id": "https://www.bioconductor.org",
         "@type": "Organization",
@@ -290,7 +290,7 @@
       "@type": "SoftwareApplication",
       "identifier": "xcms",
       "name": "xcms",
-      "version": ">= 4.1.13",
+      "version": ">= 4.2.0",
       "provider": {
         "@id": "https://www.bioconductor.org",
         "@type": "Organization",
@@ -315,6 +315,6 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteannotation", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
-  "fileSize": "34475383.326KB",
+  "fileSize": "34475383.325KB",
   "readme": "https://github.com/Adafede/cascade/blob/main/README.md"
 }
