@@ -290,7 +290,7 @@
       "@type": "SoftwareApplication",
       "identifier": "xcms",
       "name": "xcms",
-      "version": ">= 4.2.0",
+      "version": ">= 4.2.1",
       "provider": {
         "@id": "https://www.bioconductor.org",
         "@type": "Organization",
@@ -315,6 +315,6 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteannotation", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
-  "fileSize": "34475383.325KB",
+  "fileSize": "1904840.825KB",
   "readme": "https://github.com/Adafede/cascade/blob/main/README.md"
 }
