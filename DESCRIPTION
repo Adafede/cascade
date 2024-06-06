@@ -30,7 +30,7 @@ Imports:
     progressr (>= 0.14.0),
     purrr (>= 1.0.2),
     readr (>= 2.1.5),
-    xcms (>= 4.2.0),
+    xcms (>= 4.2.1),
     yaml (>= 2.3.8)
 Suggests:
     knitr (>= 1.42),
