@@ -31,7 +31,7 @@ Imports:
     purrr (>= 1.0.2),
     readr (>= 2.1.5),
     xcms (>= 4.2.2),
-    yaml (>= 2.3.8)
+    yaml (>= 2.3.9)
 Remotes:
     ethanbass/chromatographR
 Suggests:
