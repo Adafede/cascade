@@ -13,7 +13,7 @@
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.4.0 (2024-04-24)",
+  "runtimePlatform": "R version 4.4.1 (2024-06-14)",
   "author": [
     {
       "@type": "Person",
@@ -78,7 +78,7 @@
       "@type": "SoftwareApplication",
       "identifier": "R",
       "name": "R",
-      "version": ">= 4.1.0"
+      "version": ">= 4.4.0"
     },
     "2": {
       "@type": "SoftwareApplication",
@@ -110,7 +110,8 @@
       "@type": "SoftwareApplication",
       "identifier": "chromatographR",
       "name": "chromatographR",
-      "version": ">= 0.7.1"
+      "version": ">= 0.7.1",
+      "sameAs": "https://github.com/ethanbass/chromatographR"
     },
     "5": {
       "@type": "SoftwareApplication",
@@ -290,7 +291,7 @@
       "@type": "SoftwareApplication",
       "identifier": "xcms",
       "name": "xcms",
-      "version": ">= 4.2.1",
+      "version": ">= 4.2.2",
       "provider": {
         "@id": "https://www.bioconductor.org",
         "@type": "Organization",
@@ -315,6 +316,6 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteannotation", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
-  "fileSize": "1904840.825KB",
+  "fileSize": "0KB",
   "readme": "https://github.com/Adafede/cascade/blob/main/README.md"
 }
