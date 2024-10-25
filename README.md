@@ -1,4 +1,4 @@
-# CASCADE
+# CASCADE <img src='https://raw.githubusercontent.com/adafede/cascade/dev/man/figures/logo.svg' align="right" height="139" />
 
 <!-- badges: start -->
 [![Lifecycle:Maturing](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
