@@ -1,3 +1,5 @@
+^renv$
+^renv\.lock$
 ^cascade\.Rproj$
 ^\.Rproj\.user$
 ^codemeta\.json$

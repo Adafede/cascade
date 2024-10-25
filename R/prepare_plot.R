@@ -72,7 +72,7 @@ prepare_plot <- function(dataframe, organism = "species") {
   quickfix <- samples |>
     dplyr::filter(is.na(color)) |>
     dplyr::group_by(group, subgroup) |>
-    dplyr::mutate(subsub = cur_group_id()) |>
+    dplyr::mutate(subsub = dplyr::cur_group_id()) |>
     dplyr::mutate(color = paste0("#00", sprintf("%04d", subsub))) |>
     dplyr::select(-subsub) |>
     dplyr::ungroup()

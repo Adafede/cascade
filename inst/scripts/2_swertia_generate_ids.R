@@ -100,7 +100,7 @@ query_part_4 <- readr::read_file(paths$inst$scripts$sparql$review_4)
 
 message("Loading LOTUS classified structures")
 structures_classified <- readr::read_delim(
-  file = paths$inst$extdata$source$libraries$lotus,
+  file = paths$data$source$libraries$lotus,
   col_select = c(
     "structure_id" = "structure_inchikey",
     "structure_smiles_2D",
@@ -229,6 +229,12 @@ if (!is.null(comparison)) {
     type = "literature"
   )
 }
+
+prepared_plots <- hierarchies |>
+  lapply(prepare_plot)
+
+plots <- prepared_plots |>
+  lapply(plot_histograms_litt, label = "")
 
 #' Title
 #'
