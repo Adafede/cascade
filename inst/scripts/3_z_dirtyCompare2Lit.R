@@ -122,7 +122,7 @@ table_medium <-
     peak_rt = round(x = peak_rt, digits = 2),
     peak_area = round(x = 100 * peak_area / sum(peak_area), digits = 2),
     feature_rt = round(x = feature_rt, digits = 2),
-    feature_mz = round(x = feature_rt, digits = 4),
+    feature_mz = round(x = feature_mz, digits = 4),
     score_final = round(x = score_final, digits = 2)
   )
 

@@ -734,8 +734,12 @@ plot_ik <- ggplot2::ggplot(
     color = inchikey_2D
   )
 ) +
-  ggplot2::geom_line(data = cc_pos) +
-  ggplot2::geom_line(data = cc_neg) +
+  ggplot2::geom_line(data = cc_pos |>
+    dplyr::mutate(inchikey_2D = gsub("MIJYXULNPSFWEK", "oleanolic acid", inchikey_2D)) |>
+    dplyr::mutate(inchikey_2D = gsub("WCGUUGGRBIKTOS", "ursolic acid", inchikey_2D))) +
+  ggplot2::geom_line(data = cc_neg |>
+    dplyr::mutate(inchikey_2D = gsub("MIJYXULNPSFWEK", "oleanolic acid", inchikey_2D)) |>
+    dplyr::mutate(inchikey_2D = gsub("WCGUUGGRBIKTOS", "ursolic acid", inchikey_2D))) +
   ggplot2::geom_line(
     data = cc_cad_pos,
     color = "black",
@@ -748,7 +752,7 @@ plot_ik <- ggplot2::ggplot(
   ) +
   ggplot2::scale_color_manual(
     values = c("#4E79A7", "#BAB0AC", "#A0CBE8"),
-    name = "2D Structure"
+    name = "Structure (no stereochemistry)"
   ) +
   ggplot2::theme_bw() +
   ggplot2::theme(
@@ -760,20 +764,20 @@ plot_ik <- ggplot2::ggplot(
   ylab(label = "Normalized Intensity")
 
 #' export
-# ggplot2::ggsave(
-#   filename = "~/git/cascade/data/paper/cascade-4.pdf",
-#   plot = ggpubr::ggarrange(
-#     plot_comparison,
-#     plot_taxo,
-#     plot_mf,
-#     plot_ik,
-#     labels = "AUTO",
-#     align = "hv"
-#   ),
-#   width = 9,
-#   height = 9,
-#   limitsize = FALSE
-# )
+ggplot2::ggsave(
+  filename = "~/git/cascade/data/paper/cascade-4.pdf",
+  plot = ggpubr::ggarrange(
+    plot_comparison,
+    plot_taxo,
+    plot_mf,
+    plot_ik,
+    labels = "AUTO",
+    align = "hv"
+  ),
+  width = 9,
+  height = 9,
+  limitsize = FALSE
+)
 # ggplot2::ggsave(filename = "~/git/cascade/data/paper/cascade-6.pdf",
 #                 plot = fig_taxo)
 # ggplot2::ggsave(
@@ -801,8 +805,7 @@ plot_ik <- ggplot2::ggplot(
 #   width = 1600,
 #   height = 900
 # )
-# readr::write_tsv(x = plots_2_cad[["table_taxo_maj_cor_conf_signal_1"]] |>
-#                    dplyr::filter(mode == "pos"),
+# readr::write_tsv(x = plots_2_cad[["table_taxo_maj_cor_conf_signal_1"]],
 #                  file = "data/paper/final_table.tsv")
 # readr::write_csv(
 #   x = candidates_confident |>
