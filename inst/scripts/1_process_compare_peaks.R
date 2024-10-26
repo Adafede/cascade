@@ -88,7 +88,7 @@ names <- list.files(
   pattern = paste0(params$filename$mzml, ".mzML"),
   recursive = TRUE
 ) |>
-  gsub(pattern = "[0-9]{6}_AR_[0-9]{2}_", replacement = "") |>
+  gsub(pattern = "[0-9]{8}_AR_[0-9]{2}_", replacement = "") |>
   gsub(
     pattern = ".mzML",
     replacement = "",
@@ -99,6 +99,8 @@ names <- list.files(
 
 log_debug(x = "loading feature table")
 # feature_table <- read_features(id = GNPS_JOB)
+## TODO FIX THIS
+FEATURES <- c("~/Documents/papers/sapid/sapere_tmp/extract_mzmine/extract.csv")
 feature_table <- read_delim(file = FEATURES)
 
 log_debug(x = "loading raw files (can take long if loading multiple files)")
@@ -182,7 +184,7 @@ df_features_with_peaks_scored <- df_features_with_peaks |>
     feature_id,
     feature_rt = rt,
     feature_mz = mz,
-    feature_area = intensity,
+    feature_area = area,
     comparison_score
   ) |>
   distinct()
@@ -200,7 +202,7 @@ df_features_without_peaks_scored <-
     feature_id,
     feature_rt = rt,
     feature_mz = mz,
-    feature_area = intensity,
+    feature_area = area,
     comparison_score
   ) |>
   distinct()
@@ -210,6 +212,8 @@ check_export_dir(EXPORT_DIR)
 
 log_debug(x = "exporting to ...")
 log_debug(x = EXPORT_DIR)
+## TODO FIX THIS
+EXPORT_FILE_CAD <- EXPORT_FILE_CAD[1]
 write_tsv(
   x = df_features_with_peaks_scored,
   file = file.path(EXPORT_DIR, switch(detector,
@@ -218,6 +222,8 @@ write_tsv(
     "pda" = EXPORT_FILE_PDA
   ))
 )
+## TODO FIX THIS
+EXPORT_FILE_CAD_2 <- EXPORT_FILE_CAD_2[1]
 write_tsv(
   x = df_features_without_peaks_scored,
   file = file.path(EXPORT_DIR, switch(detector,

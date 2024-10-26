@@ -16,25 +16,14 @@ library(package = purrr, quietly = TRUE)
 library(package = readr, quietly = TRUE)
 library(package = xcms, quietly = TRUE)
 
-source(file = "R/baseline_chromatogram.R")
 source(file = "R/baseline_chromatograms_progress.R")
 source(file = "R/change_intensity_name.R")
 source(file = "R/colors.R")
-# source(file = "R/dirty_paths_params.R")
 source(file = "R/get_params.R")
-source(file = "R/improve_signal.R")
 source(file = "R/improve_signals_progress.R")
-source(file = "R/log_debug.R")
-source(file = "R/make_confident.R")
+source(file = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/log_debug.R")
 source(file = "R/normalize_chromatograms_list.R")
-source(file = "R/parse_cli_params.R")
 source(file = "R/parse_yaml_paths.R")
-source(file = "R/parse_yaml_params.R")
-source(file = "R/peaks_progress.R")
-source(file = "R/plot_histograms.R")
-source(file = "R/prepare_hierarchy.R")
-source(file = "R/prepare_plot.R")
-source(file = "R/y_as_na.R")
 
 progressr::handlers(global = TRUE)
 progressr::handlers("progress")
@@ -57,14 +46,14 @@ source(file = "R/dirty_paths_params.R")
 #' Specific paths
 TOYSET <- "data/source/mzml/10043"
 TOYSET <- "data/source/mzml/UHR"
-TOYSET <- "data/source/mzml/bitter"
-TIME_MIN <- 0.3
-TIME_MAX <- 21.3
+TOYSET <- "data/source/mzml"
+TIME_MIN <- 0.7
+TIME_MAX <- 35.2
 
 files <- list.files(
   path = TOYSET,
   # pattern = "10043_enriched_UHR_Pos",
-  pattern = "10043_apolar_Pos",
+  pattern = "210619_AR_06_V_03_2_01",
   full.names = TRUE,
   recursive = TRUE
 )
@@ -72,7 +61,7 @@ files <- list.files(
 files_2 <- list.files(
   path = TOYSET,
   # pattern = "10043_enriched_UHR_Neg",
-  pattern = "10043_apolar_Neg",
+  pattern = "210619_AR_03_V_03_2_01_NEG",
   full.names = TRUE,
   recursive = TRUE
 )
@@ -82,7 +71,7 @@ names <- list.files(
   pattern = "Pos.mzML",
   recursive = TRUE
 ) |>
-  gsub(pattern = "[0-9]{6}_AR_[0-9]{2}_", replacement = "") |>
+  gsub(pattern = "[0-9]{8}_AR_[0-9]{2}_", replacement = "") |>
   gsub(
     pattern = ".mzML",
     replacement = "",
@@ -94,7 +83,7 @@ names_2 <- list.files(
   pattern = "Neg.mzML",
   recursive = TRUE
 ) |>
-  gsub(pattern = "[0-9]{6}_AR_[0-9]{2}_", replacement = "") |>
+  gsub(pattern = "[0-9]{8}_AR_[0-9]{2}_", replacement = "") |>
   gsub(
     pattern = ".mzML",
     replacement = "",
@@ -189,7 +178,7 @@ pdas_baselined <- chromatograms_pda_baselined |>
 new <- plotly::plot_ly() |>
   plotly::add_lines(
     data = chromatograms_cad_improved[[1]] |>
-      normalize_chromatograms_list(shift = CAD_SHIFT, time = TRUE),
+      normalize_chromatograms_list(shift = CAD_SHIFT, time = FALSE),
     x = ~time,
     y = ~intensity,
     name = "<b> CAD </b>",
@@ -201,7 +190,7 @@ new <- plotly::plot_ly() |>
   ) |>
   plotly::add_lines(
     data = chromatograms_pda_improved[[1]] |>
-      normalize_chromatograms_list(shift = PDA_SHIFT, time = TRUE),
+      normalize_chromatograms_list(shift = PDA_SHIFT, time = FALSE),
     x = ~time,
     y = ~intensity,
     name = "<b> PDA </b>",
@@ -213,7 +202,7 @@ new <- plotly::plot_ly() |>
   ) |>
   plotly::add_lines(
     data = chromatograms_bpi_improved[[1]] |>
-      normalize_chromatograms_list(time = TRUE),
+      normalize_chromatograms_list(time = FALSE),
     x = ~time,
     y = ~ -intensity,
     name = "<b> MS Pos </b>",
@@ -225,7 +214,7 @@ new <- plotly::plot_ly() |>
   ) |>
   plotly::add_lines(
     data = chromatograms_bpi_neg_improved[[1]] |>
-      normalize_chromatograms_list(time = TRUE),
+      normalize_chromatograms_list(time = FALSE),
     x = ~time,
     y = ~ -intensity,
     name = "<b> MS Neg </b>",
