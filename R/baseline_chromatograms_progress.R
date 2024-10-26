@@ -1,3 +1,4 @@
+source(file = "R/baseline_chromatogram.R")
 #' Title
 #'
 #' @param xs

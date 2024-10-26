@@ -1,3 +1,4 @@
+source(file = "R/improve_signal.R")
 #' Title
 #'
 #' @param xs
