@@ -1,3 +1,9 @@
+source(file = "R/join_peaks.R")
+source(file = "R/normalize_chromato.R")
+source(file = "R/peaks_progress.R")
+source(file = "R/prepare_mz.R")
+source(file = "R/prepare_peaks.R")
+source(file = "R/prepare_rt.R")
 #' Title
 #'
 #' @param detector
@@ -31,7 +37,8 @@ preprocess_peaks <- function(detector = "cad",
 
   df_features_with_peaks <- df_features_peaks |>
     select(-rt_1, -rt_2) |>
-    filter(!is.na(peak_id))
+    filter(!is.na(peak_id)) |>
+    tidytable::distinct()
 
   # df_new_with_cad <- df_new_with_cad |> ## TODO DONT FORGET
   #   dplyr::distinct(id, peak_id, feature_id, .keep_all = TRUE) |> ## TODO DONT FORGET
@@ -40,7 +47,8 @@ preprocess_peaks <- function(detector = "cad",
   log_debug(x = "selecting features outside peaks")
   df_features_without_peaks <- df_features_peaks |>
     filter(is.na(peak_id)) |>
-    filter(sample %in% df_features_with_peaks$sample)
+    tidytable::distinct() # |>
+  # filter(sample %in% df_features_with_peaks$sample)
 
   # df_new_without <- df_new_without |> ## TODO DONT FORGET
   #   dplyr::distinct(id, peak_id, feature_id, .keep_all = TRUE) ## TODO DONT FORGET

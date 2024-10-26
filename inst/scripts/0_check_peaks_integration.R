@@ -16,36 +16,13 @@ library(package = purrr, quietly = TRUE)
 library(package = readr, quietly = TRUE)
 library(package = xcms, quietly = TRUE)
 
-source(file = "R/baseline_chromatogram.R")
-source(file = "R/change_intensity_name.R")
-source(file = "R/check_export_dir.R")
-source(file = "R/compare_peaks.R")
-source(file = "R/extract_ms_progress.R")
-source(file = "R/extract_ms_peak.R")
-source(file = "R/filter_ms.R")
-source(file = "R/get_gnps.R")
 source(file = "R/get_params.R")
-source(file = "R/improve_signal.R")
-source(file = "R/improve_signals_progress.R")
-source(file = "R/join_peaks.R")
-source(file = "R/log_debug.R")
-source(file = "R/make_confident.R")
-source(file = "R/normalize_chromato.R")
-source(file = "R/parse_cli_params.R")
-source(file = "R/parse_yaml_params.R")
+source(file = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/log_debug.R")
 source(file = "R/parse_yaml_paths.R")
-source(file = "R/peaks_progress.R")
-source(file = "R/plot_chromatogram.R")
 source(file = "R/prepare_features.R")
-source(file = "R/prepare_mz.R")
-source(file = "R/prepare_peaks.R")
-source(file = "R/prepare_rt.R")
 source(file = "R/preprocess_chromatograms.R")
 source(file = "R/preprocess_peaks.R")
-source(file = "R/process_peaks.R")
 source(file = "R/progressr.R")
-source(file = "R/transform_ms.R")
-source(file = "R/y_as_na.R")
 
 step <- "processing"
 paths <- parse_yaml_paths()
@@ -71,7 +48,8 @@ files <- list.files(
   full.names = TRUE,
   recursive = TRUE
 )
-
+## TODO FIX THIS
+FEATURES <- c("~/Documents/papers/sapid/sapere_tmp/extract_mzmine/extract.csv", "~/Documents/papers/sapid/sapere_tmp/extract_mzmine/extract.csv")
 # files <- files[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = files)]
 
 names <- list.files(
@@ -79,7 +57,7 @@ names <- list.files(
   pattern = paste0(params$filename$mzml, ".mzML"),
   recursive = TRUE
 ) |>
-  gsub(pattern = "[0-9]{6}_AR_[0-9]{2}_", replacement = "") |>
+  gsub(pattern = "[0-9]{8}_AR_[0-9]{2}_", replacement = "") |>
   gsub(
     pattern = ".mzML",
     replacement = "",
@@ -163,8 +141,8 @@ suite_3_1 <- chromatograms_list_cad$chromatograms_baselined_long |>
 
 suite_3_2 <- peaks_prelist_cad$list_df_features_with_peaks_long |>
   bind_rows() |>
-  mutate(
-    intensity = intensity / max(intensity),
+  dplyr::mutate(
+    intensity = intensity_max / max(intensity_max),
     peak_max = peak_max / max(peak_max)
   ) # |>
 # filter(grepl(pattern = "V_03_2_01", x = id))

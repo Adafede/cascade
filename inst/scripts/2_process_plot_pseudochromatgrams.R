@@ -52,9 +52,9 @@ log_debug("Contributors: \n", "...")
 source(file = "R/dirty_paths_params.R")
 
 #' Specific paths
-TIME_MIN <- 0.5
-TIME_MAX <- 127
-THESIS <- TRUE
+TIME_MIN <- 0.7
+TIME_MAX <- 35.2
+THESIS <- FALSE
 
 ###
 ## DIRTY FROM 1_process_compare_peaks.R
@@ -99,7 +99,7 @@ names <- list.files(
   pattern = paste0(params$filename$mzml, ".mzML"),
   recursive = TRUE
 ) |>
-  gsub(pattern = "[0-9]{6}_AR_[0-9]{2}_", replacement = "") |>
+  gsub(pattern = "[0-9]{8}_AR_[0-9]{2}_", replacement = "") |>
   gsub(
     pattern = ".mzML",
     replacement = "",

@@ -7,62 +7,25 @@
 #'
 #' @examples
 prepare_features <- function(df) {
-  colnames(df) <-
-    gsub(
-      pattern = ".Peak.area",
-      replacement = "",
-      x = colnames(df)
-    )
-
-  log_debug(x = "... removing \"row m/z\" and from \"row retention time\" columns")
+  log_debug(x = "... preparing features")
   df <- df |>
     dplyr::select(
-      rt = "row retention time",
-      mz = "row m/z",
-      everything(),
-      ## TODO improve if Sirius
-      -"correlation group ID",
-      -"annotation network number",
-      -"best ion",
-      -"auto MS2 verify",
-      -"identified by n=",
-      -"partners",
-      -"neutral M mass"
+      feature_id = "id",
+      rt = "rt",
+      mz = "mz",
+      area = "area",
+      rt_1 = paste0("datafile:", names, ".mzML:rt_range:min"),
+      rt_2 = paste0("datafile:", names, ".mzML:rt_range:max"),
+      mz_min = paste0("datafile:", names, ".mzML:mz_range:min"),
+      mz_max = paste0("datafile:", names, ".mzML:mz_range:max"),
+      intensity_min = paste0("datafile:", names, ".mzML:intensity_range:min"),
+      intensity_max = paste0("datafile:", names, ".mzML:intensity_range:max"),
     ) |>
-    dplyr::select(-(ncol(df) - 7)) |>
-    tibble::column_to_rownames(var = "row ID")
+    dplyr::mutate_all(as.numeric)
 
   log_debug(x = "... keeping features above desired intensity only")
   df_features <- df |>
-    tibble::rownames_to_column() |>
-    dplyr::group_by(rowname, rt, mz) |>
-    tidyr::gather(column, value, -rowname, -rt, -mz) |>
-    dplyr::ungroup() |>
-    dplyr::mutate(column = gsub(
-      pattern = "^X",
-      replacement = "",
-      x = column
-    )) |>
-    dplyr::arrange(rowname, dplyr::desc(value)) |>
-    dplyr::filter(value >= INTENSITY_MS_MIN) |>
-    dplyr::mutate(column = gsub(
-      pattern = ".Peak.area",
-      replacement = "",
-      x = column
-    )) |>
-    dplyr::select(
-      feature_id = rowname,
-      rt,
-      mz,
-      sample = column,
-      intensity = value
-    ) |>
-    dplyr::mutate(
-      rt_1 = as.numeric(rt),
-      rt_2 = as.numeric(rt),
-      mz_min = (1 - (1E-6 * PPM)) * as.numeric(mz),
-      mz_max = (1 + (1E-6 * PPM)) * as.numeric(mz)
-    ) |>
+    dplyr::filter(intensity_max >= INTENSITY_MS_MIN) |>
     data.table::data.table()
 
   log_debug(x = "setting joining keys")

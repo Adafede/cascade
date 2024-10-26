@@ -66,7 +66,7 @@ peaks_progress <- function(xs) {
         sd.max = 50,
         max.iter = 1000,
         noise_threshold = 0.001,
-        progress_bar = TRUE
+        show_progress = TRUE
       )
 
       peaks <- pks$`666`$`666` |>
