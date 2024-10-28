@@ -6,11 +6,11 @@
 \usage{
 improve_signal(
   df,
-  fourier_components = FOURRIER_COMPONENTS,
+  fourier_components = 0.01,
   time_min = TIME_MIN,
   time_max = TIME_MAX,
-  frequency = FREQUENCY,
-  resample = RESAMPLE
+  frequency = 2,
+  resample = 1
 )
 }
 \arguments{

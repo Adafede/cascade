@@ -10,5 +10,15 @@
     label = "",
     nout = 100L
   ))
+  strat <- ifelse(test = .Platform$OS.type == "unix",
+    yes = "multicore",
+    no = "multisession"
+  )
+  future::plan(strategy = strat, workers = future::nbrOfWorkers())
+  # handlers(global = TRUE)
+  progressr::handlers(
+    progressr::handler_txtprogressbar(enable = TRUE),
+    progressr::handler_progress(format = ":spin [:bar] ETA: :eta :percent")
+  )
   invisible(NULL)
 }
