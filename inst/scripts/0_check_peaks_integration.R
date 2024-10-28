@@ -21,54 +21,45 @@ log_debug(
 log_debug("Authors: \n", "AR")
 log_debug("Contributors: \n", "...")
 
-#' Dirty generic paths and parameters
-source(file = "R/dirty_paths_params.R")
 #' Specific paths
+AREA_MIN <- 0.005
+CAD_SHIFT <- 0.05
+INTENSITY_MS_MIN <- 10000
 TIME_MIN <- 0.7
 TIME_MAX <- 35.2
+FILE_POSITIVE <- "data/source/mzml/210619_AR_06_V_03_2_01.mzML"
+FEATURES <- "~/Documents/papers/sapid/sapere_tmp/extract_mzmine/extract.csv"
 
-log_debug(x = "listing files")
-files <- list.files(
-  path = TOYSET,
-  pattern = paste0(params$filename$mzml, ".mzML"),
-  full.names = TRUE,
-  recursive = TRUE
-)
-## TODO FIX THIS
-FEATURES <- c(
-  "~/Documents/papers/sapid/sapere_tmp/extract_mzmine/extract.csv",
-  "~/Documents/papers/sapid/sapere_tmp/extract_mzmine/extract.csv"
-)
-
-names <- list.files(
-  path = TOYSET,
-  pattern = paste0(params$filename$mzml, ".mzML"),
-  recursive = TRUE
-) |>
+names <- FILE_POSITIVE |>
+  gsub(pattern = ".*/", replacement = "") |>
   gsub(pattern = "[0-9]{8}_AR_[0-9]{2}_", replacement = "") |>
-  gsub(pattern = ".mzML",
-       replacement = "",
-       fixed = TRUE)
+  gsub(
+    pattern = ".mzML",
+    replacement = "",
+    fixed = TRUE
+  )
 
 log_debug(x = "loading feature table")
 feature_table <- readr::read_delim(file = FEATURES)
 
 log_debug(x = "loading raw files (can take long if loading multiple files)")
-dda_data <- MSnbase::readMSData(files = files,
-                                mode = "onDisk",
-                                msLevel. = 1)
+dda_data <- MSnbase::readMSData(
+  files = FILE_POSITIVE,
+  mode = "onDisk",
+  msLevel. = 1
+)
 
 log_debug(x = "opening raw files objects and extracting chromatograms")
-chromatograms_all <- lapply(files, mzR::openMSfile) |>
+chromatograms_all <- lapply(FILE_POSITIVE, mzR::openMSfile) |>
   lapply(mzR::chromatograms) |>
   purrr::flatten()
 
 log_debug(x = "preparing feature list ...")
 df_features <- feature_table |>
-  prepare_features()
+  prepare_features(INTENSITY_MS_MIN)
 
 chromatograms_list_cad <- preprocess_chromatograms()
-peaks_prelist_cad <- preprocess_peaks()
+peaks_prelist_cad <- preprocess_peaks(area_min = AREA_MIN)
 
 detector <- "cad"
 
@@ -76,19 +67,22 @@ peaks_original <-
   preprocess_peaks(
     list = chromatograms_list_cad$chromatograms_original,
     df_long = chromatograms_list_cad$chromatograms_original_long |>
-      tidytable::mutate(intensity = intensity / max(intensity))
+      tidytable::mutate(intensity = intensity / max(intensity)),
+    area_min = AREA_MIN
   )
 peaks_improved <-
   preprocess_peaks(
     list = chromatograms_list_cad$chromatograms_improved,
     df_long = chromatograms_list_cad$chromatograms_improved_long |>
-      tidytable::mutate(intensity = intensity / max(intensity))
+      tidytable::mutate(intensity = intensity / max(intensity)),
+    area_min = AREA_MIN
   )
 peaks_baselined <-
   preprocess_peaks(
     list = chromatograms_list_cad$chromatograms_baselined,
     df_long = chromatograms_list_cad$chromatograms_baselined_long |>
-      tidytable::mutate(intensity = intensity / max(intensity))
+      tidytable::mutate(intensity = intensity / max(intensity)),
+    area_min = AREA_MIN
   )
 
 suite_1_1 <- chromatograms_list_cad$chromatograms_original_long |>
@@ -115,8 +109,10 @@ suite_3_1 <- chromatograms_list_cad$chromatograms_baselined_long |>
 
 suite_3_2 <- peaks_prelist_cad$list_df_features_with_peaks_long |>
   tidytable::bind_rows() |>
-  tidytable::mutate(intensity = intensity_max / max(intensity_max),
-                    peak_max = peak_max / max(peak_max))
+  tidytable::mutate(
+    intensity = intensity_max / max(intensity_max),
+    peak_max = peak_max / max(peak_max)
+  )
 
 
 f_1 <- approxfun(
@@ -225,8 +221,8 @@ detection_after <- suite_3_1 |>
   plotly::plot_ly() |>
   plotly::add_trace(
     suite_3_1,
-    x =  ~ time,
-    y =  ~ intensity,
+    x =  ~time,
+    y =  ~intensity,
     type = "scatter",
     mode = "line",
     name = "signal",
@@ -234,8 +230,8 @@ detection_after <- suite_3_1 |>
   ) |>
   plotly::add_trace(
     data = suite_3_2,
-    x = ~ rt_apex,
-    y = ~ peak_max,
+    x = ~rt_apex,
+    y = ~peak_max,
     yaxis = "y2",
     type = "scatter",
     marker = list(color = "ff7f00", symbol = "star"),
@@ -244,7 +240,7 @@ detection_after <- suite_3_1 |>
   ) |>
   plotly::add_trace(
     data = suite_3_2,
-    x = ~ rt_min,
+    x = ~rt_min,
     y = ~ f_2(rt_min),
     yaxis = "y2",
     type = "scatter",
@@ -254,7 +250,7 @@ detection_after <- suite_3_1 |>
   ) |>
   plotly::add_trace(
     data = suite_3_2,
-    x = ~ rt_max,
+    x = ~rt_max,
     y = ~ f_2(rt_max),
     yaxis = "y2",
     type = "scatter",

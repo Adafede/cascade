@@ -14,7 +14,8 @@ source(file = "R/prepare_rt.R")
 #' @examples
 preprocess_peaks <- function(detector = "cad",
                              list = chromatograms_list_cad$chromatograms_baselined,
-                             df_long = chromatograms_list_cad$chromatograms_baselined_long) {
+                             df_long = chromatograms_list_cad$chromatograms_baselined_long,
+                             area_min) {
   log_debug(x = "preprocessing", detector, "peaks")
   ## data.table call outside of future because buggy else
   peaks <- peaks_progress(list)
@@ -27,7 +28,7 @@ preprocess_peaks <- function(detector = "cad",
 
   log_debug(x = "joining peaks ...")
   df_peaks <-
-    join_peaks(chromatograms = df_long, peaks = peaks_long)
+    join_peaks(chromatograms = df_long, peaks = peaks_long, min_area = area_min)
 
   data.table::setkey(df_peaks, rt_min, rt_max)
 

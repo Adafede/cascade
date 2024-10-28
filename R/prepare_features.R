@@ -6,10 +6,10 @@
 #' @export
 #'
 #' @examples
-prepare_features <- function(df) {
+prepare_features <- function(df, min_intensity) {
   log_debug(x = "... preparing features")
   df <- df |>
-    dplyr::select(
+    tidytable::select(
       feature_id = "id",
       rt = "rt",
       mz = "mz",
@@ -25,8 +25,8 @@ prepare_features <- function(df) {
 
   log_debug(x = "... keeping features above desired intensity only")
   df_features <- df |>
-    dplyr::filter(intensity_max >= INTENSITY_MS_MIN) |>
-    data.table::data.table()
+    tidytable::filter(intensity_max >= min_intensity) |>
+    tidytable::data.table()
 
   log_debug(x = "setting joining keys")
   data.table::setkey(df_features, rt_1, rt_2)

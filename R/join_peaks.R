@@ -7,7 +7,7 @@
 #' @export
 #'
 #' @examples
-join_peaks <- function(chromatograms, peaks) {
+join_peaks <- function(chromatograms, peaks, min_area) {
   cat("setting joining keys \n")
   data.table::setkey(peaks, rt_min, rt_max)
   data.table::setkey(chromatograms, rt_1, rt_2)
@@ -20,7 +20,7 @@ join_peaks <- function(chromatograms, peaks) {
     dplyr::ungroup() |>
     dplyr::distinct(peak_id, id, peak_max, rt_apex, rt_min, rt_max, integral) |>
     dplyr::group_by(id) |>
-    dplyr::filter(integral / sum(integral) >= AREA_MIN) |>
+    dplyr::filter(integral / sum(integral) >= min_area) |>
     data.table::data.table()
   return(df)
 }
