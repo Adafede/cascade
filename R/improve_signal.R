@@ -15,15 +15,16 @@ source(file = "R/signal_sharpening.R")
 #' @examples
 improve_signal <-
   function(df,
-           fourier_components = FOURRIER_COMPONENTS,
+           fourier_components = 0.01,
            time_min = TIME_MIN,
            time_max = TIME_MAX,
-           frequency = FREQUENCY,
-           resample = RESAMPLE) {
+           frequency = 2,
+           resample = 1) {
     df_fourier <- df |>
       ## in case we have negative intensity
-      dplyr::mutate(intensity = intensity + 10) |>
-      dplyr::mutate(intensity = intensity - (min(intensity))) |>
+      ## 100 to be on the safe side
+      dplyr::mutate(intensity = intensity + 100) |>
+      dplyr::mutate(intensity = intensity - (min(intensity) - 0.001)) |>
       dplyr::mutate(
         intensity_fourier = nucleR::filterFFT(
           intensity,

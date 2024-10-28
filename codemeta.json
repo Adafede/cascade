@@ -2,7 +2,7 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "cascade",
-  "description": "What the package does (one paragraph).",
+  "description": "This package provides the infrastructure to perform Automated Composition Assessment of Natural Extracts.",
   "name": "cascade: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts",
   "codeRepository": "https://github.com/adafede/cascade",
   "issueTracker": "https://github.com/adafede/cascade/issues",
@@ -78,7 +78,7 @@
       "@type": "SoftwareApplication",
       "identifier": "R",
       "name": "R",
-      "version": ">= 4.4.0"
+      "version": ">= 4.3.0"
     },
     "2": {
       "@type": "SoftwareApplication",
@@ -328,7 +328,7 @@
     },
     "SystemRequirements": null
   },
-  "keywords": ["metaboliteannotation", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
+  "keywords": ["metaboliteannotation", "chargedaerosoldetector", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
   "fileSize": "0KB",
   "readme": "https://github.com/Adafede/cascade/blob/main/README.md"
 }

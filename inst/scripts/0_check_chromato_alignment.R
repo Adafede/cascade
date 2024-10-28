@@ -1,37 +1,13 @@
 start <- Sys.time()
 
-library(package = baseline, quietly = TRUE)
-library(package = dplyr, quietly = TRUE)
-library(package = docopt, quietly = TRUE)
-library(package = future, quietly = TRUE)
-library(package = future.apply, quietly = TRUE)
-library(package = microshades, quietly = TRUE)
-library(package = MSnbase, quietly = TRUE)
-library(package = nucleR, quietly = TRUE)
-library(package = parallel, quietly = TRUE)
-library(package = patchwork, quietly = TRUE)
-library(package = plotly, quietly = TRUE)
-library(package = progressr, quietly = TRUE)
-library(package = purrr, quietly = TRUE)
-library(package = readr, quietly = TRUE)
-library(package = xcms, quietly = TRUE)
-
-source(file = "R/baseline_chromatograms_progress.R")
+source(file = "R/add_chromato_line.R")
+source(file = "R/baseline_chromatogram.R")
 source(file = "R/change_intensity_name.R")
-source(file = "R/colors.R")
-source(file = "R/get_params.R")
+source(file = "R/check_chromatograms.R")
+source(file = "R/extract_chromatogram.R")
 source(file = "R/improve_signals_progress.R")
 source(file = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/log_debug.R")
 source(file = "R/normalize_chromatograms_list.R")
-source(file = "R/parse_yaml_paths.R")
-
-progressr::handlers(global = TRUE)
-progressr::handlers("progress")
-
-step <- "processing"
-paths <- parse_yaml_paths()
-params <- ""
-params <- get_params(step = step)
 
 log_debug(
   "This program compares",
@@ -41,16 +17,14 @@ log_debug(
 log_debug("Authors: \n", "AR")
 log_debug("Contributors: \n", "...")
 
-#' Dirty generic paths and parameters
-source(file = "R/dirty_paths_params.R")
 #' Specific paths
-TOYSET <- "data/source/mzml/10043"
-TOYSET <- "data/source/mzml/UHR"
 TOYSET <- "data/source/mzml"
 TIME_MIN <- 0.7
 TIME_MAX <- 35.2
+CAD_SHIFT <- 0.05
+PDA_SHIFT <- 0.1
 
-files <- list.files(
+file_positive <- list.files(
   path = TOYSET,
   # pattern = "10043_enriched_UHR_Pos",
   pattern = "210619_AR_06_V_03_2_01",
@@ -58,7 +32,7 @@ files <- list.files(
   recursive = TRUE
 )
 
-files_2 <- list.files(
+file_negative <- list.files(
   path = TOYSET,
   # pattern = "10043_enriched_UHR_Neg",
   pattern = "210619_AR_03_V_03_2_01_NEG",
@@ -66,166 +40,69 @@ files_2 <- list.files(
   recursive = TRUE
 )
 
-names <- list.files(
-  path = TOYSET,
-  pattern = "Pos.mzML",
-  recursive = TRUE
-) |>
-  gsub(pattern = "[0-9]{8}_AR_[0-9]{2}_", replacement = "") |>
-  gsub(
-    pattern = ".mzML",
-    replacement = "",
-    fixed = TRUE
-  )
+chromatograms_positive <- file_positive |>
+  mzR::openMSfile() |>
+  mzR::chromatograms()
 
-names_2 <- list.files(
-  path = TOYSET,
-  pattern = "Neg.mzML",
-  recursive = TRUE
-) |>
-  gsub(pattern = "[0-9]{8}_AR_[0-9]{2}_", replacement = "") |>
-  gsub(
-    pattern = ".mzML",
-    replacement = "",
-    fixed = TRUE
-  )
+chromatograms_negative <- file_negative |>
+  mzR::openMSfile() |>
+  mzR::chromatograms()
 
-# dda_data <- MSnbase::readMSData(
-#   files = files,
-#   mode = "onDisk",
-#   msLevel. = 1
-# )
+chromatogram_bpi_pos <- chromatograms_positive |>
+  extract_chromatogram("bpi")
+chromatogram_cad_pos <- chromatograms_positive |>
+  extract_chromatogram("cad")
+chromatogram_pda_pos <- chromatograms_positive |>
+  extract_chromatogram("pda")
 
-objects <- lapply(files, mzR::openMSfile)
-objects_2 <- lapply(files_2, mzR::openMSfile)
+chromatogram_bpi_neg <- chromatograms_negative |>
+  extract_chromatogram("bpi")
+chromatogram_cad_neg <- chromatograms_negative |>
+  extract_chromatogram("cad")
+chromatogram_pda_neg <- chromatograms_negative |>
+  extract_chromatogram("pda")
 
-chromatograms <- mzR::chromatograms(object = objects[[
-  1
-]])
-chromatograms_2 <- lapply(objects_2, mzR::chromatograms)
-
-chromatograms_all <- chromatograms
-chromatograms_all_2 <- purrr::flatten(chromatograms_2)
-
-chromatograms_bpi <- chromatograms_all[c(TRUE, FALSE, FALSE)]
-
-chromatograms_bpi_neg <- chromatograms_all_2[c(TRUE, FALSE, FALSE)]
-
-chromatograms_cad <- chromatograms_all[c(FALSE, FALSE, TRUE)]
-
-chromatograms_pda <- chromatograms_all[c(FALSE, TRUE, FALSE)]
-
-chromatograms_bpi_ready <-
-  lapply(chromatograms_bpi, change_intensity_name, name = "BasePeak_0")
-
-chromatograms_bpi_neg_ready <-
-  lapply(chromatograms_bpi_neg, change_intensity_name, name = "BasePeak_0")
-
-chromatograms_cad_ready <-
-  lapply(chromatograms_cad, change_intensity_name, name = "UV.1_CAD_1_0")
-
-chromatograms_pda_ready <-
-  lapply(
-    chromatograms_pda,
-    change_intensity_name,
-    name = "PDA.1_TotalAbsorbance_0"
-  )
-
-chromatograms_bpi_improved <-
-  improve_signals_progress(chromatograms_bpi_ready)
-chromatograms_bpi_neg_improved <-
-  improve_signals_progress(chromatograms_bpi_neg_ready)
-chromatograms_cad_improved <-
-  improve_signals_progress(chromatograms_cad_ready)
-chromatograms_pda_improved <-
-  improve_signals_progress(chromatograms_pda_ready)
-
-# names(chromatograms_bpi_improved) <- names
-# names(chromatograms_bpi_neg_improved) <- names_2
-# names(chromatograms_cad_improved) <- names
-# names(chromatograms_pda_improved) <- names
-
-bpis_improved <- chromatograms_bpi_improved |>
+chromatogram_bpi_pos_improved <- chromatogram_bpi_pos |>
+  improve_signal() |>
+  normalize_chromatograms_list()
+chromatogram_cad_pos_improved <- chromatogram_cad_pos |>
+  improve_signal() |>
+  normalize_chromatograms_list()
+chromatogram_pda_pos_improved <- chromatogram_pda_pos |>
+  improve_signal() |>
+  normalize_chromatograms_list()
+chromatogram_bpi_neg_improved <- chromatogram_bpi_neg |>
+  improve_signal() |>
+  normalize_chromatograms_list()
+chromatogram_cad_neg_improved <- chromatogram_cad_neg |>
+  improve_signal() |>
+  normalize_chromatograms_list()
+chromatogram_pda_neg_improved <- chromatogram_pda_neg |>
+  improve_signal() |>
   normalize_chromatograms_list()
 
-bpis_neg_improved <- chromatograms_bpi_neg_improved |>
+chromatogram_bpi_pos_baselined <- chromatogram_bpi_pos_improved |>
+  baseline_chromatogram() |>
+  normalize_chromatograms_list()
+chromatogram_cad_pos_baselined <- chromatogram_cad_pos_improved |>
+  baseline_chromatogram() |>
+  normalize_chromatograms_list()
+chromatogram_pda_pos_baselined <- chromatogram_pda_pos_improved |>
+  baseline_chromatogram() |>
+  normalize_chromatograms_list()
+chromatogram_bpi_neg_baselined <- chromatogram_bpi_neg_improved |>
+  baseline_chromatogram() |>
+  normalize_chromatograms_list()
+chromatogram_cad_neg_baselined <- chromatogram_cad_neg_improved |>
+  baseline_chromatogram() |>
+  normalize_chromatograms_list()
+chromatogram_pda_neg_baselined <- chromatogram_pda_neg_improved |>
+  baseline_chromatogram() |>
   normalize_chromatograms_list()
 
-cads_improved <- chromatograms_cad_improved |>
-  normalize_chromatograms_list(shift = CAD_SHIFT)
-
-pdas_improved <- chromatograms_pda_improved |>
-  normalize_chromatograms_list(shift = PDA_SHIFT)
-
-chromatograms_bpi_baselined <-
-  baseline_chromatograms_progress(chromatograms_bpi_improved)
-chromatograms_bpi_neg_baselined <-
-  baseline_chromatograms_progress(chromatograms_bpi_neg_improved)
-chromatograms_cad_baselined <-
-  baseline_chromatograms_progress(chromatograms_cad_improved)
-chromatograms_pda_baselined <-
-  baseline_chromatograms_progress(chromatograms_pda_improved)
-
-bpis_baselined <- chromatograms_bpi_baselined |>
-  normalize_chromatograms_list()
-bpis_neg_baselined <- chromatograms_bpi_neg_baselined |>
-  normalize_chromatograms_list()
-cads_baselined <- chromatograms_cad_baselined |>
-  normalize_chromatograms_list()
-pdas_baselined <- chromatograms_pda_baselined |>
-  normalize_chromatograms_list()
-
-new <- plotly::plot_ly() |>
-  plotly::add_lines(
-    data = chromatograms_cad_improved[[1]] |>
-      normalize_chromatograms_list(shift = CAD_SHIFT, time = FALSE),
-    x = ~time,
-    y = ~intensity,
-    name = "<b> CAD </b>",
-    line = list(
-      width = 1,
-      # dash = "dot",
-      color = "e31a1c"
-    )
-  ) |>
-  plotly::add_lines(
-    data = chromatograms_pda_improved[[1]] |>
-      normalize_chromatograms_list(shift = PDA_SHIFT, time = FALSE),
-    x = ~time,
-    y = ~intensity,
-    name = "<b> PDA </b>",
-    line = list(
-      width = 1,
-      # dash = "dot",
-      color = "b2df8a"
-    )
-  ) |>
-  plotly::add_lines(
-    data = chromatograms_bpi_improved[[1]] |>
-      normalize_chromatograms_list(time = FALSE),
-    x = ~time,
-    y = ~ -intensity,
-    name = "<b> MS Pos </b>",
-    line = list(
-      width = 1,
-      # dash = "dot",
-      color = "a6cee3"
-    )
-  ) |>
-  plotly::add_lines(
-    data = chromatograms_bpi_neg_improved[[1]] |>
-      normalize_chromatograms_list(time = FALSE),
-    x = ~time,
-    y = ~ -intensity,
-    name = "<b> MS Neg </b>",
-    line = list(
-      width = 1,
-      # dash = "dot",
-      color = "1f78b4"
-    )
-  ) |>
-  plotly::layout(
-    xaxis = list(title = "<b> Time [minutes] </b>"),
-    yaxis = list(title = "<b> Normalized Intensity </b>")
-  )
-new
+check_chromatograms(shift_cad = CAD_SHIFT, shift_pda = PDA_SHIFT)
+check_chromatograms(
+  shift_cad = CAD_SHIFT,
+  shift_pda = PDA_SHIFT,
+  type = "baselined"
+)

@@ -15,10 +15,11 @@ source(file = "R/second_der.R")
 #' @examples
 signal_sharpening <- function(Time = timeow,
                               Intensity = intensityeah,
-                              K2 = k2,
-                              K4 = k4,
-                              Smoothing_width = smoothing_width,
-                              Baseline_adjust = baseline_adjust) {
+                              k2 = 250,
+                              k4 = 1250000,
+                              sigma = 0.05,
+                              Smoothing_width = 8,
+                              Baseline_adjust = 0) {
   smooth_1 <- zoo::rollmean(
     x = Intensity,
     k = Smoothing_width,
@@ -52,12 +53,12 @@ signal_sharpening <- function(Time = timeow,
 
   smooth_4 <- zoo::rollmean(
     x = deriv_4,
-    k = smoothing_width,
+    k = 8,
     align = "center",
     fill = 0
   )
 
-  sharpened <- smooth_1[5:length(smooth_1)] - (k2 * smooth_3[3:length(smooth_3)]) + (k4 * smooth_4)
+  sharpened <- smooth_1[5:length(smooth_1)] - (sigma / k2 * smooth_3[3:length(smooth_3)]) + (sigma / k4 * smooth_4)
   sharpened[is.na(sharpened)] <- 0
   # sharpened <- sharpened / max(sharpened)
 
