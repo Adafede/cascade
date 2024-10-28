@@ -10,7 +10,7 @@
 #' @export
 #'
 #' @examples
-check_chromatograms <- function(chromatograms = c("bpi_pos", "cad_pos", "pda_pos", "bpi_neg"),
+check_chromatograms <- function(chromatograms = c("bpi_pos", "cad_pos", "pda_pos"),
                                 normalize_time = FALSE,
                                 shift_cad = 0,
                                 shift_pda = 0,
