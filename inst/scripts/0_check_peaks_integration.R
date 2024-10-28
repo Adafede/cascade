@@ -1,28 +1,12 @@
 start <- Sys.time()
 
-library(package = baseline, quietly = TRUE)
 library(package = chromatographR, quietly = TRUE)
-library(package = data.table, quietly = TRUE)
-library(package = docopt, quietly = TRUE)
-library(package = dplyr, quietly = TRUE)
-library(package = future, quietly = TRUE)
-library(package = future.apply, quietly = TRUE)
-library(package = MSnbase, quietly = TRUE)
-library(package = nucleR, quietly = TRUE)
-library(package = plotly, quietly = TRUE)
-library(package = pracma, quietly = TRUE)
-library(package = progressr, quietly = TRUE)
-library(package = purrr, quietly = TRUE)
-library(package = readr, quietly = TRUE)
-library(package = xcms, quietly = TRUE)
-
 source(file = "R/get_params.R")
 source(file = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/log_debug.R")
 source(file = "R/parse_yaml_paths.R")
 source(file = "R/prepare_features.R")
 source(file = "R/preprocess_chromatograms.R")
 source(file = "R/preprocess_peaks.R")
-source(file = "R/progressr.R")
 
 step <- "processing"
 paths <- parse_yaml_paths()
@@ -40,6 +24,8 @@ log_debug("Contributors: \n", "...")
 #' Dirty generic paths and parameters
 source(file = "R/dirty_paths_params.R")
 #' Specific paths
+TIME_MIN <- 0.7
+TIME_MAX <- 35.2
 
 log_debug(x = "listing files")
 files <- list.files(
@@ -49,8 +35,10 @@ files <- list.files(
   recursive = TRUE
 )
 ## TODO FIX THIS
-FEATURES <- c("~/Documents/papers/sapid/sapere_tmp/extract_mzmine/extract.csv", "~/Documents/papers/sapid/sapere_tmp/extract_mzmine/extract.csv")
-# files <- files[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = files)]
+FEATURES <- c(
+  "~/Documents/papers/sapid/sapere_tmp/extract_mzmine/extract.csv",
+  "~/Documents/papers/sapid/sapere_tmp/extract_mzmine/extract.csv"
+)
 
 names <- list.files(
   path = TOYSET,
@@ -58,29 +46,22 @@ names <- list.files(
   recursive = TRUE
 ) |>
   gsub(pattern = "[0-9]{8}_AR_[0-9]{2}_", replacement = "") |>
-  gsub(
-    pattern = ".mzML",
-    replacement = "",
-    fixed = TRUE
-  )
-
-# names <- names[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = names)]
+  gsub(pattern = ".mzML",
+       replacement = "",
+       fixed = TRUE)
 
 log_debug(x = "loading feature table")
-# feature_table <- read_features(id = GNPS_JOB)
-feature_table <- read_delim(file = FEATURES)
+feature_table <- readr::read_delim(file = FEATURES)
 
 log_debug(x = "loading raw files (can take long if loading multiple files)")
-dda_data <- readMSData(
-  files = files,
-  mode = "onDisk",
-  msLevel. = 1
-)
+dda_data <- MSnbase::readMSData(files = files,
+                                mode = "onDisk",
+                                msLevel. = 1)
 
 log_debug(x = "opening raw files objects and extracting chromatograms")
-chromatograms_all <- lapply(files, openMSfile) |>
-  lapply(chromatograms) |>
-  flatten()
+chromatograms_all <- lapply(files, mzR::openMSfile) |>
+  lapply(mzR::chromatograms) |>
+  purrr::flatten()
 
 log_debug(x = "preparing feature list ...")
 df_features <- feature_table |>
@@ -89,77 +70,65 @@ df_features <- feature_table |>
 chromatograms_list_cad <- preprocess_chromatograms()
 peaks_prelist_cad <- preprocess_peaks()
 
-# TODO ADD PEAK PICKING COMPARISON
 detector <- "cad"
 
-# peaks_original <-
-#   preprocess_peaks(
-#     list = chromatograms_list_cad$chromatograms_original,
-#     df_long = chromatograms_list_cad$chromatograms_original_long |>
-#       mutate(intensity = intensity / max(intensity))
-#   )
-# peaks_improved <-
-#   preprocess_peaks(
-#     list = chromatograms_list_cad$chromatograms_improved,
-#     df_long = chromatograms_list_cad$chromatograms_improved_long |>
-#       mutate(intensity = intensity / max(intensity))
-#   )
+peaks_original <-
+  preprocess_peaks(
+    list = chromatograms_list_cad$chromatograms_original,
+    df_long = chromatograms_list_cad$chromatograms_original_long |>
+      tidytable::mutate(intensity = intensity / max(intensity))
+  )
+peaks_improved <-
+  preprocess_peaks(
+    list = chromatograms_list_cad$chromatograms_improved,
+    df_long = chromatograms_list_cad$chromatograms_improved_long |>
+      tidytable::mutate(intensity = intensity / max(intensity))
+  )
 peaks_baselined <-
   preprocess_peaks(
     list = chromatograms_list_cad$chromatograms_baselined,
     df_long = chromatograms_list_cad$chromatograms_baselined_long |>
-      mutate(intensity = intensity / max(intensity))
+      tidytable::mutate(intensity = intensity / max(intensity))
   )
 
-# WIP
-# suite_1_1 <- chromatograms_list_cad$chromatograms_original_long |>
-#   bind_rows() |>
-#   mutate(intensity = intensity / max(intensity)) # |>
-# # filter(grepl(pattern = "V_03_2_01", x = id)) |>
-# # filter(row_number() %% 10 == 1)
-#
-# suite_1_2 <- peaks_original$list_df_features_with_peaks_long |>
-#   bind_rows() # |>
-# # filter(grepl(pattern = "V_03_2_01", x = id))
+suite_1_1 <- chromatograms_list_cad$chromatograms_original_long |>
+  tidytable::bind_rows() |>
+  tidytable::mutate(intensity = intensity / max(intensity)) |>
+  tidytable::filter(row_number() %% 10 == 1)
 
-# suite_2_1 <- chromatograms_list_cad$chromatograms_improved_long |>
-#   bind_rows() |>
-#   mutate(intensity = intensity / max(intensity)) # |>
-# # filter(grepl(pattern = "V_03_2_01", x = id))
-#
-# suite_2_2 <- peaks_improved$list_df_features_with_peaks_long |>
-#   bind_rows() |>
-#   mutate(
-#     intensity = intensity / max(intensity),
-#     peak_max = peak_max / max(peak_max)
-#   ) # |>
-# # filter(grepl(pattern = "V_03_2_01", x = id))
+suite_1_2 <- peaks_original$list_df_features_with_peaks_long |>
+  tidytable::bind_rows()
 
-suite_3_1 <- chromatograms_list_cad$chromatograms_baselined_long |>
-  bind_rows() # |>
-# filter(grepl(pattern = "V_03_2_01", x = id))
+suite_2_1 <- chromatograms_list_cad$chromatograms_improved_long |>
+  tidytable::bind_rows() |>
+  tidytable::mutate(intensity = intensity / max(intensity))
 
-suite_3_2 <- peaks_prelist_cad$list_df_features_with_peaks_long |>
-  bind_rows() |>
-  dplyr::mutate(
+suite_2_2 <- peaks_improved$list_df_features_with_peaks_long |>
+  tidytable::bind_rows() |>
+  tidytable::mutate(
     intensity = intensity_max / max(intensity_max),
     peak_max = peak_max / max(peak_max)
-  ) # |>
-# filter(grepl(pattern = "V_03_2_01", x = id))
+  )
+
+suite_3_1 <- chromatograms_list_cad$chromatograms_baselined_long |>
+  tidytable::bind_rows()
+
+suite_3_2 <- peaks_prelist_cad$list_df_features_with_peaks_long |>
+  tidytable::bind_rows() |>
+  tidytable::mutate(intensity = intensity_max / max(intensity_max),
+                    peak_max = peak_max / max(peak_max))
 
 
-# f_1 <- approxfun(
-#   x = chromatograms_list_cad$chromatograms_original_long |>
-#     bind_rows() |>
-#     mutate(intensity = intensity / max(intensity)) |>
-#     # filter(grepl(pattern = "V_03_2_01", x = id)) |>
-#     pull(time),
-#   y = chromatograms_list_cad$chromatograms_original_long |>
-#     bind_rows() |>
-#     mutate(intensity = intensity / max(intensity)) |>
-#     # filter(grepl(pattern = "V_03_2_01", x = id)) |>
-#     pull(intensity)
-# )
+f_1 <- approxfun(
+  x = chromatograms_list_cad$chromatograms_original_long |>
+    tidytable::bind_rows() |>
+    tidytable::mutate(intensity = intensity / max(intensity)) |>
+    tidytable::pull(time),
+  y = chromatograms_list_cad$chromatograms_original_long |>
+    tidytable::bind_rows() |>
+    tidytable::mutate(intensity = intensity / max(intensity)) |>
+    tidytable::pull(intensity)
+)
 
 # detection_before <- plot_ly(suite_1_1) |>
 #   add_trace(
@@ -241,71 +210,63 @@ suite_3_2 <- peaks_prelist_cad$list_df_features_with_peaks_long |>
 
 f_2 <- approxfun(
   x = chromatograms_list_cad$chromatograms_baselined_long |>
-    bind_rows() |>
-    mutate(intensity = intensity / max(intensity)) |>
+    tidytable::bind_rows() |>
+    tidytable::mutate(intensity = intensity / max(intensity)) |>
     # filter(grepl(pattern = "V_03_2_01", x = id)) |>
-    pull(time),
+    tidytable::pull(time),
   y = chromatograms_list_cad$chromatograms_baselined_long |>
-    bind_rows() |>
-    mutate(intensity = intensity / max(intensity)) |>
+    tidytable::bind_rows() |>
+    tidytable::mutate(intensity = intensity / max(intensity)) |>
     # filter(grepl(pattern = "V_03_2_01", x = id)) |>
-    pull(intensity)
+    tidytable::pull(intensity)
 )
 
-detection_after <- plot_ly(suite_3_1) |>
-  add_trace(
+detection_after <- suite_3_1 |>
+  plotly::plot_ly() |>
+  plotly::add_trace(
     suite_3_1,
-    x =  ~time,
-    y =  ~intensity,
+    x =  ~ time,
+    y =  ~ intensity,
     type = "scatter",
     mode = "line",
     name = "signal",
     line = list(color = "1f78b4", width = 1)
   ) |>
-  add_trace(
+  plotly::add_trace(
     data = suite_3_2,
-    x = ~rt_apex,
-    y = ~peak_max,
+    x = ~ rt_apex,
+    y = ~ peak_max,
     yaxis = "y2",
     type = "scatter",
-    marker = list(
-      color = "ff7f00",
-      symbol = "star"
-    ),
+    marker = list(color = "ff7f00", symbol = "star"),
     name = "detected maximum",
     line = list(color = "1f78b4", width = 0)
   ) |>
-  add_trace(
+  plotly::add_trace(
     data = suite_3_2,
-    x = ~rt_min,
+    x = ~ rt_min,
     y = ~ f_2(rt_min),
     yaxis = "y2",
     type = "scatter",
-    marker = list(
-      color = "33a02c",
-      symbol = "triangle-right"
-    ),
+    marker = list(color = "33a02c", symbol = "triangle-right"),
     name = "detected minimum (start)",
     line = list(color = "1f78b4", width = 0)
   ) |>
-  add_trace(
+  plotly::add_trace(
     data = suite_3_2,
-    x = ~rt_max,
+    x = ~ rt_max,
     y = ~ f_2(rt_max),
     yaxis = "y2",
     type = "scatter",
-    marker = list(
-      color = "33a02c",
-      symbol = "triangle-left"
-    ),
+    marker = list(color = "33a02c", symbol = "triangle-left"),
     name = "detected minimum (end)",
     line = list(color = "1f78b4", width = 0)
   ) |>
-  layout(
+  plotly::layout(
     yaxis = list(
       range = c(0, 1),
       title = "Normalized Intensity",
-      zeroline = FALSE,
+      zeroline = TRUE,
       showline = FALSE,
       showticklabels = FALSE,
       showgrid = FALSE
@@ -313,6 +274,7 @@ detection_after <- plot_ly(suite_3_1) |>
     yaxis2 = list(
       range = c(0, 1),
       title = "",
+      zeroline = FALSE,
       showline = FALSE,
       showticklabels = FALSE,
       showgrid = FALSE,
@@ -330,6 +292,7 @@ detection_after <- plot_ly(suite_3_1) |>
     showlegend = FALSE
   )
 detection_after
+
 # detection_before_zoom <- plot_ly(suite_1_1) |>
 #   add_trace(
 #     data = suite_1_1,
