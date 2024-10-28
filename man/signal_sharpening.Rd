@@ -7,10 +7,11 @@
 signal_sharpening(
   Time = timeow,
   Intensity = intensityeah,
-  K2 = k2,
-  K4 = k4,
-  Smoothing_width = smoothing_width,
-  Baseline_adjust = baseline_adjust
+  k2 = 250,
+  k4 = 1250000,
+  sigma = 0.05,
+  Smoothing_width = 8,
+  Baseline_adjust = 0
 )
 }
 \arguments{
