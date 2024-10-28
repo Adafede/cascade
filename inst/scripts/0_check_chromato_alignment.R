@@ -25,14 +25,14 @@ if (!is.null(FILE_POSITIVE)) {
   chromatograms_positive <- FILE_POSITIVE |>
     mzR::openMSfile() |>
     mzR::chromatograms()
-  
+
   chromatogram_bpi_pos <- chromatograms_positive |>
     extract_chromatogram("bpi")
   chromatogram_cad_pos <- chromatograms_positive |>
     extract_chromatogram("cad")
   chromatogram_pda_pos <- chromatograms_positive |>
     extract_chromatogram("pda")
-  
+
   chromatogram_bpi_pos_improved <- chromatogram_bpi_pos |>
     improve_signal() |>
     normalize_chromatograms_list()
@@ -42,7 +42,7 @@ if (!is.null(FILE_POSITIVE)) {
   chromatogram_pda_pos_improved <- chromatogram_pda_pos |>
     improve_signal() |>
     normalize_chromatograms_list()
-  
+
   chromatogram_bpi_pos_baselined <- chromatogram_bpi_pos_improved |>
     baseline_chromatogram() |>
     normalize_chromatograms_list()
@@ -58,14 +58,14 @@ if (!is.null(FILE_NEGATIVE)) {
   chromatograms_negative <- FILE_NEGATIVE |>
     mzR::openMSfile() |>
     mzR::chromatograms()
-  
+
   chromatogram_bpi_neg <- chromatograms_negative |>
     extract_chromatogram("bpi")
   chromatogram_cad_neg <- chromatograms_negative |>
     extract_chromatogram("cad")
   chromatogram_pda_neg <- chromatograms_negative |>
     extract_chromatogram("pda")
-  
+
   chromatogram_bpi_neg_improved <- chromatogram_bpi_neg |>
     improve_signal() |>
     normalize_chromatograms_list()
@@ -75,7 +75,7 @@ if (!is.null(FILE_NEGATIVE)) {
   chromatogram_pda_neg_improved <- chromatogram_pda_neg |>
     improve_signal() |>
     normalize_chromatograms_list()
-  
+
   chromatogram_bpi_neg_baselined <- chromatogram_bpi_neg_improved |>
     baseline_chromatogram() |>
     normalize_chromatograms_list()
