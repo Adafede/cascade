@@ -2,13 +2,21 @@
 % Please edit documentation in R/prepare_plot.R
 \name{prepare_plot}
 \alias{prepare_plot}
-\title{Title}
+\title{Prepare plot}
 \usage{
 prepare_plot(dataframe, organism = "species")
 }
 \arguments{
-\item{organism}{}
+\item{dataframe}{Dataframe}
+
+\item{organism}{Organism}
+}
+\value{
+A dataframe prepared for plots
 }
 \description{
-Title
+Prepare plot
+}
+\examples{
+NULL
 }

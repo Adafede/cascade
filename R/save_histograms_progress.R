@@ -1,11 +1,10 @@
-#' Title
+#' Save histograms progress
 #'
-#' @param xs
+#' @param xs XS
 #'
-#' @return
-#' @export
+#' @return Saved histograms
 #'
-#' @examples
+#' @examples NULL
 save_histograms_progress <- function(xs) {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(

@@ -1,15 +1,11 @@
-require(package = dplyr, quietly = TRUE)
-require(package = forcats, quietly = TRUE)
-
-#' Title
+#' Prepare plot
 #'
-#' @param dataframe
-#' @param organism
+#' @param dataframe Dataframe
+#' @param organism Organism
 #'
-#' @return
-#' @export
+#' @return A dataframe prepared for plots
 #'
-#' @examples
+#' @examples NULL
 prepare_plot <- function(dataframe, organism = "species") {
   presamples <- dataframe |>
     dplyr::ungroup() |>
@@ -107,14 +103,13 @@ prepare_plot <- function(dataframe, organism = "species") {
   return(samples)
 }
 
-#' Title
+#' Prepare plot 2
 #'
-#' @param dataframe
+#' @param dataframe Dataframe
 #'
-#' @return
-#' @export
+#' @return A dataframe prepared for plots
 #'
-#' @examples
+#' @examples NULL
 prepare_plot_2 <- function(dataframe) {
   dataframe_prep <- dataframe |>
     dplyr::ungroup() |>

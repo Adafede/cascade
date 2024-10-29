@@ -2,7 +2,7 @@
 % Please edit documentation in R/preprocess_chromatograms.R
 \name{preprocess_chromatograms}
 \alias{preprocess_chromatograms}
-\title{Title}
+\title{Preprocess chromatograms}
 \usage{
 preprocess_chromatograms(
   detector = "cad",
@@ -12,8 +12,20 @@ preprocess_chromatograms(
 )
 }
 \arguments{
-\item{detector}{}
+\item{detector}{Detector}
+
+\item{list}{List}
+
+\item{signal_name}{Signal name}
+
+\item{shift}{Shift}
+}
+\value{
+A list of preprocessed chromatograms
 }
 \description{
-Title
+Preprocess chromatograms
+}
+\examples{
+NULL
 }

@@ -2,13 +2,19 @@
 % Please edit documentation in R/wiki_progress.R
 \name{wiki_progress}
 \alias{wiki_progress}
-\title{Title}
+\title{Wiki progress}
 \usage{
 wiki_progress(xs)
 }
 \arguments{
-\item{xs}{}
+\item{xs}{XS}
+}
+\value{
+A list of results of Wikidata queries
 }
 \description{
-Title
+Wiki progress
+}
+\examples{
+NULL
 }

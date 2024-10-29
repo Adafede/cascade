@@ -2,13 +2,19 @@
 % Please edit documentation in R/tables_progress.R
 \name{tables_progress}
 \alias{tables_progress}
-\title{Title}
+\title{Tables progress}
 \usage{
 tables_progress(xs)
 }
 \arguments{
-\item{xs}{}
+\item{xs}{XS}
+}
+\value{
+A list of tables
 }
 \description{
-Title
+Tables progress
+}
+\examples{
+NULL
 }

@@ -1,12 +1,12 @@
-#' Title
+#' Join peaks
 #'
-#' @param chromatograms
-#' @param peaks
+#' @param chromatograms Chromatograms
+#' @param peaks Peaks
+#' @param min_area Min area
 #'
-#' @return
-#' @export
+#' @return A dataframe with joined peaks
 #'
-#' @examples
+#' @examples NULL
 join_peaks <- function(chromatograms, peaks, min_area) {
   cat("setting joining keys \n")
   data.table::setkey(peaks, rt_min, rt_max)

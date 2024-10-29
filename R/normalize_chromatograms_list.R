@@ -1,14 +1,13 @@
-#' Title
+#' Normalize chromatograms list
 #'
-#' @param list
-#' @param shift
-#' @param time
-#' @param intensity
+#' @param list List
+#' @param shift Shift
+#' @param time Time
+#' @param intensity Intensity
 #'
-#' @return
-#' @export
+#' @return A dataframe with normalized chromatograms
 #'
-#' @examples
+#' @examples NULL
 normalize_chromatograms_list <-
   function(list,
            shift = 0,

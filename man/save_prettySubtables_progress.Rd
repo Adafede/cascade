@@ -2,13 +2,19 @@
 % Please edit documentation in R/save_prettySubtables_progress.R
 \name{save_prettySubtables_progress}
 \alias{save_prettySubtables_progress}
-\title{Title}
+\title{Save pretty subtables progress}
 \usage{
 save_prettySubtables_progress(xs)
 }
 \arguments{
-\item{xs}{}
+\item{xs}{XS}
+}
+\value{
+Saved pretty subtables
 }
 \description{
-Title
+Save pretty subtables progress
+}
+\examples{
+NULL
 }

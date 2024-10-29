@@ -2,13 +2,19 @@
 % Please edit documentation in R/prepare_hierarchy_preparation.R
 \name{prepare_hierarchy_preparation}
 \alias{prepare_hierarchy_preparation}
-\title{Title}
+\title{Prepare hierarchy preparation}
 \usage{
 prepare_hierarchy_preparation(dataframe)
 }
 \arguments{
-\item{dataframe}{}
+\item{dataframe}{Dataframe}
+}
+\value{
+A dataframe with a description todo
 }
 \description{
-Title
+Prepare hierarchy preparation
+}
+\examples{
+NULL
 }

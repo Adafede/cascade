@@ -2,13 +2,23 @@
 % Please edit documentation in R/join_peaks.R
 \name{join_peaks}
 \alias{join_peaks}
-\title{Title}
+\title{Join peaks}
 \usage{
-join_peaks(chromatograms, peaks)
+join_peaks(chromatograms, peaks, min_area)
 }
 \arguments{
-\item{peaks}{}
+\item{chromatograms}{Chromatograms}
+
+\item{peaks}{Peaks}
+
+\item{min_area}{Min area}
+}
+\value{
+A dataframe with joined peaks
 }
 \description{
-Title
+Join peaks
+}
+\examples{
+NULL
 }

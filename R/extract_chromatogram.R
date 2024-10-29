@@ -1,12 +1,11 @@
-#' Title
+#' Extract chromatogram
 #'
-#' @param list
-#' @param type
+#' @param list List
+#' @param type Type
 #'
-#' @return
-#' @export
+#' @return An extracted chromatogram
 #'
-#' @examples
+#' @examples NULL
 extract_chromatogram <- function(list, type) {
   stopifnot("type must be one of 'bpi, 'cad',or 'pda'" = type %in% c("bpi", "cad", "pda"))
   index <- switch(type,

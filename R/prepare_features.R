@@ -1,11 +1,12 @@
-#' Title
+#' Prepare features
 #'
 #' @param df
 #'
-#' @return
+#' @return A dataframe of prepared features
+#'
 #' @export
 #'
-#' @examples
+#' @examples NULL
 prepare_features <- function(df, min_intensity) {
   log_debug(x = "... preparing features")
   df <- df |>

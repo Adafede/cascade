@@ -1,11 +1,10 @@
-#' Title
+#' Histograms progress
 #'
-#' @param xs
+#' @param xs XS
 #'
-#' @return
-#' @export
+#' @return A list of histograms
 #'
-#' @examples
+#' @examples NULL
 histograms_progress <- function(xs) {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(

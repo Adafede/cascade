@@ -2,10 +2,10 @@
 % Please edit documentation in R/check_chromatograms.R
 \name{check_chromatograms}
 \alias{check_chromatograms}
-\title{Title}
+\title{Check chromatograms}
 \usage{
 check_chromatograms(
-  chromatograms = c("bpi_pos", "cad_pos", "pda_pos", "bpi_neg"),
+  chromatograms = c("bpi_pos", "cad_pos", "pda_pos"),
   normalize_time = FALSE,
   shift_cad = 0,
   shift_pda = 0,
@@ -13,8 +13,22 @@ check_chromatograms(
 )
 }
 \arguments{
-\item{type}{}
+\item{chromatograms}{Chromatograms}
+
+\item{normalize_time}{Normalized time}
+
+\item{shift_cad}{Shift CAD}
+
+\item{shift_pda}{Shift PDA}
+
+\item{type}{Type}
+}
+\value{
+A plot
 }
 \description{
-Title
+Check chromatograms
+}
+\examples{
+NULL
 }

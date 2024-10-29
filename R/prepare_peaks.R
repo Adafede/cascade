@@ -1,11 +1,10 @@
-#' Title
+#' Prepare peaks
 #'
-#' @param x
+#' @param x X
 #'
-#' @return
-#' @export
+#' @return Prepared peaks
 #'
-#' @examples
+#' @examples NULL
 prepare_peaks <- function(x) {
   MSnbase::Chromatogram(
     intensity = x$intensity,

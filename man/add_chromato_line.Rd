@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_chromato_line.R
 \name{add_chromato_line}
 \alias{add_chromato_line}
-\title{Title}
+\title{Add chromato line}
 \usage{
 add_chromato_line(
   plot,
@@ -15,8 +15,26 @@ add_chromato_line(
 )
 }
 \arguments{
-\item{polarity}{}
+\item{plot}{Plot}
+
+\item{chromato}{Chromato}
+
+\item{shift}{Shift}
+
+\item{time}{Time}
+
+\item{name}{Name}
+
+\item{color}{Color}
+
+\item{polarity}{Polarity}
+}
+\value{
+A plot with added chromato line
 }
 \description{
-Title
+Add chromato line
+}
+\examples{
+NULL
 }

@@ -1,12 +1,11 @@
-#' Title
+#' Deriv
 #'
-#' @param x
-#' @param y
+#' @param x X
+#' @param y Y
 #'
-#' @return
-#' @export
+#' @return The derivative
 #'
-#' @examples
+#' @examples NULL
 deriv <- function(x, y) {
   diff(y) / diff(x)
 }

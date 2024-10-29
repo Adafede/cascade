@@ -2,14 +2,13 @@ require(package = docopt, quietly = TRUE)
 source(file = "r/parse_cli_params.R")
 source(file = "r/parse_yaml_params.R")
 
-#' Title
+#' Get params
 #'
-#' @param step
+#' @param step Step
 #'
-#' @return
-#' @export
+#' @return Params
 #'
-#' @examples
+#' @examples NULL
 get_params <- function(step) {
   doc_path <<- file.path(paths$inst$scripts$docopt, paste0(step, ".txt"))
   default_path <<-

@@ -1,12 +1,11 @@
-#' Title
+#' Treemaps progress
 #'
-#' @param xs
-#' @param type
+#' @param xs XS
+#' @param type Type
 #'
-#' @return
-#' @export
+#' @return A list of treemaps
 #'
-#' @examples
+#' @examples NULL
 treemaps_progress <- function(xs, type = "treemap") {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(
@@ -86,15 +85,14 @@ treemaps_progress <- function(xs, type = "treemap") {
   )
 }
 
-#' Title
+#' Treemaps progress no title
 #'
-#' @param xs
-#' @param type
+#' @param xs XS
+#' @param type Type
 #'
-#' @return
-#' @export
+#' @return A list of treemaps with no title
 #'
-#' @examples
+#' @examples NULL
 treemaps_progress_noTitle <- function(xs, type = "treemap") {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(

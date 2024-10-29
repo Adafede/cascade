@@ -2,13 +2,22 @@
 % Please edit documentation in R/sqlFromFile.R
 \name{sqlFromFile}
 \alias{sqlFromFile}
-\title{Title}
+\title{SQL from file}
+\source{
+https://stackoverflow.com/questions/18914283/how-to-execute-more-than-one-rsqlite-statement-at-once-or-how-to-dump-a-whole-fi
+}
 \usage{
 sqlFromFile(file)
 }
 \arguments{
-\item{file}{}
+\item{file}{File}
+}
+\value{
+SQL todo
 }
 \description{
-Title
+SQL from file
+}
+\examples{
+NULL
 }

@@ -1,11 +1,10 @@
-#' Title
+#' Middle pts
 #'
-#' @param x
+#' @param x X
 #'
-#' @return
-#' @export
+#' @return Middle pts
 #'
-#' @examples
+#' @examples NULL
 middle_pts <- function(x) {
   x[-1] - diff(x) / 2
 }

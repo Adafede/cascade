@@ -1,11 +1,10 @@
-#' Title
+#' Peaks progress
 #'
-#' @param xs
+#' @param xs XS
 #'
-#' @return
-#' @export
+#' @return A list of peaks
 #'
-#' @examples
+#' @examples NULL
 peaks_progress <- function(xs) {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(

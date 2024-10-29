@@ -1,11 +1,10 @@
-#' Title
+#' Plot peaks statistics
 #'
-#' @param df
+#' @param df Dataframe
 #'
-#' @return
-#' @export
+#' @return A plot with peaks statistics
 #'
-#' @examples
+#' @examples NULL
 plot_peaks_statistics <- function(df) {
   accepted_variables <- c(
     "features",
@@ -52,20 +51,11 @@ plot_peaks_statistics <- function(df) {
       tidyr::pivot_longer(cols = c(4, 6, 8), values_to = leg) |>
       dplyr::mutate_all(tolower) |>
       dplyr::rowwise() |>
-      dplyr::filter(grepl(
-        pattern = names_1,
-        x = names_2
-      ) &
-        grepl(
-          pattern = names_1,
-          x = names_3
-        ))
+      dplyr::filter(grepl(pattern = names_1, x = names_2) &
+        grepl(pattern = names_1, x = names_3))
 
     df_treated <- df_pretreated |>
-      dplyr::filter(grepl(
-        pattern = var,
-        x = names_1
-      ))
+      dplyr::filter(grepl(pattern = var, x = names_1))
 
     alluvial <- ggplot2::ggplot(
       data = df_treated,
@@ -81,10 +71,7 @@ plot_peaks_statistics <- function(df) {
         decreasing = TRUE
       ) +
       ggalluvial::geom_flow(
-        ggplot2::aes(
-          fill = get(leg),
-          colour = get(leg)
-        ),
+        ggplot2::aes(fill = get(leg), colour = get(leg)),
         aes.bind = "alluvia",
         aes.flow = "backward",
         stat = ggplot2::after_stat("alluvium"),

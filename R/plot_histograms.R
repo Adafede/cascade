@@ -1,16 +1,13 @@
-require(package = ggplot2, quietly = TRUE)
-
-#' Title
+#' Plot histograms
 #'
-#' @param dataframe
-#' @param label
-#' @param y
-#' @param xlab
+#' @param dataframe Dataframe
+#' @param label Label
+#' @param y Y
+#' @param xlab Xlab
 #'
-#' @return
-#' @export
+#' @return A plot of histograms
 #'
-#' @examples
+#' @examples NULL
 plot_histograms <-
   function(dataframe,
            label,
@@ -59,15 +56,14 @@ plot_histograms <-
     return(absolute)
   }
 
-#' Title
+#' Plot histograms confident
 #'
-#' @param dataframe
-#' @param level
+#' @param dataframe Dataframe
+#' @param level Level
 #'
-#' @return
-#' @export
+#' @return A plot of confident histograms
 #'
-#' @examples
+#' @examples NULL
 plot_histograms_confident <-
   function(dataframe, level = "max") {
     dataframe <- dataframe |>
@@ -146,15 +142,14 @@ plot_histograms_confident <-
     return(plot)
   }
 
-#' Title
+#' Plot histograms taxo
 #'
-#' @param dataframe
-#' @param level
+#' @param dataframe Dataframe
+#' @param level Level
 #'
-#' @return
-#' @export
+#' @return A plot of taxo histograms
 #'
-#' @examples
+#' @examples NULL
 plot_histograms_taxo <-
   function(dataframe, level = "max") {
     dataframe <- dataframe |>
@@ -241,15 +236,16 @@ plot_histograms_taxo <-
   }
 
 
-#' Title
+#' Plot histograms litt
 #'
-#' @param dataframe
-#' @param label
+#' @param dataframe Dataframe
+#' @param label Label
+#' @param y Y
+#' @param xlab Xlab
 #'
-#' @return
-#' @export
+#' @return A plot of literature histograms
 #'
-#' @examples
+#' @examples NULL
 plot_histograms_litt <-
   function(dataframe,
            label,
