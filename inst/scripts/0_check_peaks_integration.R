@@ -1,17 +1,10 @@
 start <- Sys.time()
 
 library(package = chromatographR, quietly = TRUE)
-source(file = "R/get_params.R")
 source(file = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/log_debug.R")
-source(file = "R/parse_yaml_paths.R")
 source(file = "R/prepare_features.R")
 source(file = "R/preprocess_chromatograms.R")
 source(file = "R/preprocess_peaks.R")
-
-step <- "processing"
-paths <- parse_yaml_paths()
-params <- ""
-params <- get_params(step = step)
 
 log_debug(
   "This program performs",

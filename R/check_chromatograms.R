@@ -1,4 +1,8 @@
+source(file = "R/add_chromato_line.R")
+
 #' Check chromatograms
+#'
+#' @include add_chromato_line.R
 #'
 #' @param chromatograms Chromatograms
 #' @param normalize_time Normalized time
