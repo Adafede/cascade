@@ -1,30 +1,13 @@
 start <- Sys.time()
 
-library(package = baseline, quietly = TRUE)
-library(package = data.table, quietly = TRUE)
-library(package = dplyr, quietly = TRUE)
-library(package = ggalluvial, quietly = TRUE)
-library(package = ggfittext, quietly = TRUE)
-library(package = ggplot2, quietly = TRUE)
-library(package = ggpubr, quietly = TRUE)
-library(package = parallel, quietly = TRUE)
-library(package = patchwork, quietly = TRUE)
-library(package = plotly, quietly = TRUE)
-library(package = readr, quietly = TRUE)
-
 source(file = "R/add_peak_metadata.R")
 source(file = "R/check_export_dir.R")
 source(file = "R/colors.R")
-source(file = "R/get_gnps.R")
-source(file = "R/get_params.R")
 source(file = "R/keep_best_candidates.R")
 source(file = "R/log_debug.R")
 source(file = "R/make_confident.R")
 source(file = "R/make_other.R")
 source(file = "R/no_other.R")
-source(file = "R/parse_cli_params.R")
-source(file = "R/parse_yaml_params.R")
-source(file = "R/parse_yaml_paths.R")
 source(file = "R/plot_histograms.R")
 source(file = "R/plot_peaks_statistics.R")
 source(file = "R/plot_results.R")
@@ -35,11 +18,6 @@ source(file = "R/prepare_hierarchy_preparation.R")
 source(file = "R/prepare_plot.R")
 source(file = "R/treemaps_progress.R")
 source(file = "R/y_as_na.R")
-
-step <- "processing"
-paths <- parse_yaml_paths()
-params <- ""
-params <- get_params(step = step)
 
 log_debug(
   "This program performs",
@@ -64,7 +42,6 @@ source(file = "R/check_export_dir.R")
 source(file = "R/compare_peaks.R")
 source(file = "R/extract_ms_peak.R")
 source(file = "R/filter_ms.R")
-source(file = "R/get_gnps.R")
 source(file = "R/get_params.R")
 source(file = "R/improve_signal.R")
 source(file = "R/improve_signals_progress.R")
@@ -72,9 +49,6 @@ source(file = "R/join_peaks.R")
 source(file = "R/log_debug.R")
 source(file = "R/make_confident.R")
 source(file = "R/normalize_chromato.R")
-source(file = "R/parse_cli_params.R")
-source(file = "R/parse_yaml_params.R")
-source(file = "R/parse_yaml_paths.R")
 source(file = "R/peaks_progress.R")
 source(file = "R/plot_chromatogram.R")
 source(file = "R/prepare_features.R")
@@ -373,7 +347,7 @@ treemaps <-
     pattern = "_grouped",
     x = names(hierarchies)
   )])
-treemaps$special
+# treemaps$special
 
 if (params$signal$detector$bpi == TRUE) {
   df_meta_bpi_pos <- compared_peaks_list_bpi$peaks_all |>
@@ -588,14 +562,14 @@ temp_df <- example_peak |>
   ) |>
   dplyr::ungroup()
 
-cc_pos <- bind_rows(bb_pos) |>
+cc_pos <- dplyr::bind_rows(bb_pos) |>
   dplyr::filter(!is.na(intensity)) |>
   dplyr::filter(time >= rt_min & time <= rt_max) |>
   dplyr::mutate(intensity = intensity / max(intensity)) |>
   dplyr::mutate(mode = "pos") |>
   dplyr::left_join(temp_df) |>
   dplyr::filter(!is.na(inchikey_2D))
-cc_neg <- bind_rows(bb_neg) |>
+cc_neg <- dplyr::bind_rows(bb_neg) |>
   dplyr::filter(!is.na(intensity)) |>
   dplyr::filter(time >= rt_min & time <= rt_max) |>
   dplyr::mutate(intensity = -intensity / max(intensity)) |>

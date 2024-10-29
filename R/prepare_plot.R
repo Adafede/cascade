@@ -123,7 +123,7 @@ prepare_plot_2 <- function(dataframe) {
       .keep_all = TRUE
     ) |>
     dplyr::group_by(peak_id) |>
-    dplyr::mutate(peak_area = peak_area / max(row_number())) |>
+    dplyr::mutate(peak_area = peak_area / max(dplyr::row_number())) |>
     dplyr::mutate(best_candidate_1 = ifelse(
       test = !is.na(best_candidate_1),
       yes = best_candidate_1,
@@ -294,37 +294,39 @@ prepare_plot_2 <- function(dataframe) {
     )) |>
     dplyr::ungroup()
 
-  dataframe_prep$color <-
-    forcats::fct_reorder2(
-      .f = dataframe_prep$color,
-      .x = dataframe_prep$sum,
-      .y = dataframe_prep$group,
-      .desc = TRUE
-    )
+  if (nrow(dataframe_prep) > 0) {
+    dataframe_prep$color <-
+      forcats::fct_reorder2(
+        .f = dataframe_prep$color,
+        .x = dataframe_prep$sum,
+        .y = dataframe_prep$group,
+        .desc = TRUE
+      )
 
-  dataframe_prep$name <-
-    forcats::fct_reorder2(
-      .f = dataframe_prep$name,
-      .x = dataframe_prep$sum,
-      .y = dataframe_prep$group,
-      .desc = TRUE
-    )
+    dataframe_prep$name <-
+      forcats::fct_reorder2(
+        .f = dataframe_prep$name,
+        .x = dataframe_prep$sum,
+        .y = dataframe_prep$group,
+        .desc = TRUE
+      )
 
-  dataframe_prep$color_2 <-
-    forcats::fct_reorder2(
-      .f = dataframe_prep$color_2,
-      .x = dataframe_prep$score_biological,
-      .y = dataframe_prep$score_biological,
-      .desc = TRUE
-    )
+    dataframe_prep$color_2 <-
+      forcats::fct_reorder2(
+        .f = dataframe_prep$color_2,
+        .x = dataframe_prep$score_biological,
+        .y = dataframe_prep$score_biological,
+        .desc = TRUE
+      )
 
-  dataframe_prep$name_2 <-
-    forcats::fct_reorder2(
-      .f = dataframe_prep$name_2,
-      .x = dataframe_prep$score_biological,
-      .y = dataframe_prep$score_biological,
-      .desc = TRUE
-    )
+    dataframe_prep$name_2 <-
+      forcats::fct_reorder2(
+        .f = dataframe_prep$name_2,
+        .x = dataframe_prep$score_biological,
+        .y = dataframe_prep$score_biological,
+        .desc = TRUE
+      )
+  }
 
   return(dataframe_prep)
 }

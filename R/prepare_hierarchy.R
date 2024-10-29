@@ -321,8 +321,10 @@ prepare_hierarchy <-
 
     top_parents_table <-
       dplyr::left_join(
-        table_1_1 |> distinct(chemical_pathway, parents, ids, labels, values_2, n),
-        table_1_1 |> distinct(chemical_pathway, parents, ids, labels, values_2, n),
+        table_1_1 |>
+          dplyr::distinct(chemical_pathway, parents, ids, labels, values_2, n),
+        table_1_1 |>
+          dplyr::distinct(chemical_pathway, parents, ids, labels, values_2, n),
         by = c("ids" = "parents")
       ) |>
       dplyr::filter(!grepl(pattern = "-", x = parents)) |>
@@ -362,11 +364,13 @@ prepare_hierarchy <-
         dplyr::left_join(table_2, children_1, by = c("parents" = "ids")) |>
         dplyr::group_by(chemical_pathway = chemical_pathway.y, parents.y) |>
         dplyr::mutate(n = sum(sum)) |>
-        dplyr::mutate(n = if_else(
-          condition = parents.y == "Other",
-          true = n + 666,
-          false = n + 0
-        )) |>
+        dplyr::mutate(
+          n = dplyr::if_else(
+            condition = parents.y == "Other",
+            true = n + 666,
+            false = n + 0
+          )
+        ) |>
         dplyr::select(parents = parents.y, ids = parents, labels, sum, n) |>
         dplyr::ungroup()
     )
@@ -454,7 +458,7 @@ prepare_hierarchy <-
         new_labels,
         sep = "-"
       )) |>
-      dplyr::mutate(new_labels = if_else(
+      dplyr::mutate(new_labels = dplyr::if_else(
         condition = grepl(pattern = "^Other", x = parents),
         true = labels,
         false = new_labels
@@ -509,6 +513,10 @@ prepare_hierarchy <-
         ) |>
         dplyr::left_join(
           dataframe2 |>
+            dplyr::mutate(
+              best_candidate_3 = as.character(best_candidate_3),
+              best_candidate_2 = as.character(best_candidate_2)
+            ) |>
             dplyr::distinct(best_candidate_3, best_candidate_2)
         ) |>
         dplyr::mutate(
@@ -521,7 +529,7 @@ prepare_hierarchy <-
           x = .x,
           pattern = "-NA$",
           replacement = "",
-        ), )
+        ))
     )
 
     suppressMessages(
@@ -534,6 +542,10 @@ prepare_hierarchy <-
         ) |>
         dplyr::left_join(
           dataframe2 |>
+            dplyr::mutate(
+              best_candidate_3 = as.character(best_candidate_3),
+              best_candidate_2 = as.character(best_candidate_2)
+            ) |>
             dplyr::distinct(best_candidate_3, best_candidate_2)
         ) |>
         dplyr::mutate(
@@ -563,11 +575,18 @@ prepare_hierarchy <-
       rbind(missing_children_1, missing_children_2)
 
     genealogy_new_med_4 <-
-      dplyr::bind_rows(genealogy_new_med_3, missing_children) |>
+      dplyr::bind_rows(
+        genealogy_new_med_3 |> dplyr::mutate(chemical_pathway = as.character(chemical_pathway)),
+        missing_children
+      ) |>
       dplyr::distinct(chemical_pathway, parents, ids, labels, new_labels)
 
     table_new <- dataframe2 |>
       dplyr::filter(!is.na(species)) |>
+      dplyr::mutate(
+        best_candidate_3 = as.character(best_candidate_3),
+        chemical_pathway = as.character(chemical_pathway)
+      ) |>
       dplyr::full_join(
         genealogy_new_med_4,
         by = c(
@@ -577,12 +596,17 @@ prepare_hierarchy <-
       )
 
     if (type == "analysis") {
+      if (nrow(table_new) > 0) {
+        table_new <- table_new |>
+          dplyr::rowwise() |>
+          dplyr::filter(grepl(pattern = id, x = sample) |
+            ## Comment these if
+            is.na(id)) |> ## using wrong feature table
+          dplyr::ungroup()
+      } else {
+        table_new <- table_new |> dplyr::mutate(integral = NA, new_labels = NA)
+      }
       table_new <- table_new |>
-        dplyr::rowwise() |>
-        dplyr::filter(grepl(pattern = id, x = sample) |
-          ## Comment these if
-          is.na(id)) |> ## using wrong feature table
-        dplyr::ungroup() |>
         dplyr::mutate(intensity = switch(detector,
           "ms" = intensity,
           "cad" = integral
@@ -627,7 +651,10 @@ prepare_hierarchy <-
         labels = "Other other other"
       )
 
-    table_1_1_new <- rbind(table_1_new, additional_row) |>
+    table_1_1_new <- rbind(
+      table_1_new |> dplyr::mutate(labels = as.character(labels)),
+      additional_row
+    ) |>
       dplyr::ungroup()
 
     final_table_3_1 <- table_1_1_new |>
