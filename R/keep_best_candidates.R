@@ -1,4 +1,8 @@
+source(file = "R/y_as_na.R")
+
 #' Keep best candidates
+#'
+#' @include y_as_na.R
 #'
 #' @param df Dataframe
 #'

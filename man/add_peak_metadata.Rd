@@ -4,10 +4,12 @@
 \alias{add_peak_metadata}
 \title{Add peak metadata}
 \usage{
-add_peak_metadata(df)
+add_peak_metadata(df, min_score = 0.8)
 }
 \arguments{
 \item{df}{Dataframe}
+
+\item{min_score}{Min score}
 }
 \value{
 A dataframe with peak metadata
