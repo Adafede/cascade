@@ -1,7 +1,5 @@
 start <- Sys.time()
 
-library(package = baseline, quietly = TRUE)
-library(package = BiocParallel, quietly = TRUE)
 # library(package = chromatographR, quietly = TRUE)
 ## Getting it this way only to avoid
 ## "Found more than one class "cluster" in cache issue
@@ -10,56 +8,16 @@ source(file = "https://raw.githubusercontent.com/ethanbass/chromatographR/master
 source(file = "https://raw.githubusercontent.com/ethanbass/chromatographR/master/R/get_peaks.R")
 source(file = "https://raw.githubusercontent.com/ethanbass/chromatographR/master/R/get_purity.R")
 source(file = "https://raw.githubusercontent.com/ethanbass/chromatographR/master/R/preprocess.R")
-library(package = data.table, quietly = TRUE)
-library(package = docopt, quietly = TRUE)
-library(package = dplyr, quietly = TRUE)
-library(package = future, quietly = TRUE)
-library(package = future.apply, quietly = TRUE)
-library(package = MSnbase, quietly = TRUE)
-library(package = nucleR, quietly = TRUE)
-library(package = plotly, quietly = TRUE)
-library(package = pracma, quietly = TRUE)
-library(package = progressr, quietly = TRUE)
-library(package = purrr, quietly = TRUE)
-library(package = readr, quietly = TRUE)
-library(package = xcms, quietly = TRUE)
-
-source(file = "R/baseline_chromatogram.R")
-source(file = "R/change_intensity_name.R")
+source(file = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/log_debug.R")
 source(file = "R/check_export_dir.R")
 source(file = "R/compare_peaks.R")
 source(file = "R/extract_ms_progress.R")
 source(file = "R/extract_ms_peak.R")
-source(file = "R/filter_ms.R")
-source(file = "R/get_gnps.R")
-source(file = "R/get_params.R")
-source(file = "R/improve_signal.R")
-source(file = "R/improve_signals_progress.R")
-source(file = "R/join_peaks.R")
-source(file = "R/log_debug.R")
-source(file = "R/make_confident.R")
-source(file = "R/normalize_chromato.R")
-source(file = "R/parse_cli_params.R")
-source(file = "R/parse_yaml_params.R")
-source(file = "R/parse_yaml_paths.R")
-source(file = "R/peaks_progress.R")
-source(file = "R/plot_chromatogram.R")
 source(file = "R/prepare_features.R")
-source(file = "R/prepare_mz.R")
-source(file = "R/prepare_peaks.R")
-source(file = "R/prepare_rt.R")
 source(file = "R/preprocess_chromatograms.R")
 source(file = "R/preprocess_peaks.R")
-source(file = "R/process_peaks.R")
-source(file = "R/progressr.R")
 source(file = "R/transform_ms.R")
-source(file = "R/y_as_na.R")
 source(file = "R/zzz.R")
-
-step <- "processing"
-paths <- parse_yaml_paths()
-params <- ""
-params <- get_params(step = step)
 
 log_debug(
   "This program performs",
@@ -69,25 +27,19 @@ log_debug(
 log_debug("Authors: \n", "AR")
 log_debug("Contributors: \n", "...")
 
-#' Dirty generic paths and parameters
-source(file = "R/dirty_paths_params.R")
 #' Specific paths
-
-log_debug(x = "listing files")
-files <- list.files(
-  path = TOYSET,
-  pattern = paste0(params$filename$mzml, ".mzML"),
-  full.names = TRUE,
-  recursive = TRUE
-)
-
-# files <- files[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = files)]
-
-names <- list.files(
-  path = TOYSET,
-  pattern = paste0(params$filename$mzml, ".mzML"),
-  recursive = TRUE
-) |>
+AREA_MIN <- 0.005
+CAD_SHIFT <- 0.05
+INTENSITY_MS_MIN <- 10000
+TIME_MIN <- 0.7
+TIME_MAX <- 35.2
+EXPORT_DIR <- "data/interim/peaks"
+EXPORT_FILE_CAD <- "210619_AR_06_V_03_2_01_featuresInformed_cad.tsv.gz"
+EXPORT_FILE_CAD_2 <- "210619_AR_06_V_03_2_01_featuresNotInformed_cad.tsv.gz"
+FEATURES <- "~/Documents/papers/sapid/sapere_tmp/extract_mzmine/extract.csv"
+FILE_POSITIVE <- "data/source/mzml/210619_AR_06_V_03_2_01.mzML"
+names <- FILE_POSITIVE |>
+  gsub(pattern = ".*/", replacement = "") |>
   gsub(pattern = "[0-9]{8}_AR_[0-9]{2}_", replacement = "") |>
   gsub(
     pattern = ".mzML",
@@ -95,29 +47,26 @@ names <- list.files(
     fixed = TRUE
   )
 
-# names <- names[grepl(pattern = "M_17|M_28|M_36|M_40|M_47|M_57|M_67", x = names)]
-
 log_debug(x = "loading feature table")
-# feature_table <- read_features(id = GNPS_JOB)
-## TODO FIX THIS
-FEATURES <- c("~/Documents/papers/sapid/sapere_tmp/extract_mzmine/extract.csv")
-feature_table <- read_delim(file = FEATURES)
+feature_table <- readr::read_delim(file = FEATURES)
 
 log_debug(x = "loading raw files (can take long if loading multiple files)")
-dda_data <- readMSData(
-  files = files,
+dda_data <- MSnbase::readMSData(
+  files = FILE_POSITIVE,
   mode = "onDisk",
   msLevel. = 1
 )
 
 log_debug(x = "opening raw files objects and extracting chromatograms")
-chromatograms_all <- lapply(files, openMSfile) |>
-  lapply(chromatograms) |>
-  flatten()
+chromatograms_all <- lapply(FILE_POSITIVE, mzR::openMSfile) |>
+  lapply(mzR::chromatograms) |>
+  purrr::flatten()
 
 log_debug(x = "preparing feature list ...")
 df_features <- feature_table |>
-  prepare_features()
+  ## TODO
+  tidytable::slice_head(n = 10) |>
+  prepare_features(min_intensity = 1E5)
 
 chromatograms_list_cad <- preprocess_chromatograms()
 peaks_prelist_cad <- preprocess_peaks()
@@ -136,21 +85,21 @@ list_ms_chromatograms <-
 
 log_debug(x = "transforming ms chromatograms")
 list_ms_chromatograms_transformed <-
-  future_lapply(
+  future.apply::future_lapply(
     X = list_ms_chromatograms,
     FUN = transform_ms
   )
 
 log_debug(x = "extracting ms peaks")
 list_ms_peaks <-
-  future_lapply(
+  future.apply::future_lapply(
     X = list_ms_chromatograms_transformed,
     FUN = extract_ms_peak
   )
 
 log_debug(x = "comparing peaks")
 list_comparison_score <-
-  future_lapply(
+  future.apply::future_lapply(
     X = seq_along(list_ms_peaks),
     FUN = compare_peaks
   )
@@ -158,13 +107,13 @@ list_comparison_score <-
 log_debug(x = "selecting features with peaks")
 df_features_with_peaks <-
   peaks_prelist$list_df_features_with_peaks_long |>
-  bind_rows()
+  tidytable::bind_rows()
 
 log_debug(x = "There are", nrow(df_features_with_peaks), "features with peaks")
 
 log_debug(x = "summarizing comparison scores")
 comparison_scores <- list_comparison_score |>
-  flatten()
+  purrr::flatten()
 
 log_debug(x = "There are", length(comparison_scores), "scores calculated")
 
@@ -174,7 +123,7 @@ df_features_with_peaks$comparison_score <-
 
 log_debug(x = "final aesthetics")
 df_features_with_peaks_scored <- df_features_with_peaks |>
-  select(
+  tidytable::select(
     sample = id,
     peak_id,
     peak_rt_min = rt_min,
@@ -187,12 +136,12 @@ df_features_with_peaks_scored <- df_features_with_peaks |>
     feature_area = area,
     comparison_score
   ) |>
-  distinct()
+  tidytable::distinct()
 
 df_features_without_peaks_scored <-
   peaks_prelist$df_features_without_peaks |>
-  mutate(comparison_score = NA) |>
-  select(
+  tidytable::mutate(comparison_score = NA) |>
+  tidytable::select(
     sample = id,
     peak_id,
     peak_rt_min = rt_min,
@@ -205,16 +154,14 @@ df_features_without_peaks_scored <-
     feature_area = area,
     comparison_score
   ) |>
-  distinct()
+  tidytable::distinct()
 
 log_debug(x = "checking export directory")
 check_export_dir(EXPORT_DIR)
 
 log_debug(x = "exporting to ...")
 log_debug(x = EXPORT_DIR)
-## TODO FIX THIS
-EXPORT_FILE_CAD <- EXPORT_FILE_CAD[1]
-write_tsv(
+readr::write_tsv(
   x = df_features_with_peaks_scored,
   file = file.path(EXPORT_DIR, switch(detector,
     "bpi" = EXPORT_FILE_BPI,
@@ -224,7 +171,7 @@ write_tsv(
 )
 ## TODO FIX THIS
 EXPORT_FILE_CAD_2 <- EXPORT_FILE_CAD_2[1]
-write_tsv(
+readr::write_tsv(
   x = df_features_without_peaks_scored,
   file = file.path(EXPORT_DIR, switch(detector,
     "bpi" = EXPORT_FILE_BPI_2,

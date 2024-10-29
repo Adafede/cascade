@@ -16,7 +16,7 @@ source(file = "R/prepare_rt.R")
 preprocess_peaks <- function(detector = "cad",
                              list = chromatograms_list_cad$chromatograms_baselined,
                              df_long = chromatograms_list_cad$chromatograms_baselined_long,
-                             area_min) {
+                             area_min = 0) {
   log_debug(x = "preprocessing", detector, "peaks")
   ## data.table call outside of future because buggy else
   peaks <- peaks_progress(list)

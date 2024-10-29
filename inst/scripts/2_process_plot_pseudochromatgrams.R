@@ -173,20 +173,31 @@ if (THESIS == TRUE) {
 }
 
 log_debug(x = "loading annotations")
+ANNOTATIONS <- "~/.tima/data/processed/241026_103144_extract/extract_results.tsv"
 annotations <-
   ANNOTATIONS |>
   lapply(
     FUN = function(x) {
       readr::read_delim(file = x) |>
-        dplyr::mutate(best_candidate = gsub(
-          pattern = "\\$",
-          replacement = "or",
-          x = best_candidate
+        dplyr::mutate(dplyr::across(
+          dplyr::contains("candidate_structure_tax"),
+          .fns = function(x) {
+            gsub(
+              pattern = "\\$",
+              replacement = "or",
+              x = x
+            )
+          }
         )) |>
-        dplyr::mutate(best_candidate = gsub(
-          pattern = "§",
-          replacement = "$",
-          x = best_candidate
+        dplyr::mutate(dplyr::across(
+          dplyr::contains("candidate_structure_tax"),
+          .fns = function(x) {
+            gsub(
+              pattern = "§",
+              replacement = "$",
+              x = x
+            )
+          }
         )) |>
         dplyr::mutate(mode = ifelse(
           test = grepl(
@@ -244,8 +255,8 @@ mode <- "pos"
 
 if (params$signal$detector$cad == TRUE) {
   compared_peaks_list_cad <- prepare_comparison()
-  compared_peaks_list_cad_pos <- compared_peaks_list_cad |>
-    myDirtyListF()
+  ## TODO FIX THIS
+  compared_peaks_list_cad_pos <- compared_peaks_list_cad
   compared_peaks_list_cad_neg <- compared_peaks_list_cad |>
     myDirtyListF(mode = "neg")
   plots_1_cad_pos <- plot_results_1()
