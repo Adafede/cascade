@@ -13,7 +13,7 @@ prepare_comparison <- function(detector = "cad") {
   peaks_compared <- path_1 |>
     lapply(
       FUN = function(x) {
-        readr::read_delim(file = file.path(EXPORT_DIR, x)) |>
+        readr::read_delim(file = file.path(x)) |>
           # dplyr::mutate(peak_area = peak_area / max(peak_area))|>
           dplyr::mutate(mode = ifelse(
             test = grepl(
@@ -31,7 +31,7 @@ prepare_comparison <- function(detector = "cad") {
   peaks_outside <- path_2 |>
     lapply(
       FUN = function(x) {
-        readr::read_delim(file = file.path(EXPORT_DIR, x)) |>
+        readr::read_delim(file = file.path(x)) |>
           dplyr::mutate(mode = ifelse(
             test = grepl(
               pattern = "_pos_",

@@ -63,9 +63,10 @@ chromatograms_all <- lapply(FILE_POSITIVE, mzR::openMSfile) |>
   purrr::flatten()
 
 log_debug(x = "preparing feature list ...")
+set.seed(42)
 df_features <- feature_table |>
   ## TODO
-  tidytable::slice_head(n = 10) |>
+  tidytable::slice_sample(n = 100) |>
   prepare_features(min_intensity = 1E5)
 
 chromatograms_list_cad <- preprocess_chromatograms()

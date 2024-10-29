@@ -135,8 +135,8 @@ plot_histograms_confident <-
       ggplot2::ylab("Intensity") +
       ggplot2::xlab("Retention time [min]") +
       ggplot2::xlim(
-        max(TIME_MIN, params$chromato$time$min),
-        min(TIME_MAX, params$chromato$time$max)
+        max(TIME_MIN),
+        min(TIME_MAX)
       )
 
     return(plot)
@@ -228,8 +228,8 @@ plot_histograms_taxo <-
       ggplot2::ylab("Intensity") +
       ggplot2::xlab("Retention time [min]") +
       ggplot2::xlim(
-        max(TIME_MIN, params$chromato$time$min),
-        min(TIME_MAX, params$chromato$time$max)
+        max(TIME_MIN),
+        min(TIME_MAX)
       )
 
     return(plot)

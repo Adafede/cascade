@@ -1,23 +1,17 @@
 start <- Sys.time()
 
+source(file = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/log_debug.R")
 source(file = "R/add_peak_metadata.R")
-source(file = "R/check_export_dir.R")
-source(file = "R/colors.R")
 source(file = "R/keep_best_candidates.R")
-source(file = "R/log_debug.R")
 source(file = "R/make_confident.R")
 source(file = "R/make_other.R")
 source(file = "R/no_other.R")
-source(file = "R/plot_histograms.R")
 source(file = "R/plot_peaks_statistics.R")
 source(file = "R/plot_results.R")
-source(file = "R/prehistograms_progress.R")
 source(file = "R/prepare_comparison.R")
 source(file = "R/prepare_hierarchy.R")
-source(file = "R/prepare_hierarchy_preparation.R")
-source(file = "R/prepare_plot.R")
+source(file = "R/preprocess_chromatograms.R")
 source(file = "R/treemaps_progress.R")
-source(file = "R/y_as_na.R")
 
 log_debug(
   "This program performs",
@@ -26,62 +20,36 @@ log_debug(
 log_debug("Authors: \n", "AR")
 log_debug("Contributors: \n", "...")
 
-#' Dirty generic paths and parameters
-source(file = "R/dirty_paths_params.R")
-
 #' Specific paths
+ANNOTATIONS <- "~/.tima/data/processed/241026_103144_extract/extract_results.tsv"
+BPI <- FALSE
+CAD <- TRUE
+PDA <- FALSE
+CAD_SHIFT <- 0.05
+PDA_SHIFT <- 0.1
 TIME_MIN <- 0.7
 TIME_MAX <- 35.2
+CONFIDENCE_SCORE_MIN <- 0.4
+PEAK_SIMILARITY_PREFILTER <- 0.6
+PEAK_SIMILARITY <- 0.8
 THESIS <- FALSE
-
-###
-## DIRTY FROM 1_process_compare_peaks.R
-source(file = "R/baseline_chromatogram.R")
-source(file = "R/change_intensity_name.R")
-source(file = "R/check_export_dir.R")
-source(file = "R/compare_peaks.R")
-source(file = "R/extract_ms_peak.R")
-source(file = "R/filter_ms.R")
-source(file = "R/get_params.R")
-source(file = "R/improve_signal.R")
-source(file = "R/improve_signals_progress.R")
-source(file = "R/join_peaks.R")
-source(file = "R/log_debug.R")
-source(file = "R/make_confident.R")
-source(file = "R/normalize_chromato.R")
-source(file = "R/peaks_progress.R")
-source(file = "R/plot_chromatogram.R")
-source(file = "R/prepare_features.R")
-source(file = "R/prepare_mz.R")
-source(file = "R/prepare_peaks.R")
-source(file = "R/prepare_rt.R")
-source(file = "R/preprocess_chromatograms.R")
-source(file = "R/preprocess_peaks.R")
-source(file = "R/process_peaks.R")
-source(file = "R/transform_ms.R")
-source(file = "R/y_as_na.R")
-source(file = "R/dirty_paths_params.R")
-log_debug(x = "listing files")
-files <- list.files(
-  path = TOYSET,
-  pattern = paste0(params$filename$mzml, ".mzML"),
-  full.names = TRUE,
-  recursive = TRUE
-)
-names <- list.files(
-  path = TOYSET,
-  pattern = paste0(params$filename$mzml, ".mzML"),
-  recursive = TRUE
-) |>
+IMPORT_FILE_CAD <- "data/interim/peaks/210619_AR_06_V_03_2_01_featuresInformed_cad.tsv.gz"
+IMPORT_FILE_CAD_2 <- "data/interim/peaks/210619_AR_06_V_03_2_01_featuresInformed_cad.tsv.gz"
+EXPORT_DIR <- "data/interim/peaks"
+FILE_POSITIVE <- "data/source/mzml/210619_AR_06_V_03_2_01.mzML"
+names <- FILE_POSITIVE |>
+  gsub(pattern = ".*/", replacement = "") |>
   gsub(pattern = "[0-9]{8}_AR_[0-9]{2}_", replacement = "") |>
   gsub(
     pattern = ".mzML",
     replacement = "",
     fixed = TRUE
   )
+
+log_debug(x = "listing files")
 log_debug(x = "loading raw files (can take long if loading multiple files)")
 dda_data <- MSnbase::readMSData(
-  files = files,
+  files = FILE_POSITIVE,
   mode = "onDisk",
   msLevel. = 1
 )
@@ -98,7 +66,7 @@ if (THESIS == TRUE) {
 }
 
 log_debug(x = "opening raw files objects and extracting chromatograms")
-chromatograms_all <- lapply(files, mzR::openMSfile) |>
+chromatograms_all <- lapply(FILE_POSITIVE, mzR::openMSfile) |>
   lapply(mzR::chromatograms) |>
   purrr::flatten()
 
@@ -147,7 +115,6 @@ if (THESIS == TRUE) {
 }
 
 log_debug(x = "loading annotations")
-ANNOTATIONS <- "~/.tima/data/processed/241026_103144_extract/extract_results.tsv"
 annotations <-
   ANNOTATIONS |>
   lapply(
@@ -207,10 +174,10 @@ myDirtyListF <- function(list, mode = "pos") {
   )))
 }
 
-if (params$signal$detector$bpi == TRUE) {
+if (BPI) {
   detector <- "bpi"
 }
-if (params$signal$detector$bpi == TRUE) {
+if (BPI) {
   compared_peaks_list_bpi <- prepare_comparison(detector = "bpi")
   compared_peaks_list_bpi_pos <- compared_peaks_list_bpi |>
     myDirtyListF()
@@ -220,14 +187,13 @@ if (params$signal$detector$bpi == TRUE) {
   plots_1_bpi_neg <- plot_results_1(detector = "bpi", mode = "neg")
   plots_2_bpi <- plot_results_2(detector = "bpi")
 }
-if (params$signal$detector$cad == TRUE) {
+if (CAD) {
   detector <- "cad"
 }
-
-# mode weirdly loaded
+# TODO investigate
 mode <- "pos"
 
-if (params$signal$detector$cad == TRUE) {
+if (CAD) {
   compared_peaks_list_cad <- prepare_comparison()
   ## TODO FIX THIS
   compared_peaks_list_cad_pos <- compared_peaks_list_cad
@@ -238,11 +204,11 @@ if (params$signal$detector$cad == TRUE) {
   plots_2_cad <- plot_results_2()
 }
 
-if (params$signal$detector$pda == TRUE) {
+if (PDA) {
   detector <- "pda"
 }
 
-if (params$signal$detector$pda == TRUE) {
+if (PDA) {
   compared_peaks_list_pda <- prepare_comparison(detector = "pda")
   compared_peaks_list_pda_pos <- compared_peaks_list_pda |>
     myDirtyListF()
@@ -349,7 +315,7 @@ treemaps <-
   )])
 # treemaps$special
 
-if (params$signal$detector$bpi == TRUE) {
+if (BPI) {
   df_meta_bpi_pos <- compared_peaks_list_bpi$peaks_all |>
     dplyr::filter(mode == "pos") |>
     dplyr::full_join(
@@ -376,7 +342,7 @@ if (params$signal$detector$bpi == TRUE) {
     add_peak_metadata()
 }
 
-if (params$signal$detector$cad == TRUE) {
+if (CAD) {
   df_meta_cad_pos <- compared_peaks_list_cad$peaks_all |>
     dplyr::filter(mode == "pos") |>
     dplyr::full_join(
@@ -403,7 +369,7 @@ if (params$signal$detector$cad == TRUE) {
     add_peak_metadata()
 }
 
-if (params$signal$detector$pda == TRUE) {
+if (PDA) {
   df_meta_pda_pos <- compared_peaks_list_pda$peaks_all |>
     dplyr::filter(mode == "pos") |>
     dplyr::full_join(
@@ -430,21 +396,21 @@ if (params$signal$detector$pda == TRUE) {
     add_peak_metadata()
 }
 
-if (params$signal$detector$bpi) {
+if (BPI) {
   plots_bpi_pos <- df_meta_bpi_pos |>
     plot_peaks_statistics()
   plots_bpi_neg <- df_meta_bpi_neg |>
     plot_peaks_statistics()
 }
 
-if (params$signal$detector$cad) {
+if (CAD) {
   plots_cad_pos <- df_meta_cad_pos |>
     plot_peaks_statistics()
   plots_cad_neg <- df_meta_cad_neg |>
     plot_peaks_statistics()
 }
 
-if (params$signal$detector$pda) {
+if (PDA) {
   plots_pda_pos <- df_meta_pda_pos |>
     plot_peaks_statistics()
   plots_pda_neg <- df_meta_pda_neg |>
@@ -579,7 +545,7 @@ cc_neg <- dplyr::bind_rows(bb_neg) |>
 
 cc_cad_pos <- chromatograms_list_cad$chromatograms_improved_long |>
   # cc_cad_pos <- chromatograms_list_cad$chromatograms_original_long |>
-  dplyr::mutate(time = time + params$chromato$shift$cad) |>
+  dplyr::mutate(time = time + CAD_SHIFT) |>
   dplyr::filter(time >= rt_min & time <= rt_max) |>
   dplyr::mutate(
     mz = "cad signal",
@@ -593,7 +559,7 @@ cc_cad_pos <- chromatograms_list_cad$chromatograms_improved_long |>
 cc_cad_neg <-
   chromatograms_list_cad_neg$chromatograms_improved_long |>
   # cc_cad_neg <- chromatograms_list_cad_neg$chromatograms_original_long |>
-  dplyr::mutate(time = time + params$chromato$shift$cad) |>
+  dplyr::mutate(time = time + CAD_SHIFT) |>
   dplyr::filter(time >= rt_min & time <= rt_max) |>
   dplyr::mutate(
     mz = "cad signal",
