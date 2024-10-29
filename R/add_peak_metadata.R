@@ -199,7 +199,7 @@ add_peak_metadata <- function(df) {
     )
 
   my_bins <- function(x) {
-    case_when(
+    dplyr::case_when(
       x == 0 ~ "0",
       x == 1 ~ "01",
       x > 1 & x <= 5 ~ "02-05",

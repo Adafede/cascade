@@ -43,7 +43,21 @@ prepare_comparison <- function(detector = "cad") {
           ))
       }
     ) |>
-    dplyr::bind_rows()
+    dplyr::bind_rows() |>
+    tidytable::mutate(tidytable::across(tidytable::all_of(
+      c(
+        "peak_id",
+        "peak_rt_min",
+        "peak_rt_apex",
+        "peak_rt_max",
+        "peak_area",
+        "feature_id",
+        "feature_rt",
+        "feature_mz",
+        "feature_area",
+        "comparison_score"
+      )
+    ), as.numeric))
 
   peaks_all <- peaks_compared |>
     dplyr::bind_rows(peaks_outside)
@@ -51,27 +65,36 @@ prepare_comparison <- function(detector = "cad") {
   log_debug(x = "joining compared peaks and candidates")
   log_debug(x = "temporary fix") ## TODO
   temp_fix <- function(df) {
-    df_temp <- df |>
+    df |>
+      dplyr::mutate(feature_id = as.numeric(feature_id)) |>
       dplyr::left_join(candidates_confident) |>
       dplyr::mutate(rt = as.numeric(rt))
-    return(df_temp)
   }
   temp_fix_2 <- function(df) {
-    df_temp <- df |>
+    df |>
       dplyr::mutate(
         id = sample,
         integral = peak_area,
         intensity = feature_area
       )
-    return(df_temp)
   }
   temp_fix_3 <- function(df) {
-    df_temp <- df |>
+    df |>
+      dplyr::mutate(peak_rt_apex = rt, peak_area = 0.001)
+  }
+  temp_fix_4 <- function(df) {
+    df |>
       dplyr::mutate(
-        peak_rt_apex = rt,
-        peak_area = 0.001
+        peak_id = as.numeric(peak_id),
+        peak_rt_min = as.numeric(peak_rt_min),
+        peak_rt_max = as.numeric(peak_rt_max),
+        feature_rt = as.numeric(feature_rt),
+        feature_mz = as.numeric(feature_mz),
+        feature_area = as.numeric(feature_area),
+        comparison_score = as.numeric(comparison_score),
+        integral = as.numeric(integral),
+        intensity = as.numeric(intensity)
       )
-    return(df_temp)
   }
 
   peaks_maj <- peaks_compared |>
@@ -99,7 +122,8 @@ prepare_comparison <- function(detector = "cad") {
   peaks_min <- peaks_outside |>
     temp_fix() |>
     temp_fix_2() |>
-    temp_fix_3()
+    temp_fix_3() |>
+    temp_fix_4()
 
   log_debug(x = "keeping peaks similarities above desired (pre-)threshold only")
   peaks_maj_precor <- peaks_maj |>
@@ -114,10 +138,7 @@ prepare_comparison <- function(detector = "cad") {
   peaks_maj_precor_taxo <- peaks_maj_precor |>
     dplyr::rowwise() |>
     dplyr::mutate(taxo = ifelse(
-      test = grepl(
-        pattern = best_candidate_organism,
-        x = species
-      ),
+      test = grepl(pattern = best_candidate_organism, x = species),
       yes = 1,
       no = 0
     )) |>

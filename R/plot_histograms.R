@@ -126,10 +126,10 @@ plot_histograms_confident <-
         # legend.title.align = 0.5,
         # legend.position = "bottom",
         # axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        # panel.background = element_blank(),
-        axis.line = element_line(colour = "black"),
+        panel.grid.major = ggplot2::element_blank(),
+        panel.grid.minor = ggplot2::element_blank(),
+        # panel.background = ggplot2::element_blank(),
+        axis.line = ggplot2::element_line(colour = "black"),
         axis.text.y = ggplot2::element_text(face = "italic")
       ) +
       ggplot2::ylab("Intensity") +
@@ -219,10 +219,10 @@ plot_histograms_taxo <-
         # legend.title.align = 0.5,
         # legend.position = "bottom",
         # axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        # panel.background = element_blank(),
-        axis.line = element_line(colour = "black"),
+        panel.grid.major = ggplot2::element_blank(),
+        panel.grid.minor = ggplot2::element_blank(),
+        # panel.background = ggplot2::element_blank(),
+        axis.line = ggplot2::element_line(colour = "black"),
         axis.text.y = ggplot2::element_text(face = "italic")
       ) +
       ggplot2::ylab("Intensity") +
