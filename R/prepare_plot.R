@@ -1,4 +1,8 @@
+source(file = "R/colors.R")
+
 #' Prepare plot
+#'
+#' @include colors.R
 #'
 #' @param dataframe Dataframe
 #' @param organism Organism
@@ -103,7 +107,11 @@ prepare_plot <- function(dataframe, organism = "species") {
   return(samples)
 }
 
+source(file = "R/colors.R")
+
 #' Prepare plot 2
+#'
+#' @include colors.R
 #'
 #' @param dataframe Dataframe
 #'

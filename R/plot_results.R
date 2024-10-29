@@ -1,4 +1,14 @@
+source(file = "R/make_other.R")
+source(file = "R/no_other.R")
+source(file = "R/prepare_plot.R")
+source(file = "R/plot_histograms.R")
+
 #' Plot results 1
+#'
+#' @include make_other.R
+#' @include no_other.R
+#' @include prepare_plot.R
+#' @include plot_histograms.R
 #'
 #' @param detector Detector
 #' @param mode Mode
@@ -95,7 +105,13 @@ plot_results_1 <- function(detector = "cad", mode = "pos") {
   return(returned_list)
 }
 
+source(file = "R/no_other.R")
+source(file = "R/prepare_hierarchy.R")
+
 #' Plot results 2
+#'
+#' @include prepare_hierarchy.R
+#' @include no_other.R
 #'
 #' @param detector Detector
 #'
@@ -315,23 +331,40 @@ plot_results_2 <- function(detector = "cad") {
     dplyr::distinct(ids, labels, .keep_all = TRUE)
 
   sunburst_grey_colors_signal_pos <- sunburst_colors
-  sunburst_grey_colors_signal_pos[[which(index_signal_pos$ids == "Other", arr.ind = TRUE)]] <-
-    grey_colors[[1]][[5]]
+  index_s_pos <- which(index_signal_pos$ids == "Other", arr.ind = TRUE)
+  if (length(index_s_pos) > 0) {
+    sunburst_grey_colors_signal_pos[[index_s_pos]] <- grey_colors[[1]][[5]]
+  }
+
   sunburst_grey_colors_ms_pos <- sunburst_colors
-  sunburst_grey_colors_ms_pos[[which(index_ms_pos$ids == "Other", arr.ind = TRUE)]] <-
-    grey_colors[[1]][[5]]
+  index_m_pos <- which(index_ms_pos$ids == "Other", arr.ind = TRUE)
+  if (length(index_m_pos) > 0) {
+    sunburst_grey_colors_signal_pos[[index_m_pos]] <- grey_colors[[1]][[5]]
+  }
+
   sunburst_grey_colors_signal_neg <- sunburst_colors
-  sunburst_grey_colors_signal_neg[[which(index_signal_neg$ids == "Other", arr.ind = TRUE)]] <-
-    grey_colors[[1]][[5]]
+  index_s_neg <- which(index_signal_neg$ids == "Other", arr.ind = TRUE)
+  if (length(index_s_neg) > 0) {
+    sunburst_grey_colors_signal_pos[[index_s_neg]] <- grey_colors[[1]][[5]]
+  }
+
   sunburst_grey_colors_ms_neg <- sunburst_colors
-  sunburst_grey_colors_ms_neg[[which(index_ms_neg$ids == "Other", arr.ind = TRUE)]] <-
-    grey_colors[[1]][[5]]
+  index_m_neg <- which(index_ms_neg$ids == "Other", arr.ind = TRUE)
+  if (length(index_m_neg) > 0) {
+    sunburst_grey_colors_signal_pos[[index_m_neg]] <- grey_colors[[1]][[5]]
+  }
+
   sunburst_grey_colors_signal_duo <- sunburst_colors
-  sunburst_grey_colors_signal_duo[[which(index_signal_duo$ids == "Other", arr.ind = TRUE)]] <-
-    grey_colors[[1]][[5]]
+  index_s_duo <- which(index_signal_duo$ids == "Other", arr.ind = TRUE)
+  if (length(index_s_duo) > 0) {
+    sunburst_grey_colors_signal_duo[[index_s_duo]] <- grey_colors[[1]][[5]]
+  }
+
   sunburst_grey_colors_ms_duo <- sunburst_colors
-  sunburst_grey_colors_ms_duo[[which(index_ms_duo$ids == "Other", arr.ind = TRUE)]] <-
-    grey_colors[[1]][[5]]
+  index_m_duo <- which(index_ms_duo$ids == "Other", arr.ind = TRUE)
+  if (length(index_m_duo) > 0) {
+    sunburst_grey_colors_signal_duo[[index_m_duo]] <- grey_colors[[1]][[5]]
+  }
 
   sunburst_signal_based_pos <- table_taxo_maj_cor_signal |>
     dplyr::filter(grepl(

@@ -1,3 +1,5 @@
+library(ggalluvial)
+
 #' Plot peaks statistics
 #'
 #' @param df Dataframe
