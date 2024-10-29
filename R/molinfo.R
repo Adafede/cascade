@@ -1,13 +1,10 @@
-require(package = gt, quietly = TRUE)
-
-#' Title
+#' Molinfo
 #'
-#' @param x
+#' @param x X
 #'
-#' @return
-#' @export
+#' @return A mol image
 #'
-#' @examples
+#' @examples NULL
 molinfo <- function(x) {
   gt::web_image(
     url = paste0(

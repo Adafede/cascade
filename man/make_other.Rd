@@ -2,13 +2,21 @@
 % Please edit documentation in R/make_other.R
 \name{make_other}
 \alias{make_other}
-\title{Title}
+\title{Make other}
 \usage{
 make_other(dataframe, value = "peak_area")
 }
 \arguments{
-\item{value}{}
+\item{dataframe}{Dataframe}
+
+\item{value}{Value}
+}
+\value{
+A dataframe with harmonized "other" subcategories
 }
 \description{
-Title
+Make other
+}
+\examples{
+NULL
 }

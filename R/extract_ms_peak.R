@@ -1,11 +1,10 @@
-#' Title
+#' Extract MS peak
 #'
-#' @param x
+#' @param x X
 #'
-#' @return
-#' @export
+#' @return A peak
 #'
-#' @examples
+#' @examples NULL
 extract_ms_peak <- function(x) {
   feature <- seq_along(x)
   y <- future_lapply(X = feature, function(z) {

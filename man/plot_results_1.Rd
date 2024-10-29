@@ -2,16 +2,22 @@
 % Please edit documentation in R/plot_results.R
 \name{plot_results_1}
 \alias{plot_results_1}
-\title{Title}
+\title{Plot results 1}
 \usage{
 plot_results_1(detector = "cad", mode = "pos")
 }
 \arguments{
-\item{mode}{}
+\item{detector}{Detector}
+
+\item{mode}{Mode}
+}
+\value{
+A list of plots
 }
 \description{
-Title
+Plot results 1
 }
 \examples{
+NULL
 TODO harmonize 'others' among minor and major
 }

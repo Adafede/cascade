@@ -2,13 +2,19 @@
 % Please edit documentation in R/middle_pts.R
 \name{middle_pts}
 \alias{middle_pts}
-\title{Title}
+\title{Middle pts}
 \usage{
 middle_pts(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{X}
+}
+\value{
+Middle pts
 }
 \description{
-Title
+Middle pts
+}
+\examples{
+NULL
 }

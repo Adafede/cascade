@@ -1,17 +1,16 @@
-#' Title
+#' Add chromato line
 #'
-#' @param plot
-#' @param chromato
-#' @param shift
-#' @param time
-#' @param name
-#' @param color
-#' @param polarity
+#' @param plot Plot
+#' @param chromato Chromato
+#' @param shift Shift
+#' @param time Time
+#' @param name Name
+#' @param color Color
+#' @param polarity Polarity
 #'
-#' @return
-#' @export
+#' @return A plot with added chromato line
 #'
-#' @examples
+#' @examples NULL
 add_chromato_line <- function(plot,
                               chromato,
                               shift = 0,

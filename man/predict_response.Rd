@@ -2,13 +2,51 @@
 % Please edit documentation in R/correct_acn.R
 \name{predict_response}
 \alias{predict_response}
-\title{Title}
+\title{Predict response}
 \usage{
-predict_response(acn, peak_area)
+predict_response(
+  acn = 100,
+  peak_area,
+  p1q1 = 1e-05,
+  p1q2 = -6e-04,
+  p1q3 = -0.0778,
+  p2q1 = 2e-05,
+  p2q2 = -0.00022,
+  p2q3 = 0.05499,
+  p3q1 = -0.00017,
+  p3q2 = 0.0209,
+  p3q3 = 1.4041
+)
 }
 \arguments{
-\item{peak_area}{}
+\item{acn}{ACN}
+
+\item{peak_area}{Peak area}
+
+\item{p1q1}{P1Q1}
+
+\item{p1q2}{P1Q2}
+
+\item{p1q3}{P1Q3}
+
+\item{p2q1}{P2Q1}
+
+\item{p2q2}{P2Q2}
+
+\item{p2q3}{P2Q3}
+
+\item{p3q1}{P3Q1}
+
+\item{p3q2}{P3Q2}
+
+\item{p3q3}{P3Q3}
+}
+\value{
+The concentration
 }
 \description{
-Title
+Predict response
+}
+\examples{
+NULL
 }

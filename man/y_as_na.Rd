@@ -2,13 +2,21 @@
 % Please edit documentation in R/y_as_na.R
 \name{y_as_na}
 \alias{y_as_na}
-\title{Title}
+\title{Y as NA}
 \usage{
 y_as_na(x, y)
 }
 \arguments{
-\item{y}{}
+\item{x}{x}
+
+\item{y}{y}
+}
+\value{
+Y's replaced as NA's in X
 }
 \description{
-Title
+Y as NA
+}
+\examples{
+NULL
 }

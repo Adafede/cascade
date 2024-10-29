@@ -2,7 +2,7 @@
 % Please edit documentation in R/improve_signal.R
 \name{improve_signal}
 \alias{improve_signal}
-\title{Title}
+\title{Improve signal}
 \usage{
 improve_signal(
   df,
@@ -14,8 +14,24 @@ improve_signal(
 )
 }
 \arguments{
-\item{resample}{}
+\item{df}{Dataframe}
+
+\item{fourier_components}{Fourier components}
+
+\item{time_min}{Time min}
+
+\item{time_max}{Time max}
+
+\item{frequency}{Frequency}
+
+\item{resample}{Resample}
+}
+\value{
+A dataframe with improved signal
 }
 \description{
-Title
+Improve signal
+}
+\examples{
+NULL
 }

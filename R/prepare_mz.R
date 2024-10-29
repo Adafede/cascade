@@ -1,11 +1,10 @@
-#' Title
+#' Prepare mz
 #'
-#' @param x
+#' @param x X
 #'
-#' @return
-#' @export
+#' @return A list of prepared mz's
 #'
-#' @examples
+#' @examples NULL
 prepare_mz <- function(x) {
   feature <- seq_along(1:nrow(x))
   y <- future.apply::future_lapply(

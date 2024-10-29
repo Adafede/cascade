@@ -1,15 +1,14 @@
-#' Title
+#' Check chromatograms
 #'
-#' @param chromatograms
-#' @param normalize_time
-#' @param shift_cad
-#' @param shift_pda
-#' @param type
+#' @param chromatograms Chromatograms
+#' @param normalize_time Normalized time
+#' @param shift_cad Shift CAD
+#' @param shift_pda Shift PDA
+#' @param type Type
 #'
-#' @return
-#' @export
+#' @return A plot
 #'
-#' @examples
+#' @examples NULL
 check_chromatograms <- function(chromatograms = c("bpi_pos", "cad_pos", "pda_pos"),
                                 normalize_time = FALSE,
                                 shift_cad = 0,

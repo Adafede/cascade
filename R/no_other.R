@@ -1,13 +1,10 @@
-require(dplyr)
-
-#' Title
+#' No other
 #'
-#' @param dataframe
+#' @param dataframe Dataframe
 #'
-#' @return
-#' @export
+#' @return A dataframe with no other
 #'
-#' @examples
+#' @examples NULL
 no_other <- function(dataframe) {
   dataframe_no_other <- dataframe |>
     dplyr::filter(!grepl(

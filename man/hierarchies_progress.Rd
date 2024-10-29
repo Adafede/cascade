@@ -2,13 +2,19 @@
 % Please edit documentation in R/hierarchies_progress.R
 \name{hierarchies_progress}
 \alias{hierarchies_progress}
-\title{Title}
+\title{Hierarchies Progress}
 \usage{
 hierarchies_progress(xs)
 }
 \arguments{
-\item{xs}{}
+\item{xs}{XS}
+}
+\value{
+A list of hierarchies
 }
 \description{
-Title
+Hierarchies Progress
+}
+\examples{
+NULL
 }

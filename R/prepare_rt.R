@@ -1,11 +1,10 @@
-#' Title
+#' Prepare rt
 #'
-#' @param x
+#' @param x X
 #'
-#' @return
-#' @export
+#' @return Prepared RTs
 #'
-#' @examples
+#' @examples NULL
 prepare_rt <- function(x) {
   rtr <- x[1, ] |>
     tidytable::mutate(

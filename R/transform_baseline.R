@@ -1,11 +1,10 @@
-#' Title
+#' Transform baseline
 #'
-#' @param x
+#' @param x X
 #'
-#' @return
-#' @export
+#' @return A list with transformed baseline
 #'
-#' @examples
+#' @examples NULL
 transform_baseline <- function(x) {
   for (i in seq_along(seq_len(length(x)))) {
     intensity <- x[[i]]$intensity

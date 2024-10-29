@@ -1,12 +1,11 @@
-#' Title
+#' Filter MS
 #'
-#' @param x
-#' @param shift
+#' @param x X
+#' @param shift Shift
 #'
-#' @return
-#' @export
+#' @return A filtered MS file
 #'
-#' @examples
+#' @examples NULL
 filter_ms <- function(x, shift) {
   MSnbase::filterFile(
     dda_data,

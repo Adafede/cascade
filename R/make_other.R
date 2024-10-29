@@ -1,14 +1,11 @@
-require(dplyr)
-
-#' Title
+#' Make other
 #'
-#' @param dataframe
-#' @param value
+#' @param dataframe Dataframe
+#' @param value Value
 #'
-#' @return
-#' @export
+#' @return A dataframe with harmonized "other" subcategories
 #'
-#' @examples
+#' @examples NULL
 make_other <- function(dataframe, value = "peak_area") {
   top_4 <- dataframe |>
     dplyr::group_by(best_candidate_1, best_candidate_2) |>

@@ -2,13 +2,19 @@
 % Please edit documentation in R/baseline_chromatogram.R
 \name{baseline_chromatogram}
 \alias{baseline_chromatogram}
-\title{Title}
+\title{Baseline chromatogram}
 \usage{
 baseline_chromatogram(df)
 }
 \arguments{
-\item{df}{}
+\item{df}{Dataframe}
+}
+\value{
+A dataframe with baselined chromatogram
 }
 \description{
-Title
+Baseline chromatogram
+}
+\examples{
+NULL
 }

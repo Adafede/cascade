@@ -2,13 +2,21 @@
 % Please edit documentation in R/treemaps_progress.R
 \name{treemaps_progress}
 \alias{treemaps_progress}
-\title{Title}
+\title{Treemaps progress}
 \usage{
 treemaps_progress(xs, type = "treemap")
 }
 \arguments{
-\item{type}{}
+\item{xs}{XS}
+
+\item{type}{Type}
+}
+\value{
+A list of treemaps
 }
 \description{
-Title
+Treemaps progress
+}
+\examples{
+NULL
 }

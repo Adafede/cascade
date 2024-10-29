@@ -1,11 +1,10 @@
-#' Title
+#' Baseline chromatogram
 #'
-#' @param df
+#' @param df Dataframe
 #'
-#' @return
-#' @export
+#' @return A dataframe with baselined chromatogram
 #'
-#' @examples
+#' @examples NULL
 baseline_chromatogram <- function(df) {
   df2 <- df
 

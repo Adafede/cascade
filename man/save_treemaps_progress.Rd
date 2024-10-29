@@ -2,13 +2,21 @@
 % Please edit documentation in R/save_treemaps_progress.R
 \name{save_treemaps_progress}
 \alias{save_treemaps_progress}
-\title{Title}
+\title{Save treemaps progress}
 \usage{
 save_treemaps_progress(xs, type = "treemap")
 }
 \arguments{
-\item{type}{}
+\item{xs}{XS}
+
+\item{type}{Type}
+}
+\value{
+Saved treemaps
 }
 \description{
-Title
+Save treemaps progress
+}
+\examples{
+NULL
 }

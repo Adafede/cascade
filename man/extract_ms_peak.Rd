@@ -2,13 +2,19 @@
 % Please edit documentation in R/extract_ms_peak.R
 \name{extract_ms_peak}
 \alias{extract_ms_peak}
-\title{Title}
+\title{Extract MS peak}
 \usage{
 extract_ms_peak(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{X}
+}
+\value{
+A peak
 }
 \description{
-Title
+Extract MS peak
+}
+\examples{
+NULL
 }

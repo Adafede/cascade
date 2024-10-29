@@ -6,6 +6,12 @@
 \usage{
 parse_yaml_params()
 }
+\value{
+Params
+}
 \description{
 Title
+}
+\examples{
+NULL
 }

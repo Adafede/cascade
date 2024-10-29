@@ -2,13 +2,19 @@
 % Please edit documentation in R/make_2D.R
 \name{make_2D}
 \alias{make_2D}
-\title{Title}
+\title{Make 2D}
 \usage{
 make_2D(df)
 }
 \arguments{
-\item{df}{}
+\item{df}{Dataframe}
+}
+\value{
+A dataframe with 2D structures
 }
 \description{
-Title
+Make 2D
+}
+\examples{
+NULL
 }

@@ -2,13 +2,19 @@
 % Please edit documentation in R/save_histograms_progress.R
 \name{save_histograms_progress}
 \alias{save_histograms_progress}
-\title{Title}
+\title{Save histograms progress}
 \usage{
 save_histograms_progress(xs)
 }
 \arguments{
-\item{xs}{}
+\item{xs}{XS}
+}
+\value{
+Saved histograms
 }
 \description{
-Title
+Save histograms progress
+}
+\examples{
+NULL
 }

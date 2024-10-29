@@ -4,14 +4,15 @@ source(file = "R/peaks_progress.R")
 source(file = "R/prepare_mz.R")
 source(file = "R/prepare_peaks.R")
 source(file = "R/prepare_rt.R")
-#' Title
+#' Preprocess peaks
 #'
 #' @param detector
 #'
-#' @return
+#' @return A list of lists and dataframe with preprocessed peaks
+#'
 #' @export
 #'
-#' @examples
+#' @examples NULL
 preprocess_peaks <- function(detector = "cad",
                              list = chromatograms_list_cad$chromatograms_baselined,
                              df_long = chromatograms_list_cad$chromatograms_baselined_long,

@@ -2,13 +2,19 @@
 % Please edit documentation in R/baseline_chromatograms_progress.R
 \name{baseline_chromatograms_progress}
 \alias{baseline_chromatograms_progress}
-\title{Title}
+\title{Baseline chromatograms progress}
 \usage{
 baseline_chromatograms_progress(xs)
 }
 \arguments{
-\item{xs}{}
+\item{xs}{Xs}
+}
+\value{
+A list of dataframes with baselined chromatogram
 }
 \description{
-Title
+Baseline chromatograms progress
+}
+\examples{
+NULL
 }

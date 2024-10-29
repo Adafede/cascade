@@ -2,13 +2,21 @@
 % Please edit documentation in R/normalize_chromato.R
 \name{normalize_chromato}
 \alias{normalize_chromato}
-\title{Title}
+\title{Normalize chromato}
 \usage{
 normalize_chromato(x, list = list)
 }
 \arguments{
-\item{list}{}
+\item{x}{X}
+
+\item{list}{List}
+}
+\value{
+A normalized chromato
 }
 \description{
-Title
+Normalize chromato
+}
+\examples{
+NULL
 }

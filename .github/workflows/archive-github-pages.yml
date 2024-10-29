@@ -1,0 +1,33 @@
+# GitHub Actions workflow for Waystation version 1.5.0.
+# Available as the file "sample-workflow.yml" from the software
+# repository at https://github.com/caltechlibrary/waystation
+
+name: Archive GitHub Pages
+run-name: Archive GitHub Pages in the Wayback Machine
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  checks: write
+  contents: write
+  deployments: write
+  id-token: write
+  issues: read
+  discussions: read
+  packages: write
+  pages: write
+  pull-requests: read
+  repository-projects: read
+  security-events: read
+  statuses: read
+
+jobs:
+  run-waystation:
+    name: Run Waystation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: caltechlibrary/waystation@main

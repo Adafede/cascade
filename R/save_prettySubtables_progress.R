@@ -1,11 +1,10 @@
-#' Title
+#' Save pretty subtables progress
 #'
-#' @param xs
+#' @param xs XS
 #'
-#' @return
-#' @export
+#' @return Saved pretty subtables
 #'
-#' @examples
+#' @examples NULL
 save_prettySubtables_progress <- function(xs) {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(

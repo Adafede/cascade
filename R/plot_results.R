@@ -1,12 +1,11 @@
-#' Title
+#' Plot results 1
 #'
-#' @param detector
-#' @param mode
+#' @param detector Detector
+#' @param mode Mode
 #'
-#' @return
-#' @export
+#' @return A list of plots
 #'
-#' @examples
+#' @examples NULL
 plot_results_1 <- function(detector = "cad", mode = "pos") {
   if (mode == "pos") {
     list <- switch(detector,
@@ -96,14 +95,13 @@ plot_results_1 <- function(detector = "cad", mode = "pos") {
   return(returned_list)
 }
 
-#' Title
+#' Plot results 2
 #'
-#' @param detector
+#' @param detector Detector
 #'
-#' @return
-#' @export
+#' @return A list of plots
 #'
-#' @examples
+#' @examples NULL
 plot_results_2 <- function(detector = "cad") {
   list <- switch(detector,
     "bpi" = compared_peaks_list_bpi,

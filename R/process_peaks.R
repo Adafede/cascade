@@ -1,11 +1,10 @@
-#' Title
+#' Process peaks
 #'
 #' @param detector
 #'
-#' @return
-#' @export
+#' @return A list of processed peaks
 #'
-#' @examples
+#' @examples NULL
 process_peaks <- function(detector = "cad") {
   log_debug(x = "processing", detector, "peaks")
   log_debug(x = "extracting ms chromatograms (longest step)")

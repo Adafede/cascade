@@ -1,17 +1,13 @@
-require(package = dplyr, quietly = TRUE)
-require(package = splitstackshape, quietly = TRUE)
-
-#' Title
+#' Prepare hierarchy
 #'
-#' @param dataframe
-#' @param type
-#' @param detector
-#' @param rescale
+#' @param dataframe Dataframe
+#' @param type Type
+#' @param detector Detector
+#' @param rescale Rescale
 #'
-#' @return
-#' @export
+#' @return A dataframe with prepared hierarchy
 #'
-#' @examples
+#' @examples NULL
 prepare_hierarchy <-
   function(dataframe,
            type = "analysis",
@@ -190,13 +186,11 @@ prepare_hierarchy <-
         replacement = "",
         x = ids
       )) |>
-      dplyr::mutate_all(
-        ~ gsub(
-          x = .x,
-          pattern = "-NA$",
-          replacement = "",
-        )
-      ) |>
+      dplyr::mutate_all(~ gsub(
+        x = .x,
+        pattern = "-NA$",
+        replacement = "",
+      )) |>
       dplyr::filter(!is.na(labels)) |>
       dplyr::distinct()
 
@@ -211,25 +205,18 @@ prepare_hierarchy <-
           x = join
         )
       ) |>
-      dplyr::mutate_all(
-        ~ gsub(
-          x = .x,
-          pattern = "-NA$",
-          replacement = "",
-        )
-      ) |>
-      dplyr::mutate_all(
-        ~ gsub(
-          x = .x,
-          pattern = "^NA$",
-          replacement = NA,
-        )
-      ) |>
+      dplyr::mutate_all(~ gsub(
+        x = .x,
+        pattern = "-NA$",
+        replacement = "",
+      )) |>
+      dplyr::mutate_all(~ gsub(
+        x = .x,
+        pattern = "^NA$",
+        replacement = NA,
+      )) |>
       dplyr::full_join(children_1,
-        by = c(
-          "join" = "labels",
-          "chemical_pathway" = "chemical_pathway"
-        )
+        by = c("join" = "labels", "chemical_pathway" = "chemical_pathway")
       ) |>
       dplyr::distinct(ids = ids.x, labels, parents = ids.y) |>
       dplyr::filter(!is.na(labels)) |>
@@ -387,24 +374,14 @@ prepare_hierarchy <-
     table_3_1 <- table_3 |>
       dplyr::distinct(n, .keep_all = TRUE) |>
       dplyr::slice_max(n, n = 4, with_ties = FALSE) |>
-      dplyr::select(
-        chemical_pathway,
-        parents,
-        ids,
-        labels
-      )
+      dplyr::select(chemical_pathway, parents, ids, labels)
 
     top_medium_table <- table_3 |>
       dplyr::filter(parents %in% top_parents) |>
       dplyr::group_by(parents) |>
       dplyr::distinct(sum, .keep_all = TRUE) |>
       dplyr::slice_max(sum, n = 4, with_ties = FALSE) |>
-      dplyr::select(
-        chemical_pathway,
-        parents,
-        ids,
-        labels
-      ) |>
+      dplyr::select(chemical_pathway, parents, ids, labels) |>
       dplyr::mutate(new_labels = labels) |>
       dplyr::distinct()
 
@@ -413,12 +390,7 @@ prepare_hierarchy <-
     suppressMessages(
       low_medium_table <-
         dplyr::anti_join(table_3, dplyr::bind_rows(table_3_1, top_medium_table)) |>
-        dplyr::select(
-          chemical_pathway,
-          parents,
-          ids,
-          labels
-        ) |>
+        dplyr::select(chemical_pathway, parents, ids, labels) |>
         dplyr::filter(!is.na(parents)) |>
         dplyr::distinct()
     )
@@ -524,11 +496,7 @@ prepare_hierarchy <-
       )), new_labels = labels)
 
     genealogy_new_med_3 <-
-      dplyr::bind_rows(
-        genealogy_new_med_2,
-        table_children,
-        table_other
-      ) |>
+      dplyr::bind_rows(genealogy_new_med_2, table_children, table_other) |>
       dplyr::distinct()
 
     suppressMessages(
@@ -544,21 +512,16 @@ prepare_hierarchy <-
             dplyr::distinct(best_candidate_3, best_candidate_2)
         ) |>
         dplyr::mutate(
-          ids = paste(best_candidate_2,
-            best_candidate_3,
-            sep = "-"
-          ),
+          ids = paste(best_candidate_2, best_candidate_3, sep = "-"),
           labels = best_candidate_3,
           new_labels = best_candidate_3
         ) |>
         dplyr::select(chemical_pathway, parents, ids, labels, new_labels) |>
-        dplyr::mutate_all(
-          ~ gsub(
-            x = .x,
-            pattern = "-NA$",
-            replacement = "",
-          ),
-        )
+        dplyr::mutate_all(~ gsub(
+          x = .x,
+          pattern = "-NA$",
+          replacement = "",
+        ), )
     )
 
     suppressMessages(
@@ -588,13 +551,11 @@ prepare_hierarchy <-
         ) |>
         dplyr::select(chemical_pathway, parents, ids, labels, new_labels) |>
         dplyr::distinct() |>
-        dplyr::mutate_all(
-          ~ gsub(
-            x = .x,
-            pattern = "-NA$",
-            replacement = "",
-          )
-        ) |>
+        dplyr::mutate_all(~ gsub(
+          x = .x,
+          pattern = "-NA$",
+          replacement = "",
+        )) |>
         dplyr::filter(!is.na(labels))
     )
 
@@ -717,10 +678,7 @@ prepare_hierarchy <-
 
     final_table_3_3 <- table_1_1_new |>
       dplyr::filter(!is.na(species)) |>
-      dplyr::filter(grepl(
-        pattern = "-",
-        x = parents
-      ) &
+      dplyr::filter(grepl(pattern = "-", x = parents) &
         !parents %in% missing_children_1$parents) |>
       dplyr::group_by(dplyr::across(dplyr::any_of(
         c("parents", "ids", "labels", "sample", "species")
@@ -731,10 +689,7 @@ prepare_hierarchy <-
       )), .groups = "drop")
 
     final_table_3 <-
-      dplyr::bind_rows(
-        final_table_3_3,
-        final_table_3_2
-      ) |>
+      dplyr::bind_rows(final_table_3_3, final_table_3_2) |>
       dplyr::distinct() |>
       dplyr::arrange(parents, ids)
 
@@ -773,12 +728,7 @@ prepare_hierarchy <-
       dplyr::summarise(values = sum(values), .groups = "drop")
 
     final_table <-
-      dplyr::bind_rows(
-        final_table_1,
-        final_table_2,
-        final_table_3,
-        final_table_4
-      ) |>
+      dplyr::bind_rows(final_table_1, final_table_2, final_table_3, final_table_4) |>
       # dplyr::filter(!grepl(pattern = "^Other", x = ids)) |>
       dplyr::filter(!is.na(sample))
 

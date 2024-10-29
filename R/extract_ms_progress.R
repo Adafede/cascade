@@ -1,11 +1,10 @@
-#' Title
+#' Extract MS progress
 #'
-#' @param xs
+#' @param xs XS
 #'
-#' @return
-#' @export
+#' @return A list of extracted MS peaks
 #'
-#' @examples
+#' @examples NULL
 extract_ms_progress <- function(xs) {
   # p <- progressor(along = xs)
   pbapply::pblapply(

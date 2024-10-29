@@ -1,11 +1,10 @@
-#' Title
+#' Add peak metadata
 #'
-#' @param df
+#' @param df Dataframe
 #'
-#' @return
-#' @export
+#' @return A dataframe with peak metadata
 #'
-#' @examples
+#' @examples NULL
 add_peak_metadata <- function(df) {
   df_meta <- df |>
     dplyr::arrange(desc(feature_area)) |>

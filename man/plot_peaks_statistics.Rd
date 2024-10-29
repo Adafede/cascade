@@ -2,13 +2,19 @@
 % Please edit documentation in R/plot_peaks_statistics.R
 \name{plot_peaks_statistics}
 \alias{plot_peaks_statistics}
-\title{Title}
+\title{Plot peaks statistics}
 \usage{
 plot_peaks_statistics(df)
 }
 \arguments{
-\item{df}{}
+\item{df}{Dataframe}
+}
+\value{
+A plot with peaks statistics
 }
 \description{
-Title
+Plot peaks statistics
+}
+\examples{
+NULL
 }

@@ -2,13 +2,19 @@
 % Please edit documentation in R/prepare_rt.R
 \name{prepare_rt}
 \alias{prepare_rt}
-\title{Title}
+\title{Prepare rt}
 \usage{
 prepare_rt(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{X}
+}
+\value{
+Prepared RTs
 }
 \description{
-Title
+Prepare rt
+}
+\examples{
+NULL
 }

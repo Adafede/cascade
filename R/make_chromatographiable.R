@@ -1,15 +1,14 @@
-#' Title
+#' Make chromatographiable
 #'
-#' @param df
-#' @param mass_min
-#' @param mass_max
-#' @param logp_min
-#' @param logp_max
+#' @param df Dataframe
+#' @param mass_min Mass min
+#' @param mass_max Mass max
+#' @param logp_min Log P min
+#' @param logp_max Log P max
 #'
-#' @return
-#' @export
+#' @return A dataframe containing chromatographiable compounds
 #'
-#' @examples
+#' @examples NULL
 make_chromatographiable <-
   function(df,
            mass_min = params$structures$mass$min,

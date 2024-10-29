@@ -1,14 +1,12 @@
-require(package = purrr, quietly = TRUE)
-require(package = yaml, quietly = TRUE)
-
 source(file = "R/log_debug.R")
 
 #' Title
 #'
-#' @return
-#' @export
+#' @include log_debug.R
 #'
-#' @examples
+#' @return Params
+#'
+#' @examples NULL
 parse_yaml_params <- function() {
   log_debug("Loading yaml parameters")
   suppressWarnings(params <-

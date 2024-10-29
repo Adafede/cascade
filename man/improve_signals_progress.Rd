@@ -2,13 +2,19 @@
 % Please edit documentation in R/improve_signals_progress.R
 \name{improve_signals_progress}
 \alias{improve_signals_progress}
-\title{Title}
+\title{Improve signals progress}
 \usage{
 improve_signals_progress(xs)
 }
 \arguments{
-\item{xs}{}
+\item{xs}{XS}
+}
+\value{
+A list of dataframes with improved signals
 }
 \description{
-Title
+Improve signals progress
+}
+\examples{
+NULL
 }

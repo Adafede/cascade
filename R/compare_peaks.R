@@ -1,16 +1,14 @@
-#' Title
+#' Compare peaks
 #'
 #' @param x
 #'
-#' @return
-#' @export
+#' @return A comparison score
 #'
-#' @examples
+#' @examples Null
 compare_peaks <- function(x) {
   if (length(list_ms_peaks[[x]]) != 0) {
-    feature <- seq_along(list_ms_peaks[[x]])
-    y <- future_lapply(
-      X = feature,
+    future_lapply(
+      X = seq_along(list_ms_peaks[[x]]),
       FUN = function(z) {
         if (length(list_ms_peaks[[x]][[z]]) > 1) {
           score <- compareChromatograms(
@@ -28,7 +26,6 @@ compare_peaks <- function(x) {
         return(score)
       }
     )
-    return(y)
   } else {
     rep(list(0), length(x))
   }

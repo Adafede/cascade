@@ -2,13 +2,21 @@
 % Please edit documentation in R/plot_histograms.R
 \name{plot_histograms_taxo}
 \alias{plot_histograms_taxo}
-\title{Title}
+\title{Plot histograms taxo}
 \usage{
 plot_histograms_taxo(dataframe, level = "max")
 }
 \arguments{
-\item{level}{}
+\item{dataframe}{Dataframe}
+
+\item{level}{Level}
+}
+\value{
+A plot of taxo histograms
 }
 \description{
-Title
+Plot histograms taxo
+}
+\examples{
+NULL
 }

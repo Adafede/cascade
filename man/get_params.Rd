@@ -2,13 +2,19 @@
 % Please edit documentation in R/get_params.R
 \name{get_params}
 \alias{get_params}
-\title{Title}
+\title{Get params}
 \usage{
 get_params(step)
 }
 \arguments{
-\item{step}{}
+\item{step}{Step}
+}
+\value{
+Params
 }
 \description{
-Title
+Get params
+}
+\examples{
+NULL
 }

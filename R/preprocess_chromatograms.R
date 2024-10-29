@@ -1,14 +1,20 @@
 source(file = "R/baseline_chromatogram.R")
 source(file = "R/change_intensity_name.R")
 source(file = "R/improve_signals_progress.R")
-#' Title
+#' Preprocess chromatograms
 #'
-#' @param detector
+#' @include baseline_chromatogram.R
+#' @include change_intensity_name.R
+#' @include improve_signals_progress.R
 #'
-#' @return
-#' @export
+#' @param detector Detector
+#' @param list List
+#' @param signal_name Signal name
+#' @param shift Shift
 #'
-#' @examples
+#' @return A list of preprocessed chromatograms
+#'
+#' @examples NULL
 preprocess_chromatograms <- function(detector = "cad",
                                      list = chromatograms_all[c(FALSE, FALSE, TRUE)],
                                      signal_name = "UV.1_CAD_1_0",

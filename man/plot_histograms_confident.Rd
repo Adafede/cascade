@@ -2,13 +2,21 @@
 % Please edit documentation in R/plot_histograms.R
 \name{plot_histograms_confident}
 \alias{plot_histograms_confident}
-\title{Title}
+\title{Plot histograms confident}
 \usage{
 plot_histograms_confident(dataframe, level = "max")
 }
 \arguments{
-\item{level}{}
+\item{dataframe}{Dataframe}
+
+\item{level}{Level}
+}
+\value{
+A plot of confident histograms
 }
 \description{
-Title
+Plot histograms confident
+}
+\examples{
+NULL
 }

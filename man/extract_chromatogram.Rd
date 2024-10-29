@@ -2,13 +2,21 @@
 % Please edit documentation in R/extract_chromatogram.R
 \name{extract_chromatogram}
 \alias{extract_chromatogram}
-\title{Title}
+\title{Extract chromatogram}
 \usage{
 extract_chromatogram(list, type)
 }
 \arguments{
-\item{type}{}
+\item{list}{List}
+
+\item{type}{Type}
+}
+\value{
+An extracted chromatogram
 }
 \description{
-Title
+Extract chromatogram
+}
+\examples{
+NULL
 }

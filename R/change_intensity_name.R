@@ -1,12 +1,11 @@
-#' Title
+#' Change intensity name
 #'
-#' @param df
-#' @param name
+#' @param df Dataframe
+#' @param name Name
 #'
-#' @return
-#' @export
+#' @return A dataframe with changed intensity name
 #'
-#' @examples
+#' @examples NULL
 change_intensity_name <- function(df, name) {
   df |>
     dplyr::select(time,

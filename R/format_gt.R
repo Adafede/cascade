@@ -1,16 +1,10 @@
-require(package = dplyr, quietly = TRUE)
-require(package = gt, quietly = TRUE)
-require(package = htmltools, quietly = TRUE)
-require(package = purrr, quietly = TRUE)
-
-#' Title
+#' Temp GT function
 #'
-#' @param table
+#' @param table Table
 #'
-#' @return
-#' @export
+#' @return A formatted GT table
 #'
-#' @examples
+#' @examples NULL
 temp_gt_function <- function(table, title, subtitle) {
   prettyTable <- table %>%
     dplyr::mutate(

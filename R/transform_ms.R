@@ -1,11 +1,10 @@
-#' Title
+#' Transform MS
 #'
-#' @param x
+#' @param x X
 #'
-#' @return
-#' @export
+#' @return A list with transformed MS
 #'
-#' @examples
+#' @examples NULL
 transform_ms <- function(x) {
   feature <- seq_along(x)
   y <- future_lapply(X = feature, function(z) {

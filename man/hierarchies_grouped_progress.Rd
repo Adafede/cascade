@@ -2,13 +2,19 @@
 % Please edit documentation in R/hierarchies_grouped_progress.R
 \name{hierarchies_grouped_progress}
 \alias{hierarchies_grouped_progress}
-\title{Title}
+\title{Hierarchies grouped progress}
 \usage{
 hierarchies_grouped_progress(xs)
 }
 \arguments{
-\item{xs}{}
+\item{xs}{XS}
+}
+\value{
+A list of grouped hierarchies
 }
 \description{
-Title
+Hierarchies grouped progress
+}
+\examples{
+NULL
 }
