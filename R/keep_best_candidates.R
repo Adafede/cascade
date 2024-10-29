@@ -53,34 +53,34 @@ keep_best_candidates <- function(df) {
     ) |>
     dplyr::mutate_all(list(~ y_as_na(x = ., y = ""))) |>
     dplyr::mutate(
-      best_candidate_1 = if_else(
+      best_candidate_1 = dplyr::if_else(
         condition = is.na(smiles_2D),
         true = "notAnnotated",
         false = best_candidate_1
       ),
-      best_candidate_2 = if_else(
+      best_candidate_2 = dplyr::if_else(
         condition = is.na(smiles_2D),
         true = paste(best_candidate_1, "notAnnotated"),
         false = best_candidate_2
       ),
-      best_candidate_3 = if_else(
+      best_candidate_3 = dplyr::if_else(
         condition = is.na(smiles_2D),
         true = paste(best_candidate_2, "notAnnotated"),
         false = best_candidate_3
       ),
-      best_candidate_1 = if_else(
+      best_candidate_1 = dplyr::if_else(
         condition = !is.na(smiles_2D) &
           is.na(best_candidate_1),
         true = "notClassified",
         false = best_candidate_1
       ),
-      best_candidate_2 = if_else(
+      best_candidate_2 = dplyr::if_else(
         condition = !is.na(smiles_2D) &
           is.na(best_candidate_2),
         true = paste(best_candidate_1, "notClassified"),
         false = best_candidate_2
       ),
-      best_candidate_3 = if_else(
+      best_candidate_3 = dplyr::if_else(
         condition = !is.na(smiles_2D) &
           is.na(best_candidate_3),
         true = paste(best_candidate_2, "notClassified"),
