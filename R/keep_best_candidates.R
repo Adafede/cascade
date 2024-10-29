@@ -12,41 +12,40 @@ keep_best_candidates <- function(df) {
       replacement = "",
       x = .x
     ))) |>
-    splitstackshape::cSplit("best_candidate", sep = "$") |>
     dplyr::mutate(
       best_candidate_1 = gsub(
         pattern = " or .*",
         replacement = "",
-        x = best_candidate_1
+        x = candidate_structure_tax_npc_01pat
       ),
       best_candidate_2 = gsub(
         pattern = " or .*",
         replacement = "",
-        x = best_candidate_2
+        x = candidate_structure_tax_npc_02sup
       ),
       best_candidate_3 = gsub(
         pattern = " or .*",
         replacement = "",
-        x = best_candidate_3
+        x = candidate_structure_tax_npc_03cla
       )
     ) |>
     dplyr::distinct(
       feature_id,
-      mz,
-      rt,
-      smiles_2D = structure_smiles_2D,
-      inchikey_2D = structure_inchikey_2D,
-      molecular_formula = structure_molecular_formula,
+      mz = feature_mz,
+      rt = feature_rt,
+      smiles_2D = candidate_structure_smiles_no_stereo,
+      inchikey_2D = candidate_structure_inchikey_no_stereo,
+      molecular_formula = candidate_structure_molecular_formula,
       score_biological,
       score_chemical,
       score_final,
-      best_candidate_organism,
-      consensus_1 = consensus_npc_pat,
-      consensus_2 = consensus_npc_sup,
-      consensus_3 = consensus_npc_cla,
-      consistency_1 = consistency_npc_pat,
-      consistency_2 = consistency_npc_sup,
-      consistency_3 = consistency_npc_cla,
+      best_candidate_organism = candidate_structure_organism_occurrence_closest,
+      consensus_1 = feature_pred_tax_npc_01pat_val,
+      consensus_2 = feature_pred_tax_npc_02sup_val,
+      consensus_3 = feature_pred_tax_npc_03cla_val,
+      consistency_1 = feature_pred_tax_npc_01pat_score,
+      consistency_2 = feature_pred_tax_npc_02sup_score,
+      consistency_3 = feature_pred_tax_npc_03cla_score,
       best_candidate_1,
       best_candidate_2,
       best_candidate_3,

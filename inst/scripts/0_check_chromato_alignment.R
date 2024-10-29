@@ -1,12 +1,10 @@
 start <- Sys.time()
 
-source(file = "R/add_chromato_line.R")
+source(file = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/log_debug.R")
 source(file = "R/baseline_chromatogram.R")
-source(file = "R/change_intensity_name.R")
 source(file = "R/check_chromatograms.R")
 source(file = "R/extract_chromatogram.R")
-source(file = "R/improve_signals_progress.R")
-source(file = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/log_debug.R")
+source(file = "R/improve_signal.R")
 source(file = "R/normalize_chromatograms_list.R")
 
 log_debug("This program compares chromatograms.")

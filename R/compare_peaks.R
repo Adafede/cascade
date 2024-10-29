@@ -7,11 +7,11 @@
 #' @examples Null
 compare_peaks <- function(x) {
   if (length(list_ms_peaks[[x]]) != 0) {
-    future_lapply(
+    future.apply::future_lapply(
       X = seq_along(list_ms_peaks[[x]]),
       FUN = function(z) {
         if (length(list_ms_peaks[[x]][[z]]) > 1) {
-          score <- compareChromatograms(
+          score <- MSnbase::compareChromatograms(
             x = switch(detector,
               "bpi" = peaks_prelist_bpi$list_chromato_peaks,
               "cad" = peaks_prelist_cad$list_chromato_peaks,
