@@ -1,12 +1,13 @@
 source(file = "R/baseline_chromatogram.R")
-#' Title
+#' Baseline chromatograms progress
 #'
-#' @param xs
+#' @include baseline_chromatogram.R
 #'
-#' @return
-#' @export
+#' @param xs Xs
 #'
-#' @examples
+#' @return A list of dataframes with baselined chromatogram
+#'
+#' @examples NULL
 baseline_chromatograms_progress <- function(xs) {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(

@@ -2,13 +2,21 @@
 % Please edit documentation in R/filter_ms.R
 \name{filter_ms}
 \alias{filter_ms}
-\title{Title}
+\title{Filter MS}
 \usage{
 filter_ms(x, shift)
 }
 \arguments{
-\item{shift}{}
+\item{x}{X}
+
+\item{shift}{Shift}
+}
+\value{
+A filtered MS file
 }
 \description{
-Title
+Filter MS
+}
+\examples{
+NULL
 }

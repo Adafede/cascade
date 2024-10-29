@@ -2,13 +2,19 @@
 % Please edit documentation in R/add_peak_metadata.R
 \name{add_peak_metadata}
 \alias{add_peak_metadata}
-\title{Title}
+\title{Add peak metadata}
 \usage{
 add_peak_metadata(df)
 }
 \arguments{
-\item{df}{}
+\item{df}{Dataframe}
+}
+\value{
+A dataframe with peak metadata
 }
 \description{
-Title
+Add peak metadata
+}
+\examples{
+NULL
 }

@@ -1,11 +1,10 @@
-#' Title
+#' Log debug
 #'
-#' @param ...
+#' @param ... ...
 #'
-#' @return
-#' @export
+#' @return The log
 #'
-#' @examples
+#' @examples NULL
 log_debug <- function(...) {
   cat(paste(Sys.time(), ..., "\n"))
 }

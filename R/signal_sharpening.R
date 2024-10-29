@@ -1,18 +1,19 @@
 source(file = "R/second_der.R")
 
-#' Title
+#' Signal sharpening
 #'
-#' @param Time
-#' @param Intensity
-#' @param K2
-#' @param K4
-#' @param Smoothing_width
-#' @param Baseline_adjust
+#' @include second_der.R
 #'
-#' @return
-#' @export
+#' @param Time Time
+#' @param Intensity Intensity
+#' @param k2 K2
+#' @param k4 K4
+#' @param Smoothing_width Smoothing width
+#' @param Baseline_adjust Baseline adjust
 #'
-#' @examples
+#' @return A sharpened signal
+#'
+#' @examples NULL
 signal_sharpening <- function(Time = timeow,
                               Intensity = intensityeah,
                               k2 = 250,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_and_load_packages.R
 \name{check_and_load_packages_2}
 \alias{check_and_load_packages_2}
-\title{Title}
+\title{Check and load packages 2}
 \usage{
 check_and_load_packages_2(
   cran = packages_cran,
@@ -11,8 +11,14 @@ check_and_load_packages_2(
 )
 }
 \arguments{
-\item{df}{}
+\item{df}{Dataframe}
+}
+\value{
+Log of installed packages
 }
 \description{
-Title
+Check and load packages 2
+}
+\examples{
+NULL
 }

@@ -2,13 +2,25 @@
 % Please edit documentation in R/plot_histograms.R
 \name{plot_histograms_litt}
 \alias{plot_histograms_litt}
-\title{Title}
+\title{Plot histograms litt}
 \usage{
 plot_histograms_litt(dataframe, label, y = "values", xlab = TRUE)
 }
 \arguments{
-\item{label}{}
+\item{dataframe}{Dataframe}
+
+\item{label}{Label}
+
+\item{y}{Y}
+
+\item{xlab}{Xlab}
+}
+\value{
+A plot of literature histograms
 }
 \description{
-Title
+Plot histograms litt
+}
+\examples{
+NULL
 }

@@ -1,11 +1,10 @@
-#' Title
+#' Queries progress
 #'
-#' @param xs
+#' @param xs XS
 #'
-#' @return
-#' @export
+#' @return A list of queries results
 #'
-#' @examples
+#' @examples NULL
 queries_progress <- function(xs) {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(

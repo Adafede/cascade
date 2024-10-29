@@ -1,11 +1,10 @@
-#' Title
+#' Tables progress
 #'
-#' @param xs
+#' @param xs XS
 #'
-#' @return
-#' @export
+#' @return A list of tables
 #'
-#' @examples
+#' @examples NULL
 tables_progress <- function(xs) {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(

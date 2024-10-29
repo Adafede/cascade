@@ -2,13 +2,19 @@
 % Please edit documentation in R/process_peaks.R
 \name{process_peaks}
 \alias{process_peaks}
-\title{Title}
+\title{Process peaks}
 \usage{
 process_peaks(detector = "cad")
 }
 \arguments{
 \item{detector}{}
 }
+\value{
+A list of processed peaks
+}
 \description{
-Title
+Process peaks
+}
+\examples{
+NULL
 }

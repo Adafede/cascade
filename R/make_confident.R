@@ -1,12 +1,11 @@
-#' Title
+#' Make confident
 #'
-#' @param df
-#' @param score
+#' @param df Dataframe
+#' @param score Score
 #'
-#' @return
-#' @export
+#' @return A dataframe containing annotations with scores above the confidence threshold set
 #'
-#' @examples
+#' @examples NULL
 make_confident <- function(df, score) {
   df_ready <- df |>
     dplyr::mutate(

@@ -2,13 +2,19 @@
 % Please edit documentation in R/queries_progress.R
 \name{queries_progress}
 \alias{queries_progress}
-\title{Title}
+\title{Queries progress}
 \usage{
 queries_progress(xs)
 }
 \arguments{
-\item{xs}{}
+\item{xs}{XS}
+}
+\value{
+A list of queries results
 }
 \description{
-Title
+Queries progress
+}
+\examples{
+NULL
 }

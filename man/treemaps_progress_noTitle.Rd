@@ -2,13 +2,21 @@
 % Please edit documentation in R/treemaps_progress.R
 \name{treemaps_progress_noTitle}
 \alias{treemaps_progress_noTitle}
-\title{Title}
+\title{Treemaps progress no title}
 \usage{
 treemaps_progress_noTitle(xs, type = "treemap")
 }
 \arguments{
-\item{type}{}
+\item{xs}{XS}
+
+\item{type}{Type}
+}
+\value{
+A list of treemaps with no title
 }
 \description{
-Title
+Treemaps progress no title
+}
+\examples{
+NULL
 }

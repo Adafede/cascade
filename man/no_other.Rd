@@ -2,13 +2,19 @@
 % Please edit documentation in R/no_other.R
 \name{no_other}
 \alias{no_other}
-\title{Title}
+\title{No other}
 \usage{
 no_other(dataframe)
 }
 \arguments{
-\item{dataframe}{}
+\item{dataframe}{Dataframe}
+}
+\value{
+A dataframe with no other
 }
 \description{
-Title
+No other
+}
+\examples{
+NULL
 }

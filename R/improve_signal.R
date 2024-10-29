@@ -1,18 +1,19 @@
 source(file = "R/signal_sharpening.R")
 
-#' Title
+#' Improve signal
 #'
-#' @param df
-#' @param fourier_components
-#' @param time_min
-#' @param time_max
-#' @param frequency
-#' @param resample
+#' @include signal_sharpening.R
 #'
-#' @return
-#' @export
+#' @param df Dataframe
+#' @param fourier_components Fourier components
+#' @param time_min Time min
+#' @param time_max Time max
+#' @param frequency Frequency
+#' @param resample Resample
 #'
-#' @examples
+#' @return A dataframe with improved signal
+#'
+#' @examples NULL
 improve_signal <-
   function(df,
            fourier_components = 0.01,

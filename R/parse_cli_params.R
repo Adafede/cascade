@@ -1,11 +1,12 @@
 source(file = "R/log_debug.R")
 
-#' Title
+#' Parse CLI params
 #'
-#' @return
-#' @export
+#' @include log_debug.R
 #'
-#' @examples
+#' @return Params
+#'
+#' @examples NULL
 parse_cli_params <- function() {
   log_debug("Loading command line arguments")
 

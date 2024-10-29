@@ -2,13 +2,19 @@
 % Please edit documentation in R/log_debug.R
 \name{log_debug}
 \alias{log_debug}
-\title{Title}
+\title{Log debug}
 \usage{
 log_debug(...)
 }
 \arguments{
-\item{...}{}
+\item{...}{...}
+}
+\value{
+The log
 }
 \description{
-Title
+Log debug
+}
+\examples{
+NULL
 }

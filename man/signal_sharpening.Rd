@@ -2,7 +2,7 @@
 % Please edit documentation in R/signal_sharpening.R
 \name{signal_sharpening}
 \alias{signal_sharpening}
-\title{Title}
+\title{Signal sharpening}
 \usage{
 signal_sharpening(
   Time = timeow,
@@ -15,8 +15,24 @@ signal_sharpening(
 )
 }
 \arguments{
-\item{Baseline_adjust}{}
+\item{Time}{Time}
+
+\item{Intensity}{Intensity}
+
+\item{k2}{K2}
+
+\item{k4}{K4}
+
+\item{Smoothing_width}{Smoothing width}
+
+\item{Baseline_adjust}{Baseline adjust}
+}
+\value{
+A sharpened signal
 }
 \description{
-Title
+Signal sharpening
+}
+\examples{
+NULL
 }

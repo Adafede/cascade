@@ -1,12 +1,11 @@
-#' Title
+#' Normalize chromato
 #'
-#' @param x
-#' @param list
+#' @param x X
+#' @param list List
 #'
-#' @return
-#' @export
+#' @return A normalized chromato
 #'
-#' @examples
+#' @examples NULL
 normalize_chromato <- function(x, list = list) {
   list[[unique(x$id)]] |>
     dplyr::filter(time >= x$rt_min[1] &

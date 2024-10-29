@@ -1,12 +1,13 @@
 source(file = "R/improve_signal.R")
-#' Title
+#' Improve signals progress
 #'
-#' @param xs
+#' @include improve_signal.R
 #'
-#' @return
-#' @export
+#' @param xs XS
 #'
-#' @examples
+#' @return A list of dataframes with improved signals
+#'
+#' @examples NULL
 improve_signals_progress <- function(xs) {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(

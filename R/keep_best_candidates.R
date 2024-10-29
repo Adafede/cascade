@@ -1,11 +1,10 @@
-#' Title
+#' Keep best candidates
 #'
-#' @param df
+#' @param df Dataframe
 #'
-#' @return
-#' @export
+#' @return A dataframe containing the best candidates only
 #'
-#' @examples
+#' @examples NULL
 keep_best_candidates <- function(df) {
   best_candidates <- df |>
     dplyr::mutate_all(list(~ gsub(

@@ -1,11 +1,10 @@
-#' Title
+#' Subtables progress
 #'
-#' @param xs
+#' @param xs XS
 #'
-#' @return
-#' @export
+#' @return A list of subtables
 #'
-#' @examples
+#' @examples NULL
 subtables_progress <- function(xs) {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(
