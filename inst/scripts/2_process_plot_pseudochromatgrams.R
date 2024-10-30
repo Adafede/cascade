@@ -1,6 +1,5 @@
 start <- Sys.time()
 
-source(file = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/log_debug.R")
 source(file = "R/add_peak_metadata.R")
 source(file = "R/keep_best_candidates.R")
 source(file = "R/make_confident.R")
@@ -12,13 +11,14 @@ source(file = "R/prepare_comparison.R")
 source(file = "R/prepare_hierarchy.R")
 source(file = "R/preprocess_chromatograms.R")
 source(file = "R/treemaps_progress.R")
+source(file = "R/cascade-package.R")
 
-log_debug(
+tima::log_debug(
   "This program performs",
   "TODO"
 )
-log_debug("Authors: \n", "AR")
-log_debug("Contributors: \n", "...")
+tima::log_debug("Authors: \n", "AR")
+tima::log_debug("Contributors: \n", "...")
 
 #' Specific paths
 ANNOTATIONS <- "~/.tima/data/processed/241026_103144_extract/extract_results.tsv"
@@ -46,8 +46,8 @@ names <- FILE_POSITIVE |>
     fixed = TRUE
   )
 
-log_debug(x = "listing files")
-log_debug(x = "loading raw files (can take long if loading multiple files)")
+tima::log_debug(x = "listing files")
+tima::log_debug(x = "loading raw files (can take long if loading multiple files)")
 dda_data <- MSnbase::readMSData(
   files = FILE_POSITIVE,
   mode = "onDisk",
@@ -65,7 +65,7 @@ if (THESIS == TRUE) {
     )
 }
 
-log_debug(x = "opening raw files objects and extracting chromatograms")
+tima::log_debug(x = "opening raw files objects and extracting chromatograms")
 chromatograms_all <- lapply(FILE_POSITIVE, mzR::openMSfile) |>
   lapply(mzR::chromatograms) |>
   purrr::flatten()
@@ -114,7 +114,7 @@ if (THESIS == TRUE) {
     )
 }
 
-log_debug(x = "loading annotations")
+tima::log_debug(x = "loading annotations")
 annotations <-
   ANNOTATIONS |>
   lapply(
@@ -153,16 +153,16 @@ annotations <-
   ) |>
   dplyr::bind_rows()
 
-log_debug(x = "keeping best annotations only")
+tima::log_debug(x = "keeping best annotations only")
 best_candidates <- annotations |>
   keep_best_candidates()
 
-log_debug(x = "adding metadata dirtily for now")
+tima::log_debug(x = "adding metadata dirtily for now")
 candidates_metadata <- best_candidates |>
   dplyr::mutate(species = "Swertia chirayita") |>
   dplyr::mutate(feature_id = as.numeric(feature_id))
 
-log_debug(x = "keeping only candidates above desired threshold")
+tima::log_debug(x = "keeping only candidates above desired threshold")
 candidates_confident <- candidates_metadata |>
   make_confident(score = CONFIDENCE_SCORE_MIN)
 
@@ -766,4 +766,4 @@ ggplot2::ggsave(
 # )
 
 end <- Sys.time()
-log_debug("Script finished in", format(end - start))
+tima::log_debug("Script finished in", format(end - start))

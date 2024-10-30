@@ -1,15 +1,14 @@
 start <- Sys.time()
 
-source(file = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/log_debug.R")
 source(file = "R/baseline_chromatogram.R")
 source(file = "R/check_chromatograms.R")
 source(file = "R/extract_chromatogram.R")
 source(file = "R/improve_signal.R")
 source(file = "R/normalize_chromatograms_list.R")
 
-log_debug("This program compares chromatograms.")
-log_debug("Authors: \n", "AR")
-log_debug("Contributors: \n", "...")
+tima::log_debug("This program compares chromatograms.")
+tima::log_debug("Authors: \n", "AR")
+tima::log_debug("Contributors: \n", "...")
 
 #' Specific paths
 FILE_NEGATIVE <- NULL

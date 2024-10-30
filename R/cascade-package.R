@@ -1,4 +1,12 @@
-.onAttach <- function(libname, pkgname) {
+#' @keywords internal
+"_PACKAGE"
+
+## usethis namespace: start
+## usethis namespace: end
+NULL
+.datatable.aware <- TRUE
+
+.onLoad <- function(libname, pkgname) {
   options("pboptions" = list(
     type = if (interactive()) "timer" else "none",
     char = "-",
@@ -21,4 +29,8 @@
     progressr::handler_progress(format = ":spin [:bar] ETA: :eta :percent")
   )
   invisible(NULL)
+}
+
+.onAttach <- function(libname, pkgname) {
+  packageStartupMessage("Welcome to CASCADE")
 }

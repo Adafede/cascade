@@ -8,7 +8,6 @@ source(file = "https://raw.githubusercontent.com/ethanbass/chromatographR/master
 source(file = "https://raw.githubusercontent.com/ethanbass/chromatographR/master/R/get_peaks.R")
 source(file = "https://raw.githubusercontent.com/ethanbass/chromatographR/master/R/get_purity.R")
 source(file = "https://raw.githubusercontent.com/ethanbass/chromatographR/master/R/preprocess.R")
-source(file = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/log_debug.R")
 source(file = "R/check_export_dir.R")
 source(file = "R/compare_peaks.R")
 source(file = "R/extract_ms_progress.R")
@@ -17,15 +16,15 @@ source(file = "R/prepare_features.R")
 source(file = "R/preprocess_chromatograms.R")
 source(file = "R/preprocess_peaks.R")
 source(file = "R/transform_ms.R")
-source(file = "R/zzz.R")
+source(file = "R/cascade-package.R")
 
-log_debug(
+tima::log_debug(
   "This program performs",
   "Quantitative and Qualitative Contextualization",
   "of in depth annotated extracts"
 )
-log_debug("Authors: \n", "AR")
-log_debug("Contributors: \n", "...")
+tima::log_debug("Authors: \n", "AR")
+tima::log_debug("Contributors: \n", "...")
 
 #' Specific paths
 AREA_MIN <- 0.005
@@ -47,22 +46,22 @@ names <- FILE_POSITIVE |>
     fixed = TRUE
   )
 
-log_debug(x = "loading feature table")
+tima::log_debug(x = "loading feature table")
 feature_table <- readr::read_delim(file = FEATURES)
 
-log_debug(x = "loading raw files (can take long if loading multiple files)")
+tima::log_debug(x = "loading raw files (can take long if loading multiple files)")
 dda_data <- MSnbase::readMSData(
   files = FILE_POSITIVE,
   mode = "onDisk",
   msLevel. = 1
 )
 
-log_debug(x = "opening raw files objects and extracting chromatograms")
+tima::log_debug(x = "opening raw files objects and extracting chromatograms")
 chromatograms_all <- lapply(FILE_POSITIVE, mzR::openMSfile) |>
   lapply(mzR::chromatograms) |>
   purrr::flatten()
 
-log_debug(x = "preparing feature list ...")
+tima::log_debug(x = "preparing feature list ...")
 set.seed(42)
 df_features <- feature_table |>
   ## TODO
@@ -77,52 +76,52 @@ peaks_prelist <- switch(detector,
   "cad" = peaks_prelist_cad,
   "pda" = peaks_prelist_pda
 )
-log_debug(x = "processing", detector, "peaks")
-log_debug(x = "extracting ms chromatograms (longest step)")
-log_debug(x = "count approx 1 minute per 500 features (increasing with features number)")
-log_debug(x = "varies a lot depending on features distribution")
+tima::log_debug(x = "processing", detector, "peaks")
+tima::log_debug(x = "extracting ms chromatograms (longest step)")
+tima::log_debug(x = "count approx 1 minute per 500 features (increasing with features number)")
+tima::log_debug(x = "varies a lot depending on features distribution")
 list_ms_chromatograms <-
   extract_ms_progress(xs = seq_along(peaks_prelist$list_df_features_with_peaks_long))
 
-log_debug(x = "transforming ms chromatograms")
+tima::log_debug(x = "transforming ms chromatograms")
 list_ms_chromatograms_transformed <-
   future.apply::future_lapply(
     X = list_ms_chromatograms,
     FUN = transform_ms
   )
 
-log_debug(x = "extracting ms peaks")
+tima::log_debug(x = "extracting ms peaks")
 list_ms_peaks <-
   future.apply::future_lapply(
     X = list_ms_chromatograms_transformed,
     FUN = extract_ms_peak
   )
 
-log_debug(x = "comparing peaks")
+tima::log_debug(x = "comparing peaks")
 list_comparison_score <-
   future.apply::future_lapply(
     X = seq_along(list_ms_peaks),
     FUN = compare_peaks
   )
 
-log_debug(x = "selecting features with peaks")
+tima::log_debug(x = "selecting features with peaks")
 df_features_with_peaks <-
   peaks_prelist$list_df_features_with_peaks_long |>
   tidytable::bind_rows()
 
-log_debug(x = "There are", nrow(df_features_with_peaks), "features with peaks")
+tima::log_debug(x = "There are", nrow(df_features_with_peaks), "features with peaks")
 
-log_debug(x = "summarizing comparison scores")
+tima::log_debug(x = "summarizing comparison scores")
 comparison_scores <- list_comparison_score |>
   purrr::flatten()
 
-log_debug(x = "There are", length(comparison_scores), "scores calculated")
+tima::log_debug(x = "There are", length(comparison_scores), "scores calculated")
 
-log_debug(x = "joining")
+tima::log_debug(x = "joining")
 df_features_with_peaks$comparison_score <-
   as.numeric(comparison_scores)
 
-log_debug(x = "final aesthetics")
+tima::log_debug(x = "final aesthetics")
 df_features_with_peaks_scored <- df_features_with_peaks |>
   tidytable::select(
     sample = id,
@@ -157,11 +156,11 @@ df_features_without_peaks_scored <-
   ) |>
   tidytable::distinct()
 
-log_debug(x = "checking export directory")
+tima::log_debug(x = "checking export directory")
 check_export_dir(EXPORT_DIR)
 
-log_debug(x = "exporting to ...")
-log_debug(x = EXPORT_DIR)
+tima::log_debug(x = "exporting to ...")
+tima::log_debug(x = EXPORT_DIR)
 readr::write_tsv(
   x = df_features_with_peaks_scored,
   file = file.path(EXPORT_DIR, switch(detector,
@@ -200,4 +199,4 @@ readr::write_tsv(
 
 end <- Sys.time()
 
-log_debug("Script finished in", format(end - start))
+tima::log_debug("Script finished in", format(end - start))

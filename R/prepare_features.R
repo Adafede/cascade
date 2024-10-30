@@ -8,7 +8,7 @@
 #'
 #' @examples NULL
 prepare_features <- function(df, min_intensity) {
-  log_debug(x = "... preparing features")
+  tima::log_debug(x = "... preparing features")
   df <- df |>
     tidytable::select(
       feature_id = "id",
@@ -24,12 +24,12 @@ prepare_features <- function(df, min_intensity) {
     ) |>
     dplyr::mutate_all(as.numeric)
 
-  log_debug(x = "... keeping features above desired intensity only")
+  tima::log_debug(x = "... keeping features above desired intensity only")
   df_features <- df |>
     tidytable::filter(intensity_max >= min_intensity) |>
     tidytable::data.table()
 
-  log_debug(x = "setting joining keys")
+  tima::log_debug(x = "setting joining keys")
   data.table::setkey(df_features, rt_1, rt_2)
 
   return(df_features)

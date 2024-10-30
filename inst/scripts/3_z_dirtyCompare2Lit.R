@@ -10,6 +10,7 @@ source(file = "R/get_params.R")
 source(file = "R/parse_cli_params.R")
 source(file = "R/parse_yaml_paths.R")
 source(file = "R/parse_yaml_params.R")
+source(file = "R/cascade-package.R")
 step <- "processing"
 paths <- parse_yaml_paths()
 params <- ""
@@ -81,7 +82,7 @@ table_processed <- table_annotations_initial |>
 
 data.table::setkey(table_processed, rt_min, rt_max)
 
-log_debug(x = "joining within given rt tolerance")
+tima::log_debug(x = "joining within given rt tolerance")
 table_medium <-
   data.table::foverlaps(table_peaks, table_processed) |>
   dplyr::arrange(dplyr::desc(score_final)) |>

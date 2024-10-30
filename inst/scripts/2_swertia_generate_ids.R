@@ -51,6 +51,7 @@ source(file = "R/subtables_progress.R")
 source(file = "R/tables_progress.R")
 source(file = "R/treemaps_progress.R")
 source(file = "R/wiki_progress.R")
+source(file = "R/cascade-package.R")
 source(file = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/create_dir.R")
 source(file = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/get_file.R")
 source(file = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/get_last_version_from_zenodo.R")
@@ -367,4 +368,4 @@ plotly::save_image(
 
 end <- Sys.time()
 
-log_debug("Script finished in", format(end - start))
+tima::log_debug("Script finished in", format(end - start))

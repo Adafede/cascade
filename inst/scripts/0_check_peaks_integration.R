@@ -1,18 +1,17 @@
 start <- Sys.time()
 
 library(package = chromatographR, quietly = TRUE)
-source(file = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/log_debug.R")
 source(file = "R/prepare_features.R")
 source(file = "R/preprocess_chromatograms.R")
 source(file = "R/preprocess_peaks.R")
 
-log_debug(
+tima::log_debug(
   "This program performs",
   "Quantitative and Qualitative Contextualization",
   "of in depth annotated extracts"
 )
-log_debug("Authors: \n", "AR")
-log_debug("Contributors: \n", "...")
+tima::log_debug("Authors: \n", "AR")
+tima::log_debug("Contributors: \n", "...")
 
 #' Specific paths
 AREA_MIN <- 0.005
@@ -32,22 +31,22 @@ names <- FILE_POSITIVE |>
     fixed = TRUE
   )
 
-log_debug(x = "loading feature table")
+tima::log_debug(x = "loading feature table")
 feature_table <- readr::read_delim(file = FEATURES)
 
-log_debug(x = "loading raw files (can take long if loading multiple files)")
+tima::log_debug(x = "loading raw files (can take long if loading multiple files)")
 dda_data <- MSnbase::readMSData(
   files = FILE_POSITIVE,
   mode = "onDisk",
   msLevel. = 1
 )
 
-log_debug(x = "opening raw files objects and extracting chromatograms")
+tima::log_debug(x = "opening raw files objects and extracting chromatograms")
 chromatograms_all <- lapply(FILE_POSITIVE, mzR::openMSfile) |>
   lapply(mzR::chromatograms) |>
   purrr::flatten()
 
-log_debug(x = "preparing feature list ...")
+tima::log_debug(x = "preparing feature list ...")
 df_features <- feature_table |>
   prepare_features(INTENSITY_MS_MIN)
 
@@ -552,4 +551,4 @@ detection_after
 
 end <- Sys.time()
 
-log_debug("Script finished in", format(end - start))
+tima::log_debug("Script finished in", format(end - start))

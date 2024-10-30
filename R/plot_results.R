@@ -34,7 +34,7 @@ plot_results_1 <- function(detector = "cad", mode = "pos") {
     list$peaks_maj_precor_taxo_cor$feature_area <- -(list$peaks_maj_precor_taxo_cor$feature_area)
   }
 
-  log_debug(x = "preparing histograms")
+  tima::log_debug(x = "preparing histograms")
   #' TODO harmonize 'others' among minor and major
   df_histogram_maj <- list$peaks_maj_precor_taxo_cor |>
     make_other() |>
@@ -52,20 +52,20 @@ plot_results_1 <- function(detector = "cad", mode = "pos") {
     no_other() |>
     prepare_plot_2()
 
-  log_debug(x = "plotting histograms...")
-  log_debug(x = "... taxo")
+  tima::log_debug(x = "plotting histograms...")
+  tima::log_debug(x = "... taxo")
   histograms_taxo_maj <- df_histogram_maj |>
     plot_histograms_taxo()
   histograms_taxo_min <- df_histogram_min |>
     plot_histograms_taxo(level = "min")
 
-  log_debug(x = "... confident features")
+  tima::log_debug(x = "... confident features")
   histograms_conf_maj <- df_histogram_maj_conf |>
     plot_histograms_confident()
   histograms_conf_min <- df_histogram_min_conf |>
     plot_histograms_confident(level = "min")
 
-  log_debug(x = "... unique structures")
+  tima::log_debug(x = "... unique structures")
   histograms_unique_maj <- df_histogram_maj |>
     dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
     plot_histograms_confident()
@@ -73,7 +73,7 @@ plot_results_1 <- function(detector = "cad", mode = "pos") {
     dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
     plot_histograms_confident(level = "min")
 
-  log_debug(x = "... confident structures")
+  tima::log_debug(x = "... confident structures")
   histograms_unique_conf_maj <- df_histogram_maj_conf |>
     dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
     plot_histograms_confident()
@@ -187,8 +187,8 @@ plot_results_2 <- function(detector = "cad") {
     return(sb)
   }
 
-  log_debug(x = "preparing hierarchies...")
-  log_debug(x = "... on everything")
+  tima::log_debug(x = "preparing hierarchies...")
+  tima::log_debug(x = "... on everything")
   table_taxo_maj_cor_signal <- list$peaks_maj_precor_taxo_cor |>
     temp_fix_duplicates() |>
     prepare_hierarchy(detector = "cad")
@@ -216,7 +216,7 @@ plot_results_2 <- function(detector = "cad") {
     dplyr::group_by(parents, ids, labels, species, sample) |>
     dplyr::summarise(values = sum(values))
 
-  log_debug(x = "... on confident")
+  tima::log_debug(x = "... on confident")
   table_taxo_maj_cor_conf_signal <-
     list$peaks_maj_precor_taxo_cor |>
     no_other() |>
