@@ -23,6 +23,8 @@ signal_sharpening(
 
 \item{k4}{K4}
 
+\item{sigma}{Sigma}
+
 \item{Smoothing_width}{Smoothing width}
 
 \item{Baseline_adjust}{Baseline adjust}

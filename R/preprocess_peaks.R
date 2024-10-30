@@ -6,7 +6,10 @@ source(file = "R/prepare_peaks.R")
 source(file = "R/prepare_rt.R")
 #' Preprocess peaks
 #'
-#' @param detector
+#' @param detector Detector
+#' @param list List
+#' @param df_long DF long
+#' @param area_min Area min
 #'
 #' @return A list of lists and dataframe with preprocessed peaks
 #'
