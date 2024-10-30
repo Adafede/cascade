@@ -82,7 +82,7 @@ table_processed <- table_annotations_initial |>
 
 data.table::setkey(table_processed, rt_min, rt_max)
 
-tima::log_debug(x = "joining within given rt tolerance")
+message("joining within given rt tolerance")
 table_medium <-
   data.table::foverlaps(table_peaks, table_processed) |>
   dplyr::arrange(dplyr::desc(score_final)) |>

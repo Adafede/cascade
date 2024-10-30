@@ -2,9 +2,9 @@ start <- Sys.time()
 
 pkgload::load_all()
 
-tima::log_debug("This program compares chromatograms.")
-tima::log_debug("Authors: \n", "AR")
-tima::log_debug("Contributors: \n", "...")
+message("This program compares chromatograms.")
+message("Authors: \n", "AR")
+message("Contributors: \n", "...")
 
 check_chromatograms_alignment(
   show_example = TRUE,

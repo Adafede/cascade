@@ -8,7 +8,7 @@ source(file = "R/log_debug.R")
 #'
 #' @examples NULL
 parse_cli_params <- function() {
-  tima::log_debug("Loading command line arguments")
+  message("Loading command line arguments")
 
   if (exists("arguments")) {
     if (!is.null(arguments$annotations)) {

@@ -18,13 +18,13 @@ source(file = "R/preprocess_peaks.R")
 source(file = "R/transform_ms.R")
 source(file = "R/cascade-package.R")
 
-tima::log_debug(
+message(
   "This program performs",
   "Quantitative and Qualitative Contextualization",
   "of in depth annotated extracts"
 )
-tima::log_debug("Authors: \n", "AR")
-tima::log_debug("Contributors: \n", "...")
+message("Authors: \n", "AR")
+message("Contributors: \n", "...")
 
 #' Specific paths
 AREA_MIN <- 0.005
@@ -46,22 +46,22 @@ names <- FILE_POSITIVE |>
     fixed = TRUE
   )
 
-tima::log_debug(x = "loading feature table")
+message("loading feature table")
 feature_table <- readr::read_delim(file = FEATURES)
 
-tima::log_debug(x = "loading raw files (can take long if loading multiple files)")
+message("loading raw files (can take long if loading multiple files)")
 dda_data <- MSnbase::readMSData(
   files = FILE_POSITIVE,
   mode = "onDisk",
   msLevel. = 1
 )
 
-tima::log_debug(x = "opening raw files objects and extracting chromatograms")
+message("opening raw files objects and extracting chromatograms")
 chromatograms_all <- lapply(FILE_POSITIVE, mzR::openMSfile) |>
   lapply(mzR::chromatograms) |>
   purrr::flatten()
 
-tima::log_debug(x = "preparing feature list ...")
+message("preparing feature list ...")
 set.seed(42)
 df_features <- feature_table |>
   ## TODO
@@ -76,52 +76,52 @@ peaks_prelist <- switch(detector,
   "cad" = peaks_prelist_cad,
   "pda" = peaks_prelist_pda
 )
-tima::log_debug(x = "processing", detector, "peaks")
-tima::log_debug(x = "extracting ms chromatograms (longest step)")
-tima::log_debug(x = "count approx 1 minute per 500 features (increasing with features number)")
-tima::log_debug(x = "varies a lot depending on features distribution")
+message("processing", detector, "peaks")
+message("extracting ms chromatograms (longest step)")
+message("count approx 1 minute per 500 features (increasing with features number)")
+message("varies a lot depending on features distribution")
 list_ms_chromatograms <-
   extract_ms_progress(xs = seq_along(peaks_prelist$list_df_features_with_peaks_long))
 
-tima::log_debug(x = "transforming ms chromatograms")
+message("transforming ms chromatograms")
 list_ms_chromatograms_transformed <-
   future.apply::future_lapply(
     X = list_ms_chromatograms,
     FUN = transform_ms
   )
 
-tima::log_debug(x = "extracting ms peaks")
+message("extracting ms peaks")
 list_ms_peaks <-
   future.apply::future_lapply(
     X = list_ms_chromatograms_transformed,
     FUN = extract_ms_peak
   )
 
-tima::log_debug(x = "comparing peaks")
+message("comparing peaks")
 list_comparison_score <-
   future.apply::future_lapply(
     X = seq_along(list_ms_peaks),
     FUN = compare_peaks
   )
 
-tima::log_debug(x = "selecting features with peaks")
+message("selecting features with peaks")
 df_features_with_peaks <-
   peaks_prelist$list_df_features_with_peaks_long |>
   tidytable::bind_rows()
 
-tima::log_debug(x = "There are", nrow(df_features_with_peaks), "features with peaks")
+message("There are", nrow(df_features_with_peaks), "features with peaks")
 
-tima::log_debug(x = "summarizing comparison scores")
+message("summarizing comparison scores")
 comparison_scores <- list_comparison_score |>
   purrr::flatten()
 
-tima::log_debug(x = "There are", length(comparison_scores), "scores calculated")
+message("There are", length(comparison_scores), "scores calculated")
 
-tima::log_debug(x = "joining")
+message("joining")
 df_features_with_peaks$comparison_score <-
   as.numeric(comparison_scores)
 
-tima::log_debug(x = "final aesthetics")
+message("final aesthetics")
 df_features_with_peaks_scored <- df_features_with_peaks |>
   tidytable::select(
     sample = id,
@@ -156,11 +156,11 @@ df_features_without_peaks_scored <-
   ) |>
   tidytable::distinct()
 
-tima::log_debug(x = "checking export directory")
+message("checking export directory")
 check_export_dir(EXPORT_DIR)
 
-tima::log_debug(x = "exporting to ...")
-tima::log_debug(x = EXPORT_DIR)
+message("exporting to ...")
+message(EXPORT_DIR)
 readr::write_tsv(
   x = df_features_with_peaks_scored,
   file = file.path(EXPORT_DIR, switch(detector,
@@ -199,4 +199,4 @@ readr::write_tsv(
 
 end <- Sys.time()
 
-tima::log_debug("Script finished in", format(end - start))
+message("Script finished in", format(end - start))

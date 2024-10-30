@@ -13,12 +13,12 @@ source(file = "R/preprocess_chromatograms.R")
 source(file = "R/treemaps_progress.R")
 source(file = "R/cascade-package.R")
 
-tima::log_debug(
+message(
   "This program performs",
   "TODO"
 )
-tima::log_debug("Authors: \n", "AR")
-tima::log_debug("Contributors: \n", "...")
+message("Authors: \n", "AR")
+message("Contributors: \n", "...")
 
 #' Specific paths
 ANNOTATIONS <- "~/.tima/data/processed/241026_103144_extract/extract_results.tsv"
@@ -46,8 +46,8 @@ names <- FILE_POSITIVE |>
     fixed = TRUE
   )
 
-tima::log_debug(x = "listing files")
-tima::log_debug(x = "loading raw files (can take long if loading multiple files)")
+message("listing files")
+message("loading raw files (can take long if loading multiple files)")
 dda_data <- MSnbase::readMSData(
   files = FILE_POSITIVE,
   mode = "onDisk",
@@ -65,7 +65,7 @@ if (THESIS == TRUE) {
     )
 }
 
-tima::log_debug(x = "opening raw files objects and extracting chromatograms")
+message("opening raw files objects and extracting chromatograms")
 chromatograms_all <- lapply(FILE_POSITIVE, mzR::openMSfile) |>
   lapply(mzR::chromatograms) |>
   purrr::flatten()
@@ -114,7 +114,7 @@ if (THESIS == TRUE) {
     )
 }
 
-tima::log_debug(x = "loading annotations")
+message("loading annotations")
 annotations <-
   ANNOTATIONS |>
   lapply(
@@ -153,16 +153,16 @@ annotations <-
   ) |>
   dplyr::bind_rows()
 
-tima::log_debug(x = "keeping best annotations only")
+message("keeping best annotations only")
 best_candidates <- annotations |>
   keep_best_candidates()
 
-tima::log_debug(x = "adding metadata dirtily for now")
+message("adding metadata dirtily for now")
 candidates_metadata <- best_candidates |>
   dplyr::mutate(species = "Swertia chirayita") |>
   dplyr::mutate(feature_id = as.numeric(feature_id))
 
-tima::log_debug(x = "keeping only candidates above desired threshold")
+message("keeping only candidates above desired threshold")
 candidates_confident <- candidates_metadata |>
   make_confident(score = CONFIDENCE_SCORE_MIN)
 
@@ -766,4 +766,4 @@ ggplot2::ggsave(
 # )
 
 end <- Sys.time()
-tima::log_debug("Script finished in", format(end - start))
+message("Script finished in", format(end - start))
