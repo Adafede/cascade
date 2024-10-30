@@ -1,6 +1,6 @@
 #' Process peaks
 #'
-#' @param detector
+#' @param detector Detector
 #'
 #' @return A list of processed peaks
 #'

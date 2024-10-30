@@ -1,3 +1,8 @@
+# --------------------------------------------
+# CITATION file created with {cffr} R package
+# See also: https://docs.ropensci.org/cffr/
+# --------------------------------------------
+ 
 cff-version: 1.2.0
 message: "Please cite the following work when using this software: <https://doi.org/10.1021/acs.jafc.3c03099>"
 authors:

@@ -7,6 +7,8 @@
 prepare_features(df, min_intensity)
 }
 \arguments{
+\item{df}{Df}
+
 \item{min_intensity}{Min intensity}
 }
 \value{

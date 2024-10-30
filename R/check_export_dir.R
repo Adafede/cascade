@@ -1,6 +1,6 @@
 #' Check export dir
 #'
-#' @param dir
+#' @param dir Dir
 #'
 #' @return A log of checked dir
 #'

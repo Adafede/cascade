@@ -19,7 +19,10 @@
 #'
 #' @return A plot with (non-)aligned chromatograms
 #'
-#' @examples check_chromatograms_alignment()
+#' @examples
+#' \dontrun{
+#' cascade:::check_chromatograms_alignment()
+#' }
 check_chromatograms_alignment <- function(file_negative = NULL,
                                           file_positive = NULL,
                                           time_min = 0.7,

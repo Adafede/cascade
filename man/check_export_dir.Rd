@@ -7,7 +7,7 @@
 check_export_dir(dir)
 }
 \arguments{
-\item{dir}{}
+\item{dir}{Dir}
 }
 \value{
 A log of checked dir
