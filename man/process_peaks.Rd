@@ -7,7 +7,7 @@
 process_peaks(detector = "cad")
 }
 \arguments{
-\item{detector}{}
+\item{detector}{Detector}
 }
 \value{
 A list of processed peaks
