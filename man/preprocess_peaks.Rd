@@ -12,7 +12,13 @@ preprocess_peaks(
 )
 }
 \arguments{
-\item{detector}{}
+\item{detector}{Detector}
+
+\item{list}{List}
+
+\item{df_long}{DF long}
+
+\item{area_min}{Area min}
 }
 \value{
 A list of lists and dataframe with preprocessed peaks

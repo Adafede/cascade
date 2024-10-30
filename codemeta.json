@@ -95,6 +95,19 @@
     },
     "3": {
       "@type": "SoftwareApplication",
+      "identifier": "BiocManager",
+      "name": "BiocManager",
+      "version": ">= 1.30.25",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=BiocManager"
+    },
+    "4": {
+      "@type": "SoftwareApplication",
       "identifier": "BiocParallel",
       "name": "BiocParallel",
       "version": ">= 1.38.0",
@@ -106,14 +119,14 @@
       },
       "sameAs": "https://bioconductor.org/packages/release/bioc/html/BiocParallel.html"
     },
-    "4": {
+    "5": {
       "@type": "SoftwareApplication",
       "identifier": "chromatographR",
       "name": "chromatographR",
       "version": ">= 0.7.1",
       "sameAs": "https://github.com/ethanbass/chromatographR"
     },
-    "5": {
+    "6": {
       "@type": "SoftwareApplication",
       "identifier": "data.table",
       "name": "data.table",
@@ -126,7 +139,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=data.table"
     },
-    "6": {
+    "7": {
       "@type": "SoftwareApplication",
       "identifier": "docopt",
       "name": "docopt",
@@ -139,7 +152,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=docopt"
     },
-    "7": {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "dplyr",
       "name": "dplyr",
@@ -152,7 +165,20 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=dplyr"
     },
-    "8": {
+    "9": {
+      "@type": "SoftwareApplication",
+      "identifier": "forcats",
+      "name": "forcats",
+      "version": ">= 1.0.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=forcats"
+    },
+    "10": {
       "@type": "SoftwareApplication",
       "identifier": "future",
       "name": "future",
@@ -165,7 +191,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=future"
     },
-    "9": {
+    "11": {
       "@type": "SoftwareApplication",
       "identifier": "future.apply",
       "name": "future.apply",
@@ -178,7 +204,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=future.apply"
     },
-    "10": {
+    "12": {
       "@type": "SoftwareApplication",
       "identifier": "ggalluvial",
       "name": "ggalluvial",
@@ -191,7 +217,20 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=ggalluvial"
     },
-    "11": {
+    "13": {
+      "@type": "SoftwareApplication",
+      "identifier": "ggfittext",
+      "name": "ggfittext",
+      "version": ">= 0.10.2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=ggfittext"
+    },
+    "14": {
       "@type": "SoftwareApplication",
       "identifier": "ggplot2",
       "name": "ggplot2",
@@ -204,7 +243,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=ggplot2"
     },
-    "12": {
+    "15": {
       "@type": "SoftwareApplication",
       "identifier": "gt",
       "name": "gt",
@@ -217,7 +256,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=gt"
     },
-    "13": {
+    "16": {
       "@type": "SoftwareApplication",
       "identifier": "htmltools",
       "name": "htmltools",
@@ -230,7 +269,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=htmltools"
     },
-    "14": {
+    "17": {
       "@type": "SoftwareApplication",
       "identifier": "import",
       "name": "import",
@@ -243,14 +282,14 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=import"
     },
-    "15": {
+    "18": {
       "@type": "SoftwareApplication",
       "identifier": "microshades",
       "name": "microshades",
       "version": ">= 1.13",
       "sameAs": "https://github.com/KarstensLab/microshades"
     },
-    "16": {
+    "19": {
       "@type": "SoftwareApplication",
       "identifier": "MSnbase",
       "name": "MSnbase",
@@ -263,7 +302,20 @@
       },
       "sameAs": "https://bioconductor.org/packages/release/bioc/html/MSnbase.html"
     },
-    "17": {
+    "20": {
+      "@type": "SoftwareApplication",
+      "identifier": "mzR",
+      "name": "mzR",
+      "version": ">= 2.38.0",
+      "provider": {
+        "@id": "https://www.bioconductor.org",
+        "@type": "Organization",
+        "name": "Bioconductor",
+        "url": "https://www.bioconductor.org"
+      },
+      "sameAs": "https://bioconductor.org/packages/release/bioc/html/mzR.html"
+    },
+    "21": {
       "@type": "SoftwareApplication",
       "identifier": "nucleR",
       "name": "nucleR",
@@ -276,12 +328,12 @@
       },
       "sameAs": "https://bioconductor.org/packages/release/bioc/html/nucleR.html"
     },
-    "18": {
+    "22": {
       "@type": "SoftwareApplication",
       "identifier": "parallel",
       "name": "parallel"
     },
-    "19": {
+    "23": {
       "@type": "SoftwareApplication",
       "identifier": "pbapply",
       "name": "pbapply",
@@ -294,7 +346,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=pbapply"
     },
-    "20": {
+    "24": {
       "@type": "SoftwareApplication",
       "identifier": "plotly",
       "name": "plotly",
@@ -307,7 +359,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=plotly"
     },
-    "21": {
+    "25": {
       "@type": "SoftwareApplication",
       "identifier": "pracma",
       "name": "pracma",
@@ -320,7 +372,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=pracma"
     },
-    "22": {
+    "26": {
       "@type": "SoftwareApplication",
       "identifier": "progressr",
       "name": "progressr",
@@ -333,7 +385,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=progressr"
     },
-    "23": {
+    "27": {
       "@type": "SoftwareApplication",
       "identifier": "purrr",
       "name": "purrr",
@@ -346,7 +398,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=purrr"
     },
-    "24": {
+    "28": {
       "@type": "SoftwareApplication",
       "identifier": "RCurl",
       "name": "RCurl",
@@ -359,7 +411,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=RCurl"
     },
-    "25": {
+    "29": {
       "@type": "SoftwareApplication",
       "identifier": "readr",
       "name": "readr",
@@ -372,7 +424,20 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=readr"
     },
-    "26": {
+    "30": {
+      "@type": "SoftwareApplication",
+      "identifier": "remotes",
+      "name": "remotes",
+      "version": ">= 2.5.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=remotes"
+    },
+    "31": {
       "@type": "SoftwareApplication",
       "identifier": "rotl",
       "name": "rotl",
@@ -385,7 +450,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=rotl"
     },
-    "27": {
+    "32": {
       "@type": "SoftwareApplication",
       "identifier": "splitstackshape",
       "name": "splitstackshape",
@@ -398,7 +463,33 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=splitstackshape"
     },
-    "28": {
+    "33": {
+      "@type": "SoftwareApplication",
+      "identifier": "stringr",
+      "name": "stringr",
+      "version": ">= 1.5.1",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=stringr"
+    },
+    "34": {
+      "@type": "SoftwareApplication",
+      "identifier": "tibble",
+      "name": "tibble",
+      "version": ">= 3.2.1",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=tibble"
+    },
+    "35": {
       "@type": "SoftwareApplication",
       "identifier": "tidyr",
       "name": "tidyr",
@@ -411,7 +502,20 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tidyr"
     },
-    "29": {
+    "36": {
+      "@type": "SoftwareApplication",
+      "identifier": "tidytable",
+      "name": "tidytable",
+      "version": ">= 0.11.1",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=tidytable"
+    },
+    "37": {
       "@type": "SoftwareApplication",
       "identifier": "WikidataQueryServiceR",
       "name": "WikidataQueryServiceR",
@@ -424,7 +528,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=WikidataQueryServiceR"
     },
-    "30": {
+    "38": {
       "@type": "SoftwareApplication",
       "identifier": "xcms",
       "name": "xcms",
@@ -437,7 +541,7 @@
       },
       "sameAs": "https://bioconductor.org/packages/release/bioc/html/xcms.html"
     },
-    "31": {
+    "39": {
       "@type": "SoftwareApplication",
       "identifier": "yaml",
       "name": "yaml",
@@ -450,10 +554,23 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=yaml"
     },
+    "40": {
+      "@type": "SoftwareApplication",
+      "identifier": "zoo",
+      "name": "zoo",
+      "version": ">= 1.8.12",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=zoo"
+    },
     "SystemRequirements": null
   },
   "keywords": ["metaboliteannotation", "chargedaerosoldetector", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
-  "fileSize": "4965.504KB",
+  "fileSize": "4966.271KB",
   "releaseNotes": "https://github.com/adafede/cascade/blob/master/NEWS.md",
   "readme": "https://github.com/Adafede/cascade/blob/main/README.md",
   "contIntegration": ["https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/adafede/cascade"],

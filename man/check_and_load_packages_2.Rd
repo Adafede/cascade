@@ -11,7 +11,11 @@ check_and_load_packages_2(
 )
 }
 \arguments{
-\item{df}{Dataframe}
+\item{cran}{CRAN}
+
+\item{bioconductor}{Bioconductor}
+
+\item{github}{Github}
 }
 \value{
 Log of installed packages

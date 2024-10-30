@@ -19,5 +19,4 @@ Plot results 1
 }
 \examples{
 NULL
-TODO harmonize 'others' among minor and major
 }

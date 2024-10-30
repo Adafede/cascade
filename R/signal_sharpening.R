@@ -8,6 +8,7 @@ source(file = "R/second_der.R")
 #' @param Intensity Intensity
 #' @param k2 K2
 #' @param k4 K4
+#' @param sigma Sigma
 #' @param Smoothing_width Smoothing width
 #' @param Baseline_adjust Baseline adjust
 #'

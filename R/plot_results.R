@@ -35,7 +35,7 @@ plot_results_1 <- function(detector = "cad", mode = "pos") {
   }
 
   message("preparing histograms")
-  #' TODO harmonize 'others' among minor and major
+  # TODO harmonize 'others' among minor and major
   df_histogram_maj <- list$peaks_maj_precor_taxo_cor |>
     make_other() |>
     prepare_plot_2()

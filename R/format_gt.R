@@ -1,6 +1,8 @@
 #' Temp GT function
 #'
 #' @param table Table
+#' @param title Title
+#' @param subtitle Subtitle
 #'
 #' @return A formatted GT table
 #'
