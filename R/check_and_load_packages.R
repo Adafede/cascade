@@ -1,6 +1,8 @@
 #' Check and load packages 1
 #'
-#' @param df Dataframe
+#' @param cran CRAN
+#' @param bioconductor Bioconductor
+#' @param github Github
 #'
 #' @return Log of installed packages
 #'
@@ -29,7 +31,9 @@ check_and_load_packages_1 <- function(cran = packages_cran,
 
 #' Check and load packages 2
 #'
-#' @param df Dataframe
+#' @param cran CRAN
+#' @param bioconductor Bioconductor
+#' @param github Github
 #'
 #' @return Log of installed packages
 #'

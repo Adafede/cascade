@@ -7,7 +7,7 @@
 prepare_features(df, min_intensity)
 }
 \arguments{
-\item{df}{}
+\item{min_intensity}{Min intensity}
 }
 \value{
 A dataframe of prepared features

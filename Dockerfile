@@ -16,12 +16,6 @@ WORKDIR /home/cascade-user
 RUN Rscript -e "devtools::install_github('adafede/cascade')"
 # RUN Rscript -e "install.packages('cascade', repos = c('https://adafede.r-universe.dev', 'https://bioc.r-universe.dev', 'https://cran.r-universe.dev'))"
 
-# Additional install
-RUN Rscript -e "tima::install()"
-
-# Expose the necessary ports for Shiny
-EXPOSE 3838
-
 # Disable healthcheck (if you really want to disable it)
 HEALTHCHECK NONE
 

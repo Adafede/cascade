@@ -8,6 +8,10 @@ temp_gt_function(table, title, subtitle)
 }
 \arguments{
 \item{table}{Table}
+
+\item{title}{Title}
+
+\item{subtitle}{Subtitle}
 }
 \value{
 A formatted GT table
