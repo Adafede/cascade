@@ -1,5 +1,5 @@
 prepare_comparison <- function(detector = "cad") {
-  tima::log_debug(x = "loading compared peaks")
+  message("loading compared peaks")
   path_1 <- switch(detector,
     "bpi" = IMPORT_FILE_BPI,
     "cad" = IMPORT_FILE_CAD,
@@ -62,8 +62,8 @@ prepare_comparison <- function(detector = "cad") {
   peaks_all <- peaks_compared |>
     dplyr::bind_rows(peaks_outside)
 
-  tima::log_debug(x = "joining compared peaks and candidates")
-  tima::log_debug(x = "temporary fix") ## TODO
+  message("joining compared peaks and candidates")
+  message("temporary fix") ## TODO
   temp_fix <- function(df) {
     df |>
       dplyr::mutate(feature_id = as.numeric(feature_id)) |>
@@ -125,7 +125,7 @@ prepare_comparison <- function(detector = "cad") {
     temp_fix_3() |>
     temp_fix_4()
 
-  tima::log_debug(x = "keeping peaks similarities above desired (pre-)threshold only")
+  message("keeping peaks similarities above desired (pre-)threshold only")
   peaks_maj_precor <- peaks_maj |>
     dplyr::filter(comparison_score >= PEAK_SIMILARITY_PREFILTER) ## TODO check negative values
 
@@ -134,7 +134,7 @@ prepare_comparison <- function(detector = "cad") {
     temp_fix_2() |>
     dplyr::bind_rows(peaks_min)
 
-  tima::log_debug(x = "keeping multiple features only if none was reported in the species")
+  message("keeping multiple features only if none was reported in the species")
   peaks_maj_precor_taxo <- peaks_maj_precor |>
     dplyr::rowwise() |>
     dplyr::mutate(taxo = ifelse(
@@ -180,7 +180,7 @@ prepare_comparison <- function(detector = "cad") {
     temp_fix_2() |>
     dplyr::bind_rows(peaks_min)
 
-  tima::log_debug(x = "keeping peaks similarities with score above", PEAK_SIMILARITY)
+  message("keeping peaks similarities with score above", PEAK_SIMILARITY)
   peaks_maj_precor_taxo_cor <- peaks_maj_precor_taxo |>
     dplyr::filter(comparison_score >= PEAK_SIMILARITY)
 

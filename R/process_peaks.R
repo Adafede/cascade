@@ -6,10 +6,10 @@
 #'
 #' @examples NULL
 process_peaks <- function(detector = "cad") {
-  tima::log_debug(x = "processing", detector, "peaks")
-  tima::log_debug(x = "extracting ms chromatograms (longest step)")
-  tima::log_debug(x = "count approx 1 minute per 500 features (increasing with features number)")
-  tima::log_debug(x = "varies a lot depending on features distribution")
+  message("processing", detector, "peaks")
+  message("extracting ms chromatograms (longest step)")
+  message("count approx 1 minute per 500 features (increasing with features number)")
+  message("varies a lot depending on features distribution")
 
   peaks_prelist <<- switch(detector,
     "bpi" = peaks_prelist_bpi,
@@ -20,45 +20,45 @@ process_peaks <- function(detector = "cad") {
   list_ms_chromatograms <<-
     extract_ms_progress(xs = seq_along(peaks_prelist$list_df_features_with_peaks_long))
 
-  tima::log_debug(x = "transforming ms chromatograms")
+  message("transforming ms chromatograms")
   list_ms_chromatograms_transformed <<-
     future_lapply(
       X = list_ms_chromatograms,
       FUN = transform_ms
     )
 
-  tima::log_debug(x = "extracting ms peaks")
+  message("extracting ms peaks")
   list_ms_peaks <<-
     future_lapply(
       X = list_ms_chromatograms_transformed,
       FUN = extract_ms_peak
     )
 
-  tima::log_debug(x = "comparing peaks")
+  message("comparing peaks")
   list_comparison_score <<-
     future_lapply(
       X = seq_along(list_ms_peaks),
       FUN = compare_peaks
     )
 
-  tima::log_debug(x = "selecting features with peaks")
+  message("selecting features with peaks")
   df_features_with_peaks <<-
     peaks_prelist$list_df_features_with_peaks_long |>
     bind_rows()
 
-  tima::log_debug(x = "There are", nrow(df_features_with_peaks), "features with peaks")
+  message("There are", nrow(df_features_with_peaks), "features with peaks")
 
-  tima::log_debug(x = "summarizing comparison scores")
+  message("summarizing comparison scores")
   comparison_scores <- list_comparison_score |>
     flatten()
 
-  tima::log_debug(x = "There are", length(comparison_scores), "scores calculated")
+  message("There are", length(comparison_scores), "scores calculated")
 
-  tima::log_debug(x = "joining")
+  message("joining")
   df_features_with_peaks$comparison_score <-
     as.numeric(comparison_scores)
 
-  tima::log_debug(x = "final aesthetics")
+  message("final aesthetics")
   df_features_with_peaks_scored <<- df_features_with_peaks |>
     select(
       sample = id,
@@ -102,11 +102,11 @@ process_peaks <- function(detector = "cad") {
     "df_features_without_peaks_scored"
   )
 
-  tima::log_debug(x = "checking export directory")
+  message("checking export directory")
   check_export_dir(EXPORT_DIR)
 
-  tima::log_debug(x = "exporting to ...")
-  tima::log_debug(x = EXPORT_DIR)
+  message("exporting to ...")
+  message(EXPORT_DIR)
   write_tsv(
     x = df_features_with_peaks_scored,
     file = file.path(EXPORT_DIR, switch(detector,
