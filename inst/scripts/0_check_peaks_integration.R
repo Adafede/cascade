@@ -5,13 +5,13 @@ source(file = "R/prepare_features.R")
 source(file = "R/preprocess_chromatograms.R")
 source(file = "R/preprocess_peaks.R")
 
-tima::log_debug(
+message(
   "This program performs",
   "Quantitative and Qualitative Contextualization",
   "of in depth annotated extracts"
 )
-tima::log_debug("Authors: \n", "AR")
-tima::log_debug("Contributors: \n", "...")
+message("Authors: \n", "AR")
+message("Contributors: \n", "...")
 
 #' Specific paths
 AREA_MIN <- 0.005
@@ -31,22 +31,22 @@ names <- FILE_POSITIVE |>
     fixed = TRUE
   )
 
-tima::log_debug(x = "loading feature table")
+message("loading feature table")
 feature_table <- readr::read_delim(file = FEATURES)
 
-tima::log_debug(x = "loading raw files (can take long if loading multiple files)")
+message("loading raw files (can take long if loading multiple files)")
 dda_data <- MSnbase::readMSData(
   files = FILE_POSITIVE,
   mode = "onDisk",
   msLevel. = 1
 )
 
-tima::log_debug(x = "opening raw files objects and extracting chromatograms")
+message("opening raw files objects and extracting chromatograms")
 chromatograms_all <- lapply(FILE_POSITIVE, mzR::openMSfile) |>
   lapply(mzR::chromatograms) |>
   purrr::flatten()
 
-tima::log_debug(x = "preparing feature list ...")
+message("preparing feature list ...")
 df_features <- feature_table |>
   prepare_features(INTENSITY_MS_MIN)
 
@@ -551,4 +551,4 @@ detection_after
 
 end <- Sys.time()
 
-tima::log_debug("Script finished in", format(end - start))
+message("Script finished in", format(end - start))

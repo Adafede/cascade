@@ -368,4 +368,4 @@ plotly::save_image(
 
 end <- Sys.time()
 
-tima::log_debug("Script finished in", format(end - start))
+message("Script finished in", format(end - start))

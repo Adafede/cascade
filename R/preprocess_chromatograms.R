@@ -19,12 +19,12 @@ preprocess_chromatograms <- function(detector = "cad",
                                      list = chromatograms_all[c(FALSE, FALSE, TRUE)],
                                      signal_name = "UV.1_CAD_1_0",
                                      shift = CAD_SHIFT) {
-  tima::log_debug(x = "preprocessing", detector, "chromatograms")
-  tima::log_debug(x = "harmonizing names")
+  message("preprocessing", detector, "chromatograms")
+  message("harmonizing names")
   chromatograms_original <-
     lapply(list, change_intensity_name, signal_name)
 
-  tima::log_debug(x = "improving chromatograms")
+  message("improving chromatograms")
   chromatograms_improved <-
     improve_signals_progress(chromatograms_original)
 
@@ -44,7 +44,7 @@ preprocess_chromatograms <- function(detector = "cad",
     dplyr::mutate(rt_1 = time, rt_2 = time) |>
     data.table::data.table()
 
-  tima::log_debug(x = "baselining chromatograms")
+  message("baselining chromatograms")
   chromatograms_baselined <- chromatograms_improved |>
     lapply(FUN = baseline_chromatogram)
 

@@ -17,7 +17,7 @@ preprocess_peaks <- function(detector = "cad",
                              list = chromatograms_list_cad$chromatograms_baselined,
                              df_long = chromatograms_list_cad$chromatograms_baselined_long,
                              area_min = 0) {
-  tima::log_debug(x = "preprocessing", detector, "peaks")
+  message("preprocessing", detector, "peaks")
   ## data.table call outside of future because buggy else
   peaks <- peaks_progress(list)
 
@@ -27,13 +27,13 @@ preprocess_peaks <- function(detector = "cad",
   peaks_long <- dplyr::bind_rows(peaks, .id = "id") |>
     tidytable::data.table()
 
-  tima::log_debug(x = "joining peaks ...")
+  message("joining peaks ...")
   df_peaks <-
     join_peaks(chromatograms = df_long, peaks = peaks_long, min_area = area_min)
 
   data.table::setkey(df_peaks, rt_min, rt_max)
 
-  tima::log_debug(x = "joining within given rt tolerance")
+  message("joining within given rt tolerance")
   df_features_peaks <-
     data.table::foverlaps(df_features, df_peaks)
 
@@ -46,7 +46,7 @@ preprocess_peaks <- function(detector = "cad",
   #   dplyr::distinct(id, peak_id, feature_id, .keep_all = TRUE) |> ## TODO DONT FORGET
   #   sample_n(500) ## TODO DONT FORGET
 
-  tima::log_debug(x = "selecting features outside peaks")
+  message("selecting features outside peaks")
   df_features_without_peaks <- df_features_peaks |>
     tidytable::filter(is.na(peak_id)) |>
     tidytable::distinct() # |>
@@ -55,14 +55,14 @@ preprocess_peaks <- function(detector = "cad",
   # df_new_without <- df_new_without |> ## TODO DONT FORGET
   #   dplyr::distinct(id, peak_id, feature_id, .keep_all = TRUE) ## TODO DONT FORGET
 
-  tima::log_debug(x = "splitting by file")
+  message("splitting by file")
   list_df_features_with_peaks <- df_features_with_peaks |>
     tidytable::group_split(id)
 
   names(list_df_features_with_peaks) <-
     unique(df_features_with_peaks$id)
 
-  tima::log_debug(x = "splitting by peak")
+  message("splitting by peak")
   list_df_features_with_peaks_per_peak <-
     future.apply::future_lapply(
       X = list_df_features_with_peaks,
@@ -77,7 +77,7 @@ preprocess_peaks <- function(detector = "cad",
     list_df_features_with_peaks_per_peak |>
     purrr::flatten()
 
-  # tima::log_debug(x = "retrieving ms files")
+  # message( "retrieving ms files")
   # list_dda_with_peak <-
   #   future_lapply(
   #     X = list_df_features_with_peaks_long,
@@ -88,7 +88,7 @@ preprocess_peaks <- function(detector = "cad",
   #     }
   #   )
   #
-  tima::log_debug(x = "normalizing chromato")
+  message("normalizing chromato")
   list_chromato_with_peak <-
     future.apply::future_lapply(
       X = list_df_features_with_peaks_long,
@@ -96,21 +96,21 @@ preprocess_peaks <- function(detector = "cad",
       list = list
     )
 
-  tima::log_debug(x = "preparing peaks chromato")
+  message("preparing peaks chromato")
   list_chromato_peaks <-
     future.apply::future_lapply(
       X = list_chromato_with_peak,
       FUN = prepare_peaks
     )
 
-  tima::log_debug(x = "preparing rt")
+  message("preparing rt")
   list_rtr <-
     future.apply::future_lapply(
       X = list_df_features_with_peaks_long,
       FUN = prepare_rt
     )
 
-  tima::log_debug(x = "preparing mz")
+  message("preparing mz")
   list_mzr <-
     future.apply::future_lapply(
       X = list_df_features_with_peaks_long,
