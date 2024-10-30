@@ -35,11 +35,10 @@ check_chromatograms <- function(chromatograms = c("bpi_pos", "cad_pos", "pda_pos
       add_chromato_line(
         chromato = switch(type,
           "baselined" = chromatogram_cad_pos_baselined,
-          "improved" =
-            chromatogram_cad_pos_improved
+          "improved" = chromatogram_cad_pos_improved
         ),
         shift = shift_cad,
-        time = normalize_time,
+        normalize_time = normalize_time,
         name = "<b> CAD </b>",
         color = "#e31a1c"
       )
@@ -49,11 +48,10 @@ check_chromatograms <- function(chromatograms = c("bpi_pos", "cad_pos", "pda_pos
       add_chromato_line(
         chromato = switch(type,
           "baselined" = chromatogram_cad_neg_baselined,
-          "improved" =
-            chromatogram_cad_neg_improved
+          "improved" = chromatogram_cad_neg_improved
         ),
         shift = shift_cad,
-        time = normalize_time,
+        normalize_time = normalize_time,
         name = "<b> CAD (Neg)</b>",
         color = "#fb9a99",
         polarity = "neg"
@@ -64,13 +62,12 @@ check_chromatograms <- function(chromatograms = c("bpi_pos", "cad_pos", "pda_pos
       add_chromato_line(
         chromato = switch(type,
           "baselined" = chromatogram_pda_pos_baselined,
-          "improved" =
-            chromatogram_pda_pos_improved
+          "improved" = chromatogram_pda_pos_improved
         ),
         shift = shift_pda,
-        time = normalize_time,
+        normalize_time = normalize_time,
         name = "<b> PDA </b>",
-        color = "#b2df8a"
+        color = "#33a02c"
       )
   }
   if ("pda_neg" %in% chromatograms) {
@@ -78,13 +75,12 @@ check_chromatograms <- function(chromatograms = c("bpi_pos", "cad_pos", "pda_pos
       add_chromato_line(
         chromato = switch(type,
           "baselined" = chromatogram_pda_neg_baselined,
-          "improved" =
-            chromatogram_pda_neg_improved
+          "improved" = chromatogram_pda_neg_improved
         ),
         shift = shift_pda,
-        time = normalize_time,
+        normalize_time = normalize_time,
         name = "<b> PDA (Neg) </b>",
-        color = "#33a02c",
+        color = "#b2df8a",
         polarity = "neg"
       )
   }
@@ -93,13 +89,12 @@ check_chromatograms <- function(chromatograms = c("bpi_pos", "cad_pos", "pda_pos
       add_chromato_line(
         chromato = switch(type,
           "baselined" = chromatogram_bpi_pos_baselined,
-          "improved" =
-            chromatogram_bpi_pos_improved
+          "improved" = chromatogram_bpi_pos_improved
         ),
         shift = 0,
-        time = normalize_time,
+        normalize_time = normalize_time,
         name = "<b> MS Pos </b>",
-        color = "#a6cee3"
+        color = "#1f78b4"
       )
   }
   if ("bpi_neg" %in% chromatograms) {
@@ -107,13 +102,12 @@ check_chromatograms <- function(chromatograms = c("bpi_pos", "cad_pos", "pda_pos
       add_chromato_line(
         chromato = switch(type,
           "baselined" = chromatogram_bpi_neg_baselined,
-          "improved" =
-            chromatogram_bpi_neg_improved
+          "improved" = chromatogram_bpi_neg_improved
         ),
         shift = 0,
-        time = normalize_time,
+        normalize_time = normalize_time,
         name = "<b> MS Neg </b>",
-        color = "#1f78b4",
+        color = "#a6cee3",
         polarity = "neg"
       )
   }
