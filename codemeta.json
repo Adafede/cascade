@@ -302,6 +302,13 @@
     },
     "20": {
       "@type": "SoftwareApplication",
+      "identifier": "tima",
+      "name": "tima",
+      "version": ">= 2.11",
+      "sameAs": "https://github.com/taxonomicallyinformedannotation/tima"
+    },
+    "21": {
+      "@type": "SoftwareApplication",
       "identifier": "xcms",
       "name": "xcms",
       "version": ">= 4.2.2",
@@ -313,7 +320,7 @@
       },
       "sameAs": "https://bioconductor.org/packages/release/bioc/html/xcms.html"
     },
-    "21": {
+    "22": {
       "@type": "SoftwareApplication",
       "identifier": "yaml",
       "name": "yaml",
@@ -329,7 +336,7 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteannotation", "chargedaerosoldetector", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
-  "fileSize": "2299.055KB",
+  "fileSize": "2290.475KB",
   "releaseNotes": "https://github.com/adafede/cascade/blob/master/NEWS.md",
   "readme": "https://github.com/Adafede/cascade/blob/main/README.md",
   "contIntegration": ["https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/adafede/cascade"],
