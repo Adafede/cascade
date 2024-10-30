@@ -1,6 +1,6 @@
 #' Compare peaks
 #'
-#' @param x
+#' @param x X
 #'
 #' @return A comparison score
 #'

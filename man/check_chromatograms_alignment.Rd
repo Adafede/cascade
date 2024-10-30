@@ -57,5 +57,7 @@ A plot with (non-)aligned chromatograms
 Check chromatograms alignment
 }
 \examples{
-check_chromatograms_alignment()
+\dontrun{
+cascade:::check_chromatograms_alignment()
+}
 }

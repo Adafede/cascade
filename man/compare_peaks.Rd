@@ -7,7 +7,7 @@
 compare_peaks(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{X}
 }
 \value{
 A comparison score
