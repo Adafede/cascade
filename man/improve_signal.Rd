@@ -7,8 +7,8 @@
 improve_signal(
   df,
   fourier_components = 0.01,
-  time_min = TIME_MIN,
-  time_max = TIME_MAX,
+  time_min = 0,
+  time_max = Inf,
   frequency = 2,
   resample = 1
 )

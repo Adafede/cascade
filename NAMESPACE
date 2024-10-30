@@ -2,6 +2,7 @@
 
 export(check_and_load_packages_1)
 export(check_and_load_packages_2)
+export(check_chromatograms_alignment)
 export(check_export_dir)
 export(parse_yaml_paths)
 export(prepare_features)

@@ -2,8 +2,8 @@
 #'
 #' @param list List
 #' @param shift Shift
-#' @param time Time
-#' @param intensity Intensity
+#' @param normalize_intensity Normalize time
+#' @param normalize_time Normalize intensity
 #'
 #' @return A dataframe with normalized chromatograms
 #'
@@ -11,18 +11,18 @@
 normalize_chromatograms_list <-
   function(list,
            shift = 0,
-           time = FALSE,
-           intensity = TRUE) {
+           normalize_intensity = TRUE,
+           normalize_time = FALSE) {
     df <- dplyr::bind_rows(list, .id = "id")
     df <- df |>
       dplyr::group_by(id) |>
       dplyr::mutate(time = time + shift)
 
-    if (intensity == TRUE) {
+    if (normalize_intensity) {
       df <- df |>
         dplyr::mutate(intensity = intensity / max(intensity))
     }
-    if (time == TRUE) {
+    if (normalize_time) {
       df <- df |>
         dplyr::mutate(time_2 = max(time)) |>
         dplyr::mutate(time = time / time_2) |>

@@ -8,7 +8,7 @@ add_chromato_line(
   plot,
   chromato,
   shift = 0,
-  time,
+  normalize_time,
   name,
   color,
   polarity = "pos"
@@ -21,7 +21,7 @@ add_chromato_line(
 
 \item{shift}{Shift}
 
-\item{time}{Time}
+\item{normalize_time}{Normalize time}
 
 \item{name}{Name}
 

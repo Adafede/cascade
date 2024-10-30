@@ -3,7 +3,7 @@
 #' @param plot Plot
 #' @param chromato Chromato
 #' @param shift Shift
-#' @param time Time
+#' @param normalize_time Normalize time
 #' @param name Name
 #' @param color Color
 #' @param polarity Polarity
@@ -14,14 +14,14 @@
 add_chromato_line <- function(plot,
                               chromato,
                               shift = 0,
-                              time,
+                              normalize_time,
                               name,
                               color,
                               polarity = "pos") {
   plot |>
     plotly::add_lines(
       data = chromato |>
-        normalize_chromatograms_list(shift = shift, time = time),
+        normalize_chromatograms_list(shift = shift, normalize_time = normalize_time),
       x = ~time,
       y = ~ switch(polarity,
         "pos" = intensity,

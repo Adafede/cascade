@@ -1,0 +1,60 @@
+---
+title: "1 Basics"
+author: "Adriano Rutz"
+creative_commons: CC BY-SA
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+opengraph:
+    image:
+      src: https://github.com/adafede/cascade/blob/main/man/figures/logo.svg
+      alt: "Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts"
+    twitter:
+      creator: "@adafede"
+vignette: >
+  %\VignetteIndexEntry{1 Basics}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+knitr::opts_knit$set(root.dir = system.file(package = "cascade"))
+```
+
+```{r cascade, include = FALSE}
+library("cascade")
+```
+
+This vignette describes some basic functions.
+
+## Check the raw data and alignment
+
+First, check if the raw data can be aligned to your expectations:
+
+```{r check-alignment-default, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
+cascade::check_chromatograms_alignment(show_example = TRUE)
+```
+
+Or, with more details:
+
+```{r check-alignment-2, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
+cascade::check_chromatograms_alignment(
+  show_example = TRUE,
+  time_min = 0.5,
+  time_max = 35.0,
+  type = "improved",
+  chromatograms = c(
+    "bpi_pos",
+    "cad_pos",
+    "pda_pos",
+    "bpi_neg",
+    "cad_neg",
+    "pda_neg"
+  )
+)
+```
+
+Development follows.

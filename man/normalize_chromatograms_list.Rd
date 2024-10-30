@@ -4,16 +4,21 @@
 \alias{normalize_chromatograms_list}
 \title{Normalize chromatograms list}
 \usage{
-normalize_chromatograms_list(list, shift = 0, time = FALSE, intensity = TRUE)
+normalize_chromatograms_list(
+  list,
+  shift = 0,
+  normalize_intensity = TRUE,
+  normalize_time = FALSE
+)
 }
 \arguments{
 \item{list}{List}
 
 \item{shift}{Shift}
 
-\item{time}{Time}
+\item{normalize_intensity}{Normalize time}
 
-\item{intensity}{Intensity}
+\item{normalize_time}{Normalize intensity}
 }
 \value{
 A dataframe with normalized chromatograms

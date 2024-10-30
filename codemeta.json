@@ -193,6 +193,13 @@
     },
     "11": {
       "@type": "SoftwareApplication",
+      "identifier": "microshades",
+      "name": "microshades",
+      "version": ">= 1.13",
+      "sameAs": "https://github.com/KarstensLab/microshades"
+    },
+    "12": {
+      "@type": "SoftwareApplication",
       "identifier": "MSnbase",
       "name": "MSnbase",
       "version": ">= 2.30.1",
@@ -204,7 +211,7 @@
       },
       "sameAs": "https://bioconductor.org/packages/release/bioc/html/MSnbase.html"
     },
-    "12": {
+    "13": {
       "@type": "SoftwareApplication",
       "identifier": "nucleR",
       "name": "nucleR",
@@ -217,12 +224,12 @@
       },
       "sameAs": "https://bioconductor.org/packages/release/bioc/html/nucleR.html"
     },
-    "13": {
+    "14": {
       "@type": "SoftwareApplication",
       "identifier": "parallel",
       "name": "parallel"
     },
-    "14": {
+    "15": {
       "@type": "SoftwareApplication",
       "identifier": "pbapply",
       "name": "pbapply",
@@ -235,7 +242,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=pbapply"
     },
-    "15": {
+    "16": {
       "@type": "SoftwareApplication",
       "identifier": "plotly",
       "name": "plotly",
@@ -248,7 +255,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=plotly"
     },
-    "16": {
+    "17": {
       "@type": "SoftwareApplication",
       "identifier": "pracma",
       "name": "pracma",
@@ -261,7 +268,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=pracma"
     },
-    "17": {
+    "18": {
       "@type": "SoftwareApplication",
       "identifier": "progressr",
       "name": "progressr",
@@ -274,7 +281,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=progressr"
     },
-    "18": {
+    "19": {
       "@type": "SoftwareApplication",
       "identifier": "purrr",
       "name": "purrr",
@@ -287,7 +294,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=purrr"
     },
-    "19": {
+    "20": {
       "@type": "SoftwareApplication",
       "identifier": "readr",
       "name": "readr",
@@ -300,14 +307,14 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=readr"
     },
-    "20": {
+    "21": {
       "@type": "SoftwareApplication",
       "identifier": "tima",
       "name": "tima",
       "version": ">= 2.11",
       "sameAs": "https://github.com/taxonomicallyinformedannotation/tima"
     },
-    "21": {
+    "22": {
       "@type": "SoftwareApplication",
       "identifier": "xcms",
       "name": "xcms",
@@ -320,7 +327,7 @@
       },
       "sameAs": "https://bioconductor.org/packages/release/bioc/html/xcms.html"
     },
-    "22": {
+    "23": {
       "@type": "SoftwareApplication",
       "identifier": "yaml",
       "name": "yaml",
@@ -336,7 +343,7 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteannotation", "chargedaerosoldetector", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
-  "fileSize": "2290.475KB",
+  "fileSize": "4966.498KB",
   "releaseNotes": "https://github.com/adafede/cascade/blob/master/NEWS.md",
   "readme": "https://github.com/Adafede/cascade/blob/main/README.md",
   "contIntegration": ["https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/adafede/cascade"],
