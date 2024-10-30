@@ -16,5 +16,5 @@ A comparison score
 Compare peaks
 }
 \examples{
-Null
+NULL
 }

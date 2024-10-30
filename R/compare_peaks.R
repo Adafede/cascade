@@ -4,7 +4,7 @@
 #'
 #' @return A comparison score
 #'
-#' @examples Null
+#' @examples NULL
 compare_peaks <- function(x) {
   if (length(list_ms_peaks[[x]]) != 0) {
     future.apply::future_lapply(
