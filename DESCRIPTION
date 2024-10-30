@@ -32,10 +32,12 @@ Imports:
     progressr (>= 0.14.0),
     purrr (>= 1.0.2),
     readr (>= 2.1.5),
+    tima(>= 2.11),
     xcms (>= 4.2.2),
     yaml (>= 2.3.10)
 Remotes:
-    ethanbass/chromatographR
+    ethanbass/chromatographR,
+    taxonomicallyinformedannotation/tima
 Suggests:
     knitr (>= 1.42),
     testthat (>= 3.1.7),
@@ -51,6 +53,7 @@ Collate:
     'add_peak_metadata.R'
     'baseline_chromatogram.R'
     'baseline_chromatograms_progress.R'
+    'cascade-package.R'
     'change_intensity_name.R'
     'check_and_load_packages.R'
     'check_chromatograms.R'
@@ -119,7 +122,6 @@ Collate:
     'transform_ms.R'
     'treemaps_progress.R'
     'wiki_progress.R'
-    'zzz.R'
 VignetteBuilder: 
     knitr
 biocViews: metabolite annotation, charged aerosol detector, semi-quantitative, natural products, computational metabolomics, specialized metabolome

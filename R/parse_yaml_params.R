@@ -8,7 +8,7 @@ source(file = "R/log_debug.R")
 #'
 #' @examples NULL
 parse_yaml_params <- function() {
-  log_debug("Loading yaml parameters")
+  tima::log_debug("Loading yaml parameters")
   suppressWarnings(params <-
     yaml::read_yaml(
       file = paths$params$default$file,
