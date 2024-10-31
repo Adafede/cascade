@@ -12,6 +12,7 @@ This package provides the infrastructure to perform Automated Composition Assess
 Useful links:
 \itemize{
   \item \url{https://github.com/adafede/cascade}
+  \item \url{https://adafede.github.io/cascade}
   \item Report bugs at \url{https://github.com/adafede/cascade/issues}
 }
 
