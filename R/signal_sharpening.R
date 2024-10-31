@@ -1,5 +1,3 @@
-source(file = "R/second_der.R")
-
 #' Signal sharpening
 #'
 #' @include second_der.R

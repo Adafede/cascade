@@ -1,5 +1,7 @@
 #' Add chromato line
 #'
+#' @include normalize_chromatograms_list.R
+#'
 #' @param plot Plot
 #' @param chromato Chromato
 #' @param shift Shift

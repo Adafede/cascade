@@ -1,6 +1,3 @@
-source(file = "R/middle_pts.R")
-source(file = "R/deriv.R")
-
 #' Second der
 #'
 #' @include middle_pts.R

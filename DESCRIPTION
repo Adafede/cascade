@@ -67,6 +67,7 @@ ByteCompile: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Collate:
+    'normalize_chromatograms_list.R'
     'add_chromato_line.R'
     'add_peak_metadata.R'
     'baseline_chromatogram.R'
@@ -90,6 +91,7 @@ Collate:
     'get_params.R'
     'hierarchies_grouped_progress.R'
     'hierarchies_progress.R'
+    'plot_histograms.R'
     'histograms_progress.R'
     'middle_pts.R'
     'second_der.R'
@@ -99,7 +101,6 @@ Collate:
     'join_peaks.R'
     'y_as_na.R'
     'keep_best_candidates.R'
-    'log_debug.R'
     'make_2D.R'
     'make_chromatographiable.R'
     'make_confident.R'
@@ -107,13 +108,11 @@ Collate:
     'molinfo.R'
     'no_other.R'
     'normalize_chromato.R'
-    'normalize_chromatograms_list.R'
     'parse_cli_params.R'
     'parse_yaml_params.R'
     'parse_yaml_paths.R'
     'peaks_progress.R'
     'plot_chromatogram.R'
-    'plot_histograms.R'
     'plot_peaks_statistics.R'
     'prepare_hierarchy.R'
     'prepare_plot.R'

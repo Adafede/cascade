@@ -1,8 +1,4 @@
-source(file = "R/log_debug.R")
-
 #' Parse CLI params
-#'
-#' @include log_debug.R
 #'
 #' @return Params
 #'

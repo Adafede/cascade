@@ -1,4 +1,3 @@
-source(file = "R/improve_signal.R")
 #' Improve signals progress
 #'
 #' @include improve_signal.R
