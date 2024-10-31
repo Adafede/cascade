@@ -8,7 +8,7 @@
 #' @examples NULL
 add_peak_metadata <- function(df, min_score = 0.8) {
   df_meta <- df |>
-    dplyr::arrange(desc(feature_area)) |>
+    dplyr::arrange(dplyr::desc(feature_area)) |>
     dplyr::distinct(
       peak_id,
       feature_id,
@@ -57,7 +57,7 @@ add_peak_metadata <- function(df, min_score = 0.8) {
     )
 
   df_meta_cor <- df |>
-    dplyr::arrange(desc(feature_area)) |>
+    dplyr::arrange(dplyr::desc(feature_area)) |>
     dplyr::filter(comparison_score >= min_score) |>
     dplyr::distinct(
       peak_id,
@@ -107,7 +107,7 @@ add_peak_metadata <- function(df, min_score = 0.8) {
     )
 
   df_meta_taxo <- df |>
-    dplyr::arrange(desc(feature_area)) |>
+    dplyr::arrange(dplyr::desc(feature_area)) |>
     dplyr::filter(keep == "Y") |>
     dplyr::filter(comparison_score >= min_score) |>
     dplyr::distinct(

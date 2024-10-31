@@ -1,5 +1,7 @@
 #' Prehistograms progress
 #'
+#' @include prepare_plot.R
+#'
 #' @param xs XS
 #'
 #' @return A list of prehistograms

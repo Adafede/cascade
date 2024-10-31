@@ -1,5 +1,3 @@
-source(file = "R/change_intensity_name.R")
-
 #' Extract chromatogram
 #'
 #' @include change_intensity_name.R

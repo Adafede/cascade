@@ -1,8 +1,4 @@
-source(file = "R/log_debug.R")
-
 #' Title
-#'
-#' @include log_debug.R
 #'
 #' @return Params
 #'

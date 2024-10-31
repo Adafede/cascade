@@ -1,3 +1,10 @@
+#' Prepare comparison
+#'
+#' @param detector Detector
+#'
+#' @return A list of peaks
+#'
+#' @examples NULL
 prepare_comparison <- function(detector = "cad") {
   message("loading compared peaks")
   path_1 <- switch(detector,

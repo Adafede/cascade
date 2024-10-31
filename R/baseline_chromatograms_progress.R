@@ -1,4 +1,3 @@
-source(file = "R/baseline_chromatogram.R")
 #' Baseline chromatograms progress
 #'
 #' @include baseline_chromatogram.R

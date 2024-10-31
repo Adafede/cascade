@@ -1,6 +1,3 @@
-source(file = "R/baseline_chromatogram.R")
-source(file = "R/change_intensity_name.R")
-source(file = "R/improve_signals_progress.R")
 #' Preprocess chromatograms
 #'
 #' @include baseline_chromatogram.R
