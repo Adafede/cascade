@@ -1,5 +1,3 @@
-source(file = "R/signal_sharpening.R")
-
 #' Improve signal
 #'
 #' @include signal_sharpening.R

@@ -1,8 +1,3 @@
-source(file = "R/make_other.R")
-source(file = "R/no_other.R")
-source(file = "R/prepare_plot.R")
-source(file = "R/plot_histograms.R")
-
 #' Plot results 1
 #'
 #' @include make_other.R

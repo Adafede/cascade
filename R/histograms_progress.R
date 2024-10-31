@@ -1,5 +1,7 @@
 #' Histograms progress
 #'
+#' @include plot_histograms.R
+#'
 #' @param xs XS
 #'
 #' @return A list of histograms
