@@ -106,7 +106,7 @@ elife <- c(
   "#861450"
 )
 
-#' Sequential
+## Sequential
 green_4 <- c(
   "#e5efd9",
   "#b0d08c",

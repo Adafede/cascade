@@ -309,7 +309,7 @@ hierarchies$special <- prepare_hierarchy(
 ) |>
   dplyr::arrange(sample)
 treemaps <-
-  treemaps_progress_noTitle(xs = names(hierarchies)[!grepl(
+  treemaps_progress_no_title(xs = names(hierarchies)[!grepl(
     pattern = "_grouped",
     x = names(hierarchies)
   )])
