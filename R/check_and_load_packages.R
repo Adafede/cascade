@@ -6,8 +6,6 @@
 #'
 #' @return Log of installed packages
 #'
-#' @export
-#'
 #' @examples NULL
 check_and_load_packages_1 <- function(cran = packages_cran,
                                       bioconductor = packages_bioconductor,
@@ -36,8 +34,6 @@ check_and_load_packages_1 <- function(cran = packages_cran,
 #' @param github Github
 #'
 #' @return Log of installed packages
-#'
-#' @export
 #'
 #' @examples NULL
 check_and_load_packages_2 <- function(cran = packages_cran,
