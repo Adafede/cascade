@@ -7,9 +7,9 @@
 plot_peak_detection(df1, df2, fun)
 }
 \arguments{
-\item{df1}{DF 1}
+\item{df1}{DF 1 containing chromatogram}
 
-\item{df2}{DF 2}
+\item{df2}{DF 2 containing peaks}
 
 \item{fun}{Fun}
 }

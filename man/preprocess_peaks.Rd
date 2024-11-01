@@ -27,7 +27,7 @@ preprocess_peaks(
 
 \item{shift}{shift}
 
-\item{min_area}{Minium area}
+\item{min_area}{Minimum area}
 }
 \value{
 A list of lists and dataframe with preprocessed peaks
