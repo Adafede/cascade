@@ -5,8 +5,6 @@
 #'
 #' @return A dataframe of prepared features
 #'
-#' @export
-#'
 #' @examples NULL
 prepare_features <- function(df, min_intensity) {
   message("... preparing features")

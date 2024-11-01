@@ -4,8 +4,6 @@
 #'
 #' @return A log of checked dir
 #'
-#' @export
-#'
 #' @examples NULL
 check_export_dir <- function(dir) {
   ifelse(

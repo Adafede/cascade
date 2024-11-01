@@ -77,6 +77,7 @@ Collate:
     'change_intensity_name.R'
     'check_and_load_packages.R'
     'check_chromatograms.R'
+    'load_chromatograms.R'
     'check_chromatograms_alignment.R'
     'check_export_dir.R'
     'colors.R'

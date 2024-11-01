@@ -2,6 +2,8 @@
 #'
 #' @export
 #'
+#' @include load_chromatograms.R
+#'
 #' @param file_negative Negative file path
 #' @param file_positive Positive file path
 #' @param time_min Minimum time
@@ -39,13 +41,10 @@ check_chromatograms_alignment <- function(file_negative = NULL,
                                           show_example = FALSE) {
   if (!is.null(file_positive) | show_example) {
     if (show_example) {
-      # chromatograms_positive |>
-      #   saveRDS(file = "inst/extdata/chromatograms_positive.rds")
-      chromatograms_positive <- readRDS(system.file("extdata", "chromatograms_positive.rds", package = "cascade"))
+      chromatograms_positive <- load_chromatograms(show_example = show_example, example_polarity = "pos")
     } else {
-      chromatograms_positive <- FILE_POSITIVE |>
-        mzR::openMSfile() |>
-        mzR::chromatograms()
+      chromatograms_positive <- file_positive |>
+        load_chromatograms()
     }
 
     chromatogram_bpi_pos <- chromatograms_positive |>
@@ -114,13 +113,10 @@ check_chromatograms_alignment <- function(file_negative = NULL,
 
   if (!is.null(file_negative) | show_example) {
     if (show_example) {
-      # chromatograms_negative |>
-      #   saveRDS(file = "inst/extdata/chromatograms_negative.rds")
-      chromatograms_negative <- readRDS(system.file("extdata", "chromatograms_negative.rds", package = "cascade"))
+      chromatograms_negative <- load_chromatograms(show_example = show_example, example_polarity = "neg")
     } else {
       chromatograms_negative <- file_negative |>
-        mzR::openMSfile() |>
-        mzR::chromatograms()
+        load_chromatograms()
     }
 
     chromatogram_bpi_neg <- chromatograms_negative |>
