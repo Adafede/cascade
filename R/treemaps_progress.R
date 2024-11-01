@@ -93,7 +93,7 @@ treemaps_progress <- function(xs, type = "treemap") {
 #' @return A list of treemaps with no title
 #'
 #' @examples NULL
-treemaps_progress_noTitle <- function(xs, type = "treemap") {
+treemaps_progress_no_title <- function(xs, type = "treemap") {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(
     X = setNames(
