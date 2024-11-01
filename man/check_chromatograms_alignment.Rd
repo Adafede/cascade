@@ -58,6 +58,6 @@ Check chromatograms alignment
 }
 \examples{
 \dontrun{
-cascade:::check_chromatograms_alignment()
+check_chromatograms_alignment(show_example = TRUE)
 }
 }

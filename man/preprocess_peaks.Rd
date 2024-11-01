@@ -7,6 +7,7 @@
 preprocess_peaks(
   detector = "cad",
   list = chromatograms_list_cad$chromatograms_baselined,
+  name,
   df_long = chromatograms_list_cad$chromatograms_baselined_long,
   area_min = 0
 )
@@ -15,6 +16,8 @@ preprocess_peaks(
 \item{detector}{Detector}
 
 \item{list}{List}
+
+\item{name}{Name}
 
 \item{df_long}{DF long}
 

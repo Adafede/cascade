@@ -1,13 +1,15 @@
-source(file = "R/join_peaks.R")
-source(file = "R/normalize_chromato.R")
-source(file = "R/peaks_progress.R")
-source(file = "R/prepare_mz.R")
-source(file = "R/prepare_peaks.R")
-source(file = "R/prepare_rt.R")
 #' Preprocess peaks
+#'
+#' @include join_peaks.R
+#' @include normalize_chromato.R
+#' @include peaks_progress.R
+#' @include prepare_mz.R
+#' @include prepare_peaks.R
+#' @include prepare_rt.R
 #'
 #' @param detector Detector
 #' @param list List
+#' @param name Name
 #' @param df_long DF long
 #' @param area_min Area min
 #'
@@ -16,13 +18,14 @@ source(file = "R/prepare_rt.R")
 #' @examples NULL
 preprocess_peaks <- function(detector = "cad",
                              list = chromatograms_list_cad$chromatograms_baselined,
+                             name,
                              df_long = chromatograms_list_cad$chromatograms_baselined_long,
                              area_min = 0) {
-  message("preprocessing", detector, "peaks")
+  message("preprocessing ", detector, " peaks")
   ## data.table call outside of future because buggy else
   peaks <- peaks_progress(list)
 
-  names(peaks) <- names
+  names(peaks) <- name
 
   ## data.table call outside of future because buggy else
   peaks_long <- dplyr::bind_rows(peaks, .id = "id") |>
