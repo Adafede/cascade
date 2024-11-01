@@ -6,22 +6,28 @@
 \usage{
 preprocess_peaks(
   detector = "cad",
-  list = chromatograms_list_cad$chromatograms_baselined,
+  df_features,
+  df_long,
+  list,
   name,
-  df_long = chromatograms_list_cad$chromatograms_baselined_long,
-  area_min = 0
+  shift = 0,
+  min_area = 0
 )
 }
 \arguments{
 \item{detector}{Detector}
 
+\item{df_features}{DF features}
+
+\item{df_long}{DF long}
+
 \item{list}{List}
 
 \item{name}{Name}
 
-\item{df_long}{DF long}
+\item{shift}{shift}
 
-\item{area_min}{Area min}
+\item{min_area}{Minium area}
 }
 \value{
 A list of lists and dataframe with preprocessed peaks

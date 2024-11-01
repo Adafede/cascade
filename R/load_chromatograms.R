@@ -15,7 +15,7 @@ load_chromatograms <- function(file = NULL,
     #   saveRDS(file = "inst/extdata/chromatograms_positive.rds")
     # chromatograms_negative |>
     #   saveRDS(file = "inst/extdata/chromatograms_negative.rds")
-    chromatograms <- switch(example_polarity,
+    switch(example_polarity,
       "pos" = readRDS(
         system.file("extdata", "chromatograms_positive.rds", package = "cascade")
       ),
@@ -24,9 +24,8 @@ load_chromatograms <- function(file = NULL,
       )
     )
   } else {
-    chromatograms <- file |>
+    file |>
       mzR::openMSfile() |>
       mzR::chromatograms()
   }
-  return(chromatograms)
 }
