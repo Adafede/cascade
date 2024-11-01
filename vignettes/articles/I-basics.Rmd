@@ -34,13 +34,13 @@ This vignette describes some basic functions.
 
 First, check if the raw data can be aligned to your expectations:
 
-```{r check-alignment-default, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", eval=FALSE}
+```{r check-alignment-default, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
 cascade::check_chromatograms_alignment(show_example = TRUE)
 ```
 
 Or, with more details:
 
-```{r check-alignment-2, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", eval=FALSE}
+```{r check-alignment-2, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
 cascade::check_chromatograms_alignment(
   show_example = TRUE,
   time_min = 0.5,

@@ -48,5 +48,4 @@ vignettes/*.pdf
 # Repo specific
 params/params/**
 data/**
-inst/extdata/**
 https:/**
