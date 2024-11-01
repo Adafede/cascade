@@ -13,8 +13,6 @@ source(file = "R/prepare_rt.R")
 #'
 #' @return A list of lists and dataframe with preprocessed peaks
 #'
-#' @export
-#'
 #' @examples NULL
 preprocess_peaks <- function(detector = "cad",
                              list = chromatograms_list_cad$chromatograms_baselined,
