@@ -38,8 +38,7 @@ peaks_progress <- function(xs) {
       names(data_cascade)[[1]] <- "666"
 
       data <-
-        # chromatographR::preprocess(
-        preprocess(
+        chromatographR::preprocess(
           X = data_cascade,
           dim1 = seq(
             from = as.numeric(rownames(data_cascade[[1]])[[1]]),
@@ -54,8 +53,7 @@ peaks_progress <- function(xs) {
           spec.smooth = FALSE
         )
 
-      # pks <- chromatographR::get_peaks(
-      pks <- get_peaks(
+      pks <- chromatographR::get_peaks(
         chrom_list = data,
         lambdas = c("666"),
         # fit = c("egh", "gaussian", "raw"),

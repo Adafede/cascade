@@ -4,7 +4,7 @@
 \alias{prepare_features}
 \title{Prepare features}
 \usage{
-prepare_features(df, min_intensity)
+prepare_features(df, min_intensity, name)
 }
 \arguments{
 \item{df}{Df}

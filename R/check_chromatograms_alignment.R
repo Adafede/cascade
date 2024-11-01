@@ -23,7 +23,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' cascade:::check_chromatograms_alignment()
+#' check_chromatograms_alignment(show_example = TRUE)
 #' }
 check_chromatograms_alignment <- function(file_negative = NULL,
                                           file_positive = NULL,

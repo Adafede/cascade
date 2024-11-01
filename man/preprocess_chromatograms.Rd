@@ -7,6 +7,7 @@
 preprocess_chromatograms(
   detector = "cad",
   list = chromatograms_all[c(FALSE, FALSE, TRUE)],
+  name,
   signal_name = "UV.1_CAD_1_0",
   shift = CAD_SHIFT
 )
@@ -15,6 +16,8 @@ preprocess_chromatograms(
 \item{detector}{Detector}
 
 \item{list}{List}
+
+\item{name}{Name}
 
 \item{signal_name}{Signal name}
 
