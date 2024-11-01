@@ -1,6 +1,7 @@
 #' Prepare rt
 #'
 #' @param x X
+#' @param shift Shift
 #'
 #' @return Prepared RTs
 #'
