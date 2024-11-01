@@ -89,7 +89,7 @@ check_peaks_integration(
 
 Some peaks are still missed but it looks overall correct.
 
-Depending on the runs, this can get slighlty better with baseline correction:
+Depending on the runs, this can get slightly better with baseline correction:
 
 ```{r check-integration-2, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
 check_peaks_integration(

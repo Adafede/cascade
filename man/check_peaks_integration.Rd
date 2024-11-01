@@ -10,8 +10,6 @@ check_peaks_integration(
   chromatogram = "baselined",
   min_area = 0.005,
   min_intensity = 10000,
-  time_min = 0.7,
-  time_max = 35.2,
   cad_shift = 0.05,
   show_example = FALSE
 )
@@ -26,10 +24,6 @@ check_peaks_integration(
 \item{min_area}{Minimum area}
 
 \item{min_intensity}{Minimum intensity}
-
-\item{time_min}{Minimum time}
-
-\item{time_max}{Maximum time}
 
 \item{cad_shift}{CAD shift}
 

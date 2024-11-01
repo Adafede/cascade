@@ -8,6 +8,8 @@ prepare_rt(x, shift = 0)
 }
 \arguments{
 \item{x}{X}
+
+\item{shift}{Shift}
 }
 \value{
 Prepared RTs

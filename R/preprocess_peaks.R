@@ -13,7 +13,7 @@
 #' @param list List
 #' @param name Name
 #' @param shift shift
-#' @param min_area Minium area
+#' @param min_area Minimum area
 #'
 #' @return A list of lists and dataframe with preprocessed peaks
 #'
