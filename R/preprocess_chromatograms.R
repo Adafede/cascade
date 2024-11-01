@@ -14,10 +14,10 @@
 #'
 #' @examples NULL
 preprocess_chromatograms <- function(detector = "cad",
-                                     list = chromatograms_all[c(FALSE, FALSE, TRUE)],
+                                     list,
                                      name,
                                      signal_name = "UV.1_CAD_1_0",
-                                     shift = CAD_SHIFT) {
+                                     shift = 0) {
   message("preprocessing ", detector, " chromatograms")
   message("harmonizing names")
   chromatograms_original <-
