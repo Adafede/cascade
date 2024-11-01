@@ -59,7 +59,7 @@ cascade::check_chromatograms_alignment(
 
 How it should not look like (CAD and PDA shifts incorrectly set):
 
-```{r check-alignment-2, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
+```{r check-alignment-3, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
 cascade::check_chromatograms_alignment(
   show_example = TRUE,
   time_min = 0.5,
