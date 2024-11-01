@@ -10,6 +10,8 @@ prepare_features(df, min_intensity, name)
 \item{df}{Df}
 
 \item{min_intensity}{Min intensity}
+
+\item{name}{Name}
 }
 \value{
 A dataframe of prepared features

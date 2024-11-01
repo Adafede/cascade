@@ -2,6 +2,7 @@
 #'
 #' @param df Df
 #' @param min_intensity Min intensity
+#' @param name Name
 #'
 #' @return A dataframe of prepared features
 #'
