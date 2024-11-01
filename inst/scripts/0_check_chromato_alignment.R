@@ -20,3 +20,7 @@ check_chromatograms_alignment(
     "pda_neg"
   )
 )
+
+end <- Sys.time()
+
+message("Script finished in ", format(end - start))

@@ -6,6 +6,7 @@
 #'
 #' @param detector Detector
 #' @param list List
+#' @param name Name
 #' @param signal_name Signal name
 #' @param shift Shift
 #'
@@ -14,19 +15,20 @@
 #' @examples NULL
 preprocess_chromatograms <- function(detector = "cad",
                                      list = chromatograms_all[c(FALSE, FALSE, TRUE)],
+                                     name,
                                      signal_name = "UV.1_CAD_1_0",
                                      shift = CAD_SHIFT) {
-  message("preprocessing", detector, "chromatograms")
+  message("preprocessing ", detector, " chromatograms")
   message("harmonizing names")
   chromatograms_original <-
-    lapply(list, change_intensity_name, signal_name)
+    lapply(list, FUN = change_intensity_name, name = signal_name)
 
   message("improving chromatograms")
   chromatograms_improved <-
     improve_signals_progress(chromatograms_original)
 
-  names(chromatograms_original) <- names
-  names(chromatograms_improved) <- names
+  names(chromatograms_original) <- name
+  names(chromatograms_improved) <- name
 
   chromatograms_original_long <-
     dplyr::bind_rows(chromatograms_original, .id = "id") |>

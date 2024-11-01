@@ -57,4 +57,24 @@ cascade::check_chromatograms_alignment(
 )
 ```
 
+How it should not look like (CAD and PDA shifts incorrectly set):
+
+```{r check-alignment-2, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
+cascade::check_chromatograms_alignment(
+  show_example = TRUE,
+  time_min = 0.5,
+  time_max = 35.0,
+  cad_shift = 1,
+  pda_shift = 2,
+  type = "baselined",
+  chromatograms = c(
+    "bpi_pos",
+    "cad_pos",
+    "pda_pos"
+  )
+)
+```
+
+## Check the peak integration
+
 Development follows.
