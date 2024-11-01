@@ -6,7 +6,7 @@
 #'
 #' @examples NULL
 prepare_mz <- function(x) {
-  feature <- seq_along(1:nrow(x))
+  feature <- seq_along(seq_len(nrow(x)))
   y <- future.apply::future_lapply(
     X = feature, FUN = function(z) {
       mzr <- x[z, ] |>

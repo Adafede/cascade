@@ -15,7 +15,7 @@ extract_ms_progress <- function(xs) {
       message("CAD Peak: ", x)
       lapply(
         X = seq_along(
-          1:nrow(peaks_prelist$list_df_features_with_peaks_long[[x]])
+          seq_len(nrow(peaks_prelist$list_df_features_with_peaks_long[[x]]))
         ),
         FUN = function(z) {
           # message("CAD Peak: ", x, ", MS feature: ", z)
