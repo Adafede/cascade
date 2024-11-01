@@ -5,11 +5,11 @@
 #' @return Prepared RTs
 #'
 #' @examples NULL
-prepare_rt <- function(x) {
+prepare_rt <- function(x, shift = 0) {
   rtr <- x[1, ] |>
     tidytable::mutate(
-      rtmin = (rt_min + CAD_SHIFT) * 60,
-      rtmax = (rt_max + CAD_SHIFT) * 60
+      rtmin = (rt_min + shift) * 60,
+      rtmax = (rt_max + shift) * 60
     ) |>
     tidytable::select(rtmin, rtmax) |>
     as.matrix()

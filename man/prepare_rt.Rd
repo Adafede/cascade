@@ -4,7 +4,7 @@
 \alias{prepare_rt}
 \title{Prepare rt}
 \usage{
-prepare_rt(x)
+prepare_rt(x, shift = 0)
 }
 \arguments{
 \item{x}{X}

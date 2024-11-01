@@ -8,19 +8,23 @@
 #' @include prepare_rt.R
 #'
 #' @param detector Detector
+#' @param df_features DF features
+#' @param df_long DF long
 #' @param list List
 #' @param name Name
-#' @param df_long DF long
-#' @param area_min Area min
+#' @param shift shift
+#' @param min_area Minium area
 #'
 #' @return A list of lists and dataframe with preprocessed peaks
 #'
 #' @examples NULL
 preprocess_peaks <- function(detector = "cad",
-                             list = chromatograms_list_cad$chromatograms_baselined,
+                             df_features,
+                             df_long,
+                             list,
                              name,
-                             df_long = chromatograms_list_cad$chromatograms_baselined_long,
-                             area_min = 0) {
+                             shift = 0,
+                             min_area = 0) {
   message("preprocessing ", detector, " peaks")
   ## data.table call outside of future because buggy else
   peaks <- peaks_progress(list)
@@ -33,7 +37,11 @@ preprocess_peaks <- function(detector = "cad",
 
   message("joining peaks ...")
   df_peaks <-
-    join_peaks(chromatograms = df_long, peaks = peaks_long, min_area = area_min)
+    join_peaks(
+      chromatograms = df_long,
+      peaks = peaks_long,
+      min_area = min_area
+    )
 
   data.table::setkey(df_peaks, rt_min, rt_max)
 
@@ -94,32 +102,19 @@ preprocess_peaks <- function(detector = "cad",
   #
   message("normalizing chromato")
   list_chromato_with_peak <-
-    future.apply::future_lapply(
-      X = list_df_features_with_peaks_long,
-      FUN = normalize_chromato,
-      list = list
-    )
+    future.apply::future_lapply(X = list_df_features_with_peaks_long, FUN = normalize_chromato, list = list)
 
   message("preparing peaks chromato")
   list_chromato_peaks <-
-    future.apply::future_lapply(
-      X = list_chromato_with_peak,
-      FUN = prepare_peaks
-    )
+    future.apply::future_lapply(X = list_chromato_with_peak, FUN = prepare_peaks)
 
   message("preparing rt")
   list_rtr <-
-    future.apply::future_lapply(
-      X = list_df_features_with_peaks_long,
-      FUN = prepare_rt
-    )
+    future.apply::future_lapply(X = list_df_features_with_peaks_long, FUN = prepare_rt, shift = shift)
 
   message("preparing mz")
   list_mzr <-
-    future.apply::future_lapply(
-      X = list_df_features_with_peaks_long,
-      FUN = prepare_mz
-    )
+    future.apply::future_lapply(X = list_df_features_with_peaks_long, FUN = prepare_mz)
 
   returned_list <- list(
     list_df_features_with_peaks_long,
