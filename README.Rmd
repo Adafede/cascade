@@ -30,7 +30,7 @@ knitr::opts_chunk$set(
 
 The initial work is available at https://doi.org/10.1021/acs.jafc.3c03099, with some improvements made since then.
 
-:warning: This repository is not maintained and will not be except for extreme interest.
+⚠️ This repository is not maintained and will not be except for extreme interest.
  
 It has just been opened for the sake of transparency.
 
