@@ -2,7 +2,12 @@
 #'
 #' @export
 #'
+#' @include baseline_chromatogram.R
+#' @include check_chromatograms.R
+#' @include extract_chromatogram.R
+#' @include improve_signal.R
 #' @include load_chromatograms.R
+#' @include normalize_chromatograms_list.R
 #'
 #' @param file_negative Negative file path
 #' @param file_positive Positive file path

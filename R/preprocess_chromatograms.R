@@ -5,19 +5,29 @@
 #' @include improve_signals_progress.R
 #'
 #' @param detector Detector
+#' @param fourier_components Fourier components
+#' @param frequency Frequency
 #' @param list List
 #' @param name Name
-#' @param signal_name Signal name
+#' @param resample Resample
 #' @param shift Shift
+#' @param signal_name Signal name
+#' @param time_min Time min
+#' @param time_max Time max
 #'
 #' @return A list of preprocessed chromatograms
 #'
 #' @examples NULL
 preprocess_chromatograms <- function(detector = "cad",
+                                     fourier_components = 0.01,
+                                     frequency = 2,
                                      list,
                                      name,
+                                     resample = 1,
+                                     shift = 0,
                                      signal_name = "UV.1_CAD_1_0",
-                                     shift = 0) {
+                                     time_min = 0,
+                                     time_max = Inf) {
   message("preprocessing ", detector, " chromatograms")
   message("harmonizing names")
   chromatograms_original <-
@@ -25,7 +35,14 @@ preprocess_chromatograms <- function(detector = "cad",
 
   message("improving chromatograms")
   chromatograms_improved <-
-    improve_signals_progress(chromatograms_original)
+    improve_signals_progress(
+      xs = chromatograms_original,
+      fourier_components = fourier_components,
+      frequency = frequency,
+      resample = resample,
+      time_min = time_min,
+      time_max = time_max
+    )
 
   names(chromatograms_original) <- name
   names(chromatograms_improved) <- name

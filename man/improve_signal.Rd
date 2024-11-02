@@ -7,10 +7,10 @@
 improve_signal(
   df,
   fourier_components = 0.01,
-  time_min = 0,
-  time_max = Inf,
   frequency = 2,
-  resample = 1
+  resample = 1,
+  time_min = 0,
+  time_max = Inf
 )
 }
 \arguments{
@@ -18,13 +18,13 @@ improve_signal(
 
 \item{fourier_components}{Fourier components}
 
-\item{time_min}{Time min}
-
-\item{time_max}{Time max}
-
 \item{frequency}{Frequency}
 
 \item{resample}{Resample}
+
+\item{time_min}{Time min}
+
+\item{time_max}{Time max}
 }
 \value{
 A dataframe with improved signal

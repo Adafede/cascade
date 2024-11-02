@@ -2,8 +2,8 @@
 #'
 #' @include second_der.R
 #'
-#' @param Time Time
-#' @param Intensity Intensity
+#' @param time time
+#' @param intensity intensity
 #' @param k2 K2
 #' @param k4 K4
 #' @param sigma Sigma
@@ -13,15 +13,15 @@
 #' @return A sharpened signal
 #'
 #' @examples NULL
-signal_sharpening <- function(Time = timeow,
-                              Intensity = intensityeah,
+signal_sharpening <- function(time,
+                              intensity,
                               k2 = 250,
                               k4 = 1250000,
                               sigma = 0.05,
                               Smoothing_width = 8,
                               Baseline_adjust = 0) {
   smooth_1 <- zoo::rollmean(
-    x = Intensity,
+    x = intensity,
     k = Smoothing_width,
     align = "center",
     fill = 0
@@ -35,7 +35,7 @@ signal_sharpening <- function(Time = timeow,
   )
 
   deriv_2 <- second_der(
-    x = Time,
+    x = time,
     y = smooth_2
   )
 
@@ -47,7 +47,7 @@ signal_sharpening <- function(Time = timeow,
   )
 
   deriv_4 <- second_der(
-    x = Time[3:length(Time)],
+    x = time[3:length(time)],
     y = smooth_3
   )
 

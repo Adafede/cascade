@@ -2,3 +2,4 @@
 
 export(check_chromatograms_alignment)
 export(check_peaks_integration)
+export(process_compare_peaks)
