@@ -30,7 +30,6 @@ Imports:
     gt (>= 0.11.1),
     htmltools (>= 0.5.8.1),
     import (>= 1.3.2),
-    microshades (>= 1.13),
     MSnbase (>= 2.28.1),
     mzR (>= 2.36.0),
     pbapply (>= 1.7.2),
@@ -51,7 +50,6 @@ Imports:
     zoo (>= 1.8.12)
 Remotes:
     ethanbass/chromatographR,
-    KarstensLab/microshades
 Suggests:
     knitr (>= 1.42),
     testthat (>= 3.1.7),

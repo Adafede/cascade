@@ -263,12 +263,12 @@ table_final_2 <- table_final |>
     yes = paste0("\\includegraphics[width=0.33333in,height=0.075in]{images/", `InChIKey 2D`, ".pdf}"),
     no = NA
   ))
-readr::write_tsv(x = table_final_2, file = "data/paper/prettyTable.tsv", na = "")
-gt::gtsave(
-  data = prettyTable,
-  filename = "data/paper/prettyTable.html"
-)
-gt::gtsave(
-  data = test,
-  filename = "data/paper/prettyTable_2.html"
-)
+# readr::write_tsv(x = table_final_2, file = "data/paper/prettyTable.tsv", na = "")
+# gt::gtsave(
+#   data = prettyTable,
+#   filename = "data/paper/prettyTable.html"
+# )
+# gt::gtsave(
+#   data = test,
+#   filename = "data/paper/prettyTable_2.html"
+# )

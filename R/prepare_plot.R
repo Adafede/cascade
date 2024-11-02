@@ -17,7 +17,10 @@ prepare_plot <- function(dataframe, organism = "species") {
       !grepl(pattern = "-", x = parents)) |>
     dplyr::filter(!is.na(get(organism))) |>
     dplyr::mutate(species = get(organism)) |>
-    dplyr::arrange(desc(values)) |>
+    dplyr::group_by(labels) |>
+    dplyr::mutate(valuez = sum(values)) |>
+    dplyr::ungroup() |>
+    dplyr::arrange(desc(valuez)) |>
     dplyr::mutate(group = as.integer(factor(parents, levels = unique(parents)))) |>
     dplyr::group_by(group) |>
     dplyr::mutate(subgroup = as.integer(factor(x = ids, levels = unique(ids)))) |>
@@ -61,11 +64,14 @@ prepare_plot <- function(dataframe, organism = "species") {
         x = parents,
         fixed = TRUE
       ),
-      yes = microshades_grey[[1]][subgroup],
-      no = microshades[[group]][subgroup]
+      yes = microshades_grey[[1]][[subgroup]],
+      no = microshades[[group]][[subgroup]]
     )) |>
     dplyr::mutate(relative = values / tot) |>
-    dplyr::ungroup()
+    dplyr::ungroup() |>
+    dplyr::arrange(subgroup) |>
+    dplyr::arrange(group) |>
+    dplyr::mutate(idz = paste(group, subgroup))
 
   quickfix <- samples |>
     dplyr::filter(is.na(color)) |>
@@ -81,25 +87,25 @@ prepare_plot <- function(dataframe, organism = "species") {
   samples$ids <-
     forcats::fct_reorder2(
       .f = samples$ids,
-      .x = samples$values,
-      .y = samples$group,
-      .desc = TRUE
+      .x = samples$group,
+      .y = samples$idz,
+      .desc = FALSE
     )
 
   samples$color <-
     forcats::fct_reorder2(
       .f = samples$color,
-      .x = samples$values,
-      .y = samples$group,
-      .desc = TRUE
+      .x = samples$group,
+      .y = samples$idz,
+      .desc = FALSE
     )
 
   samples$sample <-
     forcats::fct_reorder2(
       .f = samples$sample,
-      .x = samples$values,
+      .x = samples$valuez,
       .y = samples$sample,
-      .desc = FALSE
+      .desc = TRUE
     )
 
   return(samples)
@@ -214,8 +220,8 @@ prepare_plot_2 <- function(dataframe) {
         x = best_candidate_1,
         fixed = TRUE
       ),
-      yes = microshades_grey[[1]][subgroup],
-      no = microshades[[group]][subgroup]
+      yes = microshades_grey[[1]][[subgroup]],
+      no = microshades[[group]][[subgroup]]
     )) |>
     dplyr::mutate(name = paste(best_candidate_1, best_candidate_2, sep = " - ")) |>
     dplyr::select(
