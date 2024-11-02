@@ -6,10 +6,10 @@
 \usage{
 make_chromatographiable(
   df,
-  mass_min = params$structures$mass$min,
-  mass_max = params$structures$mass$max,
-  logp_min = params$structures$logp$min,
-  logp_max = params$structures$logp$max
+  mass_min = 50,
+  mass_max = 1500,
+  logp_min = -1,
+  logp_max = 6
 )
 }
 \arguments{

@@ -15,18 +15,14 @@ plot_histograms <-
            xlab = TRUE) {
     absolute <- ggplot2::ggplot() +
       ggplot2::geom_line(
-        data = chromatograms_list_cad$chromatograms_improved_long,
+        data = chromatograms_list_cad$chromatograms_baselined_long,
         mapping = ggplot2::aes(x = time, y = intensity / max(intensity)),
         col = "black",
         size = 0.1
       ) +
       ggplot2::geom_bar(
         data = dataframe,
-        mapping = ggplot2::aes(
-          x = sample,
-          y = get(y),
-          fill = ids
-        ),
+        mapping = ggplot2::aes(x = sample, y = get(y), fill = ids),
         color = "grey",
         stat = "identity",
         width = 1
@@ -34,7 +30,7 @@ plot_histograms <-
       ggplot2::scale_fill_manual(
         values = levels(dataframe$color) |>
           as.character(),
-        guide = ggplot2::guide_legend(reverse = TRUE)
+        guide = ggplot2::guide_legend()
       ) +
       {
         if (xlab == TRUE) {
@@ -75,7 +71,7 @@ plot_histograms_confident <-
 
     plot <- ggplot2::ggplot() +
       ggplot2::geom_line(
-        data = chromatograms_list_cad$chromatograms_improved_long,
+        data = chromatograms_list_cad$chromatograms_baselined_long,
         mapping = ggplot2::aes(x = time, y = intensity / max(intensity)),
         col = "black",
         size = 0.1
@@ -134,10 +130,7 @@ plot_histograms_confident <-
       ) +
       ggplot2::ylab("Intensity") +
       ggplot2::xlab("Retention time [min]") +
-      ggplot2::xlim(
-        max(TIME_MIN),
-        min(TIME_MAX)
-      )
+      ggplot2::xlim(max(TIME_MIN), min(TIME_MAX))
 
     return(plot)
   }
@@ -152,7 +145,9 @@ plot_histograms_confident <-
 #'
 #' @examples NULL
 plot_histograms_taxo <-
-  function(dataframe, level = "max", mode = "pos") {
+  function(dataframe,
+           level = "max",
+           mode = "pos") {
     dataframe <- dataframe |>
       dplyr::group_by(peak_area) |>
       dplyr::mutate(n = max(dplyr::row_number())) |>
@@ -163,13 +158,13 @@ plot_histograms_taxo <-
     if (mode == "neg") {
       dataframe$peak_area <- -1 * dataframe$peak_area
       dataframe$feature_area <- -1 * dataframe$feature_area
-      chromatograms_list_cad$chromatograms_improved_long$intensity <-
-        -1 * chromatograms_list_cad$chromatograms_improved_long$intensity
+      chromatograms_list_cad$chromatograms_baselined_long$intensity <-
+        -1 * chromatograms_list_cad$chromatograms_baselined_long$intensity
     }
 
     plot <- ggplot2::ggplot() +
       ggplot2::geom_line(
-        data = chromatograms_list_cad$chromatograms_improved_long,
+        data = chromatograms_list_cad$chromatograms_baselined_long,
         mapping = ggplot2::aes(x = time, y = intensity / max(abs(intensity))),
         col = "black",
         size = 0.1
@@ -228,10 +223,7 @@ plot_histograms_taxo <-
       ) +
       ggplot2::ylab("Intensity") +
       ggplot2::xlab("Retention time [min]") +
-      ggplot2::xlim(
-        max(TIME_MIN),
-        min(TIME_MAX)
-      )
+      ggplot2::xlim(max(TIME_MIN), min(TIME_MAX))
 
     return(plot)
   }
@@ -252,20 +244,15 @@ plot_histograms_litt <-
            label,
            y = "values",
            xlab = TRUE) {
-    absolute <- ggplot2::ggplot(
-      dataframe,
-      ggplot2::aes(
-        x = sample,
-        y = get(y),
-        fill = ids
-      )
-    ) +
-      ggplot2::geom_col() +
-      ggplot2::geom_bar(stat = "identity") +
+    absolute <- ggplot2::ggplot(dataframe, ggplot2::aes(x = sample, y = get(y), fill = ids)) +
+      ggplot2::geom_bar(
+        stat = "identity",
+        position = ggplot2::position_stack(reverse = TRUE)
+      ) +
       ggplot2::scale_fill_manual(
         values = levels(dataframe$color) |>
           as.character(),
-        guide = ggplot2::guide_legend(reverse = TRUE, ncol = 1)
+        guide = ggplot2::guide_legend(ncol = 1)
       ) +
       {
         if (xlab == TRUE) {

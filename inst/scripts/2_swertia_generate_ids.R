@@ -1,28 +1,5 @@
 start <- Sys.time()
 
-#' Packages
-packages_cran <-
-  c(
-    "devtools",
-    "dplyr",
-    "future",
-    "future.apply",
-    "ggplot2",
-    "gt",
-    "htmltools",
-    "plotly",
-    "progressr",
-    "purrr",
-    "RCurl",
-    "readr",
-    "splitstackshape",
-    "tidyr",
-    "WikidataQueryServiceR",
-    "yaml"
-  )
-packages_bioconductor <- NULL
-packages_github <- c("KarstensLab/microshades")
-
 source(file = "R/check_and_load_packages.R")
 source(file = "R/check_export_dir.R")
 source(file = "R/colors.R")
@@ -54,15 +31,7 @@ source(file = "https://raw.githubusercontent.com/taxonomicallyinformedannotation
 source(file = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/get_file.R")
 source(file = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/get_last_version_from_zenodo.R")
 
-check_and_load_packages_1()
-check_and_load_packages_2()
-
-handlers(global = TRUE)
-handlers("progress")
-
 paths <- parse_yaml_paths()
-params <- parse_yaml_params()
-
 get_last_version_from_zenodo(
   doi = paths$url$lotus$doi,
   pattern = paths$urls$lotus$pattern,
@@ -78,12 +47,39 @@ exports <-
     paths$data$treemaps$path
   )
 
+taxa <- c("Gentiana", "Kopsia", "Ginkgo")
+dimensionality <- 2
+c18 <- TRUE
+
+taxon_name_to_qid <- function(taxon_name) {
+  WikidataQueryServiceR::query_wikidata(
+    sparql_query = paste0(
+      "SELECT ?search ?item WHERE {
+    SERVICE wikibase:mwapi {
+      bd:serviceParam wikibase:endpoint \"www.wikidata.org\";
+                      wikibase:api \"EntitySearch\";
+                      mwapi:search \"",
+      taxon_name,
+      "                 \";
+                      mwapi:language \"mul\".
+    ?item wikibase:apiOutputItem mwapi:item.
+    ?num wikibase:apiOrdinal true.
+    }
+    ?item (wdt:P225) ?search.
+    FILTER (?num = 0)
+    }"
+    )
+  ) |>
+    tidytable::pull(item) |>
+    gsub(pattern = "http://www.wikidata.org/entity/", replacement = "")
+}
+
 #' As there is no better way than to manually assess if the QID
 #' really corresponds to what you want
-qids <- params$organisms$wikidata
-
-comparison <- params$organisms$comparison |>
-  as.character()
+qids <- taxa |>
+  lapply(taxon_name_to_qid)
+names(qids) <- taxa
+comparison <- taxa <- c("Gentiana", "Alstonia")
 
 genera <-
   names(qids)[!grepl(
@@ -144,11 +140,11 @@ results <- purrr::keep(results, ~ nrow(.) > 0)
 message("Cleaning tables and adding columns")
 tables <- tables_progress(xs = results)
 
-if (params$structures$dimensionality == 2) {
+if (dimensionality == 2) {
   tables <- lapply(tables, make_2D)
 }
 
-if (params$structures$c18 == TRUE) {
+if (c18 == TRUE) {
   tables <- lapply(tables, make_chromatographiable)
 }
 
@@ -172,7 +168,7 @@ tables$SwertiaExp <-
     structure_xlop = 0,
   ) |>
   dplyr::rowwise() |>
-  dplyr::slice(rep(1:n(), each = n * 100)) |>
+  dplyr::slice(rep(1:dplyr::n(), each = n * 100)) |>
   dplyr::filter(!is.na(structure))
 
 message("Generating chemical hierarchies...")
@@ -183,14 +179,8 @@ message("... for grouped taxa")
 hierarchies_grouped <- hierarchies_grouped_progress(xs = tables)
 message("... combining")
 names(hierarchies_grouped) <- ifelse(
-  test = !grepl(
-    pattern = "\\W+",
-    x = names(hierarchies_grouped)
-  ),
-  yes = paste(names(hierarchies_grouped),
-    "grouped",
-    sep = "_"
-  ),
+  test = !grepl(pattern = "\\W+", x = names(hierarchies_grouped)),
+  yes = paste(names(hierarchies_grouped), "grouped", sep = "_"),
   no = names(hierarchies_grouped)
 )
 hierarchies_grouped <- purrr::compact(hierarchies_grouped)
@@ -200,7 +190,7 @@ hierarchies <- append(hierarchies_simple, hierarchies_grouped)
 if (!is.null(comparison)) {
   message("Generating special comparison")
   special <- lapply(
-    X = 1:length(comparison),
+    X = seq_along(comparison),
     FUN = function(x) {
       tables[[comparison[[x]]]]
     }
@@ -247,10 +237,7 @@ plots <- prepared_plots |>
 treemaps_progress <- function(xs, type = "treemap") {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(
-    X = setNames(
-      object = xs,
-      nm = xs
-    ),
+    X = setNames(object = xs, nm = xs),
     FUN = function(x) {
       p()
       if (x != "special") {
@@ -322,40 +309,19 @@ treemaps_progress <- function(xs, type = "treemap") {
 }
 message("Generating treemaps")
 treemaps <-
-  treemaps_progress(xs = names(hierarchies)[!grepl(
-    pattern = "_grouped",
-    x = names(hierarchies)
-  )])
+  treemaps_progress(xs = names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies))])
 
 message("Generating sunbursts")
 sunbursts <-
-  treemaps_progress(
-    xs = names(hierarchies)[!grepl(
-      pattern = "_grouped",
-      x = names(hierarchies)
-    )],
-    type = "sunburst"
-  )
+  treemaps_progress(xs = names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies))], type = "sunburst")
 
 message("Filtering treemaps")
 treemaps <-
-  within(
-    treemaps,
-    rm(list = names(treemaps)[grepl(
-      pattern = "ae$",
-      x = names(treemaps)
-    )])
-  )
+  within(treemaps, rm(list = names(treemaps)[grepl(pattern = "ae$", x = names(treemaps))]))
 
 message("Filtering sunbursts")
 sunbursts <-
-  within(
-    sunbursts,
-    rm(list = names(sunbursts)[grepl(
-      pattern = "ae$",
-      x = names(sunbursts)
-    )])
-  )
+  within(sunbursts, rm(list = names(sunbursts)[grepl(pattern = "ae$", x = names(sunbursts))]))
 
 # plotly::save_image(
 #   p = treemaps$special,
