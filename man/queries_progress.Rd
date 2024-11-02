@@ -4,13 +4,19 @@
 \alias{queries_progress}
 \title{Queries progress}
 \usage{
-queries_progress(xs)
+queries_progress(xs, start = "0", end = "9999", limit = "1000000")
 }
 \arguments{
 \item{xs}{XS}
+
+\item{start}{Start}
+
+\item{end}{End}
+
+\item{limit}{Limit}
 }
 \value{
-A list of queries results
+A list of queries
 }
 \description{
 Queries progress
