@@ -26,7 +26,7 @@ extract_ms_progress <- function(xs, ms_data, peaks_prelist) {
               ms_data |>
                 MSnbase::chromatogram(rt = peaks_prelist$list_rtr[[x]], mz = peaks_prelist$list_mzr[[x]][[z]])
             },
-            error = function(e) {
+            error = function() {
               message("Going too fast...1 sec")
               Sys.sleep(1)
               tryCatch(
@@ -34,7 +34,7 @@ extract_ms_progress <- function(xs, ms_data, peaks_prelist) {
                   ms_data |>
                     MSnbase::chromatogram(rt = peaks_prelist$list_rtr[[x]], mz = peaks_prelist$list_mzr[[x]][[z]])
                 },
-                error = function(e) {
+                error = function() {
                   message("Going way too fast...2 secs")
                   Sys.sleep(2)
                   return(

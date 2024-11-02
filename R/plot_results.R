@@ -133,6 +133,7 @@ plot_results_2 <- function(detector = "cad") {
       )
     return(df_new)
   }
+
   temp_fix_posneg <- function(df) {
     df_new <- df |>
       dplyr::mutate(newrt = round(peak_rt_apex, 1)) |>
@@ -195,21 +196,21 @@ plot_results_2 <- function(detector = "cad") {
   ## TODO check to use full table
   table_taxo_maj_cor_ms <- list$peaks_maj_precor_taxo_cor |>
     prepare_hierarchy(detector = "ms")
-  table_taxo_maj_cor_ms_2 <- table_taxo_maj_cor_ms |>
-    dplyr::mutate(sample = gsub(
-      pattern = "_pos",
-      replacement = "",
-      x = sample,
-      ignore.case = TRUE
-    )) |>
-    dplyr::mutate(sample = gsub(
-      pattern = "_neg",
-      replacement = "",
-      x = sample,
-      ignore.case = TRUE
-    )) |>
-    dplyr::group_by(parents, ids, labels, species, sample) |>
-    dplyr::summarise(values = sum(values))
+  # table_taxo_maj_cor_ms_2 <- table_taxo_maj_cor_ms |>
+  #   dplyr::mutate(sample = gsub(
+  #     pattern = "_pos",
+  #     replacement = "",
+  #     x = sample,
+  #     ignore.case = TRUE
+  #   )) |>
+  #   dplyr::mutate(sample = gsub(
+  #     pattern = "_neg",
+  #     replacement = "",
+  #     x = sample,
+  #     ignore.case = TRUE
+  #   )) |>
+  #   dplyr::group_by(parents, ids, labels, species, sample) |>
+  #   dplyr::summarise(values = sum(values))
 
   message("... on confident")
   table_taxo_maj_cor_conf_signal <-
@@ -320,10 +321,10 @@ plot_results_2 <- function(detector = "cad") {
     )) |>
     dplyr::filter(parents == "") |>
     dplyr::arrange(desc(values))
-  index_ms_duo <- table_taxo_maj_cor_ms_2 |>
-    dplyr::filter(parents == "") |>
-    dplyr::arrange(desc(values)) |>
-    dplyr::distinct(ids, labels, .keep_all = TRUE)
+  # index_ms_duo <- table_taxo_maj_cor_ms_2 |>
+  #   dplyr::filter(parents == "") |>
+  #   dplyr::arrange(desc(values)) |>
+  #   dplyr::distinct(ids, labels, .keep_all = TRUE)
 
   sunburst_microshades_grey_signal_pos <- microshades_colors
   index_s_pos <- which(index_signal_pos$ids == "Other", arr.ind = TRUE)
@@ -355,11 +356,11 @@ plot_results_2 <- function(detector = "cad") {
     sunburst_microshades_grey_signal_duo[[index_s_duo]] <- microshades_grey[[1]][[5]]
   }
 
-  sunburst_microshades_grey_ms_duo <- microshades_colors
-  index_m_duo <- which(index_ms_duo$ids == "Other", arr.ind = TRUE)
-  if (length(index_m_duo) > 0) {
-    sunburst_microshades_grey_signal_duo[[index_m_duo]] <- microshades_grey[[1]][[5]]
-  }
+  # sunburst_microshades_grey_ms_duo <- microshades_colors
+  # index_m_duo <- which(index_ms_duo$ids == "Other", arr.ind = TRUE)
+  # if (length(index_m_duo) > 0) {
+  #   sunburst_microshades_grey_signal_duo[[index_m_duo]] <- microshades_grey[[1]][[5]]
+  # }
 
   sunburst_signal_based_pos <- table_taxo_maj_cor_signal |>
     dplyr::filter(grepl(
