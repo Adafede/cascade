@@ -1,5 +1,6 @@
 #' Improve signal
 #'
+#' @include filter_fft.R
 #' @include signal_sharpening.R
 #'
 #' @param df Dataframe
@@ -25,12 +26,9 @@ improve_signal <-
       dplyr::mutate(intensity = intensity + 100) |>
       dplyr::mutate(intensity = intensity - (min(intensity) - 0.001)) |>
       dplyr::mutate(
-        intensity_fourier = nucleR::filterFFT(
-          intensity,
-          pcKeepComp = fourier_components,
-          # pcKeepComp = 0.01,
-          showPowerSpec = FALSE,
-          useOptim = TRUE
+        intensity_fourier = filter_fft(
+          x = intensity,
+          components = fourier_components
         )
       )
 
