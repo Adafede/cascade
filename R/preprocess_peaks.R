@@ -89,17 +89,6 @@ preprocess_peaks <- function(detector = "cad",
     list_df_features_with_peaks_per_peak |>
     purrr::flatten()
 
-  # message( "retrieving ms files")
-  # list_dda_with_peak <-
-  #   future_lapply(
-  #     X = list_df_features_with_peaks_long,
-  #     FUN = function(x) {
-  #       x <- x |>
-  #         filter_ms(shift = CAD_SHIFT)
-  #       return(x)
-  #     }
-  #   )
-  #
   message("normalizing chromato")
   list_chromato_with_peak <-
     future.apply::future_lapply(X = list_df_features_with_peaks_long, FUN = normalize_chromato, list = list)

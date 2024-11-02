@@ -5,8 +5,8 @@
 \title{Signal sharpening}
 \usage{
 signal_sharpening(
-  Time = timeow,
-  Intensity = intensityeah,
+  time,
+  intensity,
   k2 = 250,
   k4 = 1250000,
   sigma = 0.05,
@@ -15,9 +15,9 @@ signal_sharpening(
 )
 }
 \arguments{
-\item{Time}{Time}
+\item{time}{time}
 
-\item{Intensity}{Intensity}
+\item{intensity}{intensity}
 
 \item{k2}{K2}
 

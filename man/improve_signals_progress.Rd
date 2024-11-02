@@ -4,13 +4,30 @@
 \alias{improve_signals_progress}
 \title{Improve signals progress}
 \usage{
-improve_signals_progress(xs)
+improve_signals_progress(
+  xs,
+  fourier_components = 0.01,
+  frequency = 2,
+  resample = 1,
+  time_min = 0,
+  time_max = Inf
+)
 }
 \arguments{
 \item{xs}{XS}
+
+\item{fourier_components}{Fourier components}
+
+\item{frequency}{Frequency}
+
+\item{resample}{Resample}
+
+\item{time_min}{Time min}
+
+\item{time_max}{Time max}
 }
 \value{
-A list of dataframes with improved signals
+A list of data frames with improved signals
 }
 \description{
 Improve signals progress

@@ -7,11 +7,17 @@
 check_peaks_integration(
   file = NULL,
   features = NULL,
+  detector = "cad",
   chromatogram = "baselined",
   min_area = 0.005,
   min_intensity = 10000,
-  cad_shift = 0.05,
-  show_example = FALSE
+  shift = 0.05,
+  show_example = FALSE,
+  fourier_components = 0.01,
+  time_min = 0,
+  time_max = Inf,
+  frequency = 2,
+  resample = 1
 )
 }
 \arguments{
@@ -19,15 +25,27 @@ check_peaks_integration(
 
 \item{features}{Features path}
 
+\item{detector}{Detector}
+
 \item{chromatogram}{Chromatogram}
 
 \item{min_area}{Minimum area}
 
 \item{min_intensity}{Minimum intensity}
 
-\item{cad_shift}{CAD shift}
+\item{shift}{shift}
 
 \item{show_example}{Show example? Default to FALSE}
+
+\item{fourier_components}{Fourier components}
+
+\item{time_min}{Time min}
+
+\item{time_max}{Time max}
+
+\item{frequency}{Frequency}
+
+\item{resample}{Resample}
 }
 \value{
 A plot with (non-)aligned chromatograms

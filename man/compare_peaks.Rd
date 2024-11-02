@@ -4,10 +4,14 @@
 \alias{compare_peaks}
 \title{Compare peaks}
 \usage{
-compare_peaks(x)
+compare_peaks(x, list_ms_peaks, peaks_prelist)
 }
 \arguments{
 \item{x}{X}
+
+\item{list_ms_peaks}{list_ms_peaks}
+
+\item{peaks_prelist}{peaks_prelist}
 }
 \value{
 A comparison score

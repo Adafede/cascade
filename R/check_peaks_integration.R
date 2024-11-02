@@ -4,6 +4,7 @@
 #'
 #' @include load_chromatograms.R
 #' @include load_features.R
+#' @include load_name.R
 #' @include plot_peak_detection.R
 #' @include prepare_features.R
 #' @include preprocess_chromatograms.R
@@ -11,11 +12,17 @@
 #'
 #' @param file File path
 #' @param features Features path
+#' @param detector Detector
 #' @param chromatogram Chromatogram
 #' @param min_area Minimum area
 #' @param min_intensity Minimum intensity
-#' @param cad_shift CAD shift
+#' @param shift shift
 #' @param show_example Show example? Default to FALSE
+#' @param fourier_components Fourier components
+#' @param time_min Time min
+#' @param time_max Time max
+#' @param frequency Frequency
+#' @param resample Resample
 #'
 #' @return A plot with (non-)aligned chromatograms
 #'
@@ -25,63 +32,83 @@
 #' }
 check_peaks_integration <- function(file = NULL,
                                     features = NULL,
+                                    detector = "cad",
                                     chromatogram = "baselined",
                                     min_area = 0.005,
                                     min_intensity = 1E4,
-                                    cad_shift = 0.05,
-                                    show_example = FALSE) {
-  if (!show_example) {
-    name <- file |>
-      basename()
-  } else {
-    name <- c("210619_AR_06_V_03_2_01.mzML")
-  }
-  message("loading feature table")
-  feature_table <- features |>
-    load_features(show_example = show_example)
-
+                                    shift = 0.05,
+                                    show_example = FALSE,
+                                    fourier_components = 0.01,
+                                    time_min = 0,
+                                    time_max = Inf,
+                                    frequency = 2,
+                                    resample = 1) {
   message("loading chromatograms")
   chromatograms_all <- file |>
     load_chromatograms(show_example = show_example)
 
-  message("preparing feature list ...")
+  message("loading name")
+  name <- file |>
+    load_name(show_example = show_example)
+
+  message("loading feature table")
+  feature_table <- features |>
+    load_features(show_example = show_example)
+
+  message("preparing features")
   df_features <- feature_table |>
     prepare_features(min_intensity = min_intensity, name = name)
 
-  chromatograms_list_cad <- preprocess_chromatograms(
+  message("Preprocessing chromatograms")
+  chromatograms_list <- preprocess_chromatograms(
+    detector = detector,
     name = name,
-    list = chromatograms_all[c(FALSE, FALSE, TRUE)],
-    shift = cad_shift
+    list = switch(detector,
+      "bpi" = chromatograms_all[c(TRUE, FALSE, FALSE)],
+      "cad" = chromatograms_all[c(FALSE, FALSE, TRUE)],
+      "pda" = chromatograms_all[c(FALSE, TRUE, FALSE)]
+    ),
+    signal_name = switch(detector,
+      "bpi" = "BasePeak_0",
+      "cad" = "UV.1_CAD_1_0",
+      "pda" = "PDA.1_TotalAbsorbance_0"
+    ),
+    shift = shift,
+    fourier_components = fourier_components,
+    time_min = time_min,
+    time_max = time_max,
+    frequency = frequency,
+    resample = resample
   )
 
   peaks <-
     preprocess_peaks(
       df_features = df_features,
       df_long = switch(chromatogram,
-        "original" = chromatograms_list_cad$chromatograms_original_long,
-        "improved" = chromatograms_list_cad$chromatograms_improved_long,
-        "baselined" = chromatograms_list_cad$chromatograms_baselined_long
+        "original" = chromatograms_list$chromatograms_original_long,
+        "improved" = chromatograms_list$chromatograms_improved_long,
+        "baselined" = chromatograms_list$chromatograms_baselined_long
       ) |>
         tidytable::mutate(intensity = intensity / max(intensity)),
       list = switch(chromatogram,
-        "original" = chromatograms_list_cad$chromatograms_original,
-        "improved" = chromatograms_list_cad$chromatograms_improved,
-        "baselined" = chromatograms_list_cad$chromatograms_baselined
+        "original" = chromatograms_list$chromatograms_original,
+        "improved" = chromatograms_list$chromatograms_improved,
+        "baselined" = chromatograms_list$chromatograms_baselined
       ),
       min_area = min_area,
-      shift = cad_shift,
+      shift = shift,
       name = name
     )
 
   chromatogram_normalized <- switch(chromatogram,
-    "original" = chromatograms_list_cad$chromatograms_original_long |>
+    "original" = chromatograms_list$chromatograms_original_long |>
       tidytable::bind_rows() |>
       tidytable::filter(row_number() %% 10 == 1) |>
       tidytable::mutate(intensity = intensity / max(intensity)),
-    "improved" = chromatograms_list_cad$chromatograms_improved_long |>
+    "improved" = chromatograms_list$chromatograms_improved_long |>
       tidytable::bind_rows() |>
       tidytable::mutate(intensity = intensity / max(intensity)),
-    "baselined" = chromatograms_list_cad$chromatograms_baselined_long |>
+    "baselined" = chromatograms_list$chromatograms_baselined_long |>
       tidytable::bind_rows() |>
       tidytable::mutate(intensity = intensity / max(intensity))
   )
