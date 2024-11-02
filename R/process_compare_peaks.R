@@ -15,19 +15,19 @@
 #' @include transform_ms.R
 #'
 #' @param file File path
-#' @param file_positive Positive file path
-#' @param time_min Minimum time
-#' @param time_max Maximum time
-#' @param cad_shift CAD shift
-#' @param pda_shift PDA shift
+#' @param features Features path
+#' @param type Type. "original", "baselined" or "improved"
+#' @param detector Detector
+#' @param export_dir Export directory
+#' @param show_example Show example? Default to FALSE
 #' @param fourier_components Fourier components
 #' @param frequency Frequency
+#' @param min_area Min area
+#' @param min_intensity Min intensity
 #' @param resample Resample
-#' @param chromatograms Chromatograms to plot
-#' @param type Type. "baselined" or "improved"
-#' @param normalize_intensity Normalize intensity? Default to TRUE
-#' @param normalize_time Normalize time? Default to FALSE
-#' @param show_example Show example? Default to FALSE
+#' @param shift Shift
+#' @param time_min Time min
+#' @param time_max Time max
 #'
 #' @return A plot with (non-)aligned chromatograms
 #'
@@ -37,7 +37,7 @@
 #' }
 process_compare_peaks <- function(file = NULL,
                                   features = NULL,
-                                  chromatogram = "baselined",
+                                  type = "baselined",
                                   detector = "cad",
                                   export_dir = "data/interim/peaks",
                                   show_example = FALSE,
@@ -99,13 +99,13 @@ process_compare_peaks <- function(file = NULL,
   peaks_prelist <- preprocess_peaks(
     detector = detector,
     df_features = df_features,
-    df_long = switch(chromatogram,
+    df_long = switch(type,
       "original" = chromatograms_list$chromatograms_original_long,
       "improved" = chromatograms_list$chromatograms_improved_long,
       "baselined" = chromatograms_list$chromatograms_baselined_long
     ) |>
       tidytable::mutate(intensity = intensity / max(intensity)),
-    list = switch(chromatogram,
+    list = switch(type,
       "original" = chromatograms_list$chromatograms_original,
       "improved" = chromatograms_list$chromatograms_improved,
       "baselined" = chromatograms_list$chromatograms_baselined
