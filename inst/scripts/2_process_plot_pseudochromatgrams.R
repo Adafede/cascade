@@ -13,10 +13,7 @@ source(file = "R/preprocess_chromatograms.R")
 source(file = "R/treemaps_progress.R")
 source(file = "R/cascade-package.R")
 
-message(
-  "This program performs",
-  "TODO"
-)
+message("This program performs", "TODO")
 message("Authors: \n", "AR")
 message("Contributors: \n", "...")
 
@@ -37,7 +34,7 @@ IMPORT_FILE_CAD <- "data/interim/peaks/210619_AR_06_V_03_2_01_featuresInformed_c
 IMPORT_FILE_CAD_2 <- "data/interim/peaks/210619_AR_06_V_03_2_01_featuresInformed_cad.tsv.gz"
 EXPORT_DIR <- "data/interim/peaks"
 FILE_POSITIVE <- "data/source/mzml/210619_AR_06_V_03_2_01.mzML"
-names <- FILE_POSITIVE |>
+name <- FILE_POSITIVE |>
   gsub(pattern = ".*/", replacement = "") |>
   gsub(pattern = "[0-9]{8}_AR_[0-9]{2}_", replacement = "") |>
   gsub(
@@ -84,14 +81,22 @@ if (THESIS == TRUE) {
 chromatograms_list_bpi <- preprocess_chromatograms(
   detector = "bpi",
   list = chromatograms_all[c(TRUE, FALSE, FALSE)],
+  name = name,
   signal_name = "BasePeak_0",
   shift = 0
 )
-chromatograms_list_cad <- preprocess_chromatograms()
+chromatograms_list_cad <- preprocess_chromatograms(
+  detector = "cad",
+  list = chromatograms_all[c(FALSE, FALSE, TRUE)],
+  name = name,
+  signal_name = "UV.1_CAD_1_0",
+  shift = CAD_SHIFT
+)
 chromatograms_list_pda <-
   preprocess_chromatograms(
     detector = "pda",
     list = chromatograms_all[c(FALSE, TRUE, FALSE)],
+    name = name,
     signal_name = "PDA.1_TotalAbsorbance_0",
     shift = PDA_SHIFT
   )
@@ -100,15 +105,17 @@ if (THESIS == TRUE) {
   chromatograms_list_bpi_neg <- preprocess_chromatograms(
     detector = "bpi",
     list = chromatograms_all_neg[c(TRUE, FALSE, FALSE)],
+    name = name,
     signal_name = "BasePeak_0",
     shift = 0
   )
   chromatograms_list_cad_neg <-
-    preprocess_chromatograms(list = chromatograms_all_neg[c(FALSE, FALSE, TRUE)])
+    preprocess_chromatograms(list = chromatograms_all_neg[c(FALSE, FALSE, TRUE)], name = name)
   chromatograms_list_pda_neg <-
     preprocess_chromatograms(
       detector = "pda",
       list = chromatograms_all_neg[c(FALSE, TRUE, FALSE)],
+      name = name,
       signal_name = "PDA.1_TotalAbsorbance_0",
       shift = PDA_SHIFT
     )
@@ -309,10 +316,7 @@ hierarchies$special <- prepare_hierarchy(
 ) |>
   dplyr::arrange(sample)
 treemaps <-
-  treemaps_progress_no_title(xs = names(hierarchies)[!grepl(
-    pattern = "_grouped",
-    x = names(hierarchies)
-  )])
+  treemaps_progress_no_title(xs = names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies))])
 # treemaps$special
 
 if (BPI) {
@@ -498,10 +502,7 @@ bb_neg <- lapply(
 temp_df <- example_peak |>
   dplyr::mutate(mz = round(feature_mz, 1)) |>
   dplyr::distinct(feature_id, comparison_score, mz) |>
-  dplyr::mutate(comparison_score = ifelse(test = comparison_score < 0,
-    yes = 0,
-    no = comparison_score
-  )) |>
+  dplyr::mutate(comparison_score = ifelse(test = comparison_score < 0, yes = 0, no = comparison_score)) |>
   dplyr::left_join(best_candidates |>
     dplyr::select(-mz) |>
     dplyr::mutate(feature_id = as.numeric(feature_id))) |>
@@ -592,14 +593,10 @@ plot_comparison <- ggplot2::ggplot(
     color = "black",
     linetype = "dashed"
   ) +
-  viridis::scale_color_viridis(
-    option = "D",
-    name = "Peak Similarity Score"
-  ) +
+  viridis::scale_color_viridis(option = "D", name = "Peak Similarity Score") +
   ggplot2::theme_bw() +
   ggplot2::theme(
-    complete = FALSE,
-    # legend.position = "none",
+    complete = FALSE, # legend.position = "none",
     validate = TRUE
   ) +
   xlab("Time [min]") +
@@ -627,14 +624,10 @@ plot_taxo <- ggplot2::ggplot(
     color = "black",
     linetype = "dashed"
   ) +
-  viridis::scale_color_viridis(
-    option = "D",
-    name = "Taxonomic Distance Score"
-  ) +
+  viridis::scale_color_viridis(option = "D", name = "Taxonomic Distance Score") +
   ggplot2::theme_bw() +
   ggplot2::theme(
-    complete = FALSE,
-    # legend.position = "none",
+    complete = FALSE, # legend.position = "none",
     validate = TRUE
   ) +
   xlab("Time [min]") +
@@ -662,14 +655,10 @@ plot_mf <- ggplot2::ggplot(
     color = "black",
     linetype = "dashed"
   ) +
-  ggplot2::scale_color_manual(
-    values = c("#4E79A7", "#BAB0AC"),
-    name = "Molecular Formula"
-  ) +
+  ggplot2::scale_color_manual(values = c("#4E79A7", "#BAB0AC"), name = "Molecular Formula") +
   ggplot2::theme_bw() +
   ggplot2::theme(
-    complete = FALSE,
-    # legend.position = "none",
+    complete = FALSE, # legend.position = "none",
     validate = TRUE
   ) +
   xlab("Time [min]") +
@@ -686,11 +675,19 @@ plot_ik <- ggplot2::ggplot(
   )
 ) +
   ggplot2::geom_line(data = cc_pos |>
-    dplyr::mutate(inchikey_2D = gsub("MIJYXULNPSFWEK", "oleanolic acid", inchikey_2D)) |>
-    dplyr::mutate(inchikey_2D = gsub("WCGUUGGRBIKTOS", "ursolic acid", inchikey_2D))) +
+    dplyr::mutate(inchikey_2D = gsub(
+      "MIJYXULNPSFWEK", "oleanolic acid", inchikey_2D
+    )) |>
+    dplyr::mutate(inchikey_2D = gsub(
+      "WCGUUGGRBIKTOS", "ursolic acid", inchikey_2D
+    ))) +
   ggplot2::geom_line(data = cc_neg |>
-    dplyr::mutate(inchikey_2D = gsub("MIJYXULNPSFWEK", "oleanolic acid", inchikey_2D)) |>
-    dplyr::mutate(inchikey_2D = gsub("WCGUUGGRBIKTOS", "ursolic acid", inchikey_2D))) +
+    dplyr::mutate(inchikey_2D = gsub(
+      "MIJYXULNPSFWEK", "oleanolic acid", inchikey_2D
+    )) |>
+    dplyr::mutate(inchikey_2D = gsub(
+      "WCGUUGGRBIKTOS", "ursolic acid", inchikey_2D
+    ))) +
   ggplot2::geom_line(
     data = cc_cad_pos,
     color = "black",
@@ -715,20 +712,20 @@ plot_ik <- ggplot2::ggplot(
   ylab(label = "Normalized Intensity")
 
 #' export
-ggplot2::ggsave(
-  filename = "~/git/cascade/data/paper/cascade-4.pdf",
-  plot = ggpubr::ggarrange(
-    plot_comparison,
-    plot_taxo,
-    plot_mf,
-    plot_ik,
-    labels = "AUTO",
-    align = "hv"
-  ),
-  width = 9,
-  height = 9,
-  limitsize = FALSE
-)
+# ggplot2::ggsave(
+#   filename = "~/git/cascade/data/paper/cascade-4.pdf",
+#   plot = ggpubr::ggarrange(
+#     plot_comparison,
+#     plot_taxo,
+#     plot_mf,
+#     plot_ik,
+#     labels = "AUTO",
+#     align = "hv"
+#   ),
+#   width = 9,
+#   height = 9,
+#   limitsize = FALSE
+# )
 # ggplot2::ggsave(filename = "~/git/cascade/data/paper/cascade-6.pdf",
 #                 plot = fig_taxo)
 # ggplot2::ggsave(

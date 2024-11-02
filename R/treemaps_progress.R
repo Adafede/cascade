@@ -28,7 +28,7 @@ treemaps_progress <- function(xs, type = "treemap") {
           textinfo = "label+percent value+percent parent+percent root"
         ) |>
           plotly::layout(
-            colorway = sunburst_colors,
+            colorway = microshades_colors,
             title = paste(x, "(", nrow(
               tables[[x]] |> dplyr::distinct(structure)
             ), ")"),
@@ -77,7 +77,7 @@ treemaps_progress <- function(xs, type = "treemap") {
               ")"
             ),
             grid = list(rows = 1, columns = 2),
-            colorway = sunburst_colors,
+            colorway = microshades_colors,
             margin = list(t = 40)
           )
       }
@@ -115,7 +115,7 @@ treemaps_progress_no_title <- function(xs, type = "treemap") {
           textinfo = "label+percent value+percent parent+percent root"
         ) |>
           plotly::layout(
-            colorway = sunburst_colors,
+            colorway = microshades_colors,
             margin = list(t = 40)
           )
       } else {
@@ -146,7 +146,7 @@ treemaps_progress_no_title <- function(xs, type = "treemap") {
           ) |>
           plotly::layout(
             grid = list(rows = 1, columns = 2),
-            colorway = sunburst_colors,
+            colorway = microshades_colors,
             margin = list(t = 40)
           )
       }

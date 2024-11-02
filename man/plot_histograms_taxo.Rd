@@ -4,12 +4,14 @@
 \alias{plot_histograms_taxo}
 \title{Plot histograms taxo}
 \usage{
-plot_histograms_taxo(dataframe, level = "max")
+plot_histograms_taxo(dataframe, level = "max", mode = "pos")
 }
 \arguments{
 \item{dataframe}{Dataframe}
 
 \item{level}{Level}
+
+\item{mode}{Mode}
 }
 \value{
 A plot of taxo histograms

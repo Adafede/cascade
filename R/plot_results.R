@@ -50,9 +50,9 @@ plot_results_1 <- function(detector = "cad", mode = "pos") {
   message("plotting histograms...")
   message("... taxo")
   histograms_taxo_maj <- df_histogram_maj |>
-    plot_histograms_taxo()
+    plot_histograms_taxo(mode = mode)
   histograms_taxo_min <- df_histogram_min |>
-    plot_histograms_taxo(level = "min")
+    plot_histograms_taxo(level = "min", mode = mode)
 
   message("... confident features")
   histograms_conf_maj <- df_histogram_maj_conf |>
@@ -248,7 +248,7 @@ plot_results_2 <- function(detector = "cad") {
       ignore.case = TRUE
     )) |>
     quick_sb() |>
-    plotly::layout(colorway = sunburst_colors)
+    plotly::layout(colorway = microshades_colors)
 
   sunburst_conf_signal_based_neg <-
     table_taxo_maj_cor_conf_signal |>
@@ -258,12 +258,12 @@ plot_results_2 <- function(detector = "cad") {
       ignore.case = TRUE
     )) |>
     quick_sb() |>
-    plotly::layout(colorway = sunburst_colors)
+    plotly::layout(colorway = microshades_colors)
 
   sunburst_conf_signal_based_duo <-
     table_taxo_maj_cor_conf_signal_2 |>
     quick_sb() |>
-    plotly::layout(colorway = sunburst_colors)
+    plotly::layout(colorway = microshades_colors)
 
   sunburst_conf_ms_based_pos <- table_taxo_maj_cor_conf_ms |>
     dplyr::filter(grepl(
@@ -272,7 +272,7 @@ plot_results_2 <- function(detector = "cad") {
       ignore.case = TRUE
     )) |>
     quick_sb() |>
-    plotly::layout(colorway = sunburst_colors)
+    plotly::layout(colorway = microshades_colors)
 
   sunburst_conf_ms_based_neg <- table_taxo_maj_cor_conf_ms |>
     dplyr::filter(grepl(
@@ -281,7 +281,7 @@ plot_results_2 <- function(detector = "cad") {
       ignore.case = TRUE
     )) |>
     quick_sb() |>
-    plotly::layout(colorway = sunburst_colors)
+    plotly::layout(colorway = microshades_colors)
 
   index_signal_pos <- table_taxo_maj_cor_signal |>
     dplyr::filter(grepl(
@@ -325,40 +325,40 @@ plot_results_2 <- function(detector = "cad") {
     dplyr::arrange(desc(values)) |>
     dplyr::distinct(ids, labels, .keep_all = TRUE)
 
-  sunburst_grey_colors_signal_pos <- sunburst_colors
+  sunburst_microshades_grey_signal_pos <- microshades_colors
   index_s_pos <- which(index_signal_pos$ids == "Other", arr.ind = TRUE)
   if (length(index_s_pos) > 0) {
-    sunburst_grey_colors_signal_pos[[index_s_pos]] <- grey_colors[[1]][[5]]
+    sunburst_microshades_grey_signal_pos[[index_s_pos]] <- microshades_grey[[1]][[5]]
   }
 
-  sunburst_grey_colors_ms_pos <- sunburst_colors
+  sunburst_microshades_grey_ms_pos <- microshades_colors
   index_m_pos <- which(index_ms_pos$ids == "Other", arr.ind = TRUE)
   if (length(index_m_pos) > 0) {
-    sunburst_grey_colors_signal_pos[[index_m_pos]] <- grey_colors[[1]][[5]]
+    sunburst_microshades_grey_signal_pos[[index_m_pos]] <- microshades_grey[[1]][[5]]
   }
 
-  sunburst_grey_colors_signal_neg <- sunburst_colors
+  sunburst_microshades_grey_signal_neg <- microshades_colors
   index_s_neg <- which(index_signal_neg$ids == "Other", arr.ind = TRUE)
   if (length(index_s_neg) > 0) {
-    sunburst_grey_colors_signal_pos[[index_s_neg]] <- grey_colors[[1]][[5]]
+    sunburst_microshades_grey_signal_pos[[index_s_neg]] <- microshades_grey[[1]][[5]]
   }
 
-  sunburst_grey_colors_ms_neg <- sunburst_colors
+  sunburst_microshades_grey_ms_neg <- microshades_colors
   index_m_neg <- which(index_ms_neg$ids == "Other", arr.ind = TRUE)
   if (length(index_m_neg) > 0) {
-    sunburst_grey_colors_signal_pos[[index_m_neg]] <- grey_colors[[1]][[5]]
+    sunburst_microshades_grey_signal_pos[[index_m_neg]] <- microshades_grey[[1]][[5]]
   }
 
-  sunburst_grey_colors_signal_duo <- sunburst_colors
+  sunburst_microshades_grey_signal_duo <- microshades_colors
   index_s_duo <- which(index_signal_duo$ids == "Other", arr.ind = TRUE)
   if (length(index_s_duo) > 0) {
-    sunburst_grey_colors_signal_duo[[index_s_duo]] <- grey_colors[[1]][[5]]
+    sunburst_microshades_grey_signal_duo[[index_s_duo]] <- microshades_grey[[1]][[5]]
   }
 
-  sunburst_grey_colors_ms_duo <- sunburst_colors
+  sunburst_microshades_grey_ms_duo <- microshades_colors
   index_m_duo <- which(index_ms_duo$ids == "Other", arr.ind = TRUE)
   if (length(index_m_duo) > 0) {
-    sunburst_grey_colors_signal_duo[[index_m_duo]] <- grey_colors[[1]][[5]]
+    sunburst_microshades_grey_signal_duo[[index_m_duo]] <- microshades_grey[[1]][[5]]
   }
 
   sunburst_signal_based_pos <- table_taxo_maj_cor_signal |>
@@ -368,7 +368,7 @@ plot_results_2 <- function(detector = "cad") {
       ignore.case = TRUE
     )) |>
     quick_sb() |>
-    plotly::layout(colorway = sunburst_grey_colors_signal_pos)
+    plotly::layout(colorway = sunburst_microshades_grey_signal_pos)
 
   sunburst_signal_based_neg <- table_taxo_maj_cor_signal |>
     dplyr::filter(grepl(
@@ -377,11 +377,11 @@ plot_results_2 <- function(detector = "cad") {
       ignore.case = TRUE
     )) |>
     quick_sb() |>
-    plotly::layout(colorway = sunburst_grey_colors_signal_neg)
+    plotly::layout(colorway = sunburst_microshades_grey_signal_neg)
 
   sunburst_signal_based_duo <- table_taxo_maj_cor_signal_2 |>
     quick_sb() |>
-    plotly::layout(colorway = sunburst_grey_colors_signal_duo)
+    plotly::layout(colorway = sunburst_microshades_grey_signal_duo)
 
   sunburst_ms_based_pos <- table_taxo_maj_cor_ms |>
     dplyr::filter(grepl(
@@ -390,7 +390,7 @@ plot_results_2 <- function(detector = "cad") {
       ignore.case = TRUE
     )) |>
     quick_sb() |>
-    plotly::layout(colorway = sunburst_grey_colors_ms_pos)
+    plotly::layout(colorway = sunburst_microshades_grey_ms_pos)
 
   sunburst_ms_based_neg <- table_taxo_maj_cor_ms |>
     dplyr::filter(grepl(
@@ -399,7 +399,7 @@ plot_results_2 <- function(detector = "cad") {
       ignore.case = TRUE
     )) |>
     quick_sb() |>
-    plotly::layout(colorway = sunburst_grey_colors_ms_neg)
+    plotly::layout(colorway = sunburst_microshades_grey_ms_neg)
 
   returned_list <- list(
     sunburst_signal_based_pos,
