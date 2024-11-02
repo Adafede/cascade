@@ -1,4 +1,3 @@
-source(file = "R/log_debug.R")
 start <- Sys.time()
 
 #' Packages
@@ -267,7 +266,7 @@ treemaps_progress <- function(xs, type = "treemap") {
           textinfo = "label+percent value+percent parent+percent root"
         ) |>
           plotly::layout(
-            colorway = sunburst_colors,
+            colorway = microshades_colors,
             title = paste(x, "(", nrow(
               tables[[x]] |> dplyr::distinct(structure)
             ), ")"),
@@ -314,7 +313,7 @@ treemaps_progress <- function(xs, type = "treemap") {
             #   ")"
             # ),
             grid = list(rows = 1, columns = 2),
-            colorway = sunburst_colors,
+            colorway = microshades_colors,
             margin = list(t = 40)
           )
       }
@@ -358,13 +357,13 @@ sunbursts <-
     )])
   )
 
-plotly::save_image(
-  p = treemaps$special,
-  file = "data/paper/cascade-8.pdf",
-  width = 900,
-  height = 900
-)
+# plotly::save_image(
+#   p = treemaps$special,
+#   file = "data/paper/cascade-8.pdf",
+#   width = 900,
+#   height = 900
+# )
 
 end <- Sys.time()
 
-message("Script finished in", format(end - start))
+message("Script finished in ", format(end - start))

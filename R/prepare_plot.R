@@ -61,8 +61,8 @@ prepare_plot <- function(dataframe, organism = "species") {
         x = parents,
         fixed = TRUE
       ),
-      yes = grey_colors[[1]][subgroup],
-      no = nice_colors[[group]][subgroup]
+      yes = microshades_grey[[1]][subgroup],
+      no = microshades[[group]][subgroup]
     )) |>
     dplyr::mutate(relative = values / tot) |>
     dplyr::ungroup()
@@ -214,8 +214,8 @@ prepare_plot_2 <- function(dataframe) {
         x = best_candidate_1,
         fixed = TRUE
       ),
-      yes = rev(grey_colors[[1]])[subgroup],
-      no = rev(nice_colors[[group]])[subgroup]
+      yes = microshades_grey[[1]][subgroup],
+      no = microshades[[group]][subgroup]
     )) |>
     dplyr::mutate(name = paste(best_candidate_1, best_candidate_2, sep = " - ")) |>
     dplyr::select(
@@ -281,17 +281,17 @@ prepare_plot_2 <- function(dataframe) {
     )) |>
     dplyr::mutate(color_2 = ifelse(
       test = name_2 == "Species",
-      yes = nice_colors[[9]][[5]],
+      yes = microshades[[9]][[1]],
       no = ifelse(
         test = name_2 == "Genus",
-        yes = nice_colors[[9]][[4]],
+        yes = microshades[[9]][[2]],
         no = ifelse(
           test = name_2 == "Family",
-          yes = nice_colors[[9]][[3]],
+          yes = microshades[[9]][[3]],
           no = ifelse(
             test = name_2 == "Kingdom",
-            yes = nice_colors[[9]][[2]],
-            no = grey_colors[[1]][[3]]
+            yes = microshades[[9]][[4]],
+            no = microshades_grey[[1]][[2]]
           )
         )
       )
