@@ -341,16 +341,16 @@ prepare_hierarchy <-
       dplyr::filter(parents != "") |>
       dplyr::distinct(chemical_pathway, parents, values_3) |>
       dplyr::ungroup() |>
-      dplyr::top_n(n = length(nice_colors), wt = values_3) |>
+      dplyr::top_n(n = length(microshades), wt = values_3) |>
       dplyr::arrange(desc(values_3)) |>
       dplyr::select(-values_3) |>
       dplyr::mutate(ids = parents, labels = parents) |>
       dplyr::mutate(parents = "", new_labels = labels) |>
       dplyr::distinct()
 
-    if (nrow(top_parents_table > length(nice_colors))) {
+    if (nrow(top_parents_table > length(microshades))) {
       top_parents_table <- top_parents_table |>
-        head(length(nice_colors)) ## in case of equal numbers among classes
+        head(length(microshades)) ## in case of equal numbers among classes
     }
 
     top_parents <- top_parents_table$labels

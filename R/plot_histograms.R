@@ -146,12 +146,13 @@ plot_histograms_confident <-
 #'
 #' @param dataframe Dataframe
 #' @param level Level
+#' @param mode Mode
 #'
 #' @return A plot of taxo histograms
 #'
 #' @examples NULL
 plot_histograms_taxo <-
-  function(dataframe, level = "max") {
+  function(dataframe, level = "max", mode = "pos") {
     dataframe <- dataframe |>
       dplyr::group_by(peak_area) |>
       dplyr::mutate(n = max(dplyr::row_number())) |>
