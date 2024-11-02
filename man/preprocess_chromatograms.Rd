@@ -6,22 +6,37 @@
 \usage{
 preprocess_chromatograms(
   detector = "cad",
+  fourier_components = 0.01,
+  frequency = 2,
   list,
   name,
+  resample = 1,
+  shift = 0,
   signal_name = "UV.1_CAD_1_0",
-  shift = 0
+  time_min = 0,
+  time_max = Inf
 )
 }
 \arguments{
 \item{detector}{Detector}
 
+\item{fourier_components}{Fourier components}
+
+\item{frequency}{Frequency}
+
 \item{list}{List}
 
 \item{name}{Name}
 
-\item{signal_name}{Signal name}
+\item{resample}{Resample}
 
 \item{shift}{Shift}
+
+\item{signal_name}{Signal name}
+
+\item{time_min}{Time min}
+
+\item{time_max}{Time max}
 }
 \value{
 A list of preprocessed chromatograms

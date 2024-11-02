@@ -1,22 +1,19 @@
 #' Compare peaks
 #'
 #' @param x X
+#' @param list_ms_peaks list_ms_peaks
+#' @param peaks_prelist peaks_prelist
 #'
 #' @return A comparison score
 #'
 #' @examples NULL
-compare_peaks <- function(x) {
+compare_peaks <- function(x, list_ms_peaks, peaks_prelist) {
   if (length(list_ms_peaks[[x]]) != 0) {
     future.apply::future_lapply(
       X = seq_along(list_ms_peaks[[x]]),
-      FUN = function(z) {
+      FUN = function(list_ms_peaks, x, z) {
         if (length(list_ms_peaks[[x]][[z]]) > 1) {
-          score <- MSnbase::compareChromatograms(
-            x = switch(detector,
-              "bpi" = peaks_prelist_bpi$list_chromato_peaks,
-              "cad" = peaks_prelist_cad$list_chromato_peaks,
-              "pda" = peaks_prelist_pda$list_chromato_peaks
-            )[[x]],
+          score <- MSnbase::compareChromatograms(peaks_prelist$list_chromato_peaks[[x]],
             y = list_ms_peaks[[x]][[z]],
             method = "closest"
           )
@@ -24,7 +21,9 @@ compare_peaks <- function(x) {
           score <- 0
         }
         return(score)
-      }
+      },
+      list_ms_peaks = list_ms_peaks,
+      x = x
     )
   } else {
     rep(list(0), length(x))

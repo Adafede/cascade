@@ -4,10 +4,10 @@
 #'
 #' @param df Dataframe
 #' @param fourier_components Fourier components
-#' @param time_min Time min
-#' @param time_max Time max
 #' @param frequency Frequency
 #' @param resample Resample
+#' @param time_min Time min
+#' @param time_max Time max
 #'
 #' @return A dataframe with improved signal
 #'
@@ -15,10 +15,10 @@
 improve_signal <-
   function(df,
            fourier_components = 0.01,
-           time_min = 0,
-           time_max = Inf,
            frequency = 2,
-           resample = 1) {
+           resample = 1,
+           time_min = 0,
+           time_max = Inf) {
     df_fourier <- df |>
       ## in case we have negative intensity
       ## 100 to be on the safe side
@@ -39,23 +39,23 @@ improve_signal <-
       y = df_fourier$intensity_fourier
     )
 
-    timeow <<- seq(
+    time <- seq(
       from = time_min,
       to = min(max(df_fourier$time), time_max),
       by = 1 / (frequency * 60 * resample)
     )
 
-    intensityeah <<- f(seq(
+    intensity <- f(seq(
       from = time_min,
       to = min(max(df_fourier$time), time_max),
       by = 1 / (frequency * 60 * resample)
     ))
 
-    intensity_sharpened <- signal_sharpening()
+    intensity_sharpened <- signal_sharpening(time = time, intensity = intensity)
 
     df_sharpened <-
       data.frame(
-        "time" = timeow[5:length(timeow)],
+        "time" = time[5:length(time)],
         "intensity" = intensity_sharpened
       )
 
