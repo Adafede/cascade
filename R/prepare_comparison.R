@@ -77,6 +77,7 @@ prepare_comparison <- function(detector = "cad") {
       dplyr::left_join(candidates_confident) |>
       dplyr::mutate(rt = as.numeric(rt))
   }
+
   temp_fix_2 <- function(df) {
     df |>
       dplyr::mutate(
@@ -85,10 +86,12 @@ prepare_comparison <- function(detector = "cad") {
         intensity = feature_area
       )
   }
+
   temp_fix_3 <- function(df) {
     df |>
       dplyr::mutate(peak_rt_apex = rt, peak_area = 0.001)
   }
+
   temp_fix_4 <- function(df) {
     df |>
       dplyr::mutate(

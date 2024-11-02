@@ -6,7 +6,7 @@
 NULL
 .datatable.aware <- TRUE
 
-.onLoad <- function(libname, pkgname) {
+.onLoad <- function() {
   ## Conflicts with chromatographR
   # options("pboptions" = list(
   #   type = if (interactive()) "timer" else "none",
@@ -31,6 +31,6 @@ NULL
   invisible(NULL)
 }
 
-.onAttach <- function(libname, pkgname) {
+.onAttach <- function() {
   packageStartupMessage("Welcome to CASCADE")
 }

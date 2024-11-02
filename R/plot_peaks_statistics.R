@@ -100,6 +100,7 @@ plot_peaks_statistics <- function(df) {
         axis.title.x = ggplot2::element_blank()
       )
   }
+
   alluvials_list <- lapply(X = accepted_variables, FUN = inner_f)
 
   return(alluvials_list)

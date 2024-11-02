@@ -389,7 +389,7 @@ prepare_hierarchy <-
       dplyr::mutate(new_labels = labels) |>
       dplyr::distinct()
 
-    top_medium <- top_medium_table$ids
+    # top_medium <- top_medium_table$ids
 
     suppressMessages(
       low_medium_table <-
