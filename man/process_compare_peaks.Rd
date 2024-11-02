@@ -7,7 +7,7 @@
 process_compare_peaks(
   file = NULL,
   features = NULL,
-  chromatogram = "baselined",
+  type = "baselined",
   detector = "cad",
   export_dir = "data/interim/peaks",
   show_example = FALSE,
@@ -24,31 +24,31 @@ process_compare_peaks(
 \arguments{
 \item{file}{File path}
 
+\item{features}{Features path}
+
+\item{type}{Type. "original", "baselined" or "improved"}
+
+\item{detector}{Detector}
+
+\item{export_dir}{Export directory}
+
 \item{show_example}{Show example? Default to FALSE}
 
 \item{fourier_components}{Fourier components}
 
 \item{frequency}{Frequency}
 
+\item{min_area}{Min area}
+
+\item{min_intensity}{Min intensity}
+
 \item{resample}{Resample}
 
-\item{time_min}{Minimum time}
+\item{shift}{Shift}
 
-\item{time_max}{Maximum time}
+\item{time_min}{Time min}
 
-\item{file_positive}{Positive file path}
-
-\item{cad_shift}{CAD shift}
-
-\item{pda_shift}{PDA shift}
-
-\item{chromatograms}{Chromatograms to plot}
-
-\item{type}{Type. "baselined" or "improved"}
-
-\item{normalize_intensity}{Normalize intensity? Default to TRUE}
-
-\item{normalize_time}{Normalize time? Default to FALSE}
+\item{time_max}{Time max}
 }
 \value{
 A plot with (non-)aligned chromatograms
