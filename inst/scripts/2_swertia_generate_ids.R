@@ -16,7 +16,6 @@ packages_cran <-
     "purrr",
     "RCurl",
     "readr",
-    "rotl",
     "splitstackshape",
     "tidyr",
     "WikidataQueryServiceR",
