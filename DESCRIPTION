@@ -33,7 +33,6 @@ Imports:
     microshades (>= 1.13),
     MSnbase (>= 2.28.1),
     mzR (>= 2.36.0),
-    nucleR (>= 2.34.0),
     pbapply (>= 1.7.2),
     plotly (>= 4.10.4),
     pracma (>= 2.4.4),
@@ -78,6 +77,7 @@ Collate:
     'middle_pts.R'
     'second_der.R'
     'signal_sharpening.R'
+    'filter_fft.R'
     'improve_signal.R'
     'extract_chromatogram.R'
     'check_chromatograms_alignment.R'
