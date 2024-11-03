@@ -124,6 +124,7 @@ Collate:
     'prettyTables_progress.R'
     'transform_ms.R'
     'process_compare_peaks.R'
+    'treemaps_progress.R'
     'process_plot_pseudochromatograms.R'
     'queries_progress.R'
     'save_histograms_progress.R'
@@ -134,7 +135,6 @@ Collate:
     'tables_progress.R'
     'taxon_name_to_qid.R'
     'transform_baseline.R'
-    'treemaps_progress.R'
     'wiki_progress.R'
 VignetteBuilder: 
     knitr
