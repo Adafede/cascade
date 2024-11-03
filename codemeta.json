@@ -281,7 +281,7 @@
         "name": "Bioconductor",
         "url": "https://www.bioconductor.org"
       },
-      "sameAs": "https://bioconductor.org/packages/release/bioc/html/MSnbase.html"
+      "sameAs": "https://github.com/bioc/MSnbase"
     },
     "18": {
       "@type": "SoftwareApplication",
@@ -294,7 +294,7 @@
         "name": "Bioconductor",
         "url": "https://www.bioconductor.org"
       },
-      "sameAs": "https://bioconductor.org/packages/release/bioc/html/mzR.html"
+      "sameAs": "https://github.com/bioc/mzR"
     },
     "19": {
       "@type": "SoftwareApplication",
@@ -481,7 +481,7 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteannotation", "chargedaerosoldetector", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
-  "fileSize": "6166.945KB",
+  "fileSize": "6167.093KB",
   "releaseNotes": "https://github.com/adafede/cascade/blob/master/NEWS.md",
   "readme": "https://github.com/Adafede/cascade/blob/main/README.md",
   "contIntegration": ["https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/adafede/cascade"],
