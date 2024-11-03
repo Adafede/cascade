@@ -4,12 +4,14 @@
 \alias{treemaps_progress_no_title}
 \title{Treemaps progress no title}
 \usage{
-treemaps_progress_no_title(xs, type = "treemap")
+treemaps_progress_no_title(xs, type = "treemap", hierarchies)
 }
 \arguments{
 \item{xs}{XS}
 
 \item{type}{Type}
+
+\item{hierarchies}{Hierarchies}
 }
 \value{
 A list of treemaps with no title

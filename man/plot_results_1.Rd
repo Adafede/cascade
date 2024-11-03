@@ -4,10 +4,10 @@
 \alias{plot_results_1}
 \title{Plot results 1}
 \usage{
-plot_results_1(detector = "cad", mode = "pos")
+plot_results_1(list, mode = "pos")
 }
 \arguments{
-\item{detector}{Detector}
+\item{list}{List}
 
 \item{mode}{Mode}
 }

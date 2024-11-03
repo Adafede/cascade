@@ -4,10 +4,10 @@
 \alias{plot_results_2}
 \title{Plot results 2}
 \usage{
-plot_results_2(detector = "cad")
+plot_results_2(list)
 }
 \arguments{
-\item{detector}{Detector}
+\item{list}{List}
 }
 \value{
 A list of plots
