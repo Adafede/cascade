@@ -95,7 +95,7 @@ process_plot_pseudochromatograms <- function() {
             dplyr::contains("candidate_structure_tax"),
             .fns = function(x) {
               gsub(
-                pattern = "§",
+                pattern = "u00A7",
                 replacement = "$",
                 x = x
               )
