@@ -2,18 +2,18 @@
 #'
 #' @param xs XS
 #' @param type Type
+#' @param hierarchies Hierarchies
 #'
 #' @return A list of treemaps
 #'
 #' @examples NULL
-treemaps_progress <- function(xs, type = "treemap") {
+treemaps_progress <- function(xs,
+                              type = "treemap",
+                              hierarchies) {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(
-    X = setNames(
-      object = xs,
-      nm = xs
-    ),
-    FUN = function(x) {
+    X = setNames(object = xs, nm = xs),
+    FUN = function(x, hierarchies) {
       p()
       if (x != "special") {
         plotly::plot_ly(
@@ -81,7 +81,8 @@ treemaps_progress <- function(xs, type = "treemap") {
             margin = list(t = 40)
           )
       }
-    }
+    },
+    hierarchies = hierarchies
   )
 }
 
@@ -89,18 +90,18 @@ treemaps_progress <- function(xs, type = "treemap") {
 #'
 #' @param xs XS
 #' @param type Type
+#' @param hierarchies Hierarchies
 #'
 #' @return A list of treemaps with no title
 #'
 #' @examples NULL
-treemaps_progress_no_title <- function(xs, type = "treemap") {
+treemaps_progress_no_title <- function(xs,
+                                       type = "treemap",
+                                       hierarchies) {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(
-    X = setNames(
-      object = xs,
-      nm = xs
-    ),
-    FUN = function(x) {
+    X = setNames(object = xs, nm = xs),
+    FUN = function(x, hierarchies) {
       p()
       if (x != "special") {
         plotly::plot_ly(
@@ -114,10 +115,7 @@ treemaps_progress_no_title <- function(xs, type = "treemap") {
           branchvalues = "total",
           textinfo = "label+percent value+percent parent+percent root"
         ) |>
-          plotly::layout(
-            colorway = microshades_colors,
-            margin = list(t = 40)
-          )
+          plotly::layout(colorway = microshades_colors, margin = list(t = 40))
       } else {
         plotly::plot_ly() |>
           plotly::add_trace(
@@ -150,6 +148,7 @@ treemaps_progress_no_title <- function(xs, type = "treemap") {
             margin = list(t = 40)
           )
       }
-    }
+    },
+    hierarchies = hierarchies
   )
 }
