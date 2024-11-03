@@ -131,7 +131,6 @@ Collate:
     'save_prettySubtables_progress.R'
     'save_prettyTables_progress.R'
     'save_treemaps_progress.R'
-    'sqlFromFile.R'
     'subtables_progress.R'
     'tables_progress.R'
     'transform_baseline.R'
