@@ -26,7 +26,7 @@ microshades <- list(
 microshades_grey <- list(cvd_gray, gray)
 microshades_colors <- character()
 for (i in seq_len(length(microshades))) {
-  microshades_colors[i] <- microshades[[i]][5]
+  microshades_colors[i] <- microshades[[i]][1]
 }
 
 ## Qualitative

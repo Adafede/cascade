@@ -59,6 +59,7 @@ plot_peaks_statistics <- function(df) {
     df_treated <- df_pretreated |>
       tidytable::filter(grepl(pattern = var, x = names_1)) |>
       data.frame()
+    colnames(df_treated)[7] <- leg
 
     alluvial <- ggplot2::ggplot(
       data = df_treated,

@@ -1,28 +1,26 @@
 #' Prepare comparison
 #'
-#' @param detector Detector
+#' @param features_informed Features informed
+#' @param features_not_informed Features not informed
+#' @param min_similarity_prefilter Min similarity pre filter
+#' @param min_similarity_filter Min similarity filter
+#' @param mode Mode
 #'
 #' @return A list of peaks
 #'
 #' @examples NULL
-prepare_comparison <- function(detector = "cad") {
+prepare_comparison <- function(features_informed = NULL,
+                               features_not_informed = NULL,
+                               min_similarity_prefilter = 0.6,
+                               min_similarity_filter = 0.8,
+                               mode = "pos") {
   message("loading compared peaks")
-  path_1 <- switch(detector,
-    "bpi" = IMPORT_FILE_BPI,
-    "cad" = IMPORT_FILE_CAD,
-    "pda" = IMPORT_FILE_PDA
-  )
-  path_2 <- switch(detector,
-    "bpi" = IMPORT_FILE_BPI_2,
-    "cad" = IMPORT_FILE_CAD_2,
-    "pda" = IMPORT_FILE_PDA_2
-  )
-  peaks_compared <- path_1 |>
+  peaks_compared <- features_informed |>
     tidytable::fread() |>
-    tidytable::mutate(mode = MODE)
-  peaks_outside <- path_2 |>
+    tidytable::mutate(mode = mode)
+  peaks_outside <- features_not_informed |>
     tidytable::fread() |>
-    tidytable::mutate(mode = MODE) |>
+    tidytable::mutate(mode = mode) |>
     tidytable::mutate(tidytable::across(tidytable::all_of(
       c(
         "peak_id",
@@ -109,7 +107,7 @@ prepare_comparison <- function(detector = "cad") {
 
   message("keeping peaks similarities above desired (pre-)threshold only")
   peaks_maj_precor <- peaks_maj |>
-    tidytable::filter(comparison_score >= PEAK_SIMILARITY_PREFILTER) ## TODO check negative values
+    tidytable::filter(comparison_score >= min_similarity_prefilter) ## TODO check negative values
 
   peaks_min_precor <- peaks_maj |>
     tidytable::anti_join(peaks_maj_precor) |>
@@ -162,9 +160,9 @@ prepare_comparison <- function(detector = "cad") {
     temp_fix_2() |>
     tidytable::bind_rows(peaks_min)
 
-  message("keeping peaks similarities with score above", PEAK_SIMILARITY)
+  message("keeping peaks similarities with score above", min_similarity_filter)
   peaks_maj_precor_taxo_cor <- peaks_maj_precor_taxo |>
-    tidytable::filter(comparison_score >= PEAK_SIMILARITY)
+    tidytable::filter(comparison_score >= min_similarity_filter)
 
   peaks_min_precor_taxo_cor <- peaks_maj |>
     tidytable::anti_join(peaks_maj_precor_taxo_cor) |>

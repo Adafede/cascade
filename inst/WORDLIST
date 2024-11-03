@@ -20,6 +20,7 @@ PDA
 Pre
 Prehistograms
 Preprocess
+QID
 Rescale
 ROTL
 RforMassSpectrometry
@@ -60,6 +61,7 @@ params
 prehistograms
 prelist
 preprocessed
+pseudochromatograms
 pts
 rsqlite
 stackoverflow
