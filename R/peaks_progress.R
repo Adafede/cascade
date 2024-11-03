@@ -10,7 +10,6 @@ peaks_progress <- function(xs) {
   future.apply::future_lapply(
     X = xs,
     FUN = function(x) {
-
       data_cascade <- list()
       data_cascade[[1]] <-
         x |>
