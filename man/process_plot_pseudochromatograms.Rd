@@ -16,5 +16,4 @@ Process plot pseudochromatograms
 \dontrun{
 process_plot_pseudochromatograms(show_example = TRUE)
 }
-export
 }
