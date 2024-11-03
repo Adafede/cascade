@@ -18,39 +18,11 @@ prepare_comparison <- function(detector = "cad") {
     "pda" = IMPORT_FILE_PDA_2
   )
   peaks_compared <- path_1 |>
-    lapply(
-      FUN = function(x) {
-        tidytable::fread(file = file.path(x)) |>
-          # tidytable::mutate(peak_area = peak_area / max(peak_area))|>
-          tidytable::mutate(mode = ifelse(
-            test = grepl(
-              pattern = "_pos_",
-              x = x,
-              ignore.case = TRUE
-            ),
-            yes = "pos",
-            no = "neg"
-          ))
-      }
-    ) |>
-    tidytable::bind_rows()
-
+    tidytable::fread() |>
+    tidytable::mutate(mode = MODE)
   peaks_outside <- path_2 |>
-    lapply(
-      FUN = function(x) {
-        tidytable::fread(file = file.path(x)) |>
-          tidytable::mutate(mode = ifelse(
-            test = grepl(
-              pattern = "_pos_",
-              x = x,
-              ignore.case = TRUE
-            ),
-            yes = "pos",
-            no = "neg"
-          ))
-      }
-    ) |>
-    tidytable::bind_rows() |>
+    tidytable::fread() |>
+    tidytable::mutate(mode = MODE) |>
     tidytable::mutate(tidytable::across(tidytable::all_of(
       c(
         "peak_id",
