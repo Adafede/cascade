@@ -36,7 +36,7 @@ It assumes you already checked the [previous steps](https://adafede.github.io/ca
 This assumes you previously generated the necessary mzmine features' table.
 
 ```{r process-compare-peaks, warning=FALSE, out.width="100%"}
-# process_compare_peaks(show_example = TRUE)
+process_compare_peaks(show_example = TRUE)
 ```
 
 Development follows.
