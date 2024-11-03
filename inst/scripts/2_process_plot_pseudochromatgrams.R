@@ -1,17 +1,6 @@
 start <- Sys.time()
 
-source(file = "R/add_peak_metadata.R")
-source(file = "R/keep_best_candidates.R")
-source(file = "R/make_confident.R")
-source(file = "R/make_other.R")
-source(file = "R/no_other.R")
-source(file = "R/plot_peaks_statistics.R")
-source(file = "R/plot_results.R")
-source(file = "R/prepare_comparison.R")
-source(file = "R/prepare_hierarchy.R")
-source(file = "R/preprocess_chromatograms.R")
-source(file = "R/treemaps_progress.R")
-source(file = "R/cascade-package.R")
+pkgload::load_all()
 
 message("This program performs", "TODO")
 message("Authors: \n", "AR")
