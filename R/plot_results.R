@@ -62,18 +62,18 @@ plot_results_1 <- function(detector = "cad", mode = "pos") {
 
   message("... unique structures")
   histograms_unique_maj <- df_histogram_maj |>
-    dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
+    tidytable::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
     plot_histograms_confident()
   histograms_unique_min <- df_histogram_min |>
-    dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
+    tidytable::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
     plot_histograms_confident(level = "min")
 
   message("... confident structures")
   histograms_unique_conf_maj <- df_histogram_maj_conf |>
-    dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
+    tidytable::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
     plot_histograms_confident()
   histograms_unique_conf_min <- df_histogram_min_conf |>
-    dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
+    tidytable::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
     plot_histograms_confident(level = "min")
 
   returned_list <- list(
@@ -122,8 +122,8 @@ plot_results_2 <- function(detector = "cad") {
 
   temp_fix_duplicates <- function(df, colname = "peak_rt_apex") {
     df_new <- df |>
-      dplyr::arrange(dplyr::desc(comparison_score)) |>
-      dplyr::distinct(
+      tidytable::arrange(tidytable::desc(comparison_score)) |>
+      tidytable::distinct(
         !!as.name(colname),
         inchikey_2D,
         best_candidate_1,
@@ -136,8 +136,8 @@ plot_results_2 <- function(detector = "cad") {
 
   temp_fix_posneg <- function(df) {
     df_new <- df |>
-      dplyr::mutate(newrt = round(peak_rt_apex, 1)) |>
-      dplyr::mutate(
+      tidytable::mutate(newrt = round(peak_rt_apex, 1)) |>
+      tidytable::mutate(
         sample = gsub(
           pattern = "_pos",
           replacement = "",
@@ -151,7 +151,7 @@ plot_results_2 <- function(detector = "cad") {
           ignore.case = TRUE
         )
       ) |>
-      dplyr::mutate(
+      tidytable::mutate(
         sample = gsub(
           pattern = "_neg",
           replacement = "",
@@ -197,20 +197,20 @@ plot_results_2 <- function(detector = "cad") {
   table_taxo_maj_cor_ms <- list$peaks_maj_precor_taxo_cor |>
     prepare_hierarchy(detector = "ms")
   # table_taxo_maj_cor_ms_2 <- table_taxo_maj_cor_ms |>
-  #   dplyr::mutate(sample = gsub(
+  #   tidytable::mutate(sample = gsub(
   #     pattern = "_pos",
   #     replacement = "",
   #     x = sample,
   #     ignore.case = TRUE
   #   )) |>
-  #   dplyr::mutate(sample = gsub(
+  #   tidytable::mutate(sample = gsub(
   #     pattern = "_neg",
   #     replacement = "",
   #     x = sample,
   #     ignore.case = TRUE
   #   )) |>
-  #   dplyr::group_by(parents, ids, labels, species, sample) |>
-  #   dplyr::summarise(values = sum(values))
+  #   tidytable::group_by(parents, ids, labels, species, sample) |>
+  #   tidytable::summarise(values = sum(values))
 
   message("... on confident")
   table_taxo_maj_cor_conf_signal <-
@@ -243,7 +243,7 @@ plot_results_2 <- function(detector = "cad") {
   ## TODO remove redundancy
   sunburst_conf_signal_based_pos <-
     table_taxo_maj_cor_conf_signal |>
-    dplyr::filter(grepl(
+    tidytable::filter(grepl(
       pattern = "_pos",
       x = sample,
       ignore.case = TRUE
@@ -253,7 +253,7 @@ plot_results_2 <- function(detector = "cad") {
 
   sunburst_conf_signal_based_neg <-
     table_taxo_maj_cor_conf_signal |>
-    dplyr::filter(grepl(
+    tidytable::filter(grepl(
       pattern = "_neg",
       x = sample,
       ignore.case = TRUE
@@ -267,7 +267,7 @@ plot_results_2 <- function(detector = "cad") {
     plotly::layout(colorway = microshades_colors)
 
   sunburst_conf_ms_based_pos <- table_taxo_maj_cor_conf_ms |>
-    dplyr::filter(grepl(
+    tidytable::filter(grepl(
       pattern = "_pos",
       x = sample,
       ignore.case = TRUE
@@ -276,7 +276,7 @@ plot_results_2 <- function(detector = "cad") {
     plotly::layout(colorway = microshades_colors)
 
   sunburst_conf_ms_based_neg <- table_taxo_maj_cor_conf_ms |>
-    dplyr::filter(grepl(
+    tidytable::filter(grepl(
       pattern = "_neg",
       x = sample,
       ignore.case = TRUE
@@ -285,46 +285,46 @@ plot_results_2 <- function(detector = "cad") {
     plotly::layout(colorway = microshades_colors)
 
   index_signal_pos <- table_taxo_maj_cor_signal |>
-    dplyr::filter(grepl(
+    tidytable::filter(grepl(
       pattern = "_pos",
       x = sample,
       ignore.case = TRUE
     )) |>
-    dplyr::filter(parents == "") |>
-    dplyr::arrange(desc(values))
+    tidytable::filter(parents == "") |>
+    tidytable::arrange(tidytable::desc(values))
   index_signal_neg <- table_taxo_maj_cor_signal |>
-    dplyr::filter(grepl(
+    tidytable::filter(grepl(
       pattern = "_neg",
       x = sample,
       ignore.case = TRUE
     )) |>
-    dplyr::filter(parents == "") |>
-    dplyr::arrange(desc(values))
+    tidytable::filter(parents == "") |>
+    tidytable::arrange(tidytable::desc(values))
   index_signal_duo <- table_taxo_maj_cor_signal_2 |>
-    dplyr::filter(parents == "") |>
-    dplyr::arrange(desc(values)) |>
-    dplyr::distinct(ids, labels, .keep_all = TRUE)
+    tidytable::filter(parents == "") |>
+    tidytable::arrange(tidytable::desc(values)) |>
+    tidytable::distinct(ids, labels, .keep_all = TRUE)
 
   index_ms_pos <- table_taxo_maj_cor_ms |>
-    dplyr::filter(grepl(
+    tidytable::filter(grepl(
       pattern = "_pos",
       x = sample,
       ignore.case = TRUE
     )) |>
-    dplyr::filter(parents == "") |>
-    dplyr::arrange(desc(values))
+    tidytable::filter(parents == "") |>
+    tidytable::arrange(tidytable::desc(values))
   index_ms_neg <- table_taxo_maj_cor_ms |>
-    dplyr::filter(grepl(
+    tidytable::filter(grepl(
       pattern = "_neg",
       x = sample,
       ignore.case = TRUE
     )) |>
-    dplyr::filter(parents == "") |>
-    dplyr::arrange(desc(values))
+    tidytable::filter(parents == "") |>
+    tidytable::arrange(tidytable::desc(values))
   # index_ms_duo <- table_taxo_maj_cor_ms_2 |>
-  #   dplyr::filter(parents == "") |>
-  #   dplyr::arrange(desc(values)) |>
-  #   dplyr::distinct(ids, labels, .keep_all = TRUE)
+  #   tidytable::filter(parents == "") |>
+  #   tidytable::arrange(desc(values)) |>
+  #   tidytable::distinct(ids, labels, .keep_all = TRUE)
 
   sunburst_microshades_grey_signal_pos <- microshades_colors
   index_s_pos <- which(index_signal_pos$ids == "Other", arr.ind = TRUE)

@@ -23,19 +23,11 @@ improve_signal <-
     df_fourier <- df |>
       ## in case we have negative intensity
       ## 100 to be on the safe side
-      dplyr::mutate(intensity = intensity + 100) |>
-      dplyr::mutate(intensity = intensity - (min(intensity) - 0.001)) |>
-      dplyr::mutate(
-        intensity_fourier = filter_fft(
-          x = intensity,
-          components = fourier_components
-        )
-      )
+      tidytable::mutate(intensity = intensity + 100) |>
+      tidytable::mutate(intensity = intensity - (min(intensity) - 0.001)) |>
+      tidytable::mutate(intensity_fourier = filter_fft(x = intensity, components = fourier_components))
 
-    f <- approxfun(
-      x = df_fourier$time,
-      y = df_fourier$intensity_fourier
-    )
+    f <- approxfun(x = df_fourier$time, y = df_fourier$intensity_fourier)
 
     time <- seq(
       from = time_min,
@@ -51,11 +43,5 @@ improve_signal <-
 
     intensity_sharpened <- signal_sharpening(time = time, intensity = intensity)
 
-    df_sharpened <-
-      data.frame(
-        "time" = time[5:length(time)],
-        "intensity" = intensity_sharpened
-      )
-
-    return(df_sharpened)
+    return(data.frame("time" = time[5:length(time)], "intensity" = intensity_sharpened))
   }

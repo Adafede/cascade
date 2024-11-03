@@ -32,10 +32,10 @@ preprocess_peaks <- function(detector = "cad",
   names(peaks) <- name
 
   ## data.table call outside of future because buggy else
-  peaks_long <- dplyr::bind_rows(peaks, .id = "id") |>
+  peaks_long <- tidytable::bind_rows(peaks, .id = "id") |>
     tidytable::data.table()
 
-  message("joining peaks ...")
+  message("joining peaks")
   df_peaks <-
     join_peaks(
       chromatograms = df_long,
@@ -54,18 +54,10 @@ preprocess_peaks <- function(detector = "cad",
     tidytable::filter(!is.na(peak_id)) |>
     tidytable::distinct()
 
-  # df_new_with_cad <- df_new_with_cad |> ## TODO DONT FORGET
-  #   dplyr::distinct(id, peak_id, feature_id, .keep_all = TRUE) |> ## TODO DONT FORGET
-  #   sample_n(500) ## TODO DONT FORGET
-
   message("selecting features outside peaks")
   df_features_without_peaks <- df_features_peaks |>
     tidytable::filter(is.na(peak_id)) |>
-    tidytable::distinct() # |>
-  # filter(sample %in% df_features_with_peaks$sample)
-
-  # df_new_without <- df_new_without |> ## TODO DONT FORGET
-  #   dplyr::distinct(id, peak_id, feature_id, .keep_all = TRUE) ## TODO DONT FORGET
+    tidytable::distinct()
 
   message("splitting by file")
   list_df_features_with_peaks <- df_features_with_peaks |>
@@ -107,7 +99,6 @@ preprocess_peaks <- function(detector = "cad",
 
   returned_list <- list(
     list_df_features_with_peaks_long,
-    # list_dda_with_peak,
     list_chromato_peaks,
     list_rtr,
     list_mzr,
@@ -115,7 +106,6 @@ preprocess_peaks <- function(detector = "cad",
   )
   names(returned_list) <- c(
     "list_df_features_with_peaks_long",
-    # "list_dda_with_peak",
     "list_chromato_peaks",
     "list_rtr",
     "list_mzr",

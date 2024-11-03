@@ -17,7 +17,7 @@ transform_baseline <- function(x) {
     )
 
     intensity_new <- t(intensity_baseline@corrected) |>
-      data.table::data.table()
+      tidytable::data.table()
 
     newlist <- x
     newlist[[i]]$intensity <- intensity_new$V1

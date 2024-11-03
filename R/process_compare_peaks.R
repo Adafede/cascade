@@ -42,13 +42,13 @@ process_compare_peaks <- function(file = NULL,
                                   export_dir = "data/interim/peaks",
                                   show_example = FALSE,
                                   fourier_components = 0.01,
-                                  frequency = 2,
+                                  frequency = 1,
                                   min_area = 0.005,
                                   min_intensity = 1E4,
                                   resample = 1,
                                   shift = 0.05,
-                                  time_min = 0,
-                                  time_max = Inf) {
+                                  time_min = 0.5,
+                                  time_max = 32.5) {
   message("loading MS data")
   ms_data <- file |>
     load_ms_data(show_example = show_example)
@@ -66,14 +66,16 @@ process_compare_peaks <- function(file = NULL,
     load_features(show_example = show_example)
 
   message("preparing features")
-  set.seed(42)
+  if (show_example) {
+    message("selecting 50 random features for the example")
+    set.seed(42)
+    feature_table <- feature_table |>
+      tidytable::slice_sample(n = 50)
+  }
   df_features <- feature_table |>
-    ## TODO
-    tidytable::slice_sample(n = 100) |>
     prepare_features(min_intensity = min_intensity, name = name)
 
-
-  message("Preprocessing chromatograms")
+  message("preprocessing chromatograms")
   chromatograms_list <- preprocess_chromatograms(
     detector = detector,
     name = name,
@@ -95,7 +97,7 @@ process_compare_peaks <- function(file = NULL,
     resample = resample
   )
 
-  message("Preprocessing peaks")
+  message("preprocessing peaks")
   peaks_prelist <- preprocess_peaks(
     detector = detector,
     df_features = df_features,
@@ -117,7 +119,7 @@ process_compare_peaks <- function(file = NULL,
 
   message("processing ", detector, " peaks")
   message("extracting ms chromatograms (longest step)")
-  message("count approx 1 minute per 500 features (increasing with features number)")
+  message("count approx 1 minute  per core per 100 features (increasing with features number)")
   message("varies a lot depending on features distribution")
   list_ms_chromatograms <-
     extract_ms_progress(
@@ -150,7 +152,7 @@ process_compare_peaks <- function(file = NULL,
     tidytable::bind_rows()
 
   message(
-    "There are ",
+    "there are ",
     nrow(df_features_with_peaks),
     " features with peaks"
   )
@@ -159,7 +161,7 @@ process_compare_peaks <- function(file = NULL,
   comparison_scores <- list_comparison_score |>
     purrr::flatten()
 
-  message("There are ", length(comparison_scores), " scores calculated")
+  message("there are ", length(comparison_scores), " scores calculated")
 
   message("joining")
   df_features_with_peaks$comparison_score <-
@@ -206,20 +208,26 @@ process_compare_peaks <- function(file = NULL,
   message("exporting")
 
   df_features_with_peaks_scored |>
-    readr::write_tsv(file = file.path(
-      export_dir,
-      name |>
-        gsub(pattern = "\\.[^.]+$", replacement = "") |>
-        paste("featuresInformed", detector, sep = "_") |>
-        paste0(".tsv")
-    ))
+    tidytable::fwrite(
+      file = file.path(
+        export_dir,
+        name |>
+          gsub(pattern = "\\.[^.]+$", replacement = "") |>
+          paste("featuresInformed", detector, sep = "_") |>
+          paste0(".tsv")
+      ),
+      sep = "\t"
+    )
 
   df_features_without_peaks_scored |>
-    readr::write_tsv(file = file.path(
-      export_dir,
-      name |>
-        gsub(pattern = "\\.[^.]+$", replacement = "") |>
-        paste("featuresNotInformed", detector, sep = "_") |>
-        paste0(".tsv")
-    ))
+    tidytable::fwrite(
+      file = file.path(
+        export_dir,
+        name |>
+          gsub(pattern = "\\.[^.]+$", replacement = "") |>
+          paste("featuresNotInformed", detector, sep = "_") |>
+          paste0(".tsv")
+      ),
+      sep = "\t"
+    )
 }

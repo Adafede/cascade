@@ -48,27 +48,27 @@ preprocess_chromatograms <- function(detector = "cad",
   names(chromatograms_improved) <- name
 
   chromatograms_original_long <-
-    dplyr::bind_rows(chromatograms_original, .id = "id") |>
-    dplyr::mutate(time = time + shift) |>
-    dplyr::mutate(intensity = intensity - (min(intensity))) |>
-    dplyr::mutate(rt_1 = time, rt_2 = time) |>
-    data.table::data.table()
+    tidytable::bind_rows(chromatograms_original, .id = "id") |>
+    tidytable::mutate(time = time + shift) |>
+    tidytable::mutate(intensity = intensity - (min(intensity))) |>
+    tidytable::mutate(rt_1 = time, rt_2 = time) |>
+    tidytable::data.table()
 
   chromatograms_improved_long <-
-    dplyr::bind_rows(chromatograms_improved, .id = "id") |>
-    dplyr::mutate(time = time + shift) |>
-    dplyr::mutate(rt_1 = time, rt_2 = time) |>
-    data.table::data.table()
+    tidytable::bind_rows(chromatograms_improved, .id = "id") |>
+    tidytable::mutate(time = time + shift) |>
+    tidytable::mutate(rt_1 = time, rt_2 = time) |>
+    tidytable::data.table()
 
   message("baselining chromatograms")
   chromatograms_baselined <- chromatograms_improved |>
     lapply(FUN = baseline_chromatogram)
 
   chromatograms_baselined_long <-
-    dplyr::bind_rows(chromatograms_baselined, .id = "id") |>
-    dplyr::mutate(intensity = intensity - (min(intensity))) |>
-    dplyr::mutate(rt_1 = time, rt_2 = time) |>
-    data.table::data.table()
+    tidytable::bind_rows(chromatograms_baselined, .id = "id") |>
+    tidytable::mutate(intensity = intensity - (min(intensity))) |>
+    tidytable::mutate(rt_1 = time, rt_2 = time) |>
+    tidytable::data.table()
 
   returned_list <- list(
     chromatograms_original,

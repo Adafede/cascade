@@ -12,13 +12,13 @@ process_compare_peaks(
   export_dir = "data/interim/peaks",
   show_example = FALSE,
   fourier_components = 0.01,
-  frequency = 2,
+  frequency = 1,
   min_area = 0.005,
   min_intensity = 10000,
   resample = 1,
   shift = 0.05,
-  time_min = 0,
-  time_max = Inf
+  time_min = 0.5,
+  time_max = 32.5
 )
 }
 \arguments{

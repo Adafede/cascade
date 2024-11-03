@@ -20,9 +20,9 @@ prepare_comparison <- function(detector = "cad") {
   peaks_compared <- path_1 |>
     lapply(
       FUN = function(x) {
-        readr::read_delim(file = file.path(x)) |>
-          # dplyr::mutate(peak_area = peak_area / max(peak_area))|>
-          dplyr::mutate(mode = ifelse(
+        tidytable::fread(file = file.path(x)) |>
+          # tidytable::mutate(peak_area = peak_area / max(peak_area))|>
+          tidytable::mutate(mode = ifelse(
             test = grepl(
               pattern = "_pos_",
               x = x,
@@ -33,13 +33,13 @@ prepare_comparison <- function(detector = "cad") {
           ))
       }
     ) |>
-    dplyr::bind_rows()
+    tidytable::bind_rows()
 
   peaks_outside <- path_2 |>
     lapply(
       FUN = function(x) {
-        readr::read_delim(file = file.path(x)) |>
-          dplyr::mutate(mode = ifelse(
+        tidytable::fread(file = file.path(x)) |>
+          tidytable::mutate(mode = ifelse(
             test = grepl(
               pattern = "_pos_",
               x = x,
@@ -50,7 +50,7 @@ prepare_comparison <- function(detector = "cad") {
           ))
       }
     ) |>
-    dplyr::bind_rows() |>
+    tidytable::bind_rows() |>
     tidytable::mutate(tidytable::across(tidytable::all_of(
       c(
         "peak_id",
@@ -67,20 +67,20 @@ prepare_comparison <- function(detector = "cad") {
     ), as.numeric))
 
   peaks_all <- peaks_compared |>
-    dplyr::bind_rows(peaks_outside)
+    tidytable::bind_rows(peaks_outside)
 
   message("joining compared peaks and candidates")
   message("temporary fix") ## TODO
   temp_fix <- function(df) {
     df |>
-      dplyr::mutate(feature_id = as.numeric(feature_id)) |>
-      dplyr::left_join(candidates_confident) |>
-      dplyr::mutate(rt = as.numeric(rt))
+      tidytable::mutate(feature_id = as.numeric(feature_id)) |>
+      tidytable::left_join(candidates_confident) |>
+      tidytable::mutate(rt = as.numeric(rt))
   }
 
   temp_fix_2 <- function(df) {
     df |>
-      dplyr::mutate(
+      tidytable::mutate(
         id = sample,
         integral = peak_area,
         intensity = feature_area
@@ -89,12 +89,12 @@ prepare_comparison <- function(detector = "cad") {
 
   temp_fix_3 <- function(df) {
     df |>
-      dplyr::mutate(peak_rt_apex = rt, peak_area = 0.001)
+      tidytable::mutate(peak_rt_apex = rt, peak_area = 0.001)
   }
 
   temp_fix_4 <- function(df) {
     df |>
-      dplyr::mutate(
+      tidytable::mutate(
         peak_id = as.numeric(peak_id),
         peak_rt_min = as.numeric(peak_rt_min),
         peak_rt_max = as.numeric(peak_rt_max),
@@ -112,14 +112,14 @@ prepare_comparison <- function(detector = "cad") {
     temp_fix_2()
 
   # peaks_maj_2 <- peaks_maj |>
-  #   dplyr::rowwise() |>
-  #   dplyr::mutate(acn = 5 + 95 / (acn_time / (pmin(
+  #   tidytable::rowwise() |>
+  #   tidytable::mutate(acn = 5 + 95 / (acn_time / (pmin(
   #     acn_time, (peak_rt_apex - dvol - 0.5)
-  #   )))) %>%
-  #   dplyr::mutate(peak_area_corrected = predict_response(acn = acn, peak_area = peak_area))
+  #   )))) |>
+  #   tidytable::mutate(peak_area_corrected = predict_response(acn = acn, peak_area = peak_area))
   #
   # test <- peaks_maj_2 |>
-  #   distinct(peak_id, peak_area, peak_rt_apex, peak_area_corrected)
+  #   tidytable::distinct(peak_id, peak_area, peak_rt_apex, peak_area_corrected)
   #
   # plotly::plot_ly(
   #   test,
@@ -137,35 +137,35 @@ prepare_comparison <- function(detector = "cad") {
 
   message("keeping peaks similarities above desired (pre-)threshold only")
   peaks_maj_precor <- peaks_maj |>
-    dplyr::filter(comparison_score >= PEAK_SIMILARITY_PREFILTER) ## TODO check negative values
+    tidytable::filter(comparison_score >= PEAK_SIMILARITY_PREFILTER) ## TODO check negative values
 
   peaks_min_precor <- peaks_maj |>
-    dplyr::anti_join(peaks_maj_precor) |>
+    tidytable::anti_join(peaks_maj_precor) |>
     temp_fix_2() |>
-    dplyr::bind_rows(peaks_min)
+    tidytable::bind_rows(peaks_min)
 
   message("keeping multiple features only if none was reported in the species")
   peaks_maj_precor_taxo <- peaks_maj_precor |>
-    dplyr::rowwise() |>
-    dplyr::mutate(taxo = ifelse(
+    tidytable::rowwise() |>
+    tidytable::mutate(taxo = ifelse(
       test = grepl(pattern = best_candidate_organism, x = species),
       yes = 1,
       no = 0
     )) |>
-    dplyr::mutate(taxo = ifelse(
+    tidytable::mutate(taxo = ifelse(
       test = is.na(taxo),
       yes = 0,
       no = taxo
     )) |>
-    dplyr::mutate(taxo_2 = ifelse(
+    tidytable::mutate(taxo_2 = ifelse(
       test = best_candidate_organism %in% species,
       yes = 1,
       no = 0
     )) |>
-    dplyr::group_by(sample, peak_id) |> ## TODO switch to ID if needed
-    dplyr::mutate(sum = sum(taxo)) |>
-    dplyr::mutate(sum_2 = sum(taxo_2)) |>
-    dplyr::mutate(keep = ifelse(
+    tidytable::group_by(sample, peak_id) |> ## TODO switch to ID if needed
+    tidytable::mutate(sum = sum(taxo)) |>
+    tidytable::mutate(sum_2 = sum(taxo_2)) |>
+    tidytable::mutate(keep = ifelse(
       test = taxo_2 == 1,
       yes = "Y",
       no = ifelse(
@@ -182,22 +182,22 @@ prepare_comparison <- function(detector = "cad") {
         )
       )
     )) |>
-    dplyr::filter(keep == "Y") |> ## TODO decide if genus
-    dplyr::ungroup()
+    tidytable::filter(keep == "Y") |> ## TODO decide if genus
+    tidytable::ungroup()
 
   peaks_min_precor_taxo <- peaks_maj |>
-    dplyr::anti_join(peaks_maj_precor_taxo) |>
+    tidytable::anti_join(peaks_maj_precor_taxo) |>
     temp_fix_2() |>
-    dplyr::bind_rows(peaks_min)
+    tidytable::bind_rows(peaks_min)
 
   message("keeping peaks similarities with score above", PEAK_SIMILARITY)
   peaks_maj_precor_taxo_cor <- peaks_maj_precor_taxo |>
-    dplyr::filter(comparison_score >= PEAK_SIMILARITY)
+    tidytable::filter(comparison_score >= PEAK_SIMILARITY)
 
   peaks_min_precor_taxo_cor <- peaks_maj |>
-    dplyr::anti_join(peaks_maj_precor_taxo_cor) |>
+    tidytable::anti_join(peaks_maj_precor_taxo_cor) |>
     temp_fix_2() |>
-    dplyr::bind_rows(peaks_min)
+    tidytable::bind_rows(peaks_min)
 
   returned_list <- list(
     peaks_all,

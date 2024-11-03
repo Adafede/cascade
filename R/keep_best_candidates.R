@@ -8,7 +8,7 @@
 #'
 #' @examples NULL
 keep_best_candidates <- function(df) {
-  best_candidates <- df |>
+  df |>
     dplyr::mutate_all(list(~ gsub(
       pattern = "\\|.*",
       replacement = "",
@@ -89,5 +89,4 @@ keep_best_candidates <- function(df) {
         false = best_candidate_3
       )
     )
-  return(best_candidates)
 }

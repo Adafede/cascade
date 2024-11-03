@@ -7,8 +7,8 @@
 #'
 #' @examples NULL
 make_confident <- function(df, score) {
-  df_ready <- df |>
-    dplyr::mutate(
+  df |>
+    tidytable::mutate(
       best_candidate_1 = ifelse(
         test = as.numeric(score_final) >= score,
         yes = best_candidate_1,
@@ -25,6 +25,4 @@ make_confident <- function(df, score) {
         no = "notConfident notConfident notConfident"
       )
     )
-
-  return(df_ready)
 }

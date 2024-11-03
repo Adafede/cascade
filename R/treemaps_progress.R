@@ -30,7 +30,7 @@ treemaps_progress <- function(xs, type = "treemap") {
           plotly::layout(
             colorway = microshades_colors,
             title = paste(x, "(", nrow(
-              tables[[x]] |> dplyr::distinct(structure)
+              tables[[x]] |> tidytable::distinct(structure)
             ), ")"),
             margin = list(t = 40)
           )
@@ -67,13 +67,13 @@ treemaps_progress <- function(xs, type = "treemap") {
               unique(hierarchies[[x]]$species)[1],
               "(",
               nrow(tables[[unique(hierarchies[[x]]$species)[1]]] |>
-                dplyr::distinct(structure)),
+                tidytable::distinct(structure)),
               ")",
               "                                 ",
               unique(hierarchies[[x]]$species)[2],
               "(",
               nrow(tables[[unique(hierarchies[[x]]$species)[2]]] |>
-                dplyr::distinct(structure)),
+                tidytable::distinct(structure)),
               ")"
             ),
             grid = list(rows = 1, columns = 2),

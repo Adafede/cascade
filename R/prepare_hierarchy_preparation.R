@@ -12,7 +12,7 @@ prepare_hierarchy_preparation <- function(dataframe) {
       replacement = "",
       x = .
     ))) |>
-    splitstackshape::cSplit("best_candidate", sep = "\u00a7") |>
+    tidytable::separate_wider_delim("best_candidate", delim = "\u00a7") |>
     dplyr::mutate(id = 1) |>
     dplyr::distinct(
       id,

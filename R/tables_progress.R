@@ -13,36 +13,35 @@ tables_progress <- function(xs) {
       p()
       if (nrow(x != 0)) {
         x |>
-          dplyr::left_join(structures_classified) |>
-          dplyr::mutate(structureImage = RCurl::curlEscape(structureSmiles)) |>
-          dplyr::relocate(structureImage, .after = structure) |>
-          dplyr::relocate(structureLabel, .before = structure) |>
-          dplyr::select(-references_ids, -structure_id, -structureSmiles) |>
-          splitstackshape::cSplit(
+          tidytable::left_join(structures_classified) |>
+          tidytable::mutate(structureImage = RCurl::curlEscape(structureSmiles)) |>
+          tidytable::relocate(structureImage, .after = structure) |>
+          tidytable::relocate(structureLabel, .before = structure) |>
+          tidytable::select(-references_ids, -structure_id, -structureSmiles) |>
+          tidytable::separate_longer_delim(
             c("taxa", "taxaLabels", "references", "referencesLabels"),
-            sep = "|",
-            direction = "long"
+            delim = "|"
           ) |>
-          dplyr::group_by(structure) |>
-          tidyr::fill(c("taxa", "taxaLabels", "references", "referencesLabels"),
+          tidytable::group_by(structure) |>
+          tidytable::fill(c("taxa", "taxaLabels", "references", "referencesLabels"),
             .direction = "downup"
           ) |>
-          dplyr::group_by(structureLabel) |>
-          dplyr::add_count(sort = TRUE) |>
-          dplyr::select(-n) |>
-          dplyr::group_by(chemical_class) |>
-          dplyr::add_count(sort = TRUE) |>
-          dplyr::select(-n) |>
-          dplyr::group_by(chemical_superclass) |>
-          dplyr::add_count(sort = TRUE) |>
-          dplyr::select(-n) |>
-          dplyr::group_by(chemical_pathway) |>
-          dplyr::add_count(sort = TRUE) |>
-          dplyr::select(-n) |>
-          dplyr::distinct()
+          tidytable::group_by(structureLabel) |>
+          tidytable::add_count(sort = TRUE) |>
+          tidytable::select(-n) |>
+          tidytable::group_by(chemical_class) |>
+          tidytable::add_count(sort = TRUE) |>
+          tidytable::select(-n) |>
+          tidytable::group_by(chemical_superclass) |>
+          tidytable::add_count(sort = TRUE) |>
+          tidytable::select(-n) |>
+          tidytable::group_by(chemical_pathway) |>
+          tidytable::add_count(sort = TRUE) |>
+          tidytable::select(-n) |>
+          tidytable::distinct()
       } else {
         data.frame() |>
-          dplyr::mutate(
+          tidytable::mutate(
             structureLabel = NA,
             structure = NA,
             structureImage = NA,
