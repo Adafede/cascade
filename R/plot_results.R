@@ -121,7 +121,7 @@ plot_results_2 <- function(detector = "cad") {
   )
 
   temp_fix_duplicates <- function(df, colname = "peak_rt_apex") {
-    df_new <- df |>
+    df |>
       tidytable::arrange(tidytable::desc(comparison_score)) |>
       tidytable::distinct(
         !!as.name(colname),
@@ -131,11 +131,10 @@ plot_results_2 <- function(detector = "cad") {
         best_candidate_3,
         .keep_all = TRUE
       )
-    return(df_new)
   }
 
   temp_fix_posneg <- function(df) {
-    df_new <- df |>
+    df |>
       tidytable::mutate(newrt = round(peak_rt_apex, 1)) |>
       tidytable::mutate(
         sample = gsub(
@@ -165,7 +164,6 @@ plot_results_2 <- function(detector = "cad") {
           ignore.case = TRUE
         )
       )
-    return(df_new)
   }
 
   quick_sb <- function(df) {

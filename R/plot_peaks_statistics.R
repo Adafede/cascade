@@ -51,13 +51,14 @@ plot_peaks_statistics <- function(df) {
         values_to = "1- no filter"
       ) |>
       tidytable::pivot_longer(cols = c(4, 6, 8), values_to = leg) |>
-      tidytable::mutate_all(tolower) |>
+      tidytable::mutate(tidytable::across(tidytable::everything(), tolower)) |>
       tidytable::rowwise() |>
       tidytable::filter(grepl(pattern = names_1, x = names_2) &
         grepl(pattern = names_1, x = names_3))
 
     df_treated <- df_pretreated |>
-      tidytable::filter(grepl(pattern = var, x = names_1))
+      tidytable::filter(grepl(pattern = var, x = names_1)) |>
+      data.frame()
 
     alluvial <- ggplot2::ggplot(
       data = df_treated,
