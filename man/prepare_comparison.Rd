@@ -4,10 +4,24 @@
 \alias{prepare_comparison}
 \title{Prepare comparison}
 \usage{
-prepare_comparison(detector = "cad")
+prepare_comparison(
+  features_informed = NULL,
+  features_not_informed = NULL,
+  min_similarity_prefilter = 0.6,
+  min_similarity_filter = 0.8,
+  mode = "pos"
+)
 }
 \arguments{
-\item{detector}{Detector}
+\item{features_informed}{Features informed}
+
+\item{features_not_informed}{Features not informed}
+
+\item{min_similarity_prefilter}{Min similarity pre filter}
+
+\item{min_similarity_filter}{Min similarity filter}
+
+\item{mode}{Mode}
 }
 \value{
 A list of peaks

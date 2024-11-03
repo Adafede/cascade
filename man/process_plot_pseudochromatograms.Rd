@@ -4,7 +4,54 @@
 \alias{process_plot_pseudochromatograms}
 \title{Process plot pseudochromatograms}
 \usage{
-process_plot_pseudochromatograms()
+process_plot_pseudochromatograms(
+  annotations = NULL,
+  features_informed = NULL,
+  features_not_informed = NULL,
+  file = NULL,
+  detector = "cad",
+  export_dir = "data/figures",
+  show_example = FALSE,
+  min_confidence = 0.4,
+  min_similarity_prefilter = 0.6,
+  min_similarity_filter = 0.8,
+  mode = "pos",
+  resample = 1,
+  shift = 0.05,
+  time_min = 0.5,
+  time_max = 32.5
+)
+}
+\arguments{
+\item{annotations}{Annotations}
+
+\item{features_informed}{Features informed}
+
+\item{features_not_informed}{Features not informed}
+
+\item{file}{File}
+
+\item{detector}{Detector}
+
+\item{export_dir}{Export dir}
+
+\item{show_example}{Show example? Default to FALSE}
+
+\item{min_confidence}{Min confidence}
+
+\item{min_similarity_prefilter}{Min similarity pre filter}
+
+\item{min_similarity_filter}{Min similarity filter}
+
+\item{mode}{Mode}
+
+\item{resample}{Resample}
+
+\item{shift}{Shift}
+
+\item{time_min}{Time min}
+
+\item{time_max}{Time max}
 }
 \value{
 A plot with histograms on chromatograms

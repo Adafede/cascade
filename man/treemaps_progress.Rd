@@ -4,12 +4,14 @@
 \alias{treemaps_progress}
 \title{Treemaps progress}
 \usage{
-treemaps_progress(xs, type = "treemap")
+treemaps_progress(xs, type = "treemap", hierarchies)
 }
 \arguments{
 \item{xs}{XS}
 
 \item{type}{Type}
+
+\item{hierarchies}{Hierarchies}
 }
 \value{
 A list of treemaps
