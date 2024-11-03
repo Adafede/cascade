@@ -47,6 +47,8 @@ Imports:
     yaml (>= 2.3.10),
     zoo (>= 1.8.12)
 Remotes:
+    bioc/MSnbase,
+    bioc/mzR,
     ethanbass/chromatographR,
 Suggests:
     knitr (>= 1.42),
