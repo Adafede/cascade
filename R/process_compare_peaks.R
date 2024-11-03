@@ -67,10 +67,10 @@ process_compare_peaks <- function(file = NULL,
 
   message("preparing features")
   if (show_example) {
-    message("selecting 50 random features for the example")
+    message("selecting 10 random features for the example")
     set.seed(42)
     feature_table <- feature_table |>
-      tidytable::slice_sample(n = 50)
+      tidytable::slice_sample(n = 10)
   }
   df_features <- feature_table |>
     prepare_features(min_intensity = min_intensity, name = name)
@@ -154,7 +154,7 @@ process_compare_peaks <- function(file = NULL,
   message(
     "there are ",
     nrow(df_features_with_peaks),
-    " features with peaks"
+    " features - peaks pairs"
   )
 
   message("summarizing comparison scores")
