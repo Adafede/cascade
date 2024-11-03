@@ -26,14 +26,14 @@ exports <-
     paths$data$treemaps$path
   )
 
-taxa <- c("Gentiana", "Kopsia", "Ginkgo")
+taxa <- c("Swertia", "Kopsia", "Ginkgo")
 dimensionality <- 2
 c18 <- TRUE
 
 qids <- taxa |>
   lapply(taxon_name_to_qid)
 names(qids) <- taxa
-comparison <- taxa <- c("Gentiana", "Alstonia")
+comparison <- c("Swertia", "Kopsia")
 
 genera <-
   names(qids)[!grepl(

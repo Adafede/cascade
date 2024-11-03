@@ -84,4 +84,3 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
   <https://doi.org/10.3390/metabo12020173>
 - chromatographR: <https://doi.org/10.5281/zenodo.6944334>
 - NPClassifier: <https://doi.org/10.1021/acs.jnatprod.1c00399>
-- ROTL: <https://doi.org/10.1111/2041-210X.12593>

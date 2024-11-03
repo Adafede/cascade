@@ -5,30 +5,13 @@
 #' @include prepare_plot.R
 #' @include plot_histograms.R
 #'
-#' @param detector Detector
+#' @param list List
 #' @param mode Mode
 #'
 #' @return A list of plots
 #'
 #' @examples NULL
-plot_results_1 <- function(detector = "cad", mode = "pos") {
-  if (mode == "pos") {
-    list <- switch(detector,
-      "bpi" = compared_peaks_list_bpi_pos,
-      "cad" = compared_peaks_list_cad_pos,
-      "pda" = compared_peaks_list_pda_pos
-    )
-  } else {
-    list <- switch(detector,
-      "bpi" = compared_peaks_list_bpi_neg,
-      "cad" = compared_peaks_list_cad_neg,
-      "pda" = compared_peaks_list_pda_neg
-    )
-  }
-  if (mode == "neg") {
-    list$peaks_maj_precor_taxo_cor$feature_area <- -(list$peaks_maj_precor_taxo_cor$feature_area)
-  }
-
+plot_results_1 <- function(list, mode = "pos") {
   message("preparing histograms")
   # TODO harmonize 'others' among minor and major
   df_histogram_maj <- list$peaks_maj_precor_taxo_cor |>
@@ -108,18 +91,12 @@ source(file = "R/prepare_hierarchy.R")
 #' @include prepare_hierarchy.R
 #' @include no_other.R
 #'
-#' @param detector Detector
+#' @param list List
 #'
 #' @return A list of plots
 #'
 #' @examples NULL
-plot_results_2 <- function(detector = "cad") {
-  list <- switch(detector,
-    "bpi" = compared_peaks_list_bpi,
-    "cad" = compared_peaks_list_cad,
-    "pda" = compared_peaks_list_pda
-  )
-
+plot_results_2 <- function(list) {
   temp_fix_duplicates <- function(df, colname = "peak_rt_apex") {
     df |>
       tidytable::arrange(tidytable::desc(comparison_score)) |>
