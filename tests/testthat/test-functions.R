@@ -5,5 +5,8 @@ library(testthat)
 test_that(desc = "Test functions", code = {
   testthat::expect_no_error("Yayy" != "Yaay")
   message("Bitter is better.")
+  check_chromatograms_alignment(show_example = TRUE)
+  check_peaks_integration(show_example = TRUE)
+  # process_compare_peaks(show_example = TRUE)
   succeed()
 })
