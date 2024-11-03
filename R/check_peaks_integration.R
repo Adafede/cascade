@@ -39,9 +39,9 @@ check_peaks_integration <- function(file = NULL,
                                     shift = 0.05,
                                     show_example = FALSE,
                                     fourier_components = 0.01,
-                                    time_min = 0,
-                                    time_max = Inf,
-                                    frequency = 2,
+                                    time_min = 0.5,
+                                    time_max = 32.5,
+                                    frequency = 1,
                                     resample = 1) {
   message("loading chromatograms")
   chromatograms_all <- file |>

@@ -63,11 +63,11 @@ plot_histograms <-
 plot_histograms_confident <-
   function(dataframe, level = "max") {
     dataframe <- dataframe |>
-      dplyr::group_by(peak_area) |>
-      dplyr::mutate(n = max(dplyr::row_number())) |>
-      dplyr::group_by(feature_area) |>
-      dplyr::mutate(m = max(dplyr::row_number())) |>
-      dplyr::ungroup()
+      tidytable::group_by(peak_area) |>
+      tidytable::mutate(n = max(tidytable::row_number())) |>
+      tidytable::group_by(feature_area) |>
+      tidytable::mutate(m = max(tidytable::row_number())) |>
+      tidytable::ungroup()
 
     plot <- ggplot2::ggplot() +
       ggplot2::geom_line(
@@ -149,11 +149,11 @@ plot_histograms_taxo <-
            level = "max",
            mode = "pos") {
     dataframe <- dataframe |>
-      dplyr::group_by(peak_area) |>
-      dplyr::mutate(n = max(dplyr::row_number())) |>
-      dplyr::group_by(feature_area) |>
-      dplyr::mutate(m = max(dplyr::row_number())) |>
-      dplyr::ungroup()
+      tidytable::group_by(peak_area) |>
+      tidytable::mutate(n = max(tidytable::row_number())) |>
+      tidytable::group_by(feature_area) |>
+      tidytable::mutate(m = max(tidytable::row_number())) |>
+      tidytable::ungroup()
 
     if (mode == "neg") {
       dataframe$peak_area <- -1 * dataframe$peak_area

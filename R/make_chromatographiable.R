@@ -16,11 +16,9 @@ make_chromatographiable <-
            logp_min = -1,
            logp_max = 6) {
     message("Keeping chromatographiable structures only")
-    df_ready <- df |>
-      dplyr::filter(structure_exact_mass >= mass_min) |>
-      dplyr::filter(structure_exact_mass <= mass_max) |>
-      dplyr::filter(structure_xlogp >= logp_min) |>
-      dplyr::filter(structure_xlogp <= logp_max)
-
-    return(df_ready)
+    df |>
+      tidytable::filter(structure_exact_mass >= mass_min) |>
+      tidytable::filter(structure_exact_mass <= mass_max) |>
+      tidytable::filter(structure_xlogp >= logp_min) |>
+      tidytable::filter(structure_xlogp <= logp_max)
   }

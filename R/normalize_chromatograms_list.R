@@ -13,20 +13,20 @@ normalize_chromatograms_list <-
            shift = 0,
            normalize_intensity = TRUE,
            normalize_time = FALSE) {
-    df <- dplyr::bind_rows(list, .id = "id")
+    df <- tidytable::bind_rows(list, .id = "id")
     df <- df |>
-      dplyr::group_by(id) |>
-      dplyr::mutate(time = time + shift)
+      tidytable::group_by(id) |>
+      tidytable::mutate(time = time + shift)
 
     if (normalize_intensity) {
       df <- df |>
-        dplyr::mutate(intensity = intensity / max(intensity))
+        tidytable::mutate(intensity = intensity / max(intensity))
     }
     if (normalize_time) {
       df <- df |>
-        dplyr::mutate(time_2 = max(time)) |>
-        dplyr::mutate(time = time / time_2) |>
-        dplyr::ungroup()
+        tidytable::mutate(time_2 = max(time)) |>
+        tidytable::mutate(time = time / time_2) |>
+        tidytable::ungroup()
     }
     return(df)
   }

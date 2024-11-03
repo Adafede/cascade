@@ -133,7 +133,7 @@ lotus_long <- lotus |>
     replacement = "",
     x = structure_inchikey
   )) |>
-  tidyr::pivot_longer(cols = 2:11, names_prefix = "organism_taxonomy_") |>
+  tidytable::pivot_longer(cols = 2:11, names_prefix = "organism_taxonomy_") |>
   dplyr::distinct(inchikey_2D,
     reference = reference_doi,
     best_candidate_organism = value

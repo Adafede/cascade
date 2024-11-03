@@ -97,4 +97,5 @@ check_peaks_integration(
 )
 ```
 
-Development follows.
+We now recommend you to read the [next vignette](https://adafede.github.io/cascade/articles/II-preparing.html).
+
