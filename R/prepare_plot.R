@@ -10,46 +10,46 @@
 #' @examples NULL
 prepare_plot <- function(dataframe, organism = "species") {
   presamples <- dataframe |>
-    tidytable::ungroup() |>
-    tidytable::filter(parents != "" &
+    dplyr::ungroup() |>
+    dplyr::filter(parents != "" &
       !grepl(pattern = "-", x = parents)) |>
-    tidytable::filter(parents != "" &
+    dplyr::filter(parents != "" &
       !grepl(pattern = "-", x = parents)) |>
-    tidytable::filter(!is.na(get(organism))) |>
-    tidytable::mutate(species = get(organism)) |>
-    tidytable::group_by(labels) |>
-    tidytable::mutate(valuez = sum(values)) |>
-    tidytable::ungroup() |>
-    tidytable::arrange(desc(valuez)) |>
-    tidytable::mutate(group = as.integer(factor(parents, levels = unique(parents)))) |>
-    tidytable::group_by(group) |>
-    tidytable::mutate(subgroup = as.integer(factor(x = ids, levels = unique(ids)))) |>
-    tidytable::mutate(subgroup = tidytable::dense_rank(x = as.numeric(subgroup))) |>
-    tidytable::rowwise() |>
-    tidytable::group_by(sample) |>
-    tidytable::mutate(tot = sum(values)) |>
-    tidytable::ungroup()
+    dplyr::filter(!is.na(get(organism))) |>
+    dplyr::mutate(species = get(organism)) |>
+    dplyr::group_by(labels) |>
+    dplyr::mutate(valuez = sum(values)) |>
+    dplyr::ungroup() |>
+    dplyr::arrange(desc(valuez)) |>
+    dplyr::mutate(group = as.integer(factor(parents, levels = unique(parents)))) |>
+    dplyr::group_by(group) |>
+    dplyr::mutate(subgroup = as.integer(factor(x = ids, levels = unique(ids)))) |>
+    dplyr::mutate(subgroup = dplyr::dense_rank(x = as.numeric(subgroup))) |>
+    dplyr::rowwise() |>
+    dplyr::group_by(sample) |>
+    dplyr::mutate(tot = sum(values)) |>
+    dplyr::ungroup()
 
   tempval <- presamples |>
-    tidytable::filter(parents == "Other") |>
-    tidytable::distinct(group) |>
-    tidytable::pull()
+    dplyr::filter(parents == "Other") |>
+    dplyr::distinct(group) |>
+    dplyr::pull()
 
   if (length(tempval) != 0) {
     samples_0 <- presamples |>
-      tidytable::filter(group == tempval) |>
-      tidytable::rowwise() |>
-      tidytable::mutate(group = 666) |>
-      tidytable::ungroup()
+      dplyr::filter(group == tempval) |>
+      dplyr::rowwise() |>
+      dplyr::mutate(group = 666) |>
+      dplyr::ungroup()
 
     samples_1 <- presamples |>
-      tidytable::filter(group > tempval) |>
-      tidytable::rowwise() |>
-      tidytable::mutate(group = group - 1) |>
-      tidytable::ungroup()
+      dplyr::filter(group > tempval) |>
+      dplyr::rowwise() |>
+      dplyr::mutate(group = group - 1) |>
+      dplyr::ungroup()
 
     samples_2 <- presamples |>
-      tidytable::filter(group < tempval)
+      dplyr::filter(group < tempval)
 
     samples <- rbind(samples_0, samples_1, samples_2)
   } else {
@@ -57,8 +57,8 @@ prepare_plot <- function(dataframe, organism = "species") {
   }
 
   samples <- samples |>
-    tidytable::rowwise() |>
-    tidytable::mutate(color = ifelse(
+    dplyr::rowwise() |>
+    dplyr::mutate(color = ifelse(
       test = grepl(
         pattern = "Other",
         x = parents,
@@ -67,22 +67,22 @@ prepare_plot <- function(dataframe, organism = "species") {
       yes = microshades_grey[[1]][[subgroup]],
       no = microshades[[group]][[subgroup]]
     )) |>
-    tidytable::mutate(relative = values / tot) |>
-    tidytable::ungroup() |>
-    tidytable::arrange(subgroup) |>
-    tidytable::arrange(group) |>
-    tidytable::mutate(idz = paste(group, subgroup))
+    dplyr::mutate(relative = values / tot) |>
+    dplyr::ungroup() |>
+    dplyr::arrange(subgroup) |>
+    dplyr::arrange(group) |>
+    dplyr::mutate(idz = paste(group, subgroup))
 
   quickfix <- samples |>
-    tidytable::filter(is.na(color)) |>
-    tidytable::group_by(group, subgroup) |>
-    tidytable::mutate(subsub = tidytable::cur_group_id()) |>
-    tidytable::mutate(color = paste0("#00", sprintf("%04d", subsub))) |>
-    tidytable::select(-subsub) |>
-    tidytable::ungroup()
+    dplyr::filter(is.na(color)) |>
+    dplyr::group_by(group, subgroup) |>
+    dplyr::mutate(subsub = dplyr::cur_group_id()) |>
+    dplyr::mutate(color = paste0("#00", sprintf("%04d", subsub))) |>
+    dplyr::select(-subsub) |>
+    dplyr::ungroup()
 
   samples <-
-    rbind(samples |> tidytable::filter(!is.na(color)), quickfix)
+    rbind(samples |> dplyr::filter(!is.na(color)), quickfix)
 
   samples$ids <-
     forcats::fct_reorder2(
@@ -122,9 +122,9 @@ prepare_plot <- function(dataframe, organism = "species") {
 #' @examples NULL
 prepare_plot_2 <- function(dataframe) {
   dataframe_prep <- dataframe |>
-    tidytable::ungroup() |>
-    tidytable::filter(!is.na(inchikey_2D)) |>
-    tidytable::distinct(
+    dplyr::ungroup() |>
+    dplyr::filter(!is.na(inchikey_2D)) |>
+    dplyr::distinct(
       peak_id,
       inchikey_2D,
       best_candidate_1,
@@ -132,89 +132,89 @@ prepare_plot_2 <- function(dataframe) {
       best_candidate_3,
       .keep_all = TRUE
     ) |>
-    tidytable::group_by(peak_id) |>
-    tidytable::mutate(peak_area = peak_area / max(tidytable::row_number())) |>
-    tidytable::mutate(best_candidate_1 = ifelse(
+    dplyr::group_by(peak_id) |>
+    dplyr::mutate(peak_area = peak_area / max(dplyr::row_number())) |>
+    dplyr::mutate(best_candidate_1 = ifelse(
       test = !is.na(best_candidate_1),
       yes = best_candidate_1,
       no = "Other"
     )) |>
-    tidytable::mutate(
+    dplyr::mutate(
       best_candidate_1 = ifelse(
         test = best_candidate_1 != "notConfident",
         yes = best_candidate_1,
         no = "Other"
       )
     ) |>
-    tidytable::mutate(
+    dplyr::mutate(
       best_candidate_1 = ifelse(
         test = best_candidate_1 != "notClassified",
         yes = best_candidate_1,
         no = "Other"
       )
     ) |>
-    tidytable::mutate(
+    dplyr::mutate(
       best_candidate_1 = ifelse(
         test = best_candidate_1 != "notClassified",
         yes = best_candidate_1,
         no = "Other"
       )
     ) |>
-    tidytable::mutate(best_candidate_2 = ifelse(
+    dplyr::mutate(best_candidate_2 = ifelse(
       test = !is.na(best_candidate_2),
       yes = best_candidate_2,
       no = "notAnnotated"
     )) |>
-    tidytable::mutate(
+    dplyr::mutate(
       best_candidate_2 = ifelse(
         test = best_candidate_2 != "notConfident notConfident",
         yes = best_candidate_2,
         no = "notConfident"
       )
     ) |>
-    tidytable::mutate(
+    dplyr::mutate(
       best_candidate_2 = ifelse(
         test = best_candidate_2 != "notClassified",
         yes = best_candidate_2,
         no = "notClassified"
       )
     ) |>
-    tidytable::mutate(
+    dplyr::mutate(
       best_candidate_3 = ifelse(
         test = !is.na(best_candidate_3),
         yes = best_candidate_3,
         no = "notAnnotated notAnnotated"
       )
     ) |>
-    tidytable::mutate(
+    dplyr::mutate(
       best_candidate_3 = ifelse(
         test = best_candidate_3 != "notConfident notConfident notConfident",
         yes = best_candidate_3,
         no = "notConfident notConfident"
       )
     ) |>
-    tidytable::mutate(
+    dplyr::mutate(
       best_candidate_3 = ifelse(
         test = best_candidate_3 != "notClassified",
         yes = best_candidate_3,
         no = "notClassified notClassified"
       )
     ) |>
-    tidytable::group_by(best_candidate_1) |>
-    tidytable::mutate(sum = sum(unique(peak_area))) |>
-    tidytable::ungroup() |>
-    tidytable::arrange(tidytable::desc(sum)) |>
-    tidytable::mutate(group = as.integer(factor(
+    dplyr::group_by(best_candidate_1) |>
+    dplyr::mutate(sum = sum(unique(peak_area))) |>
+    dplyr::ungroup() |>
+    dplyr::arrange(dplyr::desc(sum)) |>
+    dplyr::mutate(group = as.integer(factor(
       best_candidate_1,
       levels = unique(best_candidate_1)
     ))) |>
-    tidytable::group_by(group) |>
-    tidytable::mutate(subgroup = as.integer(factor(
+    dplyr::group_by(group) |>
+    dplyr::mutate(subgroup = as.integer(factor(
       x = best_candidate_2, levels = unique(best_candidate_2)
     ))) |>
-    tidytable::mutate(subgroup = tidytable::dense_rank(x = as.numeric(subgroup))) |>
-    tidytable::rowwise() |>
-    tidytable::mutate(color = ifelse(
+    dplyr::mutate(subgroup = dplyr::dense_rank(x = as.numeric(subgroup))) |>
+    dplyr::rowwise() |>
+    dplyr::mutate(color = ifelse(
       test = grepl(
         pattern = "Other",
         x = best_candidate_1,
@@ -223,8 +223,8 @@ prepare_plot_2 <- function(dataframe) {
       yes = microshades_grey[[1]][[subgroup]],
       no = microshades[[group]][[subgroup]]
     )) |>
-    tidytable::mutate(name = paste(best_candidate_1, best_candidate_2, sep = " - ")) |>
-    tidytable::select(
+    dplyr::mutate(name = paste(best_candidate_1, best_candidate_2, sep = " - ")) |>
+    dplyr::select(
       sample,
       sample_organism = species,
       peak_id,
@@ -263,7 +263,7 @@ prepare_plot_2 <- function(dataframe) {
       name,
       sum
     ) |>
-    tidytable::mutate(name_2 = ifelse(
+    dplyr::mutate(name_2 = ifelse(
       test = score_biological >= 0.9,
       yes = "Species",
       no = ifelse(
@@ -280,12 +280,12 @@ prepare_plot_2 <- function(dataframe) {
         )
       )
     )) |>
-    tidytable::mutate(name_2 = ifelse(
+    dplyr::mutate(name_2 = ifelse(
       test = is.na(name_2),
       yes = "Other",
       no = name_2
     )) |>
-    tidytable::mutate(color_2 = ifelse(
+    dplyr::mutate(color_2 = ifelse(
       test = name_2 == "Species",
       yes = microshades[[9]][[1]],
       no = ifelse(
@@ -302,7 +302,7 @@ prepare_plot_2 <- function(dataframe) {
         )
       )
     )) |>
-    tidytable::ungroup()
+    dplyr::ungroup()
 
   if (nrow(dataframe_prep) > 0) {
     dataframe_prep$color <-

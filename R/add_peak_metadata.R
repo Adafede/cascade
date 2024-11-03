@@ -170,7 +170,8 @@ add_peak_metadata <- function(df, min_score = 0.8) {
   df_meta_full <- df_meta |>
     tidytable::full_join(df_meta_cor) |>
     tidytable::full_join(df_meta_taxo) |>
-    tidytable::fill(sample, .direction = "downup")
+    tidytable::fill(sample, .direction = "downup") |>
+    data.frame()
 
   df_meta_full[is.na(df_meta_full)] <- 0
 

@@ -13,13 +13,13 @@ subtables_progress <- function(xs) {
       p()
       x |>
         dplyr::filter(chemical_pathway == .[1, "chemical_pathway"]) |>
-        dplyr::group_by(chemical_class) |>
-        dplyr::add_count(sort = TRUE) |>
-        dplyr::select(-n) |>
-        dplyr::group_by(chemical_superclass) |>
-        dplyr::add_count(sort = TRUE) |>
-        dplyr::select(-n, -chemical_pathway) |>
-        dplyr::distinct()
+        tidytable::group_by(chemical_class) |>
+        tidytable::add_count(sort = TRUE) |>
+        tidytable::select(-n) |>
+        tidytable::group_by(chemical_superclass) |>
+        tidytable::add_count(sort = TRUE) |>
+        tidytable::select(-n, -chemical_pathway) |>
+        tidytable::distinct()
     }
   )
 }
