@@ -13,14 +13,13 @@ compare_peaks <- function(x, list_ms_peaks, peaks_prelist) {
       X = seq_along(list_ms_peaks[[x]]),
       FUN = function(list_ms_peaks, x, z) {
         if (length(list_ms_peaks[[x]][[z]]) > 1) {
-          score <- MSnbase::compareChromatograms(peaks_prelist$list_chromato_peaks[[x]],
+          MSnbase::compareChromatograms(peaks_prelist$list_chromato_peaks[[x]],
             y = list_ms_peaks[[x]][[z]],
             method = "closest"
           )
         } else {
-          score <- 0
+          0
         }
-        return(score)
       },
       list_ms_peaks = list_ms_peaks,
       x = x

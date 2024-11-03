@@ -17,80 +17,80 @@ prepare_hierarchy <-
 
     if (type == "analysis") {
       df <- dataframe |>
-        dplyr::mutate(best_candidate_1 = ifelse(
+        tidytable::mutate(best_candidate_1 = ifelse(
           test = !is.na(smiles_2D),
           yes = best_candidate_1,
           no = "Other"
         )) |>
-        dplyr::mutate(best_candidate_2 = ifelse(
+        tidytable::mutate(best_candidate_2 = ifelse(
           test = !is.na(smiles_2D),
           yes = best_candidate_2,
           no = paste(best_candidate_1, "notAnnotated", sep = " ")
         )) |>
-        dplyr::mutate(best_candidate_3 = ifelse(
+        tidytable::mutate(best_candidate_3 = ifelse(
           test = !is.na(smiles_2D),
           yes = best_candidate_3,
           no = paste(best_candidate_2, "notAnnotated", sep = " ")
         )) |>
-        dplyr::mutate(
+        tidytable::mutate(
           best_candidate_2 = ifelse(
             test = best_candidate_2 != "notClassified",
             yes = best_candidate_2,
             no = paste(best_candidate_1, "notClassified", sep = " ")
           )
         ) |>
-        dplyr::mutate(
+        tidytable::mutate(
           best_candidate_3 = ifelse(
             test = best_candidate_3 != "notClassified",
             yes = best_candidate_3,
             no = paste(best_candidate_2, "notClassified", sep = " ")
           )
         ) |>
-        dplyr::mutate(
+        tidytable::mutate(
           best_candidate_1 = ifelse(
             test = best_candidate_3 != "notClassified notClassified notClassified",
             yes = best_candidate_1,
             no = "Other"
           )
         ) |>
-        dplyr::mutate(
+        tidytable::mutate(
           best_candidate_2 = ifelse(
             test = best_candidate_3 != "notClassified notClassified notClassified",
             yes = best_candidate_2,
             no = "Other notClassified"
           )
         ) |>
-        dplyr::mutate(
+        tidytable::mutate(
           best_candidate_3 = ifelse(
             test = best_candidate_3 != "notClassified notClassified notClassified",
             yes = best_candidate_3,
             no = "Other notClassified notClassified"
           )
         ) |>
-        dplyr::mutate(chemical_pathway = best_candidate_1)
+        tidytable::mutate(chemical_pathway = best_candidate_1)
 
       df_notConfident <- df |>
-        dplyr::filter(grepl(pattern = "notConfident", x = best_candidate_2)) |>
-        dplyr::mutate(
+        tidytable::filter(grepl(pattern = "notConfident", x = best_candidate_2)) |>
+        tidytable::mutate(
           smiles_2D = NA,
           best_candidate_1 = "Other",
           best_candidate_2 = "Other notConfident",
           best_candidate_3 = "Other notConfident notConfident",
           inchikey_2D = NA
         ) |>
-        dplyr::arrange(dplyr::desc(dplyr::across(dplyr::any_of(
+        tidytable::arrange(tidytable::desc(tidytable::across(tidytable::any_of(
           c("intensity", "comparison_score")
         )))) |>
-        dplyr::distinct(id, peak_id, sample, .keep_all = TRUE)
+        tidytable::distinct(id, peak_id, sample, .keep_all = TRUE)
 
       df_confident <- df |>
-        dplyr::filter(!grepl(pattern = "notConfident", x = best_candidate_2))
+        tidytable::filter(!grepl(pattern = "notConfident", x = best_candidate_2))
 
       dataframe2 <- rbind(df_confident, df_notConfident) |>
-        dplyr::group_by(chemical_pathway)
+        tidytable::group_by(chemical_pathway)
     } else {
       dataframe2 <- dataframe |>
-        dplyr::mutate(
+        tidytable::mutate(
           best_candidate_1 = ifelse(
             test = !is.na(best_candidate_1),
             yes = best_candidate_1,
@@ -107,7 +107,7 @@ prepare_hierarchy <-
             no = paste(best_candidate_2, "notClassified", sep = " ")
           )
         ) |>
-        dplyr::mutate(chemical_pathway = ifelse(
+        tidytable::mutate(chemical_pathway = ifelse(
           test = grepl(pattern = "not", x = best_candidate_1),
           yes = "Other",
           no = best_candidate_1
@@ -116,24 +116,24 @@ prepare_hierarchy <-
 
     ## dirty temp fix because of bad npclassifier naming
     dataframe2 <- dataframe2 |>
-      dplyr::rowwise() |>
-      dplyr::mutate(safety = ifelse(
+      tidytable::rowwise() |>
+      tidytable::mutate(safety = ifelse(
         test = best_candidate_3 == best_candidate_2,
         yes = "Y",
         no = "N"
       )) |>
-      dplyr::mutate(best_candidate_3 = ifelse(
+      tidytable::mutate(best_candidate_3 = ifelse(
         test = safety == "Y",
         yes = paste(best_candidate_3, "sub"),
         no = best_candidate_3
       )) |>
-      dplyr::group_by(chemical_pathway)
+      tidytable::group_by(chemical_pathway)
 
     parents <- dataframe2 |>
-      dplyr::distinct(labels = best_candidate_1, ids = best_candidate_1) |>
-      dplyr::mutate(parents = "") |>
-      dplyr::distinct() |>
-      dplyr::mutate(
+      tidytable::distinct(labels = best_candidate_1, ids = best_candidate_1) |>
+      tidytable::mutate(parents = "") |>
+      tidytable::distinct() |>
+      tidytable::mutate(
         labels = gsub(
           pattern = "notAnnotated",
           replacement = "Other",
@@ -147,7 +147,7 @@ prepare_hierarchy <-
           fixed = TRUE
         )
       ) |>
-      dplyr::mutate(
+      tidytable::mutate(
         labels = gsub(
           pattern = "notClassified",
           replacement = "Other",
@@ -161,7 +161,7 @@ prepare_hierarchy <-
           fixed = TRUE
         )
       ) |>
-      dplyr::mutate(
+      tidytable::mutate(
         labels = gsub(
           pattern = "notConfident",
           replacement = "Other",
@@ -175,7 +175,7 @@ prepare_hierarchy <-
           fixed = TRUE
         )
       ) |>
-      dplyr::distinct()
+      tidytable::distinct()
 
     children_1 <- dataframe2 |>
       dplyr::distinct(best_candidate_1, best_candidate_2) |>

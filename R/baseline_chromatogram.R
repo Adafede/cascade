@@ -18,7 +18,7 @@ baseline_chromatogram <- function(df) {
   )
 
   intensity_new <- t(intensity_baseline@corrected) |>
-    data.table::data.table()
+    tidytable::data.table()
 
   df2$intensity <- intensity_new$V1
 

@@ -9,7 +9,7 @@
 plot_chromatogram <- function(df, text) {
   plotly::plot_ly(
     data = df,
-    # |> dplyr::filter(grepl(pattern = "M", x = id)),
+    # |> tidytable::filter(grepl(pattern = "M", x = id)),
     x = ~time,
     y = ~intensity,
     color = ~id,
