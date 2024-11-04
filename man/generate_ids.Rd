@@ -9,14 +9,15 @@ generate_ids(
   comparison = c("Swertia", "Kopsia"),
   no_stereo = TRUE,
   filter_ms_conditions = TRUE,
+  start = "0",
+  end = "9999",
+  limit = "1000000",
   create_dir_f =
     "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/create_dir.R",
   get_file_f =
     "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/get_file.R",
   get_last_version_from_zenodo_f =
-    "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/get_last_version_from_zenodo.R",
-  log_debug_f =
-    "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/log_debug.R"
+    "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/get_last_version_from_zenodo.R"
 )
 }
 \arguments{
@@ -27,6 +28,12 @@ generate_ids(
 \item{no_stereo}{No stereo}
 
 \item{filter_ms_conditions}{Filter MS conditions}
+
+\item{start}{Start}
+
+\item{end}{End}
+
+\item{limit}{Limit}
 
 \item{create_dir_f}{Create dir function}
 

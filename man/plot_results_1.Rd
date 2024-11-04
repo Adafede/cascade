@@ -4,12 +4,18 @@
 \alias{plot_results_1}
 \title{Plot results 1}
 \usage{
-plot_results_1(list, mode = "pos")
+plot_results_1(list, chromatogram, mode = "pos", time_min, time_max)
 }
 \arguments{
 \item{list}{List}
 
+\item{chromatogram}{Chromatogram}
+
 \item{mode}{Mode}
+
+\item{time_min}{Time min}
+
+\item{time_max}{Time max}
 }
 \value{
 A list of plots

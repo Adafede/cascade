@@ -4,10 +4,12 @@
 \alias{plot_histograms}
 \title{Plot histograms}
 \usage{
-plot_histograms(dataframe, label, y = "values", xlab = TRUE)
+plot_histograms(dataframe, chromatogram, label, y = "values", xlab = TRUE)
 }
 \arguments{
 \item{dataframe}{Dataframe}
+
+\item{chromatogram}{Chromatogram}
 
 \item{label}{Label}
 

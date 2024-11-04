@@ -4,14 +4,27 @@
 \alias{plot_histograms_taxo}
 \title{Plot histograms taxo}
 \usage{
-plot_histograms_taxo(dataframe, level = "max", mode = "pos")
+plot_histograms_taxo(
+  dataframe,
+  chromatogram,
+  level = "max",
+  mode = "pos",
+  time_min,
+  time_max
+)
 }
 \arguments{
 \item{dataframe}{Dataframe}
 
+\item{chromatogram}{Chromatogram}
+
 \item{level}{Level}
 
 \item{mode}{Mode}
+
+\item{time_min}{Time min}
+
+\item{time_max}{Time max}
 }
 \value{
 A plot of taxo histograms
