@@ -3,15 +3,6 @@ title: General comments about the use of CASCADE
 author: Adriano Rutz
 creative_commons: CC BY-SA
 date: "`r Sys.Date()`"
-knitr:
-  opts_chunk: 
-    collapse: true
-    comment: "#>"
-  opts_knit: 
-    set:
-      root.dir:
-        system.file:
-          package: "cascade"
 opengraph:
     image:
       src: https://github.com/adafede/cascade/blob/main/man/figures/logo.svg
@@ -23,10 +14,6 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
-```{r cascade, include = FALSE}
-library("cascade")
-```
 
 This vignette describes the very basic steps of **CASCADE**.
 
