@@ -49,3 +49,4 @@ vignettes/*.pdf
 params/params/**
 data/**
 https:/**
+/.quarto/
