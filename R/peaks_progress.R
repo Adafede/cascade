@@ -6,10 +6,11 @@
 #'
 #' @examples NULL
 peaks_progress <- function(xs) {
-  # p <- progressr::progressor(along = xs)
+  p <- progressr::progressor(along = xs)
   future.apply::future_lapply(
     X = xs,
     FUN = function(x) {
+      p()
       data_cascade <- list()
       data_cascade[[1]] <-
         x |>

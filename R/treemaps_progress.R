@@ -98,11 +98,9 @@ treemaps_progress <- function(xs,
 treemaps_progress_no_title <- function(xs,
                                        type = "treemap",
                                        hierarchies) {
-  p <- progressr::progressor(along = xs)
   future.apply::future_lapply(
     X = setNames(object = xs, nm = xs),
     FUN = function(x, hierarchies) {
-      p()
       if (x != "special") {
         plotly::plot_ly(
           data = hierarchies[[x]],
