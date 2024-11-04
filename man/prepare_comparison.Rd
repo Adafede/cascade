@@ -9,7 +9,8 @@ prepare_comparison(
   features_not_informed = NULL,
   min_similarity_prefilter = 0.6,
   min_similarity_filter = 0.8,
-  mode = "pos"
+  mode = "pos",
+  show_example = FALSE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ prepare_comparison(
 \item{min_similarity_filter}{Min similarity filter}
 
 \item{mode}{Mode}
+
+\item{show_example}{Show example? Default to FALSE}
 }
 \value{
 A list of peaks

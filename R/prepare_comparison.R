@@ -5,6 +5,7 @@
 #' @param min_similarity_prefilter Min similarity pre filter
 #' @param min_similarity_filter Min similarity filter
 #' @param mode Mode
+#' @param show_example Show example? Default to FALSE
 #'
 #' @return A list of peaks
 #'
@@ -13,13 +14,13 @@ prepare_comparison <- function(features_informed = NULL,
                                features_not_informed = NULL,
                                min_similarity_prefilter = 0.6,
                                min_similarity_filter = 0.8,
-                               mode = "pos") {
-  message("loading compared peaks")
+                               mode = "pos",
+                               show_example = FALSE) {
   peaks_compared <- features_informed |>
-    tidytable::fread() |>
+    load_features_informed(show_example = show_example) |>
     tidytable::mutate(mode = mode)
   peaks_outside <- features_not_informed |>
-    tidytable::fread() |>
+    load_features_not_informed(show_example = show_example) |>
     tidytable::mutate(mode = mode) |>
     tidytable::mutate(tidytable::across(tidytable::all_of(
       c(
@@ -160,7 +161,10 @@ prepare_comparison <- function(features_informed = NULL,
     temp_fix_2() |>
     tidytable::bind_rows(peaks_min)
 
-  message("keeping peaks similarities with score above", min_similarity_filter)
+  message(
+    "keeping peaks similarities with score above ",
+    min_similarity_filter
+  )
   peaks_maj_precor_taxo_cor <- peaks_maj_precor_taxo |>
     tidytable::filter(comparison_score >= min_similarity_filter)
 
