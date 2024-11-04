@@ -55,24 +55,24 @@ The different plots offer the following views:
 
 ### Taxo (major peaks)
 
-```{r taxo-major, warning=FALSE, out.width="100%"}
+```{r taxo-major, warning=FALSE, fig.height=5}
 plots_list$plots_1$histograms_taxo_maj
 ```
 
 ### Taxo (major peaks)
 
-```{r taxo-minor, warning=FALSE, out.width="100%"}
+```{r taxo-minor, warning=FALSE, fig.height=5}
 plots_list$plots_1$histograms_taxo_min
 ```
 ### Confident unique annotations (major)
 
-```{r confident-major, warning=FALSE, out.width="100%"}
+```{r confident-major, warning=FALSE, fig.height=5}
 plots_list$plots_1$histograms_unique_conf_maj
 ```
 
 ### Confident unique annotations (minor)
 
-```{r unique-minor, warning=FALSE, out.width="100%"}
+```{r unique-minor, warning=FALSE, fig.height=5}
 plots_list$plots_1$histograms_unique_conf_min
 ```
 Or getting rid of the chromatogram:
