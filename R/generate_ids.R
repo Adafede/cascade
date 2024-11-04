@@ -84,13 +84,6 @@ generate_ids <- function(taxa = c("Swertia", "Kopsia", "Ginkgo"),
   names(qids) <- taxa
   comparison <- c("Swertia", "Kopsia")
 
-  genera <-
-    names(qids)[!grepl(
-      pattern = " ",
-      x = names(qids),
-      fixed = TRUE
-    )]
-
   message("Building queries")
   queries <- queries_progress(
     xs = qids,
