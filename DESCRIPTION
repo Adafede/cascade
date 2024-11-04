@@ -31,6 +31,7 @@ Imports:
     mzR (>= 2.36.0),
     pbapply (>= 1.7.2),
     plotly (>= 4.10.4),
+    progressr (>= 0.15.0),
     purrr (>= 1.0.2),
     R.utils (>= 2.12.3),
     RCurl (>= 1.98.1.16),
