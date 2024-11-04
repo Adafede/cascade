@@ -1,17 +1,8 @@
 ---
-title: "2 Processing"
-author: "Adriano Rutz"
+title: 2 Processing
+author: Adriano Rutz
 creative_commons: CC BY-SA
 date: "`r Sys.Date()`"
-knitr:
-  opts_chunk: 
-    collapse: true
-    comment: "#>"
-  opts_knit: 
-    set:
-      root.dir:
-        system.file:
-          package: "cascade"
 opengraph:
     image:
       src: https://github.com/adafede/cascade/blob/main/man/figures/logo.svg
@@ -23,6 +14,14 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+        collapse = TRUE,
+        comment = "#>"
+)
+knitr::opts_knit$set(root.dir = system.file(package = "cascade"))
+```
 
 ```{r cascade, include = FALSE}
 library("cascade")
