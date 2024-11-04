@@ -32,11 +32,9 @@ This vignette describes the very basic steps of **CASCADE**.
 
 ## Pre-requisites
 
-TODO
-
-## General steps
-
-TODO
+- A file containing DDA MS data with additional signals (PDA, CAD)
+- A file containing features, as obtained by [mzmine](https://mzio.io)
+- A file containing annotations, as obtained by [TIMA](https://taxonomicallyinformedannotation.github.io/tima)
 
 ## More details
 
@@ -53,12 +51,4 @@ install.packages(
     "https://cloud.r-project.org"
   )
 )
-```
-
-### tl;dr
-
-If you do not feel like going through all the steps, then just do 🚀:
-
-```{r eval=FALSE, include=TRUE}
-TODO
 ```
