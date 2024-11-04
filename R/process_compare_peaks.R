@@ -119,7 +119,7 @@ process_compare_peaks <- function(file = NULL,
 
   message("processing ", detector, " peaks")
   message("extracting ms chromatograms (longest step)")
-  message("count approx 1 minute  per core per 100 features (increasing with features number)")
+  message("count approx 1 minute per worker per 100 features (increasing with features number)")
   message("varies a lot depending on features distribution")
   list_ms_chromatograms <-
     extract_ms_progress(
@@ -127,6 +127,7 @@ process_compare_peaks <- function(file = NULL,
       ms_data = ms_data,
       peaks_prelist = peaks_prelist
     ) |>
+    progressr::with_progress(enable = TRUE) |>
     suppressMessages()
 
   message("transforming ms chromatograms")

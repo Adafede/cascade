@@ -8,12 +8,11 @@
 #'
 #' @examples NULL
 extract_ms_progress <- function(xs, ms_data, peaks_prelist) {
-  # p <- progressor(along = xs)
+  p <- progressr::progressor(along = xs)
   pbapply::pblapply(
-    # lapply(
     X = xs,
     FUN = function(x, ms_data, peaks_prelist) {
-      # p()
+      p()
       message("CAD Peak: ", x)
       lapply(
         X = seq_along(seq_len(
