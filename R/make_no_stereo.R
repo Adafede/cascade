@@ -1,13 +1,13 @@
-#' Make 2D
+#' Make no stereo
 #'
 #' @param df Dataframe
 #'
-#' @return A dataframe with 2D structures
+#' @return A dataframe with no stereo structures
 #'
 #' @examples NULL
-make_2D <-
+make_no_stereo <-
   function(df) {
-    message("Keeping 2D structures only")
+    message("Keeping no stereo structures only")
     df |>
       tidytable::group_by(!!as.name(names(df)[!grepl(pattern = "structure", x = names(df))])) |>
       tidytable::distinct(tidytable::any_of(

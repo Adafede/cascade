@@ -35,11 +35,9 @@ Imports:
     progressr (>= 0.14.0),
     purrr (>= 1.0.2),
     RCurl (>= 1.98.1.16),
-    readr (>= 2.1.5),
     remotes (>= 2.5.0),
     tibble (>= 3.2.1),
     tidytable (>= 0.11.1),
-    viridis (>= 0.6.5),
     WikidataQueryServiceR (>= 1.0.0),
     yaml (>= 2.3.10),
     zoo (>= 1.8.12)
@@ -96,9 +94,19 @@ Collate:
     'extract_ms_peak.R'
     'extract_ms_progress.R'
     'format_gt.R'
+    'wiki_progress.R'
+    'treemaps_progress.R'
+    'taxon_name_to_qid.R'
+    'tables_progress.R'
+    'queries_progress.R'
+    'prepare_plot.R'
+    'prepare_hierarchy.R'
+    'plot_histograms.R'
+    'make_no_stereo.R'
+    'make_chromatographiable.R'
     'hierarchies_grouped_progress.R'
     'hierarchies_progress.R'
-    'plot_histograms.R'
+    'generate_ids.R'
     'histograms_progress.R'
     'y_as_na.R'
     'keep_best_candidates.R'
@@ -106,8 +114,6 @@ Collate:
     'load_features_informed.R'
     'load_features_not_informed.R'
     'load_ms_data.R'
-    'make_2D.R'
-    'make_chromatographiable.R'
     'make_confident.R'
     'make_other.R'
     'molinfo.R'
@@ -117,8 +123,6 @@ Collate:
     'parse_yaml_paths.R'
     'plot_chromatogram.R'
     'plot_peaks_statistics.R'
-    'prepare_hierarchy.R'
-    'prepare_plot.R'
     'plot_results.R'
     'prehistograms_progress.R'
     'prepare_comparison.R'
@@ -126,18 +130,13 @@ Collate:
     'prettyTables_progress.R'
     'transform_ms.R'
     'process_compare_peaks.R'
-    'treemaps_progress.R'
     'process_plot_pseudochromatograms.R'
-    'queries_progress.R'
     'save_histograms_progress.R'
     'save_prettySubtables_progress.R'
     'save_prettyTables_progress.R'
     'save_treemaps_progress.R'
     'subtables_progress.R'
-    'tables_progress.R'
-    'taxon_name_to_qid.R'
     'transform_baseline.R'
-    'wiki_progress.R'
 VignetteBuilder: 
     knitr
 biocViews: metabolite annotation, charged aerosol detector, semi-quantitative, natural products, computational metabolomics, specialized metabolome

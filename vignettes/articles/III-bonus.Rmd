@@ -28,8 +28,41 @@ knitr::opts_knit$set(root.dir = system.file(package = "cascade"))
 library("cascade")
 ```
 
-This vignette describes some additional bonus helper processing function.
+This vignette describes some additional bonus helper functions.
+A lot of it is based on previous work done in the frame of the [LOTUS initiative](https://doi.org/10.7554/eLife.70780).
 
 ## Quick overview of the literature
 
-Development follows
+To check (and eventually compare to your own results) what is known in the literature about different organisms:
+
+```{r wikidata-plots, message = FALSE, warning=FALSE, out.width="100%"}
+plots_list <- generate_ids(
+  taxa = c("Swertia", "Kopsia", "Ginkgo"),
+  comparison = c("Swertia", "Kopsia"),
+  no_stereo = TRUE,
+  filter_ms_conditions = TRUE
+)
+```
+
+### Compounds found in Swertia 
+
+```{r wikidata-swertia-1, warning=FALSE, out.width="100%"}
+plots_list$plots$Swertia
+```
+
+#### Compounds found in Swertia (per species)
+```{r wikidata-swertia-1, warning=FALSE, out.width="100%"}
+plots_list$plots$Swertia_grouped
+```
+
+### Compounds found in Kopsia
+
+```{r wikidata-swertia-1, warning=FALSE, out.width="100%"}
+plots_list$plots$Kopsia_grouped
+```
+
+### Comparison
+
+```{r wikidata-swertia-1, warning=FALSE, out.width="100%"}
+plots_list$plots$special
+```

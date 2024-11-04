@@ -337,19 +337,6 @@
     },
     "22": {
       "@type": "SoftwareApplication",
-      "identifier": "readr",
-      "name": "readr",
-      "version": ">= 2.1.5",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=readr"
-    },
-    "23": {
-      "@type": "SoftwareApplication",
       "identifier": "remotes",
       "name": "remotes",
       "version": ">= 2.5.0",
@@ -361,7 +348,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=remotes"
     },
-    "24": {
+    "23": {
       "@type": "SoftwareApplication",
       "identifier": "tibble",
       "name": "tibble",
@@ -374,7 +361,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tibble"
     },
-    "25": {
+    "24": {
       "@type": "SoftwareApplication",
       "identifier": "tidytable",
       "name": "tidytable",
@@ -387,20 +374,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tidytable"
     },
-    "26": {
-      "@type": "SoftwareApplication",
-      "identifier": "viridis",
-      "name": "viridis",
-      "version": ">= 0.6.5",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=viridis"
-    },
-    "27": {
+    "25": {
       "@type": "SoftwareApplication",
       "identifier": "WikidataQueryServiceR",
       "name": "WikidataQueryServiceR",
@@ -413,7 +387,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=WikidataQueryServiceR"
     },
-    "28": {
+    "26": {
       "@type": "SoftwareApplication",
       "identifier": "yaml",
       "name": "yaml",
@@ -426,7 +400,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=yaml"
     },
-    "29": {
+    "27": {
       "@type": "SoftwareApplication",
       "identifier": "zoo",
       "name": "zoo",
@@ -442,7 +416,7 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteannotation", "chargedaerosoldetector", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
-  "fileSize": "71075.393KB",
+  "fileSize": "164059.033KB",
   "releaseNotes": "https://github.com/adafede/cascade/blob/master/NEWS.md",
   "readme": "https://github.com/Adafede/cascade/blob/main/README.md",
   "contIntegration": ["https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/adafede/cascade"],
