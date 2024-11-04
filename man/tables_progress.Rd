@@ -4,10 +4,12 @@
 \alias{tables_progress}
 \title{Tables progress}
 \usage{
-tables_progress(xs)
+tables_progress(xs, structures_classified)
 }
 \arguments{
 \item{xs}{XS}
+
+\item{structures_classified}{structures classified}
 }
 \value{
 A list of tables

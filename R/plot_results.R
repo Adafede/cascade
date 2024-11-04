@@ -6,12 +6,15 @@
 #' @include plot_histograms.R
 #'
 #' @param list List
+#' @param chromatogram Chromatogram
 #' @param mode Mode
+#' @param time_min Time min
+#' @param time_max Time max
 #'
 #' @return A list of plots
 #'
 #' @examples NULL
-plot_results_1 <- function(list, mode = "pos") {
+plot_results_1 <- function(list, chromatogram, mode = "pos", time_min, time_max) {
   message("preparing histograms")
   # TODO harmonize 'others' among minor and major
   df_histogram_maj <- list$peaks_maj_precor_taxo_cor |>
@@ -33,31 +36,31 @@ plot_results_1 <- function(list, mode = "pos") {
   message("plotting histograms...")
   message("... taxo")
   histograms_taxo_maj <- df_histogram_maj |>
-    plot_histograms_taxo(mode = mode)
+    plot_histograms_taxo(chromatogram = chromatogram, mode = mode, time_min = time_min, time_max = time_max)
   histograms_taxo_min <- df_histogram_min |>
-    plot_histograms_taxo(level = "min", mode = mode)
+    plot_histograms_taxo(level = "min", chromatogram = chromatogram, mode = mode, time_min = time_min, time_max = time_max)
 
   message("... confident features")
   histograms_conf_maj <- df_histogram_maj_conf |>
-    plot_histograms_confident()
+    plot_histograms_confident(chromatogram = chromatogram, time_min = time_min, time_max = time_max)
   histograms_conf_min <- df_histogram_min_conf |>
-    plot_histograms_confident(level = "min")
+    plot_histograms_confident(level = "min", chromatogram = chromatogram, time_min = time_min, time_max = time_max)
 
   message("... unique structures")
   histograms_unique_maj <- df_histogram_maj |>
     tidytable::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
-    plot_histograms_confident()
+    plot_histograms_confident(chromatogram = chromatogram, time_min = time_min, time_max = time_max)
   histograms_unique_min <- df_histogram_min |>
     tidytable::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
-    plot_histograms_confident(level = "min")
+    plot_histograms_confident(level = "min", chromatogram = chromatogram, time_min = time_min, time_max = time_max)
 
   message("... confident structures")
   histograms_unique_conf_maj <- df_histogram_maj_conf |>
     tidytable::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
-    plot_histograms_confident()
+    plot_histograms_confident(chromatogram = chromatogram, time_min = time_min, time_max = time_max)
   histograms_unique_conf_min <- df_histogram_min_conf |>
     tidytable::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
-    plot_histograms_confident(level = "min")
+    plot_histograms_confident(level = "min", chromatogram = chromatogram, time_min = time_min, time_max = time_max)
 
   returned_list <- list(
     histograms_taxo_maj,

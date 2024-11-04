@@ -1,6 +1,7 @@
 #' Plot histograms
 #'
 #' @param dataframe Dataframe
+#' @param chromatogram Chromatogram
 #' @param label Label
 #' @param y Y
 #' @param xlab Xlab
@@ -10,12 +11,13 @@
 #' @examples NULL
 plot_histograms <-
   function(dataframe,
+           chromatogram,
            label,
            y = "values",
            xlab = TRUE) {
     absolute <- ggplot2::ggplot() +
       ggplot2::geom_line(
-        data = chromatograms_list_cad$chromatograms_baselined_long,
+        data = chromatogram,
         mapping = ggplot2::aes(x = time, y = intensity / max(intensity)),
         col = "black",
         size = 0.1
@@ -55,13 +57,16 @@ plot_histograms <-
 #' Plot histograms confident
 #'
 #' @param dataframe Dataframe
+#' @param chromatogram Chromatogram
 #' @param level Level
+#' @param time_min Time min
+#' @param time_max Time max
 #'
 #' @return A plot of confident histograms
 #'
 #' @examples NULL
 plot_histograms_confident <-
-  function(dataframe, level = "max") {
+  function(dataframe, chromatogram, level = "max", time_min, time_max) {
     dataframe <- dataframe |>
       tidytable::group_by(peak_area) |>
       tidytable::mutate(n = max(tidytable::row_number())) |>
@@ -71,7 +76,7 @@ plot_histograms_confident <-
 
     plot <- ggplot2::ggplot() +
       ggplot2::geom_line(
-        data = chromatograms_list_cad$chromatograms_baselined_long,
+        data = chromatogram,
         mapping = ggplot2::aes(x = time, y = intensity / max(intensity)),
         col = "black",
         size = 0.1
@@ -133,7 +138,7 @@ plot_histograms_confident <-
       ) +
       ggplot2::ylab("Intensity") +
       ggplot2::xlab("Retention time [min]") +
-      ggplot2::xlim(max(TIME_MIN), min(TIME_MAX))
+      ggplot2::xlim(max(time_min), min(time_max))
 
     return(plot)
   }
@@ -141,16 +146,22 @@ plot_histograms_confident <-
 #' Plot histograms taxo
 #'
 #' @param dataframe Dataframe
+#' @param chromatogram Chromatogram
 #' @param level Level
 #' @param mode Mode
+#' @param time_min Time min
+#' @param time_max Time max
 #'
 #' @return A plot of taxo histograms
 #'
 #' @examples NULL
 plot_histograms_taxo <-
   function(dataframe,
+           chromatogram,
            level = "max",
-           mode = "pos") {
+           mode = "pos",
+           time_min,
+           time_max) {
     dataframe <- dataframe |>
       tidytable::group_by(peak_area) |>
       tidytable::mutate(n = max(tidytable::row_number())) |>
@@ -161,13 +172,13 @@ plot_histograms_taxo <-
     if (mode == "neg") {
       dataframe$peak_area <- -1 * dataframe$peak_area
       dataframe$feature_area <- -1 * dataframe$feature_area
-      chromatograms_list_cad$chromatograms_baselined_long$intensity <-
-        -1 * chromatograms_list_cad$chromatograms_baselined_long$intensity
+      chromatogram$intensity <-
+        -1 * chromatogram$intensity
     }
 
     plot <- ggplot2::ggplot() +
       ggplot2::geom_line(
-        data = chromatograms_list_cad$chromatograms_baselined_long,
+        data = chromatogram,
         mapping = ggplot2::aes(x = time, y = intensity / max(abs(intensity))),
         col = "black",
         size = 0.1
@@ -226,7 +237,7 @@ plot_histograms_taxo <-
       ) +
       ggplot2::ylab("Intensity") +
       ggplot2::xlab("Retention time [min]") +
-      ggplot2::xlim(max(TIME_MIN), min(TIME_MAX))
+      ggplot2::xlim(max(time_min), min(time_max))
 
     return(plot)
   }

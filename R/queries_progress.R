@@ -4,6 +4,10 @@
 #' @param start Start
 #' @param end End
 #' @param limit Limit
+#' @param query_part_1 query_part_1
+#' @param query_part_2 query_part_2
+#' @param query_part_3 query_part_3
+#' @param query_part_4 query_part_4
 #'
 #' @return A list of queries
 #'
@@ -11,11 +15,22 @@
 queries_progress <- function(xs,
                              start = "0",
                              end = "9999",
-                             limit = "1000000") {
+                             limit = "1000000",
+                             query_part_1,
+                             query_part_2,
+                             query_part_3,
+                             query_part_4) {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(
     X = xs,
-    FUN = function(x, start, end, limit) {
+    FUN = function(x,
+                   start,
+                   end,
+                   limit,
+                   query_part_1,
+                   query_part_2,
+                   query_part_3,
+                   query_part_4) {
       p()
       paste0(
         query_part_1,
@@ -30,6 +45,10 @@ queries_progress <- function(xs,
     },
     start = start,
     end = end,
-    limit = limit
+    limit = limit,
+    query_part_1 = query_part_1,
+    query_part_2 = query_part_2,
+    query_part_3 = query_part_3,
+    query_part_4 = query_part_4
   )
 }

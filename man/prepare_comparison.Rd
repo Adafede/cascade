@@ -7,6 +7,7 @@
 prepare_comparison(
   features_informed = NULL,
   features_not_informed = NULL,
+  candidates_confident,
   min_similarity_prefilter = 0.6,
   min_similarity_filter = 0.8,
   mode = "pos",
@@ -17,6 +18,8 @@ prepare_comparison(
 \item{features_informed}{Features informed}
 
 \item{features_not_informed}{Features not informed}
+
+\item{candidates_confident}{Candidates confident}
 
 \item{min_similarity_prefilter}{Min similarity pre filter}
 

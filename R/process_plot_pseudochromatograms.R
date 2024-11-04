@@ -21,6 +21,8 @@
 #' @param min_similarity_filter Min similarity filter
 #' @param mode Mode
 #' @param organism Organism
+#' @param fourier_components Fourier components
+#' @param frequency Frequency
 #' @param resample Resample
 #' @param shift Shift
 #' @param time_min Time min
@@ -43,38 +45,71 @@ process_plot_pseudochromatograms <- function(annotations = NULL,
                                              min_similarity_filter = 0.8,
                                              mode = "pos",
                                              organism = "Swertia chirayita",
+                                             fourier_components = 0.01,
+                                             frequency = 1,
                                              resample = 1,
                                              shift = 0.05,
                                              time_min = 0.5,
                                              time_max = 32.5) {
+  message("loading annotations")
+  annotation_table <- annotations |>
+    load_annotations(show_example = show_example)
+
+  message("loading chromatograms")
+  chromatograms_all <- file |>
+    load_chromatograms(show_example = show_example)
+
+  message("loading name")
+  name <- file |>
+    load_name(show_example = show_example)
+
+  message("preprocessing chromatograms")
+  chromatograms_list <- preprocess_chromatograms(
+    detector = detector,
+    name = name,
+    list = switch(detector,
+      "bpi" = chromatograms_all[c(TRUE, FALSE, FALSE)],
+      "cad" = chromatograms_all[c(FALSE, FALSE, TRUE)],
+      "pda" = chromatograms_all[c(FALSE, TRUE, FALSE)]
+    ),
+    signal_name = switch(detector,
+      "bpi" = "BasePeak_0",
+      "cad" = "UV.1_CAD_1_0",
+      "pda" = "PDA.1_TotalAbsorbance_0"
+    ),
+    shift = shift,
+    fourier_components = fourier_components,
+    time_min = time_min,
+    time_max = time_max,
+    frequency = frequency,
+    resample = resample
+  )
+
+  message("keeping only best candidates above desired threshold")
+  candidates_confident <- annotation_table |>
+    keep_best_candidates() |>
+    dplyr::mutate(species = organism) |>
+    dplyr::mutate(feature_id = as.numeric(feature_id)) |>
+    make_confident(score = min_confidence)
+
   message("loading compared peaks")
   compared_peaks_list <- prepare_comparison(
     features_informed = features_informed,
     features_not_informed = features_not_informed,
+    candidates_confident = candidates_confident,
     min_similarity_prefilter = min_similarity_prefilter,
     min_similarity_filter = min_similarity_filter,
     mode = mode,
     show_example = show_example
   )
 
-  message("loading annotations")
-  annotation_table <- annotations |>
-    load_annotations(show_example = show_example)
-
-  message("keeping best annotations only")
-  best_candidates <- annotation_table |>
-    keep_best_candidates()
-
-  message("adding metadata")
-  candidates_metadata <- best_candidates |>
-    dplyr::mutate(species = organism) |>
-    dplyr::mutate(feature_id = as.numeric(feature_id))
-
-  message("keeping only candidates above desired threshold")
-  candidates_confident <- candidates_metadata |>
-    make_confident(score = min_confidence)
-
-  plots_1 <- plot_results_1(list = compared_peaks_list)
+  plots_1 <- plot_results_1(
+    list = compared_peaks_list,
+    chromatogram = chromatograms_list$chromatograms_baselined_long,
+    mode = mode,
+    time_min = time_min,
+    time_max = time_max
+  )
   # plots_2 <- plot_results_2(list = compared_peaks_list)
 
   hierarchies <- list()
@@ -125,8 +160,7 @@ process_plot_pseudochromatograms <- function(annotations = NULL,
     treemaps_progress_no_title(xs = names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies))], hierarchies = hierarchies)
 
   return(list(
-    plots_1 = plots_1,
-    # plots_2 = plots_2,
+    plots_1 = plots_1, # plots_2 = plots_2,
     treemaps = treemaps
   ))
 }

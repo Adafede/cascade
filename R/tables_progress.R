@@ -1,15 +1,16 @@
 #' Tables progress
 #'
 #' @param xs XS
+#' @param structures_classified structures classified
 #'
 #' @return A list of tables
 #'
 #' @examples NULL
-tables_progress <- function(xs) {
+tables_progress <- function(xs, structures_classified) {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(
     X = xs,
-    FUN = function(x) {
+    FUN = function(x, structures_classified) {
       p()
       if (nrow(x != 0)) {
         x |>
@@ -54,6 +55,7 @@ tables_progress <- function(xs) {
             chemical_class = NA
           )
       }
-    }
+    },
+    structures_classified = structures_classified
   )
 }
