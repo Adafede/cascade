@@ -53,18 +53,22 @@ plots_list$plots$Swertia
 ```
 
 #### Compounds found in Swertia (per species)
-```{r wikidata-swertia-1, warning=FALSE, out.width="100%"}
+```{r wikidata-swertia-2, warning=FALSE, out.width="100%"}
 plots_list$plots$Swertia_grouped
 ```
 
 ### Compounds found in Kopsia
 
-```{r wikidata-swertia-1, warning=FALSE, out.width="100%"}
+```{r wikidata-kopsia-1, warning=FALSE, out.width="100%"}
 plots_list$plots$Kopsia_grouped
 ```
 
 ### Comparison
 
-```{r wikidata-swertia-1, warning=FALSE, out.width="100%"}
+```{r wikidata-swertia-kopsia, warning=FALSE, out.width="100%"}
 plots_list$plots$special
 ```
+
+We hope you enjoyed using **CASCADE** and are pleased to hear from you!
+
+For any remark or suggestion, please  [fill an issue](https://github.com/adafede/cascade/issues) or feel free to contact us directly.
