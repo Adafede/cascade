@@ -2,6 +2,7 @@
 
 export(check_chromatograms_alignment)
 export(check_peaks_integration)
+export(generate_ids)
 export(process_compare_peaks)
 export(process_plot_pseudochromatograms)
 export(taxon_name_to_qid)

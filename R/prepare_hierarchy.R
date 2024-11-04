@@ -128,7 +128,7 @@ prepare_hierarchy <-
       ))
 
     parents <- dataframe2 |>
-      dplyr::distinct(labels = best_candidate_1, ids = best_candidate_1) |>
+      dplyr::distinct(labels = best_candidate_1, ids = best_candidate_1, chemical_pathway) |>
       dplyr::mutate(parents = "") |>
       dplyr::distinct() |>
       dplyr::mutate(
@@ -176,9 +176,9 @@ prepare_hierarchy <-
       dplyr::distinct()
 
     children_1 <- dataframe2 |>
-      dplyr::distinct(best_candidate_1, best_candidate_2) |>
+      dplyr::distinct(best_candidate_1, best_candidate_2, chemical_pathway) |>
       dplyr::mutate(ids = paste(best_candidate_1, best_candidate_2, sep = "-")) |>
-      dplyr::distinct(labels = best_candidate_2, ids) |>
+      dplyr::distinct(labels = best_candidate_2, ids, chemical_pathway) |>
       dplyr::mutate(parents = gsub(
         pattern = "-.*",
         replacement = "",
@@ -193,9 +193,9 @@ prepare_hierarchy <-
       dplyr::distinct()
 
     children_2 <- dataframe2 |>
-      dplyr::distinct(best_candidate_2, best_candidate_3) |>
+      dplyr::distinct(best_candidate_2, best_candidate_3, chemical_pathway) |>
       dplyr::mutate(ids = paste(best_candidate_2, best_candidate_3, sep = "-")) |>
-      dplyr::distinct(labels = best_candidate_3, ids, join = best_candidate_2) |>
+      dplyr::distinct(labels = best_candidate_3, ids, join = best_candidate_2, chemical_pathway) |>
       dplyr::mutate(
         join = gsub(
           pattern = "([a-zA-Z]|\\))(-)([a-zA-Z]|[0-9])(.*)",
@@ -216,7 +216,7 @@ prepare_hierarchy <-
       dplyr::full_join(children_1,
         by = c("join" = "labels", "chemical_pathway" = "chemical_pathway")
       ) |>
-      dplyr::distinct(ids = ids.x, labels, parents = ids.y) |>
+      dplyr::distinct(ids = ids.x, labels, parents = ids.y, chemical_pathway) |>
       dplyr::filter(!is.na(labels)) |>
       dplyr::distinct()
 
