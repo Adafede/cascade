@@ -14,7 +14,7 @@ NULL
   packageStartupMessage("Welcome to CASCADE")
   strat <- ifelse(test = .Platform$OS.type == "unix",
     yes = "multicore",
-    no = "multisession"
+    no = "sequential"
   )
   future::plan(strategy = strat)
   message("Running in ", strat, " with ", future::nbrOfWorkers(), " workers detected")
