@@ -44,8 +44,7 @@ Remotes:
 Suggests:
     BiocManager (>= 1.30.25),
     httr2 (>= 1.0.5),
-    knitr,
-    quarto,
+    knitr (>= 1.42),
     testthat (>= 3.1.7),
     visNetwork (>= 2.1.2)
 Config/testthat/edition: 3
@@ -134,8 +133,7 @@ Collate:
     'subtables_progress.R'
     'transform_baseline.R'
 VignetteBuilder: 
-    knitr,
-    quarto
+    knitr
 biocViews: metabolite annotation, charged aerosol detector, semi-quantitative, natural products, computational metabolomics, specialized metabolome
 X-schema.org-keywords: metabolite annotation, charged aerosol detector, semi-quantitative, natural products, computational metabolomics, specialized metabolome
 Language: en-US
