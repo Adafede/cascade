@@ -44,8 +44,8 @@ Remotes:
 Suggests:
     BiocManager (>= 1.30.25),
     httr2 (>= 1.0.5),
-    knitr (>= 1.42),
-    quarto (>= 1.6.32),
+    knitr,
+    quarto,
     testthat (>= 3.1.7),
     visNetwork (>= 2.1.2)
 Config/testthat/edition: 3
