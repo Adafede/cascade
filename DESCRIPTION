@@ -133,7 +133,8 @@ Collate:
     'subtables_progress.R'
     'transform_baseline.R'
 VignetteBuilder: 
-    knitr
+    knitr,
+    quarto
 biocViews: metabolite annotation, charged aerosol detector, semi-quantitative, natural products, computational metabolomics, specialized metabolome
 X-schema.org-keywords: metabolite annotation, charged aerosol detector, semi-quantitative, natural products, computational metabolomics, specialized metabolome
 Language: en-US
