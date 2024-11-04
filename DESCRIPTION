@@ -43,6 +43,7 @@ Remotes:
     ethanbass/chromatographR,
 Suggests:
     BiocManager (>= 1.30.25),
+    httr2 (>= 1.0.5),
     knitr (>= 1.42),
     testthat (>= 3.1.7),
     visNetwork (>= 2.1.2)
