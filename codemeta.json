@@ -324,6 +324,19 @@
     },
     "21": {
       "@type": "SoftwareApplication",
+      "identifier": "R.utils",
+      "name": "R.utils",
+      "version": ">= 2.12.3",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=R.utils"
+    },
+    "22": {
+      "@type": "SoftwareApplication",
       "identifier": "RCurl",
       "name": "RCurl",
       "version": ">= 1.98.1.16",
@@ -335,7 +348,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=RCurl"
     },
-    "22": {
+    "23": {
       "@type": "SoftwareApplication",
       "identifier": "remotes",
       "name": "remotes",
@@ -348,7 +361,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=remotes"
     },
-    "23": {
+    "24": {
       "@type": "SoftwareApplication",
       "identifier": "tibble",
       "name": "tibble",
@@ -361,7 +374,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tibble"
     },
-    "24": {
+    "25": {
       "@type": "SoftwareApplication",
       "identifier": "tidytable",
       "name": "tidytable",
@@ -374,7 +387,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tidytable"
     },
-    "25": {
+    "26": {
       "@type": "SoftwareApplication",
       "identifier": "WikidataQueryServiceR",
       "name": "WikidataQueryServiceR",
@@ -387,7 +400,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=WikidataQueryServiceR"
     },
-    "26": {
+    "27": {
       "@type": "SoftwareApplication",
       "identifier": "yaml",
       "name": "yaml",
@@ -400,7 +413,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=yaml"
     },
-    "27": {
+    "28": {
       "@type": "SoftwareApplication",
       "identifier": "zoo",
       "name": "zoo",
@@ -416,7 +429,7 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteannotation", "chargedaerosoldetector", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
-  "fileSize": "257045.026KB",
+  "fileSize": "164063.056KB",
   "releaseNotes": "https://github.com/adafede/cascade/blob/master/NEWS.md",
   "readme": "https://github.com/Adafede/cascade/blob/main/README.md",
   "contIntegration": ["https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/adafede/cascade"],
