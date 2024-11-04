@@ -16,6 +16,8 @@ process_plot_pseudochromatograms(
   min_similarity_filter = 0.8,
   mode = "pos",
   organism = "Swertia chirayita",
+  fourier_components = 0.01,
+  frequency = 1,
   resample = 1,
   shift = 0.05,
   time_min = 0.5,
@@ -44,6 +46,10 @@ process_plot_pseudochromatograms(
 \item{mode}{Mode}
 
 \item{organism}{Organism}
+
+\item{fourier_components}{Fourier components}
+
+\item{frequency}{Frequency}
 
 \item{resample}{Resample}
 

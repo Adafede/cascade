@@ -40,7 +40,9 @@ plots_list <- generate_ids(
   taxa = c("Swertia", "Kopsia", "Ginkgo"),
   comparison = c("Swertia", "Kopsia"),
   no_stereo = TRUE,
-  filter_ms_conditions = TRUE
+  filter_ms_conditions = TRUE,
+  start = "1950",
+  end = "2025"
 )
 ```
 

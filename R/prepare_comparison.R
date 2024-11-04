@@ -2,6 +2,7 @@
 #'
 #' @param features_informed Features informed
 #' @param features_not_informed Features not informed
+#' @param candidates_confident Candidates confident
 #' @param min_similarity_prefilter Min similarity pre filter
 #' @param min_similarity_filter Min similarity filter
 #' @param mode Mode
@@ -12,6 +13,7 @@
 #' @examples NULL
 prepare_comparison <- function(features_informed = NULL,
                                features_not_informed = NULL,
+                               candidates_confident,
                                min_similarity_prefilter = 0.6,
                                min_similarity_filter = 0.8,
                                mode = "pos",
