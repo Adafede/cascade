@@ -10,7 +10,6 @@ process_plot_pseudochromatograms(
   features_not_informed = NULL,
   file = NULL,
   detector = "cad",
-  export_dir = "data/figures",
   show_example = FALSE,
   min_confidence = 0.4,
   min_similarity_prefilter = 0.6,
@@ -34,8 +33,6 @@ process_plot_pseudochromatograms(
 
 \item{detector}{Detector}
 
-\item{export_dir}{Export dir}
-
 \item{show_example}{Show example? Default to FALSE}
 
 \item{min_confidence}{Min confidence}
@@ -57,7 +54,7 @@ process_plot_pseudochromatograms(
 \item{time_max}{Time max}
 }
 \value{
-A plot with histograms on chromatograms
+A list of plots
 }
 \description{
 Process plot pseudochromatograms

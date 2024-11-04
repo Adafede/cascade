@@ -113,8 +113,11 @@ plot_histograms_confident <-
           )
         }
       } +
-      ggplot2::scale_fill_manual(values = levels(dataframe$color) |>
-        as.character()) +
+      ggplot2::scale_fill_manual(
+        values = levels(dataframe$color) |>
+          as.character(),
+        guide = ggplot2::guide_legend(ncol = 1)
+      ) +
       ggplot2::labs(fill = "Chemical Pathway - Superclass") +
       ggplot2::theme_bw() +
       ggplot2::theme(

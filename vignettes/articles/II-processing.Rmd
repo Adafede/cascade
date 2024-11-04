@@ -47,8 +47,54 @@ And this basically it! 🚀
 
 If you know want to add some cosmetics, and you already have a [TIMA](https://taxonomicallyinformedannotation.github.io/tima) annotation table, you can then run:
 
-```{r process-plot-pseudochromatograms, warning=FALSE, out.width="100%"}
-# process_plot_pseudochromatograms(show_example = TRUE)
+```{r process-plot-pseudochromatograms, message = FALSE, warning=FALSE, out.width="100%"}
+plots_list <- process_plot_pseudochromatograms(show_example = TRUE)
+```
+
+The different plots offer the following views:
+
+### Taxo (major peaks)
+
+```{r taxo-major, warning=FALSE, out.width="100%"}
+plots_list$plots_1$histograms_taxo_maj
+```
+
+### Taxo (major peaks)
+
+```{r taxo-minor, warning=FALSE, out.width="100%"}
+plots_list$plots_1$histograms_taxo_min
+```
+### Confident unique annotations (major)
+
+```{r confident-major, warning=FALSE, out.width="100%"}
+plots_list$plots_1$histograms_unique_conf_maj
+```
+
+### Confident unique annotations (minor)
+
+```{r unique-minor, warning=FALSE, out.width="100%"}
+plots_list$plots_1$histograms_unique_conf_min
+```
+Or getting rid of the chromatogram:
+
+### Treemap semi-quantitative (major)
+
+```{r treemap-major, warning=FALSE, out.width="100%"}
+plots_list$treemaps$peaks_maj
+```
+
+### Treemap semi-quantitative (minor)
+
+```{r treemap-major, warning=FALSE, out.width="100%"}
+plots_list$treemaps$peaks_min
+```
+
+Or both together for comparison:
+
+### Treemap both
+
+```{r treemap-both, warning=FALSE, out.width="100%"}
+plots_list$treemaps$special
 ```
 
 For some other available helper functions, we now recommend you to read the [next vignette](https://adafede.github.io/cascade/articles/III-bonus.html).

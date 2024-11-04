@@ -2,7 +2,6 @@
 #'
 #' @export
 #'
-#' @include check_export_dir.R
 #' @include keep_best_candidates.R
 #' @include make_confident.R
 #' @include plot_results.R
@@ -16,7 +15,6 @@
 #' @param features_not_informed Features not informed
 #' @param file File
 #' @param detector Detector
-#' @param export_dir Export dir
 #' @param show_example Show example? Default to FALSE
 #' @param min_confidence Min confidence
 #' @param min_similarity_prefilter Min similarity pre filter
@@ -28,7 +26,7 @@
 #' @param time_min Time min
 #' @param time_max Time max
 #'
-#' @return A plot with histograms on chromatograms
+#' @return A list of plots
 #'
 #' @examples
 #' \dontrun{
@@ -39,7 +37,6 @@ process_plot_pseudochromatograms <- function(annotations = NULL,
                                              features_not_informed = NULL,
                                              file = NULL,
                                              detector = "cad",
-                                             export_dir = "data/figures",
                                              show_example = FALSE,
                                              min_confidence = 0.4,
                                              min_similarity_prefilter = 0.6,
@@ -50,8 +47,6 @@ process_plot_pseudochromatograms <- function(annotations = NULL,
                                              shift = 0.05,
                                              time_min = 0.5,
                                              time_max = 32.5) {
-  EXPORT_DIR <- export_dir
-
   message("loading compared peaks")
   compared_peaks_list <- prepare_comparison(
     features_informed = features_informed,
@@ -79,18 +74,8 @@ process_plot_pseudochromatograms <- function(annotations = NULL,
   candidates_confident <- candidates_metadata |>
     make_confident(score = min_confidence)
 
-  myDirtyListF <- function(list, mode = "pos") {
-    purrr::map(.x = list, .f = ~ dplyr::filter(.x, grepl(
-      pattern = paste0("_", !!as.character(mode)),
-      x = sample,
-      ignore.case = TRUE
-    )))
-  }
-
   plots_1 <- plot_results_1(list = compared_peaks_list)
-  plots_2 <- plot_results_2(list = compared_peaks_list)
-
-  fig_taxo <- plots_1$histograms_taxo_maj
+  # plots_2 <- plot_results_2(list = compared_peaks_list)
 
   hierarchies <- list()
   hierarchies$peaks_maj <-
@@ -138,4 +123,10 @@ process_plot_pseudochromatograms <- function(annotations = NULL,
 
   treemaps <-
     treemaps_progress_no_title(xs = names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies))], hierarchies = hierarchies)
+
+  return(list(
+    plots_1 = plots_1,
+    # plots_2 = plots_2,
+    treemaps = treemaps
+  ))
 }
