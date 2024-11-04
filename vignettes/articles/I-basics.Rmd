@@ -34,13 +34,13 @@ This vignette describes some basic functions.
 
 First, check if the raw data can be aligned to your expectations:
 
-```{r check-alignment-default, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
+```{r check-alignment-default, echo=FALSE, message=FALSE, warning=FALSE}
 check_chromatograms_alignment(show_example = TRUE)
 ```
 
 Or, with more details:
 
-```{r check-alignment-2, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
+```{r check-alignment-2, echo=FALSE, message=FALSE, warning=FALSE}
 check_chromatograms_alignment(
   show_example = TRUE,
   time_min = 0.5,
@@ -59,7 +59,7 @@ check_chromatograms_alignment(
 
 How it should not look like (CAD and PDA shifts incorrectly set):
 
-```{r check-alignment-3, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
+```{r check-alignment-3, echo=FALSE, message=FALSE, warning=FALSE}
 check_chromatograms_alignment(
   show_example = TRUE,
   time_min = 0.5,
@@ -80,7 +80,7 @@ check_chromatograms_alignment(
 Another critical parameter is the peak integration.
 Below are some illustrations:
 
-```{r check-integration-1, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
+```{r check-integration-1, echo=FALSE, message=FALSE, warning=FALSE}
 check_peaks_integration(
   show_example = TRUE,
   chromatogram = "improved"
@@ -91,11 +91,11 @@ Some peaks are still missed but it looks overall correct.
 
 Depending on the runs, this can get slightly better with baseline correction:
 
-```{r check-integration-2, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
+```{r check-integration-2, echo=FALSE, message=FALSE, warning=FALSE}
 check_peaks_integration(
   show_example = TRUE
 )
 ```
 
-We now recommend you to read the [next vignette](https://adafede.github.io/cascade/articles/II-preparing.html).
+We now recommend you to read the [next vignette](https://adafede.github.io/cascade/articles/II-processing.html).
 

@@ -39,7 +39,7 @@ To do so, you will need:
 
 Then, you should be able to run
 
-```{r process-compare-peaks, warning=FALSE, out.width="100%"}
+```{r process-compare-peaks, warning=FALSE}
 process_compare_peaks(show_example = TRUE)
 ```
 
@@ -47,7 +47,7 @@ And this basically it! 🚀
 
 If you know want to add some cosmetics, and you already have a [TIMA](https://taxonomicallyinformedannotation.github.io/tima) annotation table, you can then run:
 
-```{r process-plot-pseudochromatograms, message = FALSE, warning=FALSE, out.width="100%"}
+```{r process-plot-pseudochromatograms, message = FALSE, warning=FALSE}
 plots_list <- process_plot_pseudochromatograms(show_example = TRUE)
 ```
 
@@ -55,37 +55,38 @@ The different plots offer the following views:
 
 ### Taxo (major peaks)
 
-```{r taxo-major, warning=FALSE, fig.height=5}
+```{r taxo-major, warning=FALSE}
 plots_list$plots_1$histograms_taxo_maj
 ```
 
 ### Taxo (major peaks)
 
-```{r taxo-minor, warning=FALSE, fig.height=5}
+```{r taxo-minor, warning=FALSE}
 plots_list$plots_1$histograms_taxo_min
 ```
 ### Confident unique annotations (major)
 
-```{r confident-major, warning=FALSE, fig.height=5}
+```{r confident-major, warning=FALSE}
 plots_list$plots_1$histograms_unique_conf_maj
 ```
 
 ### Confident unique annotations (minor)
 
-```{r unique-minor, warning=FALSE, fig.height=5}
+```{r unique-minor, warning=FALSE}
 plots_list$plots_1$histograms_unique_conf_min
 ```
+
 Or getting rid of the chromatogram:
 
 ### Treemap semi-quantitative (major)
 
-```{r treemap-major, warning=FALSE, out.width="100%"}
+```{r treemap-major, warning=FALSE}
 plots_list$treemaps$peaks_maj
 ```
 
 ### Treemap semi-quantitative (minor)
 
-```{r treemap-minor, warning=FALSE, out.width="100%"}
+```{r treemap-minor, warning=FALSE}
 plots_list$treemaps$peaks_min
 ```
 
@@ -93,7 +94,7 @@ Or both together for comparison:
 
 ### Treemap both
 
-```{r treemap-both, warning=FALSE, out.width="100%"}
+```{r treemap-both, warning=FALSE}
 plots_list$treemaps$special
 ```
 
