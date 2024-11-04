@@ -85,7 +85,7 @@ plots_list$treemaps$peaks_maj
 
 ### Treemap semi-quantitative (minor)
 
-```{r treemap-major, warning=FALSE, out.width="100%"}
+```{r treemap-minor, warning=FALSE, out.width="100%"}
 plots_list$treemaps$peaks_min
 ```
 
