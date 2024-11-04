@@ -10,6 +10,7 @@ source(file = "R/get_params.R")
 source(file = "R/parse_cli_params.R")
 source(file = "R/parse_yaml_paths.R")
 source(file = "R/parse_yaml_params.R")
+source(file = "R/cascade-package.R")
 step <- "processing"
 paths <- parse_yaml_paths()
 params <- ""
@@ -81,7 +82,7 @@ table_processed <- table_annotations_initial |>
 
 data.table::setkey(table_processed, rt_min, rt_max)
 
-log_debug(x = "joining within given rt tolerance")
+message("joining within given rt tolerance")
 table_medium <-
   data.table::foverlaps(table_peaks, table_processed) |>
   dplyr::arrange(dplyr::desc(score_final)) |>
@@ -132,7 +133,7 @@ lotus_long <- lotus |>
     replacement = "",
     x = structure_inchikey
   )) |>
-  tidyr::pivot_longer(cols = 2:11, names_prefix = "organism_taxonomy_") |>
+  tidytable::pivot_longer(cols = 2:11, names_prefix = "organism_taxonomy_") |>
   dplyr::distinct(inchikey_2D,
     reference = reference_doi,
     best_candidate_organism = value
@@ -262,12 +263,12 @@ table_final_2 <- table_final |>
     yes = paste0("\\includegraphics[width=0.33333in,height=0.075in]{images/", `InChIKey 2D`, ".pdf}"),
     no = NA
   ))
-readr::write_tsv(x = table_final_2, file = "data/paper/prettyTable.tsv", na = "")
-gt::gtsave(
-  data = prettyTable,
-  filename = "data/paper/prettyTable.html"
-)
-gt::gtsave(
-  data = test,
-  filename = "data/paper/prettyTable_2.html"
-)
+# readr::write_tsv(x = table_final_2, file = "data/paper/prettyTable.tsv", na = "")
+# gt::gtsave(
+#   data = prettyTable,
+#   filename = "data/paper/prettyTable.html"
+# )
+# gt::gtsave(
+#   data = test,
+#   filename = "data/paper/prettyTable_2.html"
+# )

@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_and_load_packages.R
 \name{check_and_load_packages_1}
 \alias{check_and_load_packages_1}
-\title{Title}
+\title{Check and load packages 1}
 \usage{
 check_and_load_packages_1(
   cran = packages_cran,
@@ -11,8 +11,18 @@ check_and_load_packages_1(
 )
 }
 \arguments{
-\item{df}{}
+\item{cran}{CRAN}
+
+\item{bioconductor}{Bioconductor}
+
+\item{github}{Github}
+}
+\value{
+Log of installed packages
 }
 \description{
-Title
+Check and load packages 1
+}
+\examples{
+NULL
 }

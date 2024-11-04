@@ -2,13 +2,21 @@
 % Please edit documentation in R/deriv.R
 \name{deriv}
 \alias{deriv}
-\title{Title}
+\title{Deriv}
 \usage{
 deriv(x, y)
 }
 \arguments{
-\item{y}{}
+\item{x}{X}
+
+\item{y}{Y}
+}
+\value{
+The derivative
 }
 \description{
-Title
+Deriv
+}
+\examples{
+NULL
 }

@@ -2,20 +2,36 @@
 % Please edit documentation in R/improve_signal.R
 \name{improve_signal}
 \alias{improve_signal}
-\title{Title}
+\title{Improve signal}
 \usage{
 improve_signal(
   df,
-  fourier_components = FOURRIER_COMPONENTS,
-  time_min = TIME_MIN,
-  time_max = TIME_MAX,
-  frequency = FREQUENCY,
-  resample = RESAMPLE
+  fourier_components = 0.01,
+  frequency = 2,
+  resample = 1,
+  time_min = 0,
+  time_max = Inf
 )
 }
 \arguments{
-\item{resample}{}
+\item{df}{Dataframe}
+
+\item{fourier_components}{Fourier components}
+
+\item{frequency}{Frequency}
+
+\item{resample}{Resample}
+
+\item{time_min}{Time min}
+
+\item{time_max}{Time max}
+}
+\value{
+A dataframe with improved signal
 }
 \description{
-Title
+Improve signal
+}
+\examples{
+NULL
 }

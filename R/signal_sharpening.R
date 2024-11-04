@@ -1,26 +1,27 @@
-source(file = "R/second_der.R")
-
-#' Title
+#' Signal sharpening
 #'
-#' @param Time
-#' @param Intensity
-#' @param K2
-#' @param K4
-#' @param Smoothing_width
-#' @param Baseline_adjust
+#' @include second_der.R
 #'
-#' @return
-#' @export
+#' @param time time
+#' @param intensity intensity
+#' @param k2 K2
+#' @param k4 K4
+#' @param sigma Sigma
+#' @param Smoothing_width Smoothing width
+#' @param Baseline_adjust Baseline adjust
 #'
-#' @examples
-signal_sharpening <- function(Time = timeow,
-                              Intensity = intensityeah,
-                              K2 = k2,
-                              K4 = k4,
-                              Smoothing_width = smoothing_width,
-                              Baseline_adjust = baseline_adjust) {
+#' @return A sharpened signal
+#'
+#' @examples NULL
+signal_sharpening <- function(time,
+                              intensity,
+                              k2 = 250,
+                              k4 = 1250000,
+                              sigma = 0.05,
+                              Smoothing_width = 8,
+                              Baseline_adjust = 0) {
   smooth_1 <- zoo::rollmean(
-    x = Intensity,
+    x = intensity,
     k = Smoothing_width,
     align = "center",
     fill = 0
@@ -34,7 +35,7 @@ signal_sharpening <- function(Time = timeow,
   )
 
   deriv_2 <- second_der(
-    x = Time,
+    x = time,
     y = smooth_2
   )
 
@@ -46,18 +47,18 @@ signal_sharpening <- function(Time = timeow,
   )
 
   deriv_4 <- second_der(
-    x = Time[3:length(Time)],
+    x = time[3:length(time)],
     y = smooth_3
   )
 
   smooth_4 <- zoo::rollmean(
     x = deriv_4,
-    k = smoothing_width,
+    k = 8,
     align = "center",
     fill = 0
   )
 
-  sharpened <- smooth_1[5:length(smooth_1)] - (k2 * smooth_3[3:length(smooth_3)]) + (k4 * smooth_4)
+  sharpened <- smooth_1[5:length(smooth_1)] - (sigma / k2 * smooth_3[3:length(smooth_3)]) + (sigma / k4 * smooth_4)
   sharpened[is.na(sharpened)] <- 0
   # sharpened <- sharpened / max(sharpened)
 

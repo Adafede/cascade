@@ -2,13 +2,19 @@
 % Please edit documentation in R/prehistograms_progress.R
 \name{prehistograms_progress}
 \alias{prehistograms_progress}
-\title{Title}
+\title{Prehistograms progress}
 \usage{
 prehistograms_progress(xs)
 }
 \arguments{
-\item{xs}{}
+\item{xs}{XS}
+}
+\value{
+A list of prehistograms
 }
 \description{
-Title
+Prehistograms progress
+}
+\examples{
+NULL
 }

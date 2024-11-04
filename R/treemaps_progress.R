@@ -1,20 +1,19 @@
-#' Title
+#' Treemaps progress
 #'
-#' @param xs
-#' @param type
+#' @param xs XS
+#' @param type Type
+#' @param hierarchies Hierarchies
 #'
-#' @return
-#' @export
+#' @return A list of treemaps
 #'
-#' @examples
-treemaps_progress <- function(xs, type = "treemap") {
+#' @examples NULL
+treemaps_progress <- function(xs,
+                              type = "treemap",
+                              hierarchies) {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(
-    X = setNames(
-      object = xs,
-      nm = xs
-    ),
-    FUN = function(x) {
+    X = setNames(object = xs, nm = xs),
+    FUN = function(x, hierarchies) {
       p()
       if (x != "special") {
         plotly::plot_ly(
@@ -29,9 +28,9 @@ treemaps_progress <- function(xs, type = "treemap") {
           textinfo = "label+percent value+percent parent+percent root"
         ) |>
           plotly::layout(
-            colorway = sunburst_colors,
+            colorway = microshades_colors,
             title = paste(x, "(", nrow(
-              tables[[x]] |> dplyr::distinct(structure)
+              tables[[x]] |> tidytable::distinct(structure)
             ), ")"),
             margin = list(t = 40)
           )
@@ -68,41 +67,41 @@ treemaps_progress <- function(xs, type = "treemap") {
               unique(hierarchies[[x]]$species)[1],
               "(",
               nrow(tables[[unique(hierarchies[[x]]$species)[1]]] |>
-                dplyr::distinct(structure)),
+                tidytable::distinct(structure)),
               ")",
               "                                 ",
               unique(hierarchies[[x]]$species)[2],
               "(",
               nrow(tables[[unique(hierarchies[[x]]$species)[2]]] |>
-                dplyr::distinct(structure)),
+                tidytable::distinct(structure)),
               ")"
             ),
             grid = list(rows = 1, columns = 2),
-            colorway = sunburst_colors,
+            colorway = microshades_colors,
             margin = list(t = 40)
           )
       }
-    }
+    },
+    hierarchies = hierarchies
   )
 }
 
-#' Title
+#' Treemaps progress no title
 #'
-#' @param xs
-#' @param type
+#' @param xs XS
+#' @param type Type
+#' @param hierarchies Hierarchies
 #'
-#' @return
-#' @export
+#' @return A list of treemaps with no title
 #'
-#' @examples
-treemaps_progress_noTitle <- function(xs, type = "treemap") {
+#' @examples NULL
+treemaps_progress_no_title <- function(xs,
+                                       type = "treemap",
+                                       hierarchies) {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(
-    X = setNames(
-      object = xs,
-      nm = xs
-    ),
-    FUN = function(x) {
+    X = setNames(object = xs, nm = xs),
+    FUN = function(x, hierarchies) {
       p()
       if (x != "special") {
         plotly::plot_ly(
@@ -116,10 +115,7 @@ treemaps_progress_noTitle <- function(xs, type = "treemap") {
           branchvalues = "total",
           textinfo = "label+percent value+percent parent+percent root"
         ) |>
-          plotly::layout(
-            colorway = sunburst_colors,
-            margin = list(t = 40)
-          )
+          plotly::layout(colorway = microshades_colors, margin = list(t = 40))
       } else {
         plotly::plot_ly() |>
           plotly::add_trace(
@@ -148,10 +144,11 @@ treemaps_progress_noTitle <- function(xs, type = "treemap") {
           ) |>
           plotly::layout(
             grid = list(rows = 1, columns = 2),
-            colorway = sunburst_colors,
+            colorway = microshades_colors,
             margin = list(t = 40)
           )
       }
-    }
+    },
+    hierarchies = hierarchies
   )
 }

@@ -1,18 +1,18 @@
-#' Title
+#' Prepare rt
 #'
-#' @param x
+#' @param x X
+#' @param shift Shift
 #'
-#' @return
-#' @export
+#' @return Prepared RTs
 #'
-#' @examples
-prepare_rt <- function(x) {
+#' @examples NULL
+prepare_rt <- function(x, shift = 0) {
   rtr <- x[1, ] |>
-    mutate(
-      rtmin = (rt_min + CAD_SHIFT) * 60,
-      rtmax = (rt_max + CAD_SHIFT) * 60
+    tidytable::mutate(
+      rtmin = (rt_min + shift) * 60,
+      rtmax = (rt_max + shift) * 60
     ) |>
-    select(rtmin, rtmax) |>
+    tidytable::select(rtmin, rtmax) |>
     as.matrix()
   return(rtr)
 }

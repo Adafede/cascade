@@ -1,32 +1,22 @@
-#' Title
+#' Plot results 1
 #'
-#' @param detector
-#' @param mode
+#' @include make_other.R
+#' @include no_other.R
+#' @include prepare_plot.R
+#' @include plot_histograms.R
 #'
-#' @return
-#' @export
+#' @param list List
+#' @param chromatogram Chromatogram
+#' @param mode Mode
+#' @param time_min Time min
+#' @param time_max Time max
 #'
-#' @examples
-plot_results_1 <- function(detector = "cad", mode = "pos") {
-  if (mode == "pos") {
-    list <- switch(detector,
-      "bpi" = compared_peaks_list_bpi_pos,
-      "cad" = compared_peaks_list_cad_pos,
-      "pda" = compared_peaks_list_pda_pos
-    )
-  } else {
-    list <- switch(detector,
-      "bpi" = compared_peaks_list_bpi_neg,
-      "cad" = compared_peaks_list_cad_neg,
-      "pda" = compared_peaks_list_pda_neg
-    )
-  }
-  if (mode == "neg") {
-    list$peaks_maj_precor_taxo_cor$feature_area <- -(list$peaks_maj_precor_taxo_cor$feature_area)
-  }
-
-  log_debug(x = "preparing histograms")
-  #' TODO harmonize 'others' among minor and major
+#' @return A list of plots
+#'
+#' @examples NULL
+plot_results_1 <- function(list, chromatogram, mode = "pos", time_min, time_max) {
+  message("preparing histograms")
+  # TODO harmonize 'others' among minor and major
   df_histogram_maj <- list$peaks_maj_precor_taxo_cor |>
     make_other() |>
     prepare_plot_2()
@@ -43,34 +33,34 @@ plot_results_1 <- function(detector = "cad", mode = "pos") {
     no_other() |>
     prepare_plot_2()
 
-  log_debug(x = "plotting histograms...")
-  log_debug(x = "... taxo")
+  message("plotting histograms...")
+  message("... taxo")
   histograms_taxo_maj <- df_histogram_maj |>
-    plot_histograms_taxo()
+    plot_histograms_taxo(chromatogram = chromatogram, mode = mode, time_min = time_min, time_max = time_max)
   histograms_taxo_min <- df_histogram_min |>
-    plot_histograms_taxo(level = "min")
+    plot_histograms_taxo(level = "min", chromatogram = chromatogram, mode = mode, time_min = time_min, time_max = time_max)
 
-  log_debug(x = "... confident features")
+  message("... confident features")
   histograms_conf_maj <- df_histogram_maj_conf |>
-    plot_histograms_confident()
+    plot_histograms_confident(chromatogram = chromatogram, time_min = time_min, time_max = time_max)
   histograms_conf_min <- df_histogram_min_conf |>
-    plot_histograms_confident(level = "min")
+    plot_histograms_confident(level = "min", chromatogram = chromatogram, time_min = time_min, time_max = time_max)
 
-  log_debug(x = "... unique structures")
+  message("... unique structures")
   histograms_unique_maj <- df_histogram_maj |>
-    dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
-    plot_histograms_confident()
+    tidytable::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
+    plot_histograms_confident(chromatogram = chromatogram, time_min = time_min, time_max = time_max)
   histograms_unique_min <- df_histogram_min |>
-    dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
-    plot_histograms_confident(level = "min")
+    tidytable::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
+    plot_histograms_confident(level = "min", chromatogram = chromatogram, time_min = time_min, time_max = time_max)
 
-  log_debug(x = "... confident structures")
+  message("... confident structures")
   histograms_unique_conf_maj <- df_histogram_maj_conf |>
-    dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
-    plot_histograms_confident()
+    tidytable::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
+    plot_histograms_confident(chromatogram = chromatogram, time_min = time_min, time_max = time_max)
   histograms_unique_conf_min <- df_histogram_min_conf |>
-    dplyr::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
-    plot_histograms_confident(level = "min")
+    tidytable::distinct(peak_id, inchikey_2D, .keep_all = TRUE) |>
+    plot_histograms_confident(level = "min", chromatogram = chromatogram, time_min = time_min, time_max = time_max)
 
   returned_list <- list(
     histograms_taxo_maj,
@@ -96,25 +86,24 @@ plot_results_1 <- function(detector = "cad", mode = "pos") {
   return(returned_list)
 }
 
-#' Title
-#'
-#' @param detector
-#'
-#' @return
-#' @export
-#'
-#' @examples
-plot_results_2 <- function(detector = "cad") {
-  list <- switch(detector,
-    "bpi" = compared_peaks_list_bpi,
-    "cad" = compared_peaks_list_cad,
-    "pda" = compared_peaks_list_pda
-  )
+source(file = "R/no_other.R")
+source(file = "R/prepare_hierarchy.R")
 
+#' Plot results 2
+#'
+#' @include prepare_hierarchy.R
+#' @include no_other.R
+#'
+#' @param list List
+#'
+#' @return A list of plots
+#'
+#' @examples NULL
+plot_results_2 <- function(list) {
   temp_fix_duplicates <- function(df, colname = "peak_rt_apex") {
-    df_new <- df |>
-      dplyr::arrange(dplyr::desc(comparison_score)) |>
-      dplyr::distinct(
+    df |>
+      tidytable::arrange(tidytable::desc(comparison_score)) |>
+      tidytable::distinct(
         !!as.name(colname),
         inchikey_2D,
         best_candidate_1,
@@ -122,12 +111,12 @@ plot_results_2 <- function(detector = "cad") {
         best_candidate_3,
         .keep_all = TRUE
       )
-    return(df_new)
   }
+
   temp_fix_posneg <- function(df) {
-    df_new <- df |>
-      dplyr::mutate(newrt = round(peak_rt_apex, 1)) |>
-      dplyr::mutate(
+    df |>
+      tidytable::mutate(newrt = round(peak_rt_apex, 1)) |>
+      tidytable::mutate(
         sample = gsub(
           pattern = "_pos",
           replacement = "",
@@ -141,7 +130,7 @@ plot_results_2 <- function(detector = "cad") {
           ignore.case = TRUE
         )
       ) |>
-      dplyr::mutate(
+      tidytable::mutate(
         sample = gsub(
           pattern = "_neg",
           replacement = "",
@@ -155,7 +144,6 @@ plot_results_2 <- function(detector = "cad") {
           ignore.case = TRUE
         )
       )
-    return(df_new)
   }
 
   quick_sb <- function(df) {
@@ -173,8 +161,8 @@ plot_results_2 <- function(detector = "cad") {
     return(sb)
   }
 
-  log_debug(x = "preparing hierarchies...")
-  log_debug(x = "... on everything")
+  message("preparing hierarchies...")
+  message("... on everything")
   table_taxo_maj_cor_signal <- list$peaks_maj_precor_taxo_cor |>
     temp_fix_duplicates() |>
     prepare_hierarchy(detector = "cad")
@@ -187,22 +175,22 @@ plot_results_2 <- function(detector = "cad") {
   table_taxo_maj_cor_ms <- list$peaks_maj_precor_taxo_cor |>
     prepare_hierarchy(detector = "ms")
   table_taxo_maj_cor_ms_2 <- table_taxo_maj_cor_ms |>
-    dplyr::mutate(sample = gsub(
+    tidytable::mutate(sample = gsub(
       pattern = "_pos",
       replacement = "",
       x = sample,
       ignore.case = TRUE
     )) |>
-    dplyr::mutate(sample = gsub(
+    tidytable::mutate(sample = gsub(
       pattern = "_neg",
       replacement = "",
       x = sample,
       ignore.case = TRUE
     )) |>
-    dplyr::group_by(parents, ids, labels, species, sample) |>
-    dplyr::summarise(values = sum(values))
+    tidytable::group_by(parents, ids, labels, species, sample) |>
+    tidytable::summarise(values = sum(values))
 
-  log_debug(x = "... on confident")
+  message("... on confident")
   table_taxo_maj_cor_conf_signal <-
     list$peaks_maj_precor_taxo_cor |>
     no_other() |>
@@ -231,175 +219,194 @@ plot_results_2 <- function(detector = "cad") {
   # absolute_with_new_cor
 
   ## TODO remove redundancy
-  sunburst_conf_signal_based_pos <-
-    table_taxo_maj_cor_conf_signal |>
-    dplyr::filter(grepl(
-      pattern = "_pos",
-      x = sample,
-      ignore.case = TRUE
-    )) |>
-    quick_sb() |>
-    plotly::layout(colorway = sunburst_colors)
+  # sunburst_conf_signal_based_pos <-
+  #   table_taxo_maj_cor_conf_signal |>
+  #   tidytable::filter(grepl(
+  #     pattern = "_pos",
+  #     x = sample,
+  #     ignore.case = TRUE
+  #   )) |>
+  #   quick_sb() |>
+  #   plotly::layout(colorway = microshades_colors)
 
-  sunburst_conf_signal_based_neg <-
-    table_taxo_maj_cor_conf_signal |>
-    dplyr::filter(grepl(
-      pattern = "_neg",
-      x = sample,
-      ignore.case = TRUE
-    )) |>
-    quick_sb() |>
-    plotly::layout(colorway = sunburst_colors)
+  # sunburst_conf_signal_based_neg <-
+  #   table_taxo_maj_cor_conf_signal |>
+  #   tidytable::filter(grepl(
+  #     pattern = "_neg",
+  #     x = sample,
+  #     ignore.case = TRUE
+  #   )) |>
+  #   quick_sb() |>
+  #   plotly::layout(colorway = microshades_colors)
 
   sunburst_conf_signal_based_duo <-
     table_taxo_maj_cor_conf_signal_2 |>
     quick_sb() |>
-    plotly::layout(colorway = sunburst_colors)
+    plotly::layout(colorway = microshades_colors)
 
-  sunburst_conf_ms_based_pos <- table_taxo_maj_cor_conf_ms |>
-    dplyr::filter(grepl(
-      pattern = "_pos",
-      x = sample,
-      ignore.case = TRUE
-    )) |>
-    quick_sb() |>
-    plotly::layout(colorway = sunburst_colors)
+  # sunburst_conf_ms_based_pos <- table_taxo_maj_cor_conf_ms |>
+  #   tidytable::filter(grepl(
+  #     pattern = "_pos",
+  #     x = sample,
+  #     ignore.case = TRUE
+  #   )) |>
+  #   quick_sb() |>
+  #   plotly::layout(colorway = microshades_colors)
 
-  sunburst_conf_ms_based_neg <- table_taxo_maj_cor_conf_ms |>
-    dplyr::filter(grepl(
-      pattern = "_neg",
-      x = sample,
-      ignore.case = TRUE
-    )) |>
-    quick_sb() |>
-    plotly::layout(colorway = sunburst_colors)
+  # sunburst_conf_ms_based_neg <- table_taxo_maj_cor_conf_ms |>
+  #   tidytable::filter(grepl(
+  #     pattern = "_neg",
+  #     x = sample,
+  #     ignore.case = TRUE
+  #   )) |>
+  #   quick_sb() |>
+  #   plotly::layout(colorway = microshades_colors)
 
-  index_signal_pos <- table_taxo_maj_cor_signal |>
-    dplyr::filter(grepl(
-      pattern = "_pos",
-      x = sample,
-      ignore.case = TRUE
-    )) |>
-    dplyr::filter(parents == "") |>
-    dplyr::arrange(desc(values))
-  index_signal_neg <- table_taxo_maj_cor_signal |>
-    dplyr::filter(grepl(
-      pattern = "_neg",
-      x = sample,
-      ignore.case = TRUE
-    )) |>
-    dplyr::filter(parents == "") |>
-    dplyr::arrange(desc(values))
+  # index_signal_pos <- table_taxo_maj_cor_signal |>
+  #   tidytable::filter(grepl(
+  #     pattern = "_pos",
+  #     x = sample,
+  #     ignore.case = TRUE
+  #   )) |>
+  #   tidytable::filter(parents == "") |>
+  #   tidytable::arrange(tidytable::desc(values))
+  # index_signal_neg <- table_taxo_maj_cor_signal |>
+  #   tidytable::filter(grepl(
+  #     pattern = "_neg",
+  #     x = sample,
+  #     ignore.case = TRUE
+  #   )) |>
+  #   tidytable::filter(parents == "") |>
+  #   tidytable::arrange(tidytable::desc(values))
+
   index_signal_duo <- table_taxo_maj_cor_signal_2 |>
-    dplyr::filter(parents == "") |>
-    dplyr::arrange(desc(values)) |>
-    dplyr::distinct(ids, labels, .keep_all = TRUE)
+    tidytable::filter(parents == "") |>
+    tidytable::arrange(tidytable::desc(values)) |>
+    tidytable::distinct(ids, labels, .keep_all = TRUE)
 
-  index_ms_pos <- table_taxo_maj_cor_ms |>
-    dplyr::filter(grepl(
-      pattern = "_pos",
-      x = sample,
-      ignore.case = TRUE
-    )) |>
-    dplyr::filter(parents == "") |>
-    dplyr::arrange(desc(values))
-  index_ms_neg <- table_taxo_maj_cor_ms |>
-    dplyr::filter(grepl(
-      pattern = "_neg",
-      x = sample,
-      ignore.case = TRUE
-    )) |>
-    dplyr::filter(parents == "") |>
-    dplyr::arrange(desc(values))
+  # index_ms_pos <- table_taxo_maj_cor_ms |>
+  #   tidytable::filter(grepl(
+  #     pattern = "_pos",
+  #     x = sample,
+  #     ignore.case = TRUE
+  #   )) |>
+  #   tidytable::filter(parents == "") |>
+  #   tidytable::arrange(tidytable::desc(values))
+  # index_ms_neg <- table_taxo_maj_cor_ms |>
+  #   tidytable::filter(grepl(
+  #     pattern = "_neg",
+  #     x = sample,
+  #     ignore.case = TRUE
+  #   )) |>
+  #   tidytable::filter(parents == "") |>
+  #   tidytable::arrange(tidytable::desc(values))
+
   index_ms_duo <- table_taxo_maj_cor_ms_2 |>
-    dplyr::filter(parents == "") |>
-    dplyr::arrange(desc(values)) |>
-    dplyr::distinct(ids, labels, .keep_all = TRUE)
+    tidytable::filter(parents == "") |>
+    tidytable::arrange(desc(values)) |>
+    tidytable::distinct(ids, labels, .keep_all = TRUE)
 
-  sunburst_grey_colors_signal_pos <- sunburst_colors
-  sunburst_grey_colors_signal_pos[[which(index_signal_pos$ids == "Other", arr.ind = TRUE)]] <-
-    grey_colors[[1]][[5]]
-  sunburst_grey_colors_ms_pos <- sunburst_colors
-  sunburst_grey_colors_ms_pos[[which(index_ms_pos$ids == "Other", arr.ind = TRUE)]] <-
-    grey_colors[[1]][[5]]
-  sunburst_grey_colors_signal_neg <- sunburst_colors
-  sunburst_grey_colors_signal_neg[[which(index_signal_neg$ids == "Other", arr.ind = TRUE)]] <-
-    grey_colors[[1]][[5]]
-  sunburst_grey_colors_ms_neg <- sunburst_colors
-  sunburst_grey_colors_ms_neg[[which(index_ms_neg$ids == "Other", arr.ind = TRUE)]] <-
-    grey_colors[[1]][[5]]
-  sunburst_grey_colors_signal_duo <- sunburst_colors
-  sunburst_grey_colors_signal_duo[[which(index_signal_duo$ids == "Other", arr.ind = TRUE)]] <-
-    grey_colors[[1]][[5]]
-  sunburst_grey_colors_ms_duo <- sunburst_colors
-  sunburst_grey_colors_ms_duo[[which(index_ms_duo$ids == "Other", arr.ind = TRUE)]] <-
-    grey_colors[[1]][[5]]
+  # sunburst_microshades_grey_signal_pos <- microshades_colors
+  # index_s_pos <- which(index_signal_pos$ids == "Other", arr.ind = TRUE)
+  # if (length(index_s_pos) > 0) {
+  #   sunburst_microshades_grey_signal_pos[[index_s_pos]] <- microshades_grey[[1]][[5]]
+  # }
 
-  sunburst_signal_based_pos <- table_taxo_maj_cor_signal |>
-    dplyr::filter(grepl(
-      pattern = "_pos",
-      x = sample,
-      ignore.case = TRUE
-    )) |>
-    quick_sb() |>
-    plotly::layout(colorway = sunburst_grey_colors_signal_pos)
+  # sunburst_microshades_grey_ms_pos <- microshades_colors
+  # index_m_pos <- which(index_ms_pos$ids == "Other", arr.ind = TRUE)
+  # if (length(index_m_pos) > 0) {
+  #   sunburst_microshades_grey_signal_pos[[index_m_pos]] <- microshades_grey[[1]][[5]]
+  # }
 
-  sunburst_signal_based_neg <- table_taxo_maj_cor_signal |>
-    dplyr::filter(grepl(
-      pattern = "_neg",
-      x = sample,
-      ignore.case = TRUE
-    )) |>
-    quick_sb() |>
-    plotly::layout(colorway = sunburst_grey_colors_signal_neg)
+  # sunburst_microshades_grey_signal_neg <- microshades_colors
+  # index_s_neg <- which(index_signal_neg$ids == "Other", arr.ind = TRUE)
+  # if (length(index_s_neg) > 0) {
+  #   sunburst_microshades_grey_signal_pos[[index_s_neg]] <- microshades_grey[[1]][[5]]
+  # }
+
+  # sunburst_microshades_grey_ms_neg <- microshades_colors
+  # index_m_neg <- which(index_ms_neg$ids == "Other", arr.ind = TRUE)
+  # if (length(index_m_neg) > 0) {
+  #   sunburst_microshades_grey_signal_pos[[index_m_neg]] <- microshades_grey[[1]][[5]]
+  # }
+
+  sunburst_microshades_grey_signal_duo <- microshades_colors
+  index_s_duo <- which(index_signal_duo$ids == "Other", arr.ind = TRUE)
+  if (length(index_s_duo) > 0) {
+    sunburst_microshades_grey_signal_duo[[index_s_duo]] <- microshades_grey[[1]][[5]]
+  }
+
+  sunburst_microshades_grey_ms_duo <- microshades_colors
+  index_m_duo <- which(index_ms_duo$ids == "Other", arr.ind = TRUE)
+  if (length(index_m_duo) > 0) {
+    sunburst_microshades_grey_signal_duo[[index_m_duo]] <- microshades_grey[[1]][[5]]
+  }
+
+  # sunburst_signal_based_pos <- table_taxo_maj_cor_signal |>
+  #   dplyr::filter(grepl(
+  #     pattern = "_pos",
+  #     x = sample,
+  #     ignore.case = TRUE
+  #   )) |>
+  #   quick_sb() |>
+  #   plotly::layout(colorway = sunburst_microshades_grey_signal_pos)
+
+  # sunburst_signal_based_neg <- table_taxo_maj_cor_signal |>
+  #   dplyr::filter(grepl(
+  #     pattern = "_neg",
+  #     x = sample,
+  #     ignore.case = TRUE
+  #   )) |>
+  #   quick_sb() |>
+  #   plotly::layout(colorway = sunburst_microshades_grey_signal_neg)
 
   sunburst_signal_based_duo <- table_taxo_maj_cor_signal_2 |>
     quick_sb() |>
-    plotly::layout(colorway = sunburst_grey_colors_signal_duo)
+    plotly::layout(colorway = sunburst_microshades_grey_signal_duo)
 
-  sunburst_ms_based_pos <- table_taxo_maj_cor_ms |>
-    dplyr::filter(grepl(
-      pattern = "_pos",
-      x = sample,
-      ignore.case = TRUE
-    )) |>
-    quick_sb() |>
-    plotly::layout(colorway = sunburst_grey_colors_ms_pos)
+  # sunburst_ms_based_pos <- table_taxo_maj_cor_ms |>
+  #   dplyr::filter(grepl(
+  #     pattern = "_pos",
+  #     x = sample,
+  #     ignore.case = TRUE
+  #   )) |>
+  #   quick_sb() |>
+  #   plotly::layout(colorway = sunburst_microshades_grey_ms_pos)
 
-  sunburst_ms_based_neg <- table_taxo_maj_cor_ms |>
-    dplyr::filter(grepl(
-      pattern = "_neg",
-      x = sample,
-      ignore.case = TRUE
-    )) |>
-    quick_sb() |>
-    plotly::layout(colorway = sunburst_grey_colors_ms_neg)
+  # sunburst_ms_based_neg <- table_taxo_maj_cor_ms |>
+  #   dplyr::filter(grepl(
+  #     pattern = "_neg",
+  #     x = sample,
+  #     ignore.case = TRUE
+  #   )) |>
+  #   quick_sb() |>
+  #   plotly::layout(colorway = sunburst_microshades_grey_ms_neg)
 
   returned_list <- list(
-    sunburst_signal_based_pos,
-    sunburst_ms_based_pos,
-    sunburst_conf_signal_based_pos,
-    sunburst_conf_ms_based_pos,
-    sunburst_signal_based_neg,
-    sunburst_ms_based_neg,
-    sunburst_conf_signal_based_neg,
-    sunburst_conf_ms_based_neg,
+    # sunburst_signal_based_pos,
+    # sunburst_ms_based_pos,
+    # sunburst_conf_signal_based_pos,
+    # sunburst_conf_ms_based_pos,
+    # sunburst_signal_based_neg,
+    # sunburst_ms_based_neg,
+    # sunburst_conf_signal_based_neg,
+    # sunburst_conf_ms_based_neg,
     sunburst_signal_based_duo,
-    sunburst_conf_signal_based_duo,
-    table_taxo_maj_cor_conf_signal_1
+    sunburst_conf_signal_based_duo
+    # table_taxo_maj_cor_conf_signal_1
   )
   names(returned_list) <- c(
-    "sunburst_signal_based_pos",
-    "sunburst_ms_based_pos",
-    "sunburst_conf_signal_based_pos",
-    "sunburst_conf_ms_based_pos",
-    "sunburst_signal_based_neg",
-    "sunburst_ms_based_neg",
-    "sunburst_conf_signal_based_neg",
-    "sunburst_conf_ms_based_neg",
+    # "sunburst_signal_based_pos",
+    # "sunburst_ms_based_pos",
+    # "sunburst_conf_signal_based_pos",
+    # "sunburst_conf_ms_based_pos",
+    # "sunburst_signal_based_neg",
+    # "sunburst_ms_based_neg",
+    # "sunburst_conf_signal_based_neg",
+    # "sunburst_conf_ms_based_neg",
     "sunburst_signal_based_duo",
-    "sunburst_conf_signal_based_duo",
-    "table_taxo_maj_cor_conf_signal_1"
+    "sunburst_conf_signal_based_duo"
+    # "table_taxo_maj_cor_conf_signal_1"
   )
 
   return(returned_list)

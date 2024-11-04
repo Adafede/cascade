@@ -2,13 +2,19 @@
 % Please edit documentation in R/histograms_progress.R
 \name{histograms_progress}
 \alias{histograms_progress}
-\title{Title}
+\title{Histograms progress}
 \usage{
 histograms_progress(xs)
 }
 \arguments{
-\item{xs}{}
+\item{xs}{XS}
+}
+\value{
+A list of histograms
 }
 \description{
-Title
+Histograms progress
+}
+\examples{
+NULL
 }

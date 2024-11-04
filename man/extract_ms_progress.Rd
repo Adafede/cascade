@@ -2,13 +2,23 @@
 % Please edit documentation in R/extract_ms_progress.R
 \name{extract_ms_progress}
 \alias{extract_ms_progress}
-\title{Title}
+\title{Extract MS progress}
 \usage{
-extract_ms_progress(xs)
+extract_ms_progress(xs, ms_data, peaks_prelist)
 }
 \arguments{
-\item{xs}{}
+\item{xs}{XS}
+
+\item{ms_data}{MS Data}
+
+\item{peaks_prelist}{Peaks prelist}
+}
+\value{
+A list of extracted MS peaks
 }
 \description{
-Title
+Extract MS progress
+}
+\examples{
+NULL
 }

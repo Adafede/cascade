@@ -2,13 +2,36 @@
 % Please edit documentation in R/improve_signals_progress.R
 \name{improve_signals_progress}
 \alias{improve_signals_progress}
-\title{Title}
+\title{Improve signals progress}
 \usage{
-improve_signals_progress(xs)
+improve_signals_progress(
+  xs,
+  fourier_components = 0.01,
+  frequency = 2,
+  resample = 1,
+  time_min = 0,
+  time_max = Inf
+)
 }
 \arguments{
-\item{xs}{}
+\item{xs}{XS}
+
+\item{fourier_components}{Fourier components}
+
+\item{frequency}{Frequency}
+
+\item{resample}{Resample}
+
+\item{time_min}{Time min}
+
+\item{time_max}{Time max}
+}
+\value{
+A list of data frames with improved signals
 }
 \description{
-Title
+Improve signals progress
+}
+\examples{
+NULL
 }

@@ -1,31 +1,33 @@
-#' Title
+#' Normalize chromatograms list
 #'
-#' @param list
-#' @param shift
-#' @param time
-#' @param intensity
+#' @param list List
+#' @param shift Shift
+#' @param normalize_intensity Normalize time
+#' @param normalize_time Normalize intensity
 #'
-#' @return
-#' @export
+#' @return A dataframe with normalized chromatograms
 #'
-#' @examples
+#' @examples NULL
 normalize_chromatograms_list <-
   function(list,
            shift = 0,
-           time = FALSE,
-           intensity = TRUE) {
-    df <- dplyr::bind_rows(list, .id = "id")
-    if (intensity == TRUE) {
+           normalize_intensity = TRUE,
+           normalize_time = FALSE) {
+    df <- list |>
+      tidytable::mutate(time = time + shift) |>
+      data.frame()
+
+    if (normalize_intensity) {
       df <- df |>
-        dplyr::mutate(intensity = intensity / max(intensity))
+        tidytable::mutate(intensity = intensity / max(intensity)) |>
+        data.frame()
     }
-    if (time == TRUE) {
+    if (normalize_time) {
       df <- df |>
-        dplyr::group_by(id) |>
-        dplyr::mutate(time = time + shift) |>
-        dplyr::mutate(time_2 = max(time)) |>
-        dplyr::mutate(time = time / time_2) |>
-        dplyr::ungroup()
+        tidytable::mutate(time_2 = max(time)) |>
+        tidytable::mutate(time = time / time_2) |>
+        tidytable::ungroup() |>
+        data.frame()
     }
     return(df)
   }

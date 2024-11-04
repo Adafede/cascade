@@ -1,11 +1,10 @@
-#' Title
+#' Wiki progress
 #'
-#' @param xs
+#' @param xs XS
 #'
-#' @return
-#' @export
+#' @return A list of results of Wikidata queries
 #'
-#' @examples
+#' @examples NULL
 wiki_progress <- function(xs) {
   p <- progressr::progressor(along = xs)
   lapply(

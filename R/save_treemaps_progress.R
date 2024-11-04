@@ -1,12 +1,11 @@
-#' Title
+#' Save treemaps progress
 #'
-#' @param xs
-#' @param type
+#' @param xs XS
+#' @param type Type
 #'
-#' @return
-#' @export
+#' @return Saved treemaps
 #'
-#' @examples
+#' @examples NULL
 save_treemaps_progress <- function(xs, type = "treemap") {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(

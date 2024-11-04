@@ -2,13 +2,23 @@
 % Please edit documentation in R/format_gt.R
 \name{temp_gt_function}
 \alias{temp_gt_function}
-\title{Title}
+\title{Temp GT function}
 \usage{
 temp_gt_function(table, title, subtitle)
 }
 \arguments{
-\item{table}{}
+\item{table}{Table}
+
+\item{title}{Title}
+
+\item{subtitle}{Subtitle}
+}
+\value{
+A formatted GT table
 }
 \description{
-Title
+Temp GT function
+}
+\examples{
+NULL
 }

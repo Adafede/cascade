@@ -2,19 +2,33 @@
 % Please edit documentation in R/make_chromatographiable.R
 \name{make_chromatographiable}
 \alias{make_chromatographiable}
-\title{Title}
+\title{Make chromatographiable}
 \usage{
 make_chromatographiable(
   df,
-  mass_min = params$structures$mass$min,
-  mass_max = params$structures$mass$max,
-  logp_min = params$structures$logp$min,
-  logp_max = params$structures$logp$max
+  mass_min = 50,
+  mass_max = 1500,
+  logp_min = -1,
+  logp_max = 6
 )
 }
 \arguments{
-\item{logp_max}{}
+\item{df}{Dataframe}
+
+\item{mass_min}{Mass min}
+
+\item{mass_max}{Mass max}
+
+\item{logp_min}{Log P min}
+
+\item{logp_max}{Log P max}
+}
+\value{
+A dataframe containing chromatographiable compounds
 }
 \description{
-Title
+Make chromatographiable
+}
+\examples{
+NULL
 }

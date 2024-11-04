@@ -1,35 +1,30 @@
-require(package = ggplot2, quietly = TRUE)
-
-#' Title
+#' Plot histograms
 #'
-#' @param dataframe
-#' @param label
-#' @param y
-#' @param xlab
+#' @param dataframe Dataframe
+#' @param chromatogram Chromatogram
+#' @param label Label
+#' @param y Y
+#' @param xlab Xlab
 #'
-#' @return
-#' @export
+#' @return A plot of histograms
 #'
-#' @examples
+#' @examples NULL
 plot_histograms <-
   function(dataframe,
+           chromatogram,
            label,
            y = "values",
            xlab = TRUE) {
     absolute <- ggplot2::ggplot() +
       ggplot2::geom_line(
-        data = chromatograms_list_cad$chromatograms_improved_long,
+        data = chromatogram,
         mapping = ggplot2::aes(x = time, y = intensity / max(intensity)),
         col = "black",
         size = 0.1
       ) +
       ggplot2::geom_bar(
         data = dataframe,
-        mapping = ggplot2::aes(
-          x = sample,
-          y = get(y),
-          fill = ids
-        ),
+        mapping = ggplot2::aes(x = sample, y = get(y), fill = ids),
         color = "grey",
         stat = "identity",
         width = 1
@@ -37,7 +32,7 @@ plot_histograms <-
       ggplot2::scale_fill_manual(
         values = levels(dataframe$color) |>
           as.character(),
-        guide = ggplot2::guide_legend(reverse = TRUE)
+        guide = ggplot2::guide_legend()
       ) +
       {
         if (xlab == TRUE) {
@@ -59,27 +54,29 @@ plot_histograms <-
     return(absolute)
   }
 
-#' Title
+#' Plot histograms confident
 #'
-#' @param dataframe
-#' @param level
+#' @param dataframe Dataframe
+#' @param chromatogram Chromatogram
+#' @param level Level
+#' @param time_min Time min
+#' @param time_max Time max
 #'
-#' @return
-#' @export
+#' @return A plot of confident histograms
 #'
-#' @examples
+#' @examples NULL
 plot_histograms_confident <-
-  function(dataframe, level = "max") {
+  function(dataframe, chromatogram, level = "max", time_min, time_max) {
     dataframe <- dataframe |>
-      dplyr::group_by(peak_area) |>
-      dplyr::mutate(n = max(dplyr::row_number())) |>
-      dplyr::group_by(feature_area) |>
-      dplyr::mutate(m = max(dplyr::row_number())) |>
-      dplyr::ungroup()
+      tidytable::group_by(peak_area) |>
+      tidytable::mutate(n = max(tidytable::row_number())) |>
+      tidytable::group_by(feature_area) |>
+      tidytable::mutate(m = max(tidytable::row_number())) |>
+      tidytable::ungroup()
 
     plot <- ggplot2::ggplot() +
       ggplot2::geom_line(
-        data = chromatograms_list_cad$chromatograms_improved_long,
+        data = chromatogram,
         mapping = ggplot2::aes(x = time, y = intensity / max(intensity)),
         col = "black",
         size = 0.1
@@ -121,8 +118,11 @@ plot_histograms_confident <-
           )
         }
       } +
-      ggplot2::scale_fill_manual(values = levels(dataframe$color) |>
-        as.character()) +
+      ggplot2::scale_fill_manual(
+        values = levels(dataframe$color) |>
+          as.character(),
+        guide = ggplot2::guide_legend(ncol = 1)
+      ) +
       ggplot2::labs(fill = "Chemical Pathway - Superclass") +
       ggplot2::theme_bw() +
       ggplot2::theme(
@@ -130,50 +130,55 @@ plot_histograms_confident <-
         # legend.title.align = 0.5,
         # legend.position = "bottom",
         # axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        # panel.background = element_blank(),
-        axis.line = element_line(colour = "black"),
+        panel.grid.major = ggplot2::element_blank(),
+        panel.grid.minor = ggplot2::element_blank(),
+        # panel.background = ggplot2::element_blank(),
+        axis.line = ggplot2::element_line(colour = "black"),
         axis.text.y = ggplot2::element_text(face = "italic")
       ) +
       ggplot2::ylab("Intensity") +
       ggplot2::xlab("Retention time [min]") +
-      ggplot2::xlim(
-        max(TIME_MIN, params$chromato$time$min),
-        min(TIME_MAX, params$chromato$time$max)
-      )
+      ggplot2::xlim(max(time_min), min(time_max))
 
     return(plot)
   }
 
-#' Title
+#' Plot histograms taxo
 #'
-#' @param dataframe
-#' @param level
+#' @param dataframe Dataframe
+#' @param chromatogram Chromatogram
+#' @param level Level
+#' @param mode Mode
+#' @param time_min Time min
+#' @param time_max Time max
 #'
-#' @return
-#' @export
+#' @return A plot of taxo histograms
 #'
-#' @examples
+#' @examples NULL
 plot_histograms_taxo <-
-  function(dataframe, level = "max") {
+  function(dataframe,
+           chromatogram,
+           level = "max",
+           mode = "pos",
+           time_min,
+           time_max) {
     dataframe <- dataframe |>
-      dplyr::group_by(peak_area) |>
-      dplyr::mutate(n = max(dplyr::row_number())) |>
-      dplyr::group_by(feature_area) |>
-      dplyr::mutate(m = max(dplyr::row_number())) |>
-      dplyr::ungroup()
+      tidytable::group_by(peak_area) |>
+      tidytable::mutate(n = max(tidytable::row_number())) |>
+      tidytable::group_by(feature_area) |>
+      tidytable::mutate(m = max(tidytable::row_number())) |>
+      tidytable::ungroup()
 
     if (mode == "neg") {
       dataframe$peak_area <- -1 * dataframe$peak_area
       dataframe$feature_area <- -1 * dataframe$feature_area
-      chromatograms_list_cad$chromatograms_improved_long$intensity <-
-        -1 * chromatograms_list_cad$chromatograms_improved_long$intensity
+      chromatogram$intensity <-
+        -1 * chromatogram$intensity
     }
 
     plot <- ggplot2::ggplot() +
       ggplot2::geom_line(
-        data = chromatograms_list_cad$chromatograms_improved_long,
+        data = chromatogram,
         mapping = ggplot2::aes(x = time, y = intensity / max(abs(intensity))),
         col = "black",
         size = 0.1
@@ -224,51 +229,44 @@ plot_histograms_taxo <-
         # legend.title.align = 0.5,
         # legend.position = "bottom",
         # axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        # panel.background = element_blank(),
-        axis.line = element_line(colour = "black"),
+        panel.grid.major = ggplot2::element_blank(),
+        panel.grid.minor = ggplot2::element_blank(),
+        # panel.background = ggplot2::element_blank(),
+        axis.line = ggplot2::element_line(colour = "black"),
         axis.text.y = ggplot2::element_text(face = "italic")
       ) +
       ggplot2::ylab("Intensity") +
       ggplot2::xlab("Retention time [min]") +
-      ggplot2::xlim(
-        max(TIME_MIN, params$chromato$time$min),
-        min(TIME_MAX, params$chromato$time$max)
-      )
+      ggplot2::xlim(max(time_min), min(time_max))
 
     return(plot)
   }
 
 
-#' Title
+#' Plot histograms litt
 #'
-#' @param dataframe
-#' @param label
+#' @param dataframe Dataframe
+#' @param label Label
+#' @param y Y
+#' @param xlab Xlab
 #'
-#' @return
-#' @export
+#' @return A plot of literature histograms
 #'
-#' @examples
+#' @examples NULL
 plot_histograms_litt <-
   function(dataframe,
            label,
            y = "values",
            xlab = TRUE) {
-    absolute <- ggplot2::ggplot(
-      dataframe,
-      ggplot2::aes(
-        x = sample,
-        y = get(y),
-        fill = ids
-      )
-    ) +
-      ggplot2::geom_col() +
-      ggplot2::geom_bar(stat = "identity") +
+    absolute <- ggplot2::ggplot(dataframe, ggplot2::aes(x = sample, y = get(y), fill = ids)) +
+      ggplot2::geom_bar(
+        stat = "identity",
+        position = ggplot2::position_stack(reverse = TRUE)
+      ) +
       ggplot2::scale_fill_manual(
         values = levels(dataframe$color) |>
           as.character(),
-        guide = ggplot2::guide_legend(reverse = TRUE, ncol = 1)
+        guide = ggplot2::guide_legend(ncol = 1)
       ) +
       {
         if (xlab == TRUE) {

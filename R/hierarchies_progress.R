@@ -1,11 +1,10 @@
-#' Title
+#' Hierarchies Progress
 #'
-#' @param xs
+#' @param xs XS
 #'
-#' @return
-#' @export
+#' @return A list of hierarchies
 #'
-#' @examples
+#' @examples NULL
 hierarchies_progress <- function(xs) {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(

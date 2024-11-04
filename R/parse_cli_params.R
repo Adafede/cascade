@@ -1,13 +1,10 @@
-source(file = "R/log_debug.R")
-
-#' Title
+#' Parse CLI params
 #'
-#' @return
-#' @export
+#' @return Params
 #'
-#' @examples
+#' @examples NULL
 parse_cli_params <- function() {
-  log_debug("Loading command line arguments")
+  message("Loading command line arguments")
 
   if (exists("arguments")) {
     if (!is.null(arguments$annotations)) {

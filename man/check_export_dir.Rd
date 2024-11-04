@@ -2,13 +2,19 @@
 % Please edit documentation in R/check_export_dir.R
 \name{check_export_dir}
 \alias{check_export_dir}
-\title{Title}
+\title{Check export dir}
 \usage{
 check_export_dir(dir)
 }
 \arguments{
-\item{dir}{}
+\item{dir}{Dir}
+}
+\value{
+A log of checked dir
 }
 \description{
-Title
+Check export dir
+}
+\examples{
+NULL
 }

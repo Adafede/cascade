@@ -2,10 +2,16 @@
 % Please edit documentation in R/parse_cli_params.R
 \name{parse_cli_params}
 \alias{parse_cli_params}
-\title{Title}
+\title{Parse CLI params}
 \usage{
 parse_cli_params()
 }
+\value{
+Params
+}
 \description{
-Title
+Parse CLI params
+}
+\examples{
+NULL
 }

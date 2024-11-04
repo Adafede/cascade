@@ -2,20 +2,39 @@
 % Please edit documentation in R/signal_sharpening.R
 \name{signal_sharpening}
 \alias{signal_sharpening}
-\title{Title}
+\title{Signal sharpening}
 \usage{
 signal_sharpening(
-  Time = timeow,
-  Intensity = intensityeah,
-  K2 = k2,
-  K4 = k4,
-  Smoothing_width = smoothing_width,
-  Baseline_adjust = baseline_adjust
+  time,
+  intensity,
+  k2 = 250,
+  k4 = 1250000,
+  sigma = 0.05,
+  Smoothing_width = 8,
+  Baseline_adjust = 0
 )
 }
 \arguments{
-\item{Baseline_adjust}{}
+\item{time}{time}
+
+\item{intensity}{intensity}
+
+\item{k2}{K2}
+
+\item{k4}{K4}
+
+\item{sigma}{Sigma}
+
+\item{Smoothing_width}{Smoothing width}
+
+\item{Baseline_adjust}{Baseline adjust}
+}
+\value{
+A sharpened signal
 }
 \description{
-Title
+Signal sharpening
+}
+\examples{
+NULL
 }
