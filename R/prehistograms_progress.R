@@ -1,11 +1,12 @@
-#' Title
+#' Prehistograms progress
 #'
-#' @param xs
+#' @include prepare_plot.R
 #'
-#' @return
-#' @export
+#' @param xs XS
 #'
-#' @examples
+#' @return A list of prehistograms
+#'
+#' @examples NULL
 prehistograms_progress <- function(xs) {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(

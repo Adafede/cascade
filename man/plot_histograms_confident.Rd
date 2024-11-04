@@ -2,13 +2,33 @@
 % Please edit documentation in R/plot_histograms.R
 \name{plot_histograms_confident}
 \alias{plot_histograms_confident}
-\title{Title}
+\title{Plot histograms confident}
 \usage{
-plot_histograms_confident(dataframe, level = "max")
+plot_histograms_confident(
+  dataframe,
+  chromatogram,
+  level = "max",
+  time_min,
+  time_max
+)
 }
 \arguments{
-\item{level}{}
+\item{dataframe}{Dataframe}
+
+\item{chromatogram}{Chromatogram}
+
+\item{level}{Level}
+
+\item{time_min}{Time min}
+
+\item{time_max}{Time max}
+}
+\value{
+A plot of confident histograms
 }
 \description{
-Title
+Plot histograms confident
+}
+\examples{
+NULL
 }

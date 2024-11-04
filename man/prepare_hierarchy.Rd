@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_hierarchy.R
 \name{prepare_hierarchy}
 \alias{prepare_hierarchy}
-\title{Title}
+\title{Prepare hierarchy}
 \usage{
 prepare_hierarchy(
   dataframe,
@@ -12,8 +12,20 @@ prepare_hierarchy(
 )
 }
 \arguments{
-\item{rescale}{}
+\item{dataframe}{Dataframe}
+
+\item{type}{Type}
+
+\item{detector}{Detector}
+
+\item{rescale}{Rescale}
+}
+\value{
+A dataframe with prepared hierarchy
 }
 \description{
-Title
+Prepare hierarchy
+}
+\examples{
+NULL
 }

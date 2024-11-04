@@ -1,42 +1,48 @@
-p1q1 <- 0.00001
-p1q2 <- -0.0006
-p1q3 <- -0.0778
-p2q1 <- 0.00002
-p2q2 <- -0.00022
-p2q3 <- 0.05499
-p3q1 <- -0.00017
-p3q2 <- 0.0209
-p3q3 <- 1.4041
-acn <- 100
-acn_time <- 30.5
-dvol <- 0.5 ## dirty at the moment
+# acn_time <- 30.5
+# dvol <- 0.5 ## dirty at the moment
 
-#' Title
+#' P ACN I
 #'
-#' @param acn_eluent
-#' @param q1
-#' @param q2
-#' @param q3
+#' @param acn_eluent ACN eluent
+#' @param q1 Q1
+#' @param q2 Q2
+#' @param q3 Q3
 #'
-#' @return
-#' @export
+#' @return P ACN I
 #'
-#' @examples
+#' @examples NULL
 p_acn_i <- function(acn_eluent, q1, q2, q3) {
-  result <- q1 * acn_eluent^2 + q2 * acn_eluent + q3
-  return(result)
+  return(q1 * acn_eluent^2 + q2 * acn_eluent + q3)
 }
 
-#' Title
+#' Predict response
 #'
-#' @param acn
-#' @param peak_area
+#' @param acn ACN
+#' @param peak_area Peak area
+#' @param p1q1 P1Q1
+#' @param p1q2 P1Q2
+#' @param p1q3 P1Q3
+#' @param p2q1 P2Q1
+#' @param p2q2 P2Q2
+#' @param p2q3 P2Q3
+#' @param p3q1 P3Q1
+#' @param p3q2 P3Q2
+#' @param p3q3 P3Q3
 #'
-#' @return
-#' @export
+#' @return The concentration
 #'
-#' @examples
-predict_response <- function(acn, peak_area) {
+#' @examples NULL
+predict_response <- function(acn = 100,
+                             peak_area,
+                             p1q1 = 0.00001,
+                             p1q2 = -0.0006,
+                             p1q3 = -0.0778,
+                             p2q1 = 0.00002,
+                             p2q2 = -0.00022,
+                             p2q3 = 0.05499,
+                             p3q1 = -0.00017,
+                             p3q2 = 0.0209,
+                             p3q3 = 1.4041) {
   p_acn_1 <- p_acn_i(
     acn_eluent = acn,
     q1 = p1q1,

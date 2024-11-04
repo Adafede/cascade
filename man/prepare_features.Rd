@@ -2,13 +2,23 @@
 % Please edit documentation in R/prepare_features.R
 \name{prepare_features}
 \alias{prepare_features}
-\title{Title}
+\title{Prepare features}
 \usage{
-prepare_features(df)
+prepare_features(df, min_intensity, name)
 }
 \arguments{
-\item{df}{}
+\item{df}{Df}
+
+\item{min_intensity}{Min intensity}
+
+\item{name}{Name}
+}
+\value{
+A dataframe of prepared features
 }
 \description{
-Title
+Prepare features
+}
+\examples{
+NULL
 }

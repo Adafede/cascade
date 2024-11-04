@@ -1,11 +1,10 @@
-#' Title
+#' Save pretty tables progress
 #'
-#' @param xs
+#' @param xs XS
 #'
-#' @return
-#' @export
+#' @return Saved pretty tables
 #'
-#' @examples
+#' @examples NULL
 save_prettyTables_progress <- function(xs) {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(

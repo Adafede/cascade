@@ -2,16 +2,27 @@
 % Please edit documentation in R/plot_results.R
 \name{plot_results_1}
 \alias{plot_results_1}
-\title{Title}
+\title{Plot results 1}
 \usage{
-plot_results_1(detector = "cad", mode = "pos")
+plot_results_1(list, chromatogram, mode = "pos", time_min, time_max)
 }
 \arguments{
-\item{mode}{}
+\item{list}{List}
+
+\item{chromatogram}{Chromatogram}
+
+\item{mode}{Mode}
+
+\item{time_min}{Time min}
+
+\item{time_max}{Time max}
+}
+\value{
+A list of plots
 }
 \description{
-Title
+Plot results 1
 }
 \examples{
-TODO harmonize 'others' among minor and major
+NULL
 }

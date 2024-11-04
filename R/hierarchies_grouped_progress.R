@@ -1,11 +1,10 @@
-#' Title
+#' Hierarchies grouped progress
 #'
-#' @param xs
+#' @param xs XS
 #'
-#' @return
-#' @export
+#' @return A list of grouped hierarchies
 #'
-#' @examples
+#' @examples NULL
 hierarchies_grouped_progress <- function(xs) {
   p <- progressr::progressor(along = xs)
   future.apply::future_lapply(

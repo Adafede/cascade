@@ -2,13 +2,19 @@
 % Please edit documentation in R/transform_ms.R
 \name{transform_ms}
 \alias{transform_ms}
-\title{Title}
+\title{Transform MS}
 \usage{
 transform_ms(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{X}
+}
+\value{
+A list with transformed MS
 }
 \description{
-Title
+Transform MS
+}
+\examples{
+NULL
 }

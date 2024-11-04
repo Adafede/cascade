@@ -2,13 +2,19 @@
 % Please edit documentation in R/peaks_progress.R
 \name{peaks_progress}
 \alias{peaks_progress}
-\title{Title}
+\title{Peaks progress}
 \usage{
 peaks_progress(xs)
 }
 \arguments{
-\item{xs}{}
+\item{xs}{XS}
+}
+\value{
+A list of peaks
 }
 \description{
-Title
+Peaks progress
+}
+\examples{
+NULL
 }

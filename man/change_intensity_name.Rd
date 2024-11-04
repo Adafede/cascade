@@ -2,13 +2,21 @@
 % Please edit documentation in R/change_intensity_name.R
 \name{change_intensity_name}
 \alias{change_intensity_name}
-\title{Title}
+\title{Change intensity name}
 \usage{
 change_intensity_name(df, name)
 }
 \arguments{
-\item{name}{}
+\item{df}{Dataframe}
+
+\item{name}{Name}
+}
+\value{
+A dataframe with changed intensity name
 }
 \description{
-Title
+Change intensity name
+}
+\examples{
+NULL
 }

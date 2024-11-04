@@ -2,13 +2,19 @@
 % Please edit documentation in R/save_prettyTables_progress.R
 \name{save_prettyTables_progress}
 \alias{save_prettyTables_progress}
-\title{Title}
+\title{Save pretty tables progress}
 \usage{
 save_prettyTables_progress(xs)
 }
 \arguments{
-\item{xs}{}
+\item{xs}{XS}
+}
+\value{
+Saved pretty tables
 }
 \description{
-Title
+Save pretty tables progress
+}
+\examples{
+NULL
 }

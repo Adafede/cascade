@@ -1,15 +1,14 @@
-source(file = "R/middle_pts.R")
-source(file = "R/deriv.R")
-
-#' Title
+#' Second der
 #'
-#' @param x
-#' @param y
+#' @include middle_pts.R
+#' @include deriv.R
 #'
-#' @return
-#' @export
+#' @param x X
+#' @param y Y
 #'
-#' @examples
+#' @return The second derivative
+#'
+#' @examples NULL
 second_der <- function(x, y) {
   deriv(middle_pts(x), deriv(x, y))
 }

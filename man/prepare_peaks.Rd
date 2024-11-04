@@ -2,13 +2,19 @@
 % Please edit documentation in R/prepare_peaks.R
 \name{prepare_peaks}
 \alias{prepare_peaks}
-\title{Title}
+\title{Prepare peaks}
 \usage{
 prepare_peaks(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{X}
+}
+\value{
+Prepared peaks
 }
 \description{
-Title
+Prepare peaks
+}
+\examples{
+NULL
 }
