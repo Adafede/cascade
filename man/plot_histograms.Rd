@@ -2,13 +2,27 @@
 % Please edit documentation in R/plot_histograms.R
 \name{plot_histograms}
 \alias{plot_histograms}
-\title{Title}
+\title{Plot histograms}
 \usage{
-plot_histograms(dataframe, label, y = "values", xlab = TRUE)
+plot_histograms(dataframe, chromatogram, label, y = "values", xlab = TRUE)
 }
 \arguments{
-\item{xlab}{}
+\item{dataframe}{Dataframe}
+
+\item{chromatogram}{Chromatogram}
+
+\item{label}{Label}
+
+\item{y}{Y}
+
+\item{xlab}{Xlab}
+}
+\value{
+A plot of histograms
 }
 \description{
-Title
+Plot histograms
+}
+\examples{
+NULL
 }

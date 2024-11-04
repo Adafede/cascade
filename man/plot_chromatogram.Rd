@@ -2,13 +2,21 @@
 % Please edit documentation in R/plot_chromatogram.R
 \name{plot_chromatogram}
 \alias{plot_chromatogram}
-\title{Title}
+\title{Plot chromatogram}
 \usage{
 plot_chromatogram(df, text)
 }
 \arguments{
-\item{text}{}
+\item{df}{Dataframe}
+
+\item{text}{Text}
+}
+\value{
+A plot of a chromatogram
 }
 \description{
-Title
+Plot chromatogram
+}
+\examples{
+NULL
 }

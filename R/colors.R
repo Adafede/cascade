@@ -1,47 +1,33 @@
-library(microshades, quietly = TRUE)
-
-## Colors
-nice_colors <- list(
-  microshades_palette("micro_cvd_green", lightest = FALSE),
-  microshades_palette("micro_cvd_orange", lightest = FALSE),
-  microshades_palette("micro_cvd_blue", lightest = FALSE),
-  microshades_palette("micro_cvd_purple", lightest = FALSE),
-  # microshades_palette("micro_cvd_gray", lightest = FALSE),
-  microshades_palette("micro_cvd_turquoise", lightest = FALSE),
-  microshades_palette("micro_purple", lightest = FALSE),
-  microshades_palette("micro_orange", lightest = FALSE),
-  microshades_palette("micro_blue", lightest = FALSE),
-  microshades_palette("micro_green", lightest = FALSE),
-  microshades_palette("micro_brown", lightest = FALSE)
-  # microshades_palette("micro_gray", lightest = FALSE)
-)
-
-## Grey
-grey_colors <- list(
-  microshades_palette("micro_cvd_gray", lightest = FALSE),
-  microshades_palette("micro_gray", lightest = FALSE)
-)
-
-sunburst_colors <- character()
-
-for (i in seq_len(length(nice_colors))) {
-  sunburst_colors[i] <- nice_colors[[i]][5]
-}
-
-sunburst_colors_grey <- character()
-
-for (i in seq_len(length(grey_colors))) {
-  sunburst_colors_grey[i] <- grey_colors[[i]][5]
-}
-
-## From microshades
+## Qualitative AND Sequential
 cvd_green <- c("#4E7705", "#6D9F06", "#97CE2F", "#BDEC6F", "#DDFFA0")
 cvd_orange <- c("#9D654C", "#C17754", "#F09163", "#FCB076", "#FFD5AF")
 cvd_blue <- c("#098BD9", "#56B4E9", "#7DCCFF", "#BCE1FF", "#E7F4FF")
 cvd_turquoise <- c("#148F77", "#009E73", "#43BA8F", "#48C9B0", "#A3E4D7")
 cvd_purple <- c("#7D3560", "#A1527F", "#CC79A7", "#E794C1", "#EFB6D6")
-orange <- c("#ff7f00", "#fe9929", "#fdae6b", "#fec44f", "#feeda0")
+cvd_gray <- c("#616161", "#8B8B8B", "#B7B7B7", "#D6D6D6", "#F5F5F5")
 purple <- c("#6a51a3", "#807dba", "#9e9ac8", "#bcbddc", "#dadaeb")
+orange <- c("#ff7f00", "#fe9929", "#fdae6b", "#fec44f", "#feeda0")
+blue <- c("#4292c6", "#6baed6", "#9ecae1", "#c6dbef", "#eff3ff")
+green <- c("#238b45", "#41ab5d", "#74c476", "#a1d99b", "#c7e9c0")
+brown <- c("#7D3200", "#9E5C00", "#B78560", "#CAA995", "#D8C7BE")
+gray <- c("#525252", "#737373", "#969696", "#bdbdbd", "#d9d9d9")
+microshades <- list(
+  cvd_green,
+  cvd_orange,
+  cvd_blue,
+  cvd_turquoise,
+  cvd_purple,
+  purple,
+  orange,
+  blue,
+  green,
+  brown
+)
+microshades_grey <- list(cvd_gray, gray)
+microshades_colors <- character()
+for (i in seq_len(length(microshades))) {
+  microshades_colors[i] <- microshades[[i]][1]
+}
 
 ## Qualitative
 paired <- c(
@@ -106,27 +92,12 @@ elife <- c(
   "#861450"
 )
 
-#' Sequential
-green_4 <- c(
-  "#e5efd9",
-  "#b0d08c",
-  "#7cb13f",
-  "#4a6a26"
-)
+## Sequential
+green_4 <- c("#e5efd9", "#b0d08c", "#7cb13f", "#4a6a26")
 
-blue_4 <- c(
-  "#d4eaf6",
-  "#7fbfe4",
-  "#2994d2",
-  "#19597e"
-)
+blue_4 <- c("#d4eaf6", "#7fbfe4", "#2994d2", "#19597e")
 
-pink_4 <- c(
-  "#f7d2e0",
-  "#e777a1",
-  "#d71d62",
-  "#81113b"
-)
+pink_4 <- c("#f7d2e0", "#e777a1", "#d71d62", "#81113b")
 
 green_24 <- c(
   "#fafcf7",

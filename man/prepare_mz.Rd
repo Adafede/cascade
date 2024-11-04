@@ -2,13 +2,19 @@
 % Please edit documentation in R/prepare_mz.R
 \name{prepare_mz}
 \alias{prepare_mz}
-\title{Title}
+\title{Prepare mz}
 \usage{
 prepare_mz(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{X}
+}
+\value{
+A list of prepared mz's
 }
 \description{
-Title
+Prepare mz
+}
+\examples{
+NULL
 }

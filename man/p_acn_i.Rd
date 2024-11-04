@@ -2,13 +2,25 @@
 % Please edit documentation in R/correct_acn.R
 \name{p_acn_i}
 \alias{p_acn_i}
-\title{Title}
+\title{P ACN I}
 \usage{
 p_acn_i(acn_eluent, q1, q2, q3)
 }
 \arguments{
-\item{q3}{}
+\item{acn_eluent}{ACN eluent}
+
+\item{q1}{Q1}
+
+\item{q2}{Q2}
+
+\item{q3}{Q3}
+}
+\value{
+P ACN I
 }
 \description{
-Title
+P ACN I
+}
+\examples{
+NULL
 }

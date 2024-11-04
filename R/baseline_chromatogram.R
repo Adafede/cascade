@@ -1,11 +1,10 @@
-#' Title
+#' Baseline chromatogram
 #'
-#' @param df
+#' @param df Dataframe
 #'
-#' @return
-#' @export
+#' @return A dataframe with baselined chromatogram
 #'
-#' @examples
+#' @examples NULL
 baseline_chromatogram <- function(df) {
   df2 <- df
 
@@ -19,7 +18,7 @@ baseline_chromatogram <- function(df) {
   )
 
   intensity_new <- t(intensity_baseline@corrected) |>
-    data.table::data.table()
+    tidytable::data.table()
 
   df2$intensity <- intensity_new$V1
 

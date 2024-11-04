@@ -1,16 +1,15 @@
-#' Title
+#' Plot chromatogram
 #'
-#' @param df
-#' @param text
+#' @param df Dataframe
+#' @param text Text
 #'
-#' @return
-#' @export
+#' @return A plot of a chromatogram
 #'
-#' @examples
+#' @examples NULL
 plot_chromatogram <- function(df, text) {
   plotly::plot_ly(
     data = df,
-    # |> dplyr::filter(grepl(pattern = "M", x = id)),
+    # |> tidytable::filter(grepl(pattern = "M", x = id)),
     x = ~time,
     y = ~intensity,
     color = ~id,

@@ -2,13 +2,42 @@
 % Please edit documentation in R/queries_progress.R
 \name{queries_progress}
 \alias{queries_progress}
-\title{Title}
+\title{Queries progress}
 \usage{
-queries_progress(xs)
+queries_progress(
+  xs,
+  start = "0",
+  end = "9999",
+  limit = "1000000",
+  query_part_1,
+  query_part_2,
+  query_part_3,
+  query_part_4
+)
 }
 \arguments{
-\item{xs}{}
+\item{xs}{XS}
+
+\item{start}{Start}
+
+\item{end}{End}
+
+\item{limit}{Limit}
+
+\item{query_part_1}{query_part_1}
+
+\item{query_part_2}{query_part_2}
+
+\item{query_part_3}{query_part_3}
+
+\item{query_part_4}{query_part_4}
+}
+\value{
+A list of queries
 }
 \description{
-Title
+Queries progress
+}
+\examples{
+NULL
 }

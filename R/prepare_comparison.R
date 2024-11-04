@@ -1,77 +1,83 @@
-prepare_comparison <- function(detector = "cad") {
-  log_debug(x = "loading compared peaks")
-  path_1 <- switch(detector,
-    "bpi" = IMPORT_FILE_BPI,
-    "cad" = IMPORT_FILE_CAD,
-    "pda" = IMPORT_FILE_PDA
-  )
-  path_2 <- switch(detector,
-    "bpi" = IMPORT_FILE_BPI_2,
-    "cad" = IMPORT_FILE_CAD_2,
-    "pda" = IMPORT_FILE_PDA_2
-  )
-  peaks_compared <- path_1 |>
-    lapply(
-      FUN = function(x) {
-        readr::read_delim(file = file.path(EXPORT_DIR, x)) |>
-          # dplyr::mutate(peak_area = peak_area / max(peak_area))|>
-          dplyr::mutate(mode = ifelse(
-            test = grepl(
-              pattern = "_pos_",
-              x = x,
-              ignore.case = TRUE
-            ),
-            yes = "pos",
-            no = "neg"
-          ))
-      }
-    ) |>
-    dplyr::bind_rows()
-
-  peaks_outside <- path_2 |>
-    lapply(
-      FUN = function(x) {
-        readr::read_delim(file = file.path(EXPORT_DIR, x)) |>
-          dplyr::mutate(mode = ifelse(
-            test = grepl(
-              pattern = "_pos_",
-              x = x,
-              ignore.case = TRUE
-            ),
-            yes = "pos",
-            no = "neg"
-          ))
-      }
-    ) |>
-    dplyr::bind_rows()
+#' Prepare comparison
+#'
+#' @param features_informed Features informed
+#' @param features_not_informed Features not informed
+#' @param candidates_confident Candidates confident
+#' @param min_similarity_prefilter Min similarity pre filter
+#' @param min_similarity_filter Min similarity filter
+#' @param mode Mode
+#' @param show_example Show example? Default to FALSE
+#'
+#' @return A list of peaks
+#'
+#' @examples NULL
+prepare_comparison <- function(features_informed = NULL,
+                               features_not_informed = NULL,
+                               candidates_confident,
+                               min_similarity_prefilter = 0.6,
+                               min_similarity_filter = 0.8,
+                               mode = "pos",
+                               show_example = FALSE) {
+  peaks_compared <- features_informed |>
+    load_features_informed(show_example = show_example) |>
+    tidytable::mutate(mode = mode)
+  peaks_outside <- features_not_informed |>
+    load_features_not_informed(show_example = show_example) |>
+    tidytable::mutate(mode = mode) |>
+    tidytable::mutate(tidytable::across(tidytable::all_of(
+      c(
+        "peak_id",
+        "peak_rt_min",
+        "peak_rt_apex",
+        "peak_rt_max",
+        "peak_area",
+        "feature_id",
+        "feature_rt",
+        "feature_mz",
+        "feature_area",
+        "comparison_score"
+      )
+    ), as.numeric))
 
   peaks_all <- peaks_compared |>
-    dplyr::bind_rows(peaks_outside)
+    tidytable::bind_rows(peaks_outside)
 
-  log_debug(x = "joining compared peaks and candidates")
-  log_debug(x = "temporary fix") ## TODO
+  message("joining compared peaks and candidates")
+  message("temporary fix") ## TODO
   temp_fix <- function(df) {
-    df_temp <- df |>
-      dplyr::left_join(candidates_confident) |>
-      dplyr::mutate(rt = as.numeric(rt))
-    return(df_temp)
+    df |>
+      tidytable::mutate(feature_id = as.numeric(feature_id)) |>
+      tidytable::left_join(candidates_confident) |>
+      tidytable::mutate(rt = as.numeric(rt))
   }
+
   temp_fix_2 <- function(df) {
-    df_temp <- df |>
-      dplyr::mutate(
+    df |>
+      tidytable::mutate(
         id = sample,
         integral = peak_area,
         intensity = feature_area
       )
-    return(df_temp)
   }
+
   temp_fix_3 <- function(df) {
-    df_temp <- df |>
-      dplyr::mutate(
-        peak_rt_apex = rt,
-        peak_area = 0.001
+    df |>
+      tidytable::mutate(peak_rt_apex = rt, peak_area = 0.001)
+  }
+
+  temp_fix_4 <- function(df) {
+    df |>
+      tidytable::mutate(
+        peak_id = as.numeric(peak_id),
+        peak_rt_min = as.numeric(peak_rt_min),
+        peak_rt_max = as.numeric(peak_rt_max),
+        feature_rt = as.numeric(feature_rt),
+        feature_mz = as.numeric(feature_mz),
+        feature_area = as.numeric(feature_area),
+        comparison_score = as.numeric(comparison_score),
+        integral = as.numeric(integral),
+        intensity = as.numeric(intensity)
       )
-    return(df_temp)
   }
 
   peaks_maj <- peaks_compared |>
@@ -79,14 +85,14 @@ prepare_comparison <- function(detector = "cad") {
     temp_fix_2()
 
   # peaks_maj_2 <- peaks_maj |>
-  #   dplyr::rowwise() |>
-  #   dplyr::mutate(acn = 5 + 95 / (acn_time / (pmin(
+  #   tidytable::rowwise() |>
+  #   tidytable::mutate(acn = 5 + 95 / (acn_time / (pmin(
   #     acn_time, (peak_rt_apex - dvol - 0.5)
-  #   )))) %>%
-  #   dplyr::mutate(peak_area_corrected = predict_response(acn = acn, peak_area = peak_area))
+  #   )))) |>
+  #   tidytable::mutate(peak_area_corrected = predict_response(acn = acn, peak_area = peak_area))
   #
   # test <- peaks_maj_2 |>
-  #   distinct(peak_id, peak_area, peak_rt_apex, peak_area_corrected)
+  #   tidytable::distinct(peak_id, peak_area, peak_rt_apex, peak_area_corrected)
   #
   # plotly::plot_ly(
   #   test,
@@ -99,42 +105,40 @@ prepare_comparison <- function(detector = "cad") {
   peaks_min <- peaks_outside |>
     temp_fix() |>
     temp_fix_2() |>
-    temp_fix_3()
+    temp_fix_3() |>
+    temp_fix_4()
 
-  log_debug(x = "keeping peaks similarities above desired (pre-)threshold only")
+  message("keeping peaks similarities above desired (pre-)threshold only")
   peaks_maj_precor <- peaks_maj |>
-    dplyr::filter(comparison_score >= PEAK_SIMILARITY_PREFILTER) ## TODO check negative values
+    tidytable::filter(comparison_score >= min_similarity_prefilter) ## TODO check negative values
 
   peaks_min_precor <- peaks_maj |>
-    dplyr::anti_join(peaks_maj_precor) |>
+    tidytable::anti_join(peaks_maj_precor) |>
     temp_fix_2() |>
-    dplyr::bind_rows(peaks_min)
+    tidytable::bind_rows(peaks_min)
 
-  log_debug(x = "keeping multiple features only if none was reported in the species")
+  message("keeping multiple features only if none was reported in the species")
   peaks_maj_precor_taxo <- peaks_maj_precor |>
-    dplyr::rowwise() |>
-    dplyr::mutate(taxo = ifelse(
-      test = grepl(
-        pattern = best_candidate_organism,
-        x = species
-      ),
+    tidytable::rowwise() |>
+    tidytable::mutate(taxo = ifelse(
+      test = grepl(pattern = best_candidate_organism, x = species),
       yes = 1,
       no = 0
     )) |>
-    dplyr::mutate(taxo = ifelse(
+    tidytable::mutate(taxo = ifelse(
       test = is.na(taxo),
       yes = 0,
       no = taxo
     )) |>
-    dplyr::mutate(taxo_2 = ifelse(
+    tidytable::mutate(taxo_2 = ifelse(
       test = best_candidate_organism %in% species,
       yes = 1,
       no = 0
     )) |>
-    dplyr::group_by(sample, peak_id) |> ## TODO switch to ID if needed
-    dplyr::mutate(sum = sum(taxo)) |>
-    dplyr::mutate(sum_2 = sum(taxo_2)) |>
-    dplyr::mutate(keep = ifelse(
+    tidytable::group_by(sample, peak_id) |> ## TODO switch to ID if needed
+    tidytable::mutate(sum = sum(taxo)) |>
+    tidytable::mutate(sum_2 = sum(taxo_2)) |>
+    tidytable::mutate(keep = ifelse(
       test = taxo_2 == 1,
       yes = "Y",
       no = ifelse(
@@ -151,22 +155,25 @@ prepare_comparison <- function(detector = "cad") {
         )
       )
     )) |>
-    dplyr::filter(keep == "Y") |> ## TODO decide if genus
-    dplyr::ungroup()
+    tidytable::filter(keep == "Y") |> ## TODO decide if genus
+    tidytable::ungroup()
 
   peaks_min_precor_taxo <- peaks_maj |>
-    dplyr::anti_join(peaks_maj_precor_taxo) |>
+    tidytable::anti_join(peaks_maj_precor_taxo) |>
     temp_fix_2() |>
-    dplyr::bind_rows(peaks_min)
+    tidytable::bind_rows(peaks_min)
 
-  log_debug(x = "keeping peaks similarities with score above", PEAK_SIMILARITY)
+  message(
+    "keeping peaks similarities with score above ",
+    min_similarity_filter
+  )
   peaks_maj_precor_taxo_cor <- peaks_maj_precor_taxo |>
-    dplyr::filter(comparison_score >= PEAK_SIMILARITY)
+    tidytable::filter(comparison_score >= min_similarity_filter)
 
   peaks_min_precor_taxo_cor <- peaks_maj |>
-    dplyr::anti_join(peaks_maj_precor_taxo_cor) |>
+    tidytable::anti_join(peaks_maj_precor_taxo_cor) |>
     temp_fix_2() |>
-    dplyr::bind_rows(peaks_min)
+    tidytable::bind_rows(peaks_min)
 
   returned_list <- list(
     peaks_all,

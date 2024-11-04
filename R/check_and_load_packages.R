@@ -1,11 +1,12 @@
-#' Title
+#' Check and load packages 1
 #'
-#' @param df
+#' @param cran CRAN
+#' @param bioconductor Bioconductor
+#' @param github Github
 #'
-#' @return
-#' @export
+#' @return Log of installed packages
 #'
-#' @examples
+#' @examples NULL
 check_and_load_packages_1 <- function(cran = packages_cran,
                                       bioconductor = packages_bioconductor,
                                       github = packages_github) {
@@ -26,14 +27,15 @@ check_and_load_packages_1 <- function(cran = packages_cran,
     invisible())
 }
 
-#' Title
+#' Check and load packages 2
 #'
-#' @param df
+#' @param cran CRAN
+#' @param bioconductor Bioconductor
+#' @param github Github
 #'
-#' @return
-#' @export
+#' @return Log of installed packages
 #'
-#' @examples
+#' @examples NULL
 check_and_load_packages_2 <- function(cran = packages_cran,
                                       bioconductor = packages_bioconductor,
                                       github = packages_github) {

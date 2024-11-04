@@ -2,17 +2,39 @@
 % Please edit documentation in R/preprocess_peaks.R
 \name{preprocess_peaks}
 \alias{preprocess_peaks}
-\title{Title}
+\title{Preprocess peaks}
 \usage{
 preprocess_peaks(
   detector = "cad",
-  list = chromatograms_list_cad$chromatograms_improved,
-  df_long = chromatograms_list_cad$chromatograms_improved_long
+  df_features,
+  df_long,
+  list,
+  name,
+  shift = 0,
+  min_area = 0
 )
 }
 \arguments{
-\item{detector}{}
+\item{detector}{Detector}
+
+\item{df_features}{DF features}
+
+\item{df_long}{DF long}
+
+\item{list}{List}
+
+\item{name}{Name}
+
+\item{shift}{shift}
+
+\item{min_area}{Minimum area}
+}
+\value{
+A list of lists and dataframe with preprocessed peaks
 }
 \description{
-Title
+Preprocess peaks
+}
+\examples{
+NULL
 }

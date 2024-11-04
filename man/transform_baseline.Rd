@@ -2,13 +2,19 @@
 % Please edit documentation in R/transform_baseline.R
 \name{transform_baseline}
 \alias{transform_baseline}
-\title{Title}
+\title{Transform baseline}
 \usage{
 transform_baseline(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{X}
+}
+\value{
+A list with transformed baseline
 }
 \description{
-Title
+Transform baseline
+}
+\examples{
+NULL
 }

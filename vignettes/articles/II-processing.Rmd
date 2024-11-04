@@ -1,0 +1,100 @@
+---
+title: "2 Processing"
+author: "Adriano Rutz"
+creative_commons: CC BY-SA
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+opengraph:
+    image:
+      src: https://github.com/adafede/cascade/blob/main/man/figures/logo.svg
+      alt: "Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts"
+    twitter:
+      creator: "@adafede"
+vignette: >
+  %\VignetteIndexEntry{2 Processing}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+knitr::opts_knit$set(root.dir = system.file(package = "cascade"))
+```
+
+```{r cascade, include = FALSE}
+library("cascade")
+```
+
+This vignette describes the main processing function.
+It assumes you already checked the [previous basic steps](https://adafede.github.io/cascade/articles/I-basics.html).
+
+## Compare peaks to features
+
+To do so, you will need:
+
+- A previously generated mzmine features' table
+
+Then, you should be able to run
+
+```{r process-compare-peaks, warning=FALSE, out.width="100%"}
+process_compare_peaks(show_example = TRUE)
+```
+
+And this basically it! 🚀
+
+If you know want to add some cosmetics, and you already have a [TIMA](https://taxonomicallyinformedannotation.github.io/tima) annotation table, you can then run:
+
+```{r process-plot-pseudochromatograms, message = FALSE, warning=FALSE, out.width="100%"}
+plots_list <- process_plot_pseudochromatograms(show_example = TRUE)
+```
+
+The different plots offer the following views:
+
+### Taxo (major peaks)
+
+```{r taxo-major, warning=FALSE, out.width="100%"}
+plots_list$plots_1$histograms_taxo_maj
+```
+
+### Taxo (major peaks)
+
+```{r taxo-minor, warning=FALSE, out.width="100%"}
+plots_list$plots_1$histograms_taxo_min
+```
+### Confident unique annotations (major)
+
+```{r confident-major, warning=FALSE, out.width="100%"}
+plots_list$plots_1$histograms_unique_conf_maj
+```
+
+### Confident unique annotations (minor)
+
+```{r unique-minor, warning=FALSE, out.width="100%"}
+plots_list$plots_1$histograms_unique_conf_min
+```
+Or getting rid of the chromatogram:
+
+### Treemap semi-quantitative (major)
+
+```{r treemap-major, warning=FALSE, out.width="100%"}
+plots_list$treemaps$peaks_maj
+```
+
+### Treemap semi-quantitative (minor)
+
+```{r treemap-minor, warning=FALSE, out.width="100%"}
+plots_list$treemaps$peaks_min
+```
+
+Or both together for comparison:
+
+### Treemap both
+
+```{r treemap-both, warning=FALSE, out.width="100%"}
+plots_list$treemaps$special
+```
+
+For some other available helper functions, we now recommend you to read the [next vignette](https://adafede.github.io/cascade/articles/III-bonus.html).

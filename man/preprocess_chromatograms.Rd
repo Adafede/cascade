@@ -2,18 +2,48 @@
 % Please edit documentation in R/preprocess_chromatograms.R
 \name{preprocess_chromatograms}
 \alias{preprocess_chromatograms}
-\title{Title}
+\title{Preprocess chromatograms}
 \usage{
 preprocess_chromatograms(
   detector = "cad",
-  list = chromatograms_all[c(FALSE, FALSE, TRUE)],
+  fourier_components = 0.01,
+  frequency = 2,
+  list,
+  name,
+  resample = 1,
+  shift = 0,
   signal_name = "UV.1_CAD_1_0",
-  shift = CAD_SHIFT
+  time_min = 0,
+  time_max = Inf
 )
 }
 \arguments{
-\item{detector}{}
+\item{detector}{Detector}
+
+\item{fourier_components}{Fourier components}
+
+\item{frequency}{Frequency}
+
+\item{list}{List}
+
+\item{name}{Name}
+
+\item{resample}{Resample}
+
+\item{shift}{Shift}
+
+\item{signal_name}{Signal name}
+
+\item{time_min}{Time min}
+
+\item{time_max}{Time max}
+}
+\value{
+A list of preprocessed chromatograms
 }
 \description{
-Title
+Preprocess chromatograms
+}
+\examples{
+NULL
 }

@@ -2,13 +2,23 @@
 % Please edit documentation in R/compare_peaks.R
 \name{compare_peaks}
 \alias{compare_peaks}
-\title{Title}
+\title{Compare peaks}
 \usage{
-compare_peaks(x)
+compare_peaks(x, list_ms_peaks, peaks_prelist)
 }
 \arguments{
-\item{x}{}
+\item{x}{X}
+
+\item{list_ms_peaks}{list_ms_peaks}
+
+\item{peaks_prelist}{peaks_prelist}
+}
+\value{
+A comparison score
 }
 \description{
-Title
+Compare peaks
+}
+\examples{
+NULL
 }

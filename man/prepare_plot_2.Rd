@@ -2,13 +2,19 @@
 % Please edit documentation in R/prepare_plot.R
 \name{prepare_plot_2}
 \alias{prepare_plot_2}
-\title{Title}
+\title{Prepare plot 2}
 \usage{
 prepare_plot_2(dataframe)
 }
 \arguments{
-\item{dataframe}{}
+\item{dataframe}{Dataframe}
+}
+\value{
+A dataframe prepared for plots
 }
 \description{
-Title
+Prepare plot 2
+}
+\examples{
+NULL
 }

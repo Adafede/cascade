@@ -1,13 +1,10 @@
-require(package = dplyr, quietly = TRUE)
-require(package = splitstackshape, quietly = TRUE)
-
-#' Title
+#' Prepare hierarchy preparation
 #'
-#' @param dataframe
+#' @param dataframe Dataframe
 #'
-#' @return
+#' @return A dataframe with a description todo
 #'
-#' @examples
+#' @examples NULL
 prepare_hierarchy_preparation <- function(dataframe) {
   ms1_best_candidate <- dataframe |>
     dplyr::mutate_all(list(~ gsub(
@@ -15,7 +12,7 @@ prepare_hierarchy_preparation <- function(dataframe) {
       replacement = "",
       x = .
     ))) |>
-    splitstackshape::cSplit("best_candidate", sep = "§") |>
+    tidytable::separate_wider_delim("best_candidate", delim = "\u00a7") |>
     dplyr::mutate(id = 1) |>
     dplyr::distinct(
       id,

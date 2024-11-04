@@ -2,13 +2,19 @@
 % Please edit documentation in R/plot_results.R
 \name{plot_results_2}
 \alias{plot_results_2}
-\title{Title}
+\title{Plot results 2}
 \usage{
-plot_results_2(detector = "cad")
+plot_results_2(list)
 }
 \arguments{
-\item{detector}{}
+\item{list}{List}
+}
+\value{
+A list of plots
 }
 \description{
-Title
+Plot results 2
+}
+\examples{
+NULL
 }

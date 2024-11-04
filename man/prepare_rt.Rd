@@ -2,13 +2,21 @@
 % Please edit documentation in R/prepare_rt.R
 \name{prepare_rt}
 \alias{prepare_rt}
-\title{Title}
+\title{Prepare rt}
 \usage{
-prepare_rt(x)
+prepare_rt(x, shift = 0)
 }
 \arguments{
-\item{x}{}
+\item{x}{X}
+
+\item{shift}{Shift}
+}
+\value{
+Prepared RTs
 }
 \description{
-Title
+Prepare rt
+}
+\examples{
+NULL
 }

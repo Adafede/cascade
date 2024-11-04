@@ -2,18 +2,19 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "cascade",
-  "description": "What the package does (one paragraph).",
+  "description": "This package provides the infrastructure to perform Automated Composition Assessment of Natural Extracts.",
   "name": "cascade: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts",
+  "relatedLink": "https://adafede.github.io/cascade",
   "codeRepository": "https://github.com/adafede/cascade",
   "issueTracker": "https://github.com/adafede/cascade/issues",
-  "license": "CRAPL",
+  "license": "https://spdx.org/licenses/GPL-3.0",
   "version": "0.0.0.9000",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.4.1 (2024-06-14)",
+  "runtimePlatform": "R version 4.4.2 (2024-10-31)",
   "author": [
     {
       "@type": "Person",
@@ -78,7 +79,7 @@
       "@type": "SoftwareApplication",
       "identifier": "R",
       "name": "R",
-      "version": ">= 4.4.0"
+      "version": ">= 4.3.0"
     },
     "2": {
       "@type": "SoftwareApplication",
@@ -95,16 +96,16 @@
     },
     "3": {
       "@type": "SoftwareApplication",
-      "identifier": "BiocParallel",
-      "name": "BiocParallel",
-      "version": ">= 1.38.0",
+      "identifier": "BiocManager",
+      "name": "BiocManager",
+      "version": ">= 1.30.25",
       "provider": {
-        "@id": "https://www.bioconductor.org",
+        "@id": "https://cran.r-project.org",
         "@type": "Organization",
-        "name": "Bioconductor",
-        "url": "https://www.bioconductor.org"
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://bioconductor.org/packages/release/bioc/html/BiocParallel.html"
+      "sameAs": "https://CRAN.R-project.org/package=BiocManager"
     },
     "4": {
       "@type": "SoftwareApplication",
@@ -128,19 +129,6 @@
     },
     "6": {
       "@type": "SoftwareApplication",
-      "identifier": "docopt",
-      "name": "docopt",
-      "version": ">= 0.7.1",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=docopt"
-    },
-    "7": {
-      "@type": "SoftwareApplication",
       "identifier": "dplyr",
       "name": "dplyr",
       "version": ">= 1.1.4",
@@ -151,6 +139,19 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=dplyr"
+    },
+    "7": {
+      "@type": "SoftwareApplication",
+      "identifier": "forcats",
+      "name": "forcats",
+      "version": ">= 1.0.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=forcats"
     },
     "8": {
       "@type": "SoftwareApplication",
@@ -180,22 +181,74 @@
     },
     "10": {
       "@type": "SoftwareApplication",
-      "identifier": "import",
-      "name": "import",
-      "version": ">= 1.3.2",
+      "identifier": "ggalluvial",
+      "name": "ggalluvial",
+      "version": ">= 0.12.5",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=import"
+      "sameAs": "https://CRAN.R-project.org/package=ggalluvial"
     },
     "11": {
       "@type": "SoftwareApplication",
+      "identifier": "ggfittext",
+      "name": "ggfittext",
+      "version": ">= 0.10.2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=ggfittext"
+    },
+    "12": {
+      "@type": "SoftwareApplication",
+      "identifier": "ggplot2",
+      "name": "ggplot2",
+      "version": ">= 3.5.1",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=ggplot2"
+    },
+    "13": {
+      "@type": "SoftwareApplication",
+      "identifier": "gt",
+      "name": "gt",
+      "version": ">= 0.11.1",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=gt"
+    },
+    "14": {
+      "@type": "SoftwareApplication",
+      "identifier": "htmltools",
+      "name": "htmltools",
+      "version": ">= 0.5.8.1",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=htmltools"
+    },
+    "15": {
+      "@type": "SoftwareApplication",
       "identifier": "MSnbase",
       "name": "MSnbase",
-      "version": ">= 2.30.1",
+      "version": ">= 2.28.1",
       "provider": {
         "@id": "https://www.bioconductor.org",
         "@type": "Organization",
@@ -204,10 +257,10 @@
       },
       "sameAs": "https://bioconductor.org/packages/release/bioc/html/MSnbase.html"
     },
-    "12": {
+    "16": {
       "@type": "SoftwareApplication",
-      "identifier": "nucleR",
-      "name": "nucleR",
+      "identifier": "mzR",
+      "name": "mzR",
       "version": ">= 2.36.0",
       "provider": {
         "@id": "https://www.bioconductor.org",
@@ -215,14 +268,9 @@
         "name": "Bioconductor",
         "url": "https://www.bioconductor.org"
       },
-      "sameAs": "https://bioconductor.org/packages/release/bioc/html/nucleR.html"
+      "sameAs": "https://bioconductor.org/packages/release/bioc/html/mzR.html"
     },
-    "13": {
-      "@type": "SoftwareApplication",
-      "identifier": "parallel",
-      "name": "parallel"
-    },
-    "14": {
+    "17": {
       "@type": "SoftwareApplication",
       "identifier": "pbapply",
       "name": "pbapply",
@@ -235,7 +283,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=pbapply"
     },
-    "15": {
+    "18": {
       "@type": "SoftwareApplication",
       "identifier": "plotly",
       "name": "plotly",
@@ -248,20 +296,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=plotly"
     },
-    "16": {
-      "@type": "SoftwareApplication",
-      "identifier": "pracma",
-      "name": "pracma",
-      "version": ">= 2.4.4",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=pracma"
-    },
-    "17": {
+    "19": {
       "@type": "SoftwareApplication",
       "identifier": "progressr",
       "name": "progressr",
@@ -274,7 +309,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=progressr"
     },
-    "18": {
+    "20": {
       "@type": "SoftwareApplication",
       "identifier": "purrr",
       "name": "purrr",
@@ -287,33 +322,85 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=purrr"
     },
-    "19": {
+    "21": {
       "@type": "SoftwareApplication",
-      "identifier": "readr",
-      "name": "readr",
-      "version": ">= 2.1.5",
+      "identifier": "R.utils",
+      "name": "R.utils",
+      "version": ">= 2.12.3",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=readr"
+      "sameAs": "https://CRAN.R-project.org/package=R.utils"
     },
-    "20": {
+    "22": {
       "@type": "SoftwareApplication",
-      "identifier": "xcms",
-      "name": "xcms",
-      "version": ">= 4.2.2",
+      "identifier": "RCurl",
+      "name": "RCurl",
+      "version": ">= 1.98.1.16",
       "provider": {
-        "@id": "https://www.bioconductor.org",
+        "@id": "https://cran.r-project.org",
         "@type": "Organization",
-        "name": "Bioconductor",
-        "url": "https://www.bioconductor.org"
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://bioconductor.org/packages/release/bioc/html/xcms.html"
+      "sameAs": "https://CRAN.R-project.org/package=RCurl"
     },
-    "21": {
+    "23": {
+      "@type": "SoftwareApplication",
+      "identifier": "remotes",
+      "name": "remotes",
+      "version": ">= 2.5.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=remotes"
+    },
+    "24": {
+      "@type": "SoftwareApplication",
+      "identifier": "tibble",
+      "name": "tibble",
+      "version": ">= 3.2.1",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=tibble"
+    },
+    "25": {
+      "@type": "SoftwareApplication",
+      "identifier": "tidytable",
+      "name": "tidytable",
+      "version": ">= 0.11.1",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=tidytable"
+    },
+    "26": {
+      "@type": "SoftwareApplication",
+      "identifier": "WikidataQueryServiceR",
+      "name": "WikidataQueryServiceR",
+      "version": ">= 1.0.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=WikidataQueryServiceR"
+    },
+    "27": {
       "@type": "SoftwareApplication",
       "identifier": "yaml",
       "name": "yaml",
@@ -326,9 +413,25 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=yaml"
     },
+    "28": {
+      "@type": "SoftwareApplication",
+      "identifier": "zoo",
+      "name": "zoo",
+      "version": ">= 1.8.12",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=zoo"
+    },
     "SystemRequirements": null
   },
-  "keywords": ["metaboliteannotation", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
-  "fileSize": "0KB",
-  "readme": "https://github.com/Adafede/cascade/blob/main/README.md"
+  "keywords": ["metaboliteannotation", "chargedaerosoldetector", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
+  "fileSize": "164063.154KB",
+  "releaseNotes": "https://github.com/adafede/cascade/blob/master/NEWS.md",
+  "readme": "https://github.com/Adafede/cascade/blob/main/README.md",
+  "contIntegration": ["https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/adafede/cascade"],
+  "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html#experimental"
 }

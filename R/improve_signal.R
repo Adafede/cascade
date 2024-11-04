@@ -1,63 +1,47 @@
-source(file = "R/signal_sharpening.R")
-
-#' Title
+#' Improve signal
 #'
-#' @param df
-#' @param fourier_components
-#' @param time_min
-#' @param time_max
-#' @param frequency
-#' @param resample
+#' @include filter_fft.R
+#' @include signal_sharpening.R
 #'
-#' @return
-#' @export
+#' @param df Dataframe
+#' @param fourier_components Fourier components
+#' @param frequency Frequency
+#' @param resample Resample
+#' @param time_min Time min
+#' @param time_max Time max
 #'
-#' @examples
+#' @return A dataframe with improved signal
+#'
+#' @examples NULL
 improve_signal <-
   function(df,
-           fourier_components = FOURRIER_COMPONENTS,
-           time_min = TIME_MIN,
-           time_max = TIME_MAX,
-           frequency = FREQUENCY,
-           resample = RESAMPLE) {
+           fourier_components = 0.01,
+           frequency = 2,
+           resample = 1,
+           time_min = 0,
+           time_max = Inf) {
     df_fourier <- df |>
       ## in case we have negative intensity
-      dplyr::mutate(intensity = intensity + 10) |>
-      dplyr::mutate(intensity = intensity - (min(intensity))) |>
-      dplyr::mutate(
-        intensity_fourier = nucleR::filterFFT(
-          intensity,
-          pcKeepComp = fourier_components,
-          # pcKeepComp = 0.01,
-          showPowerSpec = FALSE,
-          useOptim = TRUE
-        )
-      )
+      ## 100 to be on the safe side
+      tidytable::mutate(intensity = intensity + 100) |>
+      tidytable::mutate(intensity = intensity - (min(intensity) - 0.001)) |>
+      tidytable::mutate(intensity_fourier = filter_fft(x = intensity, components = fourier_components))
 
-    f <- approxfun(
-      x = df_fourier$time,
-      y = df_fourier$intensity_fourier
-    )
+    f <- approxfun(x = df_fourier$time, y = df_fourier$intensity_fourier)
 
-    timeow <<- seq(
+    time <- seq(
       from = time_min,
       to = min(max(df_fourier$time), time_max),
       by = 1 / (frequency * 60 * resample)
     )
 
-    intensityeah <<- f(seq(
+    intensity <- f(seq(
       from = time_min,
       to = min(max(df_fourier$time), time_max),
       by = 1 / (frequency * 60 * resample)
     ))
 
-    intensity_sharpened <- signal_sharpening()
+    intensity_sharpened <- signal_sharpening(time = time, intensity = intensity)
 
-    df_sharpened <-
-      data.frame(
-        "time" = timeow[5:length(timeow)],
-        "intensity" = intensity_sharpened
-      )
-
-    return(df_sharpened)
+    return(data.frame("time" = time[5:length(time)], "intensity" = intensity_sharpened))
   }

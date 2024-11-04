@@ -1,11 +1,10 @@
-#' Title
+#' Check export dir
 #'
-#' @param dir
+#' @param dir Dir
 #'
-#' @return
-#' @export
+#' @return A log of checked dir
 #'
-#' @examples
+#' @examples NULL
 check_export_dir <- function(dir) {
   ifelse(
     test = !dir.exists(dirname(dirname(dir))),

@@ -2,13 +2,21 @@
 % Please edit documentation in R/add_peak_metadata.R
 \name{add_peak_metadata}
 \alias{add_peak_metadata}
-\title{Title}
+\title{Add peak metadata}
 \usage{
-add_peak_metadata(df)
+add_peak_metadata(df, min_score = 0.8)
 }
 \arguments{
-\item{df}{}
+\item{df}{Dataframe}
+
+\item{min_score}{Min score}
+}
+\value{
+A dataframe with peak metadata
 }
 \description{
-Title
+Add peak metadata
+}
+\examples{
+NULL
 }

@@ -2,13 +2,21 @@
 % Please edit documentation in R/make_confident.R
 \name{make_confident}
 \alias{make_confident}
-\title{Title}
+\title{Make confident}
 \usage{
 make_confident(df, score)
 }
 \arguments{
-\item{score}{}
+\item{df}{Dataframe}
+
+\item{score}{Score}
+}
+\value{
+A dataframe containing annotations with scores above the confidence threshold set
 }
 \description{
-Title
+Make confident
+}
+\examples{
+NULL
 }

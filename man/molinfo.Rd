@@ -2,13 +2,19 @@
 % Please edit documentation in R/molinfo.R
 \name{molinfo}
 \alias{molinfo}
-\title{Title}
+\title{Molinfo}
 \usage{
 molinfo(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{X}
+}
+\value{
+A mol image
 }
 \description{
-Title
+Molinfo
+}
+\examples{
+NULL
 }

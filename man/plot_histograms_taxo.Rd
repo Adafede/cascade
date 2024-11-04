@@ -2,13 +2,36 @@
 % Please edit documentation in R/plot_histograms.R
 \name{plot_histograms_taxo}
 \alias{plot_histograms_taxo}
-\title{Title}
+\title{Plot histograms taxo}
 \usage{
-plot_histograms_taxo(dataframe, level = "max")
+plot_histograms_taxo(
+  dataframe,
+  chromatogram,
+  level = "max",
+  mode = "pos",
+  time_min,
+  time_max
+)
 }
 \arguments{
-\item{level}{}
+\item{dataframe}{Dataframe}
+
+\item{chromatogram}{Chromatogram}
+
+\item{level}{Level}
+
+\item{mode}{Mode}
+
+\item{time_min}{Time min}
+
+\item{time_max}{Time max}
+}
+\value{
+A plot of taxo histograms
 }
 \description{
-Title
+Plot histograms taxo
+}
+\examples{
+NULL
 }

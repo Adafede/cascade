@@ -1,15 +1,13 @@
-require(package = dplyr, quietly = TRUE)
-require(package = forcats, quietly = TRUE)
-
-#' Title
+#' Prepare plot
 #'
-#' @param dataframe
-#' @param organism
+#' @include colors.R
 #'
-#' @return
-#' @export
+#' @param dataframe Dataframe
+#' @param organism Organism
 #'
-#' @examples
+#' @return A dataframe prepared for plots
+#'
+#' @examples NULL
 prepare_plot <- function(dataframe, organism = "species") {
   presamples <- dataframe |>
     dplyr::ungroup() |>
@@ -19,7 +17,10 @@ prepare_plot <- function(dataframe, organism = "species") {
       !grepl(pattern = "-", x = parents)) |>
     dplyr::filter(!is.na(get(organism))) |>
     dplyr::mutate(species = get(organism)) |>
-    dplyr::arrange(desc(values)) |>
+    dplyr::group_by(labels) |>
+    dplyr::mutate(valuez = sum(values)) |>
+    dplyr::ungroup() |>
+    dplyr::arrange(desc(valuez)) |>
     dplyr::mutate(group = as.integer(factor(parents, levels = unique(parents)))) |>
     dplyr::group_by(group) |>
     dplyr::mutate(subgroup = as.integer(factor(x = ids, levels = unique(ids)))) |>
@@ -63,11 +64,14 @@ prepare_plot <- function(dataframe, organism = "species") {
         x = parents,
         fixed = TRUE
       ),
-      yes = grey_colors[[1]][subgroup],
-      no = nice_colors[[group]][subgroup]
+      yes = microshades_grey[[1]][[subgroup]],
+      no = microshades[[group]][[subgroup]]
     )) |>
     dplyr::mutate(relative = values / tot) |>
-    dplyr::ungroup()
+    dplyr::ungroup() |>
+    dplyr::arrange(subgroup) |>
+    dplyr::arrange(group) |>
+    dplyr::mutate(idz = paste(group, subgroup))
 
   quickfix <- samples |>
     dplyr::filter(is.na(color)) |>
@@ -83,38 +87,39 @@ prepare_plot <- function(dataframe, organism = "species") {
   samples$ids <-
     forcats::fct_reorder2(
       .f = samples$ids,
-      .x = samples$values,
-      .y = samples$group,
-      .desc = TRUE
+      .x = samples$group,
+      .y = samples$idz,
+      .desc = FALSE
     )
 
   samples$color <-
     forcats::fct_reorder2(
       .f = samples$color,
-      .x = samples$values,
-      .y = samples$group,
-      .desc = TRUE
+      .x = samples$group,
+      .y = samples$idz,
+      .desc = FALSE
     )
 
   samples$sample <-
     forcats::fct_reorder2(
       .f = samples$sample,
-      .x = samples$values,
+      .x = samples$valuez,
       .y = samples$sample,
-      .desc = FALSE
+      .desc = TRUE
     )
 
   return(samples)
 }
 
-#' Title
+#' Prepare plot 2
 #'
-#' @param dataframe
+#' @include colors.R
 #'
-#' @return
-#' @export
+#' @param dataframe Dataframe
 #'
-#' @examples
+#' @return A dataframe prepared for plots
+#'
+#' @examples NULL
 prepare_plot_2 <- function(dataframe) {
   dataframe_prep <- dataframe |>
     dplyr::ungroup() |>
@@ -128,7 +133,7 @@ prepare_plot_2 <- function(dataframe) {
       .keep_all = TRUE
     ) |>
     dplyr::group_by(peak_id) |>
-    dplyr::mutate(peak_area = peak_area / max(row_number())) |>
+    dplyr::mutate(peak_area = peak_area / max(dplyr::row_number())) |>
     dplyr::mutate(best_candidate_1 = ifelse(
       test = !is.na(best_candidate_1),
       yes = best_candidate_1,
@@ -198,7 +203,7 @@ prepare_plot_2 <- function(dataframe) {
     dplyr::group_by(best_candidate_1) |>
     dplyr::mutate(sum = sum(unique(peak_area))) |>
     dplyr::ungroup() |>
-    dplyr::arrange(desc(sum)) |>
+    dplyr::arrange(dplyr::desc(sum)) |>
     dplyr::mutate(group = as.integer(factor(
       best_candidate_1,
       levels = unique(best_candidate_1)
@@ -215,8 +220,8 @@ prepare_plot_2 <- function(dataframe) {
         x = best_candidate_1,
         fixed = TRUE
       ),
-      yes = rev(grey_colors[[1]])[subgroup],
-      no = rev(nice_colors[[group]])[subgroup]
+      yes = microshades_grey[[1]][[subgroup]],
+      no = microshades[[group]][[subgroup]]
     )) |>
     dplyr::mutate(name = paste(best_candidate_1, best_candidate_2, sep = " - ")) |>
     dplyr::select(
@@ -282,54 +287,56 @@ prepare_plot_2 <- function(dataframe) {
     )) |>
     dplyr::mutate(color_2 = ifelse(
       test = name_2 == "Species",
-      yes = nice_colors[[9]][[5]],
+      yes = microshades[[9]][[1]],
       no = ifelse(
         test = name_2 == "Genus",
-        yes = nice_colors[[9]][[4]],
+        yes = microshades[[9]][[2]],
         no = ifelse(
           test = name_2 == "Family",
-          yes = nice_colors[[9]][[3]],
+          yes = microshades[[9]][[3]],
           no = ifelse(
             test = name_2 == "Kingdom",
-            yes = nice_colors[[9]][[2]],
-            no = grey_colors[[1]][[3]]
+            yes = microshades[[9]][[4]],
+            no = microshades_grey[[1]][[2]]
           )
         )
       )
     )) |>
     dplyr::ungroup()
 
-  dataframe_prep$color <-
-    forcats::fct_reorder2(
-      .f = dataframe_prep$color,
-      .x = dataframe_prep$sum,
-      .y = dataframe_prep$group,
-      .desc = TRUE
-    )
+  if (nrow(dataframe_prep) > 0) {
+    dataframe_prep$color <-
+      forcats::fct_reorder2(
+        .f = dataframe_prep$color,
+        .x = dataframe_prep$sum,
+        .y = dataframe_prep$group,
+        .desc = TRUE
+      )
 
-  dataframe_prep$name <-
-    forcats::fct_reorder2(
-      .f = dataframe_prep$name,
-      .x = dataframe_prep$sum,
-      .y = dataframe_prep$group,
-      .desc = TRUE
-    )
+    dataframe_prep$name <-
+      forcats::fct_reorder2(
+        .f = dataframe_prep$name,
+        .x = dataframe_prep$sum,
+        .y = dataframe_prep$group,
+        .desc = TRUE
+      )
 
-  dataframe_prep$color_2 <-
-    forcats::fct_reorder2(
-      .f = dataframe_prep$color_2,
-      .x = dataframe_prep$score_biological,
-      .y = dataframe_prep$score_biological,
-      .desc = TRUE
-    )
+    dataframe_prep$color_2 <-
+      forcats::fct_reorder2(
+        .f = dataframe_prep$color_2,
+        .x = dataframe_prep$score_biological,
+        .y = dataframe_prep$score_biological,
+        .desc = TRUE
+      )
 
-  dataframe_prep$name_2 <-
-    forcats::fct_reorder2(
-      .f = dataframe_prep$name_2,
-      .x = dataframe_prep$score_biological,
-      .y = dataframe_prep$score_biological,
-      .desc = TRUE
-    )
+    dataframe_prep$name_2 <-
+      forcats::fct_reorder2(
+        .f = dataframe_prep$name_2,
+        .x = dataframe_prep$score_biological,
+        .y = dataframe_prep$score_biological,
+        .desc = TRUE
+      )
+  }
 
   return(dataframe_prep)
 }

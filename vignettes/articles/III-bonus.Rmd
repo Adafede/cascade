@@ -1,0 +1,74 @@
+---
+title: "3 Bonus"
+author: "Adriano Rutz"
+creative_commons: CC BY-SA
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+opengraph:
+    image:
+      src: https://github.com/adafede/cascade/blob/main/man/figures/logo.svg
+      alt: "Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts"
+    twitter:
+      creator: "@adafede"
+vignette: >
+  %\VignetteIndexEntry{3 Bonus}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+knitr::opts_knit$set(root.dir = system.file(package = "cascade"))
+```
+
+```{r cascade, include = FALSE}
+library("cascade")
+```
+
+This vignette describes some additional bonus helper functions.
+A lot of it is based on previous work done in the frame of the [LOTUS initiative](https://doi.org/10.7554/eLife.70780).
+
+## Quick overview of the literature
+
+To check (and eventually compare to your own results) what is known in the literature about different organisms:
+
+```{r wikidata-plots, message = FALSE, warning=FALSE, out.width="100%"}
+plots_list <- generate_ids(
+  taxa = c("Swertia", "Kopsia", "Ginkgo"),
+  comparison = c("Swertia", "Kopsia"),
+  no_stereo = TRUE,
+  filter_ms_conditions = TRUE,
+  start = "1950",
+  end = "2025"
+)
+```
+
+### Compounds found in Swertia 
+
+```{r wikidata-swertia-1, warning=FALSE, out.width="100%"}
+plots_list$plots$Swertia
+```
+
+#### Compounds found in Swertia (per species)
+```{r wikidata-swertia-2, warning=FALSE, out.width="100%"}
+plots_list$plots$Swertia_grouped
+```
+
+### Compounds found in Kopsia
+
+```{r wikidata-kopsia-1, warning=FALSE, out.width="100%"}
+plots_list$plots$Kopsia_grouped
+```
+
+### Comparison
+
+```{r wikidata-swertia-kopsia, warning=FALSE, out.width="100%"}
+plots_list$plots$special
+```
+
+We hope you enjoyed using **CASCADE** and are pleased to hear from you!
+
+For any remark or suggestion, please  [fill an issue](https://github.com/adafede/cascade/issues) or feel free to contact us directly.

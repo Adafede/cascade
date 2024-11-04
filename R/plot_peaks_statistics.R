@@ -1,11 +1,12 @@
-#' Title
+library(ggalluvial)
+
+#' Plot peaks statistics
 #'
-#' @param df
+#' @param df Dataframe
 #'
-#' @return
-#' @export
+#' @return A plot with peaks statistics
 #'
-#' @examples
+#' @examples NULL
 plot_peaks_statistics <- function(df) {
   accepted_variables <- c(
     "features",
@@ -34,38 +35,31 @@ plot_peaks_statistics <- function(df) {
       df[colnames(df)[!grepl(pattern = "_old", x = colnames(df))]]
 
     df_pretreated <- df_2 |>
-      tidyr::pivot_longer(
+      tidytable::pivot_longer(
         cols = 14:19,
         names_to = "names_3",
         values_to = "3- peak shape + taxonomy + confidence filter"
       ) |>
-      tidyr::pivot_longer(
+      tidytable::pivot_longer(
         cols = 9:14,
         names_to = "names_2",
         values_to = "2- peak shape filter"
       ) |>
-      tidyr::pivot_longer(
+      tidytable::pivot_longer(
         cols = 3:8,
         names_to = "names_1",
         values_to = "1- no filter"
       ) |>
-      tidyr::pivot_longer(cols = c(4, 6, 8), values_to = leg) |>
-      dplyr::mutate_all(tolower) |>
-      dplyr::rowwise() |>
-      dplyr::filter(grepl(
-        pattern = names_1,
-        x = names_2
-      ) &
-        grepl(
-          pattern = names_1,
-          x = names_3
-        ))
+      tidytable::pivot_longer(cols = c(4, 6, 8), values_to = leg) |>
+      tidytable::mutate(tidytable::across(tidytable::everything(), tolower)) |>
+      tidytable::rowwise() |>
+      tidytable::filter(grepl(pattern = names_1, x = names_2) &
+        grepl(pattern = names_1, x = names_3))
 
     df_treated <- df_pretreated |>
-      dplyr::filter(grepl(
-        pattern = var,
-        x = names_1
-      ))
+      tidytable::filter(grepl(pattern = var, x = names_1)) |>
+      data.frame()
+    colnames(df_treated)[7] <- leg
 
     alluvial <- ggplot2::ggplot(
       data = df_treated,
@@ -81,10 +75,7 @@ plot_peaks_statistics <- function(df) {
         decreasing = TRUE
       ) +
       ggalluvial::geom_flow(
-        ggplot2::aes(
-          fill = get(leg),
-          colour = get(leg)
-        ),
+        ggplot2::aes(fill = get(leg), colour = get(leg)),
         aes.bind = "alluvia",
         aes.flow = "backward",
         stat = ggplot2::after_stat("alluvium"),
@@ -111,6 +102,7 @@ plot_peaks_statistics <- function(df) {
         axis.title.x = ggplot2::element_blank()
       )
   }
+
   alluvials_list <- lapply(X = accepted_variables, FUN = inner_f)
 
   return(alluvials_list)

@@ -1,11 +1,10 @@
-#' Title
+#' Transform baseline
 #'
-#' @param x
+#' @param x X
 #'
-#' @return
-#' @export
+#' @return A list with transformed baseline
 #'
-#' @examples
+#' @examples NULL
 transform_baseline <- function(x) {
   for (i in seq_along(seq_len(length(x)))) {
     intensity <- x[[i]]$intensity
@@ -18,7 +17,7 @@ transform_baseline <- function(x) {
     )
 
     intensity_new <- t(intensity_baseline@corrected) |>
-      data.table::data.table()
+      tidytable::data.table()
 
     newlist <- x
     newlist[[i]]$intensity <- intensity_new$V1

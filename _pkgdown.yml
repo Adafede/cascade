@@ -1,0 +1,21 @@
+---
+home:
+  title: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts
+  description: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts
+
+figure:
+  fig.ext: svg
+
+template:
+  bootstrap: 5
+  light-switch: true
+  opengraph:
+    image:
+      src: man/figures/logo.svg
+      alt: "CASCADE"
+    twitter:
+      creator: "@adafede"
+  params:
+    google_site_verification: Bt77rpBuC_R-0p62TWtA_ba5rvx-PuSEMv4LHg1UsOo
+
+url: https://adafede.github.io/cascade

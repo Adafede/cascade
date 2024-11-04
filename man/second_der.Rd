@@ -2,13 +2,21 @@
 % Please edit documentation in R/second_der.R
 \name{second_der}
 \alias{second_der}
-\title{Title}
+\title{Second der}
 \usage{
 second_der(x, y)
 }
 \arguments{
-\item{y}{}
+\item{x}{X}
+
+\item{y}{Y}
+}
+\value{
+The second derivative
 }
 \description{
-Title
+Second der
+}
+\examples{
+NULL
 }
