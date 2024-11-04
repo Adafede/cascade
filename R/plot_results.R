@@ -163,9 +163,9 @@ plot_results_2 <- function(list) {
 
   message("preparing hierarchies...")
   message("... on everything")
-  table_taxo_maj_cor_signal <- list$peaks_maj_precor_taxo_cor |>
-    temp_fix_duplicates() |>
-    prepare_hierarchy(detector = "cad")
+  # table_taxo_maj_cor_signal <- list$peaks_maj_precor_taxo_cor |>
+  #   temp_fix_duplicates() |>
+  #   prepare_hierarchy(detector = "cad")
   table_taxo_maj_cor_signal_2 <- list$peaks_maj_precor_taxo_cor |>
     temp_fix_posneg() |>
     temp_fix_duplicates(colname = "newrt") |>
@@ -191,11 +191,11 @@ plot_results_2 <- function(list) {
     tidytable::summarise(values = sum(values))
 
   message("... on confident")
-  table_taxo_maj_cor_conf_signal <-
-    list$peaks_maj_precor_taxo_cor |>
-    no_other() |>
-    temp_fix_duplicates() |>
-    prepare_hierarchy(detector = "cad")
+  # table_taxo_maj_cor_conf_signal <-
+  #  list$peaks_maj_precor_taxo_cor |>
+  #     no_other() |>
+  #     temp_fix_duplicates() |>
+  #     prepare_hierarchy(detector = "cad")
   table_taxo_maj_cor_conf_signal_1 <-
     list$peaks_maj_precor_taxo_cor |>
     no_other() |>
@@ -204,9 +204,9 @@ plot_results_2 <- function(list) {
   table_taxo_maj_cor_conf_signal_2 <-
     table_taxo_maj_cor_conf_signal_1 |>
     prepare_hierarchy(detector = "cad")
-  table_taxo_maj_cor_conf_ms <- list$peaks_maj_precor_taxo_cor |>
-    no_other() |>
-    prepare_hierarchy(detector = "ms")
+  # table_taxo_maj_cor_conf_ms <- list$peaks_maj_precor_taxo_cor |>
+  #   no_other() |>
+  #   prepare_hierarchy(detector = "ms")
 
   # samples_with_new_cor <-
   #   prepare_plot(dataframe = final_table_taxed_with_new_cor)
@@ -336,11 +336,11 @@ plot_results_2 <- function(list) {
     sunburst_microshades_grey_signal_duo[[index_s_duo]] <- microshades_grey[[1]][[5]]
   }
 
-  sunburst_microshades_grey_ms_duo <- microshades_colors
-  index_m_duo <- which(index_ms_duo$ids == "Other", arr.ind = TRUE)
-  if (length(index_m_duo) > 0) {
-    sunburst_microshades_grey_signal_duo[[index_m_duo]] <- microshades_grey[[1]][[5]]
-  }
+  # sunburst_microshades_grey_ms_duo <- microshades_colors
+  # index_m_duo <- which(index_ms_duo$ids == "Other", arr.ind = TRUE)
+  # if (length(index_m_duo) > 0) {
+  #   sunburst_microshades_grey_signal_duo[[index_m_duo]] <- microshades_grey[[1]][[5]]
+  # }
 
   # sunburst_signal_based_pos <- table_taxo_maj_cor_signal |>
   #   dplyr::filter(grepl(
