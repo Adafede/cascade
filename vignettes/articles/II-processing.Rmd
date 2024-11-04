@@ -20,7 +20,7 @@ opengraph:
       creator: "@adafede"
 vignette: >
   %\VignetteIndexEntry{2 Processing}
-  %\VignetteEngine{quarto::html}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
