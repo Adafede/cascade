@@ -2,10 +2,10 @@ Package: cascade
 Title: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts
 Version: 0.0.0.9000
 Authors@R: c(
-    person("Adriano", "Rutz", , "rutz@imsb.biol.ethz.ch", role = c("aut", "cre"),
+    person("Adriano", "Rutz", , "adafede@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-0443-9902"))
   )
-Maintainer: Adriano Rutz <rutz@imsb.biol.ethz.ch>
+Maintainer: Adriano Rutz <adafede@gmail.com>
 Description: This package provides the infrastructure to perform
     Automated Composition Assessment of Natural Extracts.
 License: GPL (>= 3)

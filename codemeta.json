@@ -20,7 +20,7 @@
       "@type": "Person",
       "givenName": "Adriano",
       "familyName": "Rutz",
-      "email": "rutz@imsb.biol.ethz.ch",
+      "email": "adafede@gmail.com",
       "@id": "https://orcid.org/0000-0003-0443-9902"
     }
   ],
@@ -29,7 +29,7 @@
       "@type": "Person",
       "givenName": "Adriano",
       "familyName": "Rutz",
-      "email": "rutz@imsb.biol.ethz.ch",
+      "email": "adafede@gmail.com",
       "@id": "https://orcid.org/0000-0003-0443-9902"
     }
   ],
@@ -46,6 +46,19 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=BiocManager"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "httr2",
+      "name": "httr2",
+      "version": ">= 1.0.5",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=httr2"
     },
     {
       "@type": "SoftwareApplication",
@@ -403,7 +416,7 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteannotation", "chargedaerosoldetector", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
-  "fileSize": "69813.009KB",
+  "fileSize": "69811.78KB",
   "releaseNotes": "https://github.com/adafede/cascade/blob/master/NEWS.md",
   "readme": "https://github.com/Adafede/cascade/blob/main/README.md",
   "contIntegration": ["https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/adafede/cascade"],
