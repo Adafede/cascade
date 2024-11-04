@@ -3,26 +3,26 @@ title: "2 Processing"
 author: "Adriano Rutz"
 creative_commons: CC BY-SA
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+knitr:
+  opts_chunk: 
+    collapse: true
+    comment: "#>"
+  opts_knit: 
+    set:
+      root.dir:
+        system.file:
+          package: "cascade"
 opengraph:
     image:
       src: https://github.com/adafede/cascade/blob/main/man/figures/logo.svg
-      alt: "Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts"
+      alt: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts
     twitter:
       creator: "@adafede"
 vignette: >
   %\VignetteIndexEntry{2 Processing}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
-
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-knitr::opts_knit$set(root.dir = system.file(package = "cascade"))
-```
 
 ```{r cascade, include = FALSE}
 library("cascade")
@@ -59,11 +59,12 @@ The different plots offer the following views:
 plots_list$plots_1$histograms_taxo_maj
 ```
 
-### Taxo (major peaks)
+### Taxo (minor peaks)
 
 ```{r taxo-minor, warning=FALSE}
 plots_list$plots_1$histograms_taxo_min
 ```
+
 ### Confident unique annotations (major)
 
 ```{r confident-major, warning=FALSE}

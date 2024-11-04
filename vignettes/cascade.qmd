@@ -1,30 +1,30 @@
 ---
-title: "General comments about the use of CASCADE"
-author: "Adriano Rutz"
+title: General comments about the use of CASCADE
+author: Adriano Rutz
 creative_commons: CC BY-SA
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+knitr:
+  opts_chunk: 
+    collapse: true
+    comment: "#>"
+  opts_knit: 
+    set:
+      root.dir:
+        system.file:
+          package: "cascade"
 opengraph:
     image:
       src: https://github.com/adafede/cascade/blob/main/man/figures/logo.svg
-      alt: "Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts"
+      alt: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts
     twitter:
       creator: "@adafede"
 vignette: >
   %\VignetteIndexEntry{General comments about the use of CASCADE}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-knitr::opts_knit$set(root.dir = system.file(package = "cascade"))
-```
-
-```{r tima, results="hide", message=FALSE, warning=FALSE, include = FALSE}
+```{r cascade, include = FALSE}
 library("cascade")
 ```
 
