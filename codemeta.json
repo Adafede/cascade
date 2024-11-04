@@ -220,19 +220,6 @@
     },
     "13": {
       "@type": "SoftwareApplication",
-      "identifier": "ggpubr",
-      "name": "ggpubr",
-      "version": ">= 0.6.0",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=ggpubr"
-    },
-    "14": {
-      "@type": "SoftwareApplication",
       "identifier": "gt",
       "name": "gt",
       "version": ">= 0.11.1",
@@ -244,7 +231,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=gt"
     },
-    "15": {
+    "14": {
       "@type": "SoftwareApplication",
       "identifier": "htmltools",
       "name": "htmltools",
@@ -257,7 +244,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=htmltools"
     },
-    "16": {
+    "15": {
       "@type": "SoftwareApplication",
       "identifier": "MSnbase",
       "name": "MSnbase",
@@ -270,7 +257,7 @@
       },
       "sameAs": "https://bioconductor.org/packages/release/bioc/html/MSnbase.html"
     },
-    "17": {
+    "16": {
       "@type": "SoftwareApplication",
       "identifier": "mzR",
       "name": "mzR",
@@ -283,7 +270,7 @@
       },
       "sameAs": "https://bioconductor.org/packages/release/bioc/html/mzR.html"
     },
-    "18": {
+    "17": {
       "@type": "SoftwareApplication",
       "identifier": "pbapply",
       "name": "pbapply",
@@ -296,7 +283,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=pbapply"
     },
-    "19": {
+    "18": {
       "@type": "SoftwareApplication",
       "identifier": "plotly",
       "name": "plotly",
@@ -309,7 +296,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=plotly"
     },
-    "20": {
+    "19": {
       "@type": "SoftwareApplication",
       "identifier": "progressr",
       "name": "progressr",
@@ -322,7 +309,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=progressr"
     },
-    "21": {
+    "20": {
       "@type": "SoftwareApplication",
       "identifier": "purrr",
       "name": "purrr",
@@ -335,7 +322,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=purrr"
     },
-    "22": {
+    "21": {
       "@type": "SoftwareApplication",
       "identifier": "RCurl",
       "name": "RCurl",
@@ -348,7 +335,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=RCurl"
     },
-    "23": {
+    "22": {
       "@type": "SoftwareApplication",
       "identifier": "readr",
       "name": "readr",
@@ -361,7 +348,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=readr"
     },
-    "24": {
+    "23": {
       "@type": "SoftwareApplication",
       "identifier": "remotes",
       "name": "remotes",
@@ -374,7 +361,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=remotes"
     },
-    "25": {
+    "24": {
       "@type": "SoftwareApplication",
       "identifier": "tibble",
       "name": "tibble",
@@ -387,7 +374,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tibble"
     },
-    "26": {
+    "25": {
       "@type": "SoftwareApplication",
       "identifier": "tidytable",
       "name": "tidytable",
@@ -400,7 +387,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tidytable"
     },
-    "27": {
+    "26": {
       "@type": "SoftwareApplication",
       "identifier": "viridis",
       "name": "viridis",
@@ -413,7 +400,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=viridis"
     },
-    "28": {
+    "27": {
       "@type": "SoftwareApplication",
       "identifier": "WikidataQueryServiceR",
       "name": "WikidataQueryServiceR",
@@ -426,7 +413,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=WikidataQueryServiceR"
     },
-    "29": {
+    "28": {
       "@type": "SoftwareApplication",
       "identifier": "yaml",
       "name": "yaml",
@@ -439,7 +426,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=yaml"
     },
-    "30": {
+    "29": {
       "@type": "SoftwareApplication",
       "identifier": "zoo",
       "name": "zoo",
@@ -455,7 +442,7 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteannotation", "chargedaerosoldetector", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
-  "fileSize": "71075.272KB",
+  "fileSize": "71075.393KB",
   "releaseNotes": "https://github.com/adafede/cascade/blob/master/NEWS.md",
   "readme": "https://github.com/Adafede/cascade/blob/main/README.md",
   "contIntegration": ["https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/adafede/cascade"],

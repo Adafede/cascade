@@ -2,6 +2,7 @@
 #'
 #' @param file File
 #' @param show_example Show example? Default to FALSE
+#' @param mode Mode
 #'
 #' @return A table of annotations
 #'

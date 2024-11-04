@@ -125,8 +125,7 @@ prepare_hierarchy <-
         test = safety == "Y",
         yes = paste(best_candidate_3, "sub"),
         no = best_candidate_3
-      )) |>
-      dplyr::group_by(chemical_pathway)
+      ))
 
     parents <- dataframe2 |>
       dplyr::distinct(labels = best_candidate_1, ids = best_candidate_1) |>
@@ -356,7 +355,8 @@ prepare_hierarchy <-
 
     table_2 <- table_1_1 |>
       dplyr::group_by(chemical_pathway, parents) |>
-      dplyr::summarize(sum = sum(values), .groups = "drop")
+      dplyr::summarize(sum = sum(values), .groups = "drop") |>
+      dplyr::ungroup()
 
     suppressMessages(
       table_3 <-
@@ -386,6 +386,7 @@ prepare_hierarchy <-
       dplyr::slice_max(sum, n = 4, with_ties = FALSE) |>
       dplyr::select(chemical_pathway, parents, ids, labels) |>
       dplyr::mutate(new_labels = labels) |>
+      dplyr::ungroup() |>
       dplyr::distinct()
 
     # top_medium <- top_medium_table$ids
@@ -629,6 +630,7 @@ prepare_hierarchy <-
       table_1_new <- table_new |>
         dplyr::group_by(parents, ids, sample, intensity) |>
         dplyr::add_count(name = "values") |>
+        dplyr::ungroup() |>
         dplyr::select(parents, ids, labels, values, sample, intensity, species) |>
         dplyr::distinct() |>
         dplyr::filter(!is.na(ids))
@@ -637,6 +639,7 @@ prepare_hierarchy <-
         dplyr::mutate(labels = best_candidate_3) |>
         dplyr::group_by(parents, ids, sample) |>
         dplyr::add_count(name = "values") |>
+        dplyr::ungroup() |>
         dplyr::select(parents, ids, labels, values, sample, organism, species) |>
         dplyr::distinct() |>
         dplyr::filter(!is.na(ids))
@@ -675,7 +678,8 @@ prepare_hierarchy <-
         pattern = "-.*",
         replacement = "",
         x = parents
-      ))
+      )) |>
+      dplyr::ungroup()
 
     final_table_4 <- final_table_4_1 |>
       dplyr::select(-join)
@@ -700,7 +704,8 @@ prepare_hierarchy <-
       dplyr::group_by(dplyr::across(dplyr::any_of(
         c("parents", "ids", "labels", "sample", "species")
       ))) |>
-      dplyr::summarise(values = sum(values), .groups = "drop")
+      dplyr::summarise(values = sum(values), .groups = "drop") |>
+      dplyr::ungroup()
 
     final_table_3_3 <- table_1_1_new |>
       dplyr::filter(!is.na(species)) |>
@@ -712,7 +717,8 @@ prepare_hierarchy <-
       dplyr::summarise(values = sum(switch(type,
         "analysis" = intensity,
         "literature" = values
-      )), .groups = "drop")
+      )), .groups = "drop") |>
+      dplyr::ungroup()
 
     final_table_3 <-
       dplyr::bind_rows(final_table_3_3, final_table_3_2) |>
@@ -734,6 +740,7 @@ prepare_hierarchy <-
         c("parents", "ids", "labels", "sample", "species")
       ))) |>
       dplyr::summarise(values = sum(values), .groups = "drop") |>
+      dplyr::ungroup() |>
       dplyr::filter(!is.na(values))
 
     final_table_1 <- table_1_1_new |>
@@ -751,7 +758,8 @@ prepare_hierarchy <-
         c("parents", "ids", "labels", "sample", "species")
       ))) |>
       dplyr::filter(!is.na(values)) |>
-      dplyr::summarise(values = sum(values), .groups = "drop")
+      dplyr::summarise(values = sum(values), .groups = "drop") |>
+      dplyr::ungroup()
 
     final_table <-
       dplyr::bind_rows(final_table_1, final_table_2, final_table_3, final_table_4) |>

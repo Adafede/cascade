@@ -10,6 +10,8 @@ load_annotations(file = NULL, show_example = FALSE, mode = "pos")
 \item{file}{File}
 
 \item{show_example}{Show example? Default to FALSE}
+
+\item{mode}{Mode}
 }
 \value{
 A table of annotations
