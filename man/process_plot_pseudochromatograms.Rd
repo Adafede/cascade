@@ -16,6 +16,7 @@ process_plot_pseudochromatograms(
   min_similarity_prefilter = 0.6,
   min_similarity_filter = 0.8,
   mode = "pos",
+  organism = "Swertia chirayita",
   resample = 1,
   shift = 0.05,
   time_min = 0.5,
@@ -44,6 +45,8 @@ process_plot_pseudochromatograms(
 \item{min_similarity_filter}{Min similarity filter}
 
 \item{mode}{Mode}
+
+\item{organism}{Organism}
 
 \item{resample}{Resample}
 

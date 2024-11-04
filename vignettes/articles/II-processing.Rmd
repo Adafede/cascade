@@ -28,15 +28,27 @@ knitr::opts_knit$set(root.dir = system.file(package = "cascade"))
 library("cascade")
 ```
 
-This vignette describes some of the processing functions.
-It assumes you already checked the [previous steps](https://adafede.github.io/cascade/articles/I-basics.html).
+This vignette describes the main processing function.
+It assumes you already checked the [previous basic steps](https://adafede.github.io/cascade/articles/I-basics.html).
 
 ## Compare peaks to features
 
-This assumes you previously generated the necessary mzmine features' table.
+To do so, you will need:
+
+- A previously generated mzmine features' table
+
+Then, you should be able to run
 
 ```{r process-compare-peaks, warning=FALSE, out.width="100%"}
 process_compare_peaks(show_example = TRUE)
 ```
 
-Development follows.
+And this basically it! 🚀
+
+If you know want to add some cosmetics, and you already have a [TIMA](https://taxonomicallyinformedannotation.github.io/tima) annotation table, you can then run:
+
+```{r process-plot-pseudochromatograms, warning=FALSE, out.width="100%"}
+# process_plot_pseudochromatograms(show_example = TRUE)
+```
+
+For some other available helper functions, we now recommend you to read the [next vignette](https://adafede.github.io/cascade/articles/III-bonus.html).
