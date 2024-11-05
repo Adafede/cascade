@@ -23,17 +23,48 @@ coverage](https://codecov.io/gh/adafede/cascade/graph/badge.svg)](https://app.co
 **C**harged **A**erosol **D**etection for pertinent characterization of
 natural **E**xtracts.
 
+⚠️ This repository is not maintained and will not be except for extreme
+interest. It has just been opened for the sake of transparency.
+
 The initial work is available at
 <https://doi.org/10.1021/acs.jafc.3c03099>, with some improvements made
-since then.
+since then. The workflow is illustrated below.
 
-⚠️ This repository is not maintained and will not be except for extreme
-interest.
+![Workflow](https://raw.githubusercontent.com/adafede/cascade/main/man/figures/cascade-workflow.svg)
+\## Requirements
 
-It has just been opened for the sake of transparency.
+Here is what you *minimally* need:
 
-Some very basic documentation is available at:
-<https://adafede.github.io/cascade>
+- A file (.mzML) containing DDA MS data with an additional detector
+  (PDA, ELSD, CAD)
+- A file (.csv) containing features, as obtained by
+  [mzmine](https://mzio.io/)
+
+Optionally, you may want to add:
+
+- Your own manual or automated annotations (we currently support
+  annotations coming from
+  [TIMA](https://taxonomicallyinformedannotation.github.io/tima)
+
+## Installation
+
+As the package is not (yet) available on CRAN, you will need to install
+with:
+
+``` r
+install.packages(
+  "cascade",
+  repos = c(
+    "https://adafede.r-universe.dev",
+    "https://bioc.r-universe.dev",
+    "https://cloud.r-project.org"
+  )
+)
+```
+
+Once installed, you are ready to go through our
+[documentation](https://adafede.github.io/cascade/articles/), with the
+major steps detailed.
 
 ## Main Citations
 

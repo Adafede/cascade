@@ -19,7 +19,7 @@ This vignette describes the very basic steps of **CASCADE**.
 
 ## Pre-requisites
 
-- A file containing DDA MS data with additional signals (PDA, CAD)
+- A file containing DDA MS data with additional signals (PDA, ELSD, CAD)
 - A file containing features, as obtained by [mzmine](https://mzio.io)
 - A file containing annotations, as obtained by [TIMA](https://taxonomicallyinformedannotation.github.io/tima)
 
