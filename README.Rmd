@@ -35,6 +35,7 @@ The initial work is available at https://doi.org/10.1021/acs.jafc.3c03099, with 
 The workflow is illustrated below.
 
 ![Workflow](https://raw.githubusercontent.com/adafede/cascade/main/man/figures/cascade-workflow.svg)
+
 ## Requirements
 
 Here is what you *minimally* need:
