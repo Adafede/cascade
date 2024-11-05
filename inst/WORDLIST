@@ -9,6 +9,7 @@ DDA
 Deriv
 DF
 Df
+ELSD
 FingerId
 Github
 ISDB
@@ -43,6 +44,7 @@ chromatogram
 chromatograms
 chromatographiable
 chromatographR
+csv
 der
 dir
 dr
@@ -60,6 +62,7 @@ Molinfo
 mz
 mz's
 mzmine
+mzML
 nnotation
 ontextualizing
 params
