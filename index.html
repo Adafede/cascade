@@ -77,10 +77,35 @@
 <!-- badges: start -->
 
 <p><strong>C</strong>ontextualizing untargeted <strong>A</strong>nnotation with <strong>S</strong>emi-quantitative <strong>C</strong>harged <strong>A</strong>erosol <strong>D</strong>etection for pertinent characterization of natural <strong>E</strong>xtracts.</p>
-<p>The initial work is available at <a href="https://doi.org/10.1021/acs.jafc.3c03099" class="external-link uri">https://doi.org/10.1021/acs.jafc.3c03099</a>, with some improvements made since then.</p>
-<p>⚠️ This repository is not maintained and will not be except for extreme interest.</p>
-<p>It has just been opened for the sake of transparency.</p>
-<p>Some very basic documentation is available at: <a href="https://adafede.github.io/cascade" class="uri">https://adafede.github.io/cascade</a></p>
+<p>⚠️ This repository is not maintained and will not be except for extreme interest. It has just been opened for the sake of transparency.</p>
+<p>The initial work is available at <a href="https://doi.org/10.1021/acs.jafc.3c03099" class="external-link uri">https://doi.org/10.1021/acs.jafc.3c03099</a>, with some improvements made since then. The workflow is illustrated below.</p>
+<p><img src="https://raw.githubusercontent.com/adafede/cascade/main/man/figures/cascade-workflow.svg" alt="Workflow"> ## Requirements</p>
+<p>Here is what you <em>minimally</em> need:</p>
+<ul>
+<li>A file (.mzML) containing DDA MS data with an additional detector (PDA, ELSD, CAD)</li>
+<li>A file (.csv) containing features, as obtained by <a href="https://mzio.io/" class="external-link">mzmine</a>
+</li>
+</ul>
+<p>Optionally, you may want to add:</p>
+<ul>
+<li>Your own manual or automated annotations (we currently support annotations coming from <a href="https://taxonomicallyinformedannotation.github.io/tima" class="external-link">TIMA</a>
+</li>
+</ul>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>As the package is not (yet) available on CRAN, you will need to install with:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span></span>
+<span>  <span class="st">"cascade"</span>,</span>
+<span>  repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"https://adafede.r-universe.dev"</span>,</span>
+<span>    <span class="st">"https://bioc.r-universe.dev"</span>,</span>
+<span>    <span class="st">"https://cloud.r-project.org"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Once installed, you are ready to go through our <a href="https://adafede.github.io/cascade/articles/">documentation</a>, with the major steps detailed.</p>
+</div>
 <div class="section level2">
 <h2 id="main-citations">Main Citations<a class="anchor" aria-label="anchor" href="#main-citations"></a>
 </h2>
