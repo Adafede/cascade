@@ -33,7 +33,6 @@ Imports:
     plotly (>= 4.10.4),
     progressr (>= 0.15.0),
     purrr (>= 1.0.2),
-    R.utils (>= 2.12.3),
     RCurl (>= 1.98.1.16),
     tibble (>= 3.2.1),
     tidytable (>= 0.11.1),
@@ -42,11 +41,12 @@ Imports:
 Remotes:
     ethanbass/chromatographR,
 Suggests:
-    BiocManager (>= 1.30.25),
-    httr2 (>= 1.0.5),
-    knitr (>= 1.42),
-    testthat (>= 3.1.7),
-    visNetwork (>= 2.1.2)
+    BiocManager,
+    httr2,
+    knitr,
+    lifecycle,
+    R.utils,
+    testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
