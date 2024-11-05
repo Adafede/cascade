@@ -1,0 +1,100 @@
+---
+title: 1 Basics
+author: Adriano Rutz
+creative_commons: CC BY-SA
+date: "`r Sys.Date()`"
+opengraph:
+    image:
+      src: https://github.com/adafede/cascade/blob/main/man/figures/logo.svg
+      alt: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts
+    twitter:
+      creator: "@adafede"
+vignette: >
+  %\VignetteIndexEntry{1 Basics}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+knitr::opts_knit$set(root.dir = system.file(package = "cascade"))
+```
+
+```{r cascade, include = FALSE}
+library("cascade")
+```
+
+This vignette describes some basic functions.
+
+## Check the raw data and alignment
+
+First, check if the raw data can be aligned to your expectations:
+
+```{r check-alignment-default, echo=FALSE, message=FALSE, warning=FALSE}
+check_chromatograms_alignment(show_example = TRUE)
+```
+
+Or, with more details:
+
+```{r check-alignment-2, echo=FALSE, message=FALSE, warning=FALSE}
+check_chromatograms_alignment(
+  show_example = TRUE,
+  time_min = 0.5,
+  time_max = 35.0,
+  type = "improved",
+  chromatograms = c(
+    "bpi_pos",
+    "cad_pos",
+    "pda_pos",
+    "bpi_neg",
+    "cad_neg",
+    "pda_neg"
+  )
+)
+```
+
+How it should not look like (CAD and PDA shifts incorrectly set):
+
+```{r check-alignment-3, echo=FALSE, message=FALSE, warning=FALSE}
+check_chromatograms_alignment(
+  show_example = TRUE,
+  time_min = 0.5,
+  time_max = 35.0,
+  cad_shift = 1,
+  pda_shift = 2,
+  type = "baselined",
+  chromatograms = c(
+    "bpi_pos",
+    "cad_pos",
+    "pda_pos"
+  )
+)
+```
+
+## Check the peak integration
+
+Another critical parameter is the peak integration.
+Below are some illustrations:
+
+```{r check-integration-1, echo=FALSE, message=FALSE, warning=FALSE}
+check_peaks_integration(
+  show_example = TRUE,
+  chromatogram = "improved"
+)
+```
+
+Some peaks are still missed but it looks overall correct.
+
+Depending on the runs, this can get slightly better with baseline correction:
+
+```{r check-integration-2, echo=FALSE, message=FALSE, warning=FALSE}
+check_peaks_integration(
+  show_example = TRUE
+)
+```
+
+We now recommend you to read the [next vignette](https://adafede.github.io/cascade/articles/II-processing.html).
+
