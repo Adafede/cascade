@@ -1,0 +1,41 @@
+---
+title: General comments about the use of CASCADE
+author: Adriano Rutz
+creative_commons: CC BY-SA
+date: "`r Sys.Date()`"
+opengraph:
+    image:
+      src: https://github.com/adafede/cascade/blob/main/man/figures/logo.svg
+      alt: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts
+    twitter:
+      creator: "@adafede"
+vignette: >
+  %\VignetteIndexEntry{General comments about the use of CASCADE}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+This vignette describes the very basic steps of **CASCADE**.
+
+## Pre-requisites
+
+- A file containing DDA MS data with additional signals (PDA, ELSD, CAD)
+- A file containing features, as obtained by [mzmine](https://mzio.io)
+- A file containing annotations, as obtained by [TIMA](https://taxonomicallyinformedannotation.github.io/tima)
+
+## More details
+
+More details are available in the related [vignettes](https://adafede.github.io/cascade/articles).
+
+All coming steps admit you already installed `cascade`:
+
+```{r eval=FALSE, include=TRUE}
+install.packages(
+  "cascade",
+  repos = c(
+    "https://adafede.r-universe.dev",
+    "https://bioc.r-universe.dev",
+    "https://cloud.r-project.org"
+  )
+)
+```
