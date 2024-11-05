@@ -432,19 +432,6 @@ references:
   doi: 10.32614/CRAN.package.purrr
   version: '>= 1.0.2'
 - type: software
-  title: R.utils
-  abstract: 'R.utils: Various Programming Utilities'
-  notes: Imports
-  url: https://henrikbengtsson.github.io/R.utils/
-  repository: https://CRAN.R-project.org/package=R.utils
-  authors:
-  - family-names: Bengtsson
-    given-names: Henrik
-    email: henrikb@braju.com
-  year: '2024'
-  doi: 10.32614/CRAN.package.R.utils
-  version: '>= 2.12.3'
-- type: software
   title: RCurl
   abstract: 'RCurl: General Network (HTTP/FTP/...) Client Interface for R'
   notes: Imports
@@ -538,7 +525,6 @@ references:
     orcid: https://orcid.org/0000-0002-3242-0582
   year: '2024'
   doi: 10.32614/CRAN.package.BiocManager
-  version: '>= 1.30.25'
 - type: software
   title: httr2
   abstract: 'httr2: Perform HTTP Requests and Process the Responses'
@@ -551,7 +537,6 @@ references:
     email: hadley@posit.co
   year: '2024'
   doi: 10.32614/CRAN.package.httr2
-  version: '>= 1.0.5'
 - type: software
   title: knitr
   abstract: 'knitr: A General-Purpose Package for Dynamic Report Generation in R'
@@ -565,7 +550,34 @@ references:
     orcid: https://orcid.org/0000-0003-0645-5666
   year: '2024'
   doi: 10.32614/CRAN.package.knitr
-  version: '>= 1.42'
+- type: software
+  title: lifecycle
+  abstract: 'lifecycle: Manage the Life Cycle of your Package Functions'
+  notes: Suggests
+  url: https://lifecycle.r-lib.org/
+  repository: https://CRAN.R-project.org/package=lifecycle
+  authors:
+  - family-names: Henry
+    given-names: Lionel
+    email: lionel@posit.co
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+    orcid: https://orcid.org/0000-0003-4757-117X
+  year: '2024'
+  doi: 10.32614/CRAN.package.lifecycle
+- type: software
+  title: R.utils
+  abstract: 'R.utils: Various Programming Utilities'
+  notes: Suggests
+  url: https://henrikbengtsson.github.io/R.utils/
+  repository: https://CRAN.R-project.org/package=R.utils
+  authors:
+  - family-names: Bengtsson
+    given-names: Henrik
+    email: henrikb@braju.com
+  year: '2024'
+  doi: 10.32614/CRAN.package.R.utils
 - type: software
   title: testthat
   abstract: 'testthat: Unit Testing for R'
@@ -578,20 +590,5 @@ references:
     email: hadley@posit.co
   year: '2024'
   doi: 10.32614/CRAN.package.testthat
-  version: '>= 3.1.7'
-- type: software
-  title: visNetwork
-  abstract: 'visNetwork: Network Visualization using ''vis.js'' Library'
-  notes: Suggests
-  url: https://datastorm-open.github.io/visNetwork/
-  repository: https://CRAN.R-project.org/package=visNetwork
-  authors:
-  - name: Almende B.V. and Contributors
-    website: https://visjs.org/
-  - family-names: Thieurmel
-    given-names: Benoit
-    email: bthieurmel@gmail.com
-  year: '2024'
-  doi: 10.32614/CRAN.package.visNetwork
-  version: '>= 2.1.2'
+  version: '>= 3.0.0'
 
