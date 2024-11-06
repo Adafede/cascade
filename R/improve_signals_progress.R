@@ -19,29 +19,29 @@ improve_signals_progress <- function(xs,
                                      time_min = 0,
                                      time_max = Inf) {
   p <- progressr::progressor(along = xs)
-  future.apply::future_lapply(
-    X = xs,
-    FUN = function(x,
-                   fourier_components,
-                   frequency,
-                   resample,
-                   time_min,
-                   time_max) {
-      p()
-      improve_signal(
-        df = x |>
-          tidytable::select(time, intensity),
-        fourier_components = fourier_components,
-        frequency = frequency,
-        resample = resample,
-        time_min = time_min,
-        time_max = time_max
-      )
-    },
-    fourier_components = fourier_components,
-    frequency = frequency,
-    resample = resample,
-    time_min = time_min,
-    time_max = time_max
-  )
+  xs |>
+    furrr::future_map(
+      .f = function(x,
+                    fourier_components,
+                    frequency,
+                    resample,
+                    time_min,
+                    time_max) {
+        p()
+        improve_signal(
+          df = x |>
+            tidytable::select(time, intensity),
+          fourier_components = fourier_components,
+          frequency = frequency,
+          resample = resample,
+          time_min = time_min,
+          time_max = time_max
+        )
+      },
+      fourier_components = fourier_components,
+      frequency = frequency,
+      resample = resample,
+      time_min = time_min,
+      time_max = time_max
+    )
 }

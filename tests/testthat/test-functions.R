@@ -1,13 +1,31 @@
 library(testthat)
 
-## need to do all in one because of outputs needed in the same temp dir
-## use fixtures instead in the future
-test_that(desc = "Test functions", code = {
-  message("Bitter is better.")
+test_that(desc = "Bitter is better", code = {
+  message("\nBitter is better.\n")
+  succeed()
+})
+test_that(desc = "Check chromatogram alignment", code = {
+  message("\n")
   check_chromatograms_alignment(show_example = TRUE)
+  succeed()
+})
+test_that(desc = "Check peaks integration", code = {
+  message("\n")
   check_peaks_integration(show_example = TRUE)
+  succeed()
+})
+test_that(desc = "Process compare peaks", code = {
+  message("\n")
   process_compare_peaks(show_example = TRUE)
+  succeed()
+})
+test_that(desc = "Process plot pseudochromatograms", code = {
+  message("\n")
   process_plot_pseudochromatograms(show_example = TRUE)
+  succeed()
+})
+test_that(desc = "Generate IDs", code = {
+  message("\n")
   generate_ids()
   succeed()
 })

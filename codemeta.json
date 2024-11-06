@@ -164,31 +164,18 @@
     },
     "7": {
       "@type": "SoftwareApplication",
-      "identifier": "future",
-      "name": "future",
-      "version": ">= 1.34.0",
+      "identifier": "furrr",
+      "name": "furrr",
+      "version": ">= 0.3.1",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=future"
+      "sameAs": "https://CRAN.R-project.org/package=furrr"
     },
     "8": {
-      "@type": "SoftwareApplication",
-      "identifier": "future.apply",
-      "name": "future.apply",
-      "version": ">= 1.11.2",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=future.apply"
-    },
-    "9": {
       "@type": "SoftwareApplication",
       "identifier": "ggplot2",
       "name": "ggplot2",
@@ -201,7 +188,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=ggplot2"
     },
-    "10": {
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "gt",
       "name": "gt",
@@ -214,7 +201,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=gt"
     },
-    "11": {
+    "10": {
       "@type": "SoftwareApplication",
       "identifier": "htmltools",
       "name": "htmltools",
@@ -227,7 +214,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=htmltools"
     },
-    "12": {
+    "11": {
       "@type": "SoftwareApplication",
       "identifier": "MSnbase",
       "name": "MSnbase",
@@ -240,7 +227,7 @@
       },
       "sameAs": "https://bioconductor.org/packages/release/bioc/html/MSnbase.html"
     },
-    "13": {
+    "12": {
       "@type": "SoftwareApplication",
       "identifier": "mzR",
       "name": "mzR",
@@ -253,7 +240,7 @@
       },
       "sameAs": "https://bioconductor.org/packages/release/bioc/html/mzR.html"
     },
-    "14": {
+    "13": {
       "@type": "SoftwareApplication",
       "identifier": "plotly",
       "name": "plotly",
@@ -266,7 +253,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=plotly"
     },
-    "15": {
+    "14": {
       "@type": "SoftwareApplication",
       "identifier": "progressr",
       "name": "progressr",
@@ -279,7 +266,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=progressr"
     },
-    "16": {
+    "15": {
       "@type": "SoftwareApplication",
       "identifier": "purrr",
       "name": "purrr",
@@ -292,7 +279,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=purrr"
     },
-    "17": {
+    "16": {
       "@type": "SoftwareApplication",
       "identifier": "tibble",
       "name": "tibble",
@@ -305,7 +292,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tibble"
     },
-    "18": {
+    "17": {
       "@type": "SoftwareApplication",
       "identifier": "tidytable",
       "name": "tidytable",
@@ -318,19 +305,19 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tidytable"
     },
-    "19": {
+    "18": {
       "@type": "SoftwareApplication",
       "identifier": "tima",
       "name": "tima",
       "version": ">= 2.11.0",
       "sameAs": "https://github.com/taxonomicallyinformedannotation/tima"
     },
-    "20": {
+    "19": {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils"
     },
-    "21": {
+    "20": {
       "@type": "SoftwareApplication",
       "identifier": "WikidataQueryServiceR",
       "name": "WikidataQueryServiceR",
@@ -343,7 +330,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=WikidataQueryServiceR"
     },
-    "22": {
+    "21": {
       "@type": "SoftwareApplication",
       "identifier": "zoo",
       "name": "zoo",
@@ -359,7 +346,7 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteannotation", "chargedaerosoldetector", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
-  "fileSize": "163009.231KB",
+  "fileSize": "163011.599KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",

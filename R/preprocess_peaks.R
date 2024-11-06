@@ -67,10 +67,9 @@ preprocess_peaks <- function(detector = "cad",
     unique(df_features_with_peaks$id)
 
   message("splitting by peak")
-  list_df_features_with_peaks_per_peak <-
-    future.apply::future_lapply(
-      X = list_df_features_with_peaks,
-      FUN = function(x) {
+  list_df_features_with_peaks_per_peak <- list_df_features_with_peaks |>
+    furrr::future_map(
+      .f = function(x) {
         x <- x |>
           tidytable::group_split(peak_id)
         return(x)
@@ -82,20 +81,30 @@ preprocess_peaks <- function(detector = "cad",
     purrr::flatten()
 
   message("normalizing chromato")
-  list_chromato_with_peak <-
-    future.apply::future_lapply(X = list_df_features_with_peaks_long, FUN = normalize_chromato, list = list)
+  list_chromato_with_peak <- list_df_features_with_peaks_long |>
+    furrr::future_map(
+      .f = normalize_chromato,
+      list = list
+    )
 
   message("preparing peaks chromato")
-  list_chromato_peaks <-
-    future.apply::future_lapply(X = list_chromato_with_peak, FUN = prepare_peaks)
+  list_chromato_peaks <- list_chromato_with_peak |>
+    furrr::future_map(
+      .f = prepare_peaks
+    )
 
   message("preparing rt")
-  list_rtr <-
-    future.apply::future_lapply(X = list_df_features_with_peaks_long, FUN = prepare_rt, shift = shift)
+  list_rtr <- list_df_features_with_peaks_long |>
+    furrr::future_map(
+      .f = prepare_rt,
+      shift = shift
+    )
 
   message("preparing mz")
-  list_mzr <-
-    future.apply::future_lapply(X = list_df_features_with_peaks_long, FUN = prepare_mz)
+  list_mzr <- list_df_features_with_peaks_long |>
+    purrr::map(
+      .f = prepare_mz
+    )
 
   returned_list <- list(
     list_df_features_with_peaks_long,
