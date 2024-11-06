@@ -33,6 +33,7 @@ Imports:
     tibble (>= 3.2.1),
     tidytable (>= 0.11.1),
     tima (>= 2.11.0),
+    utils,
     WikidataQueryServiceR (>= 1.0.0),
     zoo (>= 1.8.12)
 Remotes:
