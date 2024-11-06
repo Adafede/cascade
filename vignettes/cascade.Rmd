@@ -23,10 +23,6 @@ This vignette describes the very basic steps of **CASCADE**.
 - A file containing features, as obtained by [mzmine](https://mzio.io)
 - A file containing annotations, as obtained by [TIMA](https://taxonomicallyinformedannotation.github.io/tima)
 
-## More details
-
-More details are available in the related [vignettes](https://adafede.github.io/cascade/articles).
-
 All coming steps admit you already installed `cascade`:
 
 ```{r eval=FALSE, include=TRUE}
@@ -39,3 +35,12 @@ install.packages(
   )
 )
 ```
+
+## More details
+
+More details are available in the related [vignettes](https://adafede.github.io/cascade/articles).
+
+## A note about parallelization
+
+This package uses `{future}`.
+If you think you could benefit from parallelization, have a look at <https://future.futureverse.org/reference/plan.html> to see how to set it up.
