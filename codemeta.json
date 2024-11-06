@@ -72,18 +72,6 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "R.utils",
-      "name": "R.utils",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=R.utils"
-    },
-    {
-      "@type": "SoftwareApplication",
       "identifier": "testthat",
       "name": "testthat",
       "version": ">= 3.0.0",
@@ -281,6 +269,18 @@
     },
     "16": {
       "@type": "SoftwareApplication",
+      "identifier": "R.utils",
+      "name": "R.utils",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=R.utils"
+    },
+    "17": {
+      "@type": "SoftwareApplication",
       "identifier": "tibble",
       "name": "tibble",
       "version": ">= 3.2.1",
@@ -292,7 +292,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tibble"
     },
-    "17": {
+    "18": {
       "@type": "SoftwareApplication",
       "identifier": "tidytable",
       "name": "tidytable",
@@ -305,19 +305,19 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tidytable"
     },
-    "18": {
+    "19": {
       "@type": "SoftwareApplication",
       "identifier": "tima",
       "name": "tima",
       "version": ">= 2.11.0",
       "sameAs": "https://github.com/taxonomicallyinformedannotation/tima"
     },
-    "19": {
+    "20": {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils"
     },
-    "20": {
+    "21": {
       "@type": "SoftwareApplication",
       "identifier": "WikidataQueryServiceR",
       "name": "WikidataQueryServiceR",
@@ -330,7 +330,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=WikidataQueryServiceR"
     },
-    "21": {
+    "22": {
       "@type": "SoftwareApplication",
       "identifier": "zoo",
       "name": "zoo",
@@ -346,7 +346,7 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteannotation", "chargedaerosoldetector", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
-  "fileSize": "163010.83KB",
+  "fileSize": "163010.973KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
