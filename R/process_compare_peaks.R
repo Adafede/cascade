@@ -131,18 +131,21 @@ process_compare_peaks <- function(file = NULL,
     suppressMessages()
 
   message("transforming ms chromatograms")
-  list_ms_chromatograms_transformed <-
-    future.apply::future_lapply(X = list_ms_chromatograms, FUN = transform_ms)
+  list_ms_chromatograms_transformed <- list_ms_chromatograms |>
+    purrr::map(
+      .f = transform_ms
+    )
 
   message("extracting ms peaks")
-  list_ms_peaks <-
-    future.apply::future_lapply(X = list_ms_chromatograms_transformed, FUN = extract_ms_peak)
+  list_ms_peaks <- list_ms_chromatograms_transformed |>
+    purrr::map(
+      .f = extract_ms_peak
+    )
 
   message("comparing peaks")
-  list_comparison_score <-
-    future.apply::future_lapply(
-      X = seq_along(list_ms_peaks),
-      FUN = compare_peaks,
+  list_comparison_score <- seq_along(list_ms_peaks) |>
+    purrr::map(
+      .f = compare_peaks,
       list_ms_peaks = list_ms_peaks,
       peaks_prelist = peaks_prelist
     )
