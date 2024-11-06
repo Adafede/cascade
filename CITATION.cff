@@ -18,7 +18,7 @@ authors:
   email: adafede@gmail.com
   orcid: https://orcid.org/0000-0003-0443-9902
 preferred-citation:
-  type: generic
+  type: manual
   title: 'cascade: Contextualizing untargeted Annotation with Semi-quantitative Charged
     Aerosol Detection for pertinent characterization of natural Extracts'
   authors:
@@ -464,6 +464,16 @@ references:
     orcid: https://orcid.org/0000-0003-0443-9902
   year: '2024'
   version: '>= 2.11.0'
+- type: software
+  title: utils
+  abstract: 'R: A Language and Environment for Statistical Computing'
+  notes: Imports
+  authors:
+  - name: R Core Team
+  institution:
+    name: R Foundation for Statistical Computing
+    address: Vienna, Austria
+  year: '2024'
 - type: software
   title: WikidataQueryServiceR
   abstract: 'WikidataQueryServiceR: API Client Library for ''Wikidata Query Service'''
