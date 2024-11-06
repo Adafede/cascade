@@ -327,6 +327,11 @@
     },
     "20": {
       "@type": "SoftwareApplication",
+      "identifier": "utils",
+      "name": "utils"
+    },
+    "21": {
+      "@type": "SoftwareApplication",
       "identifier": "WikidataQueryServiceR",
       "name": "WikidataQueryServiceR",
       "version": ">= 1.0.0",
@@ -338,7 +343,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=WikidataQueryServiceR"
     },
-    "21": {
+    "22": {
       "@type": "SoftwareApplication",
       "identifier": "zoo",
       "name": "zoo",
@@ -354,10 +359,10 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteannotation", "chargedaerosoldetector", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
-  "fileSize": "163009.211KB",
+  "fileSize": "163009.231KB",
   "citation": [
     {
-      "@type": "CreativeWork",
+      "@type": "SoftwareSourceCode",
       "datePublished": "2024",
       "author": [
         {

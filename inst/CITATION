@@ -1,7 +1,7 @@
 citHeader("To cite cascade in publications use:")
 
 bibentry(
-  bibtype  = "Misc",
+  bibtype  = "Manual",
   title    = "cascade: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts",
   author   = c(
     person(given = "Adriano", family = "Rutz", email = "adafede@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-0443-9902"))
