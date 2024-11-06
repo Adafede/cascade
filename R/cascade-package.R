@@ -17,5 +17,5 @@ NULL
     no = "sequential"
   )
   future::plan(strategy = strat)
-  message("Running in ", strat, " with ", future::nbrOfWorkers(), " workers detected")
+  packageStartupMessage("Running in ", strat, " with ", future::nbrOfWorkers(), " workers detected")
 }
