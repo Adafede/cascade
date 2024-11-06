@@ -10,7 +10,6 @@
 <url><loc>https://adafede.github.io/cascade/index.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/news/index.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/add_chromato_line.html</loc></url>
-<url><loc>https://adafede.github.io/cascade/reference/add_peak_metadata.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/baseline_chromatogram.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/baseline_chromatograms_progress.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/cascade-package.html</loc></url>
@@ -58,7 +57,6 @@
 <url><loc>https://adafede.github.io/cascade/reference/plot_histograms_litt.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/plot_histograms_taxo.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/plot_peak_detection.html</loc></url>
-<url><loc>https://adafede.github.io/cascade/reference/plot_peaks_statistics.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/plot_results_1.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/plot_results_2.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/predict_response.html</loc></url>
@@ -66,7 +64,6 @@
 <url><loc>https://adafede.github.io/cascade/reference/prepare_comparison.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/prepare_features.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/prepare_hierarchy.html</loc></url>
-<url><loc>https://adafede.github.io/cascade/reference/prepare_hierarchy_preparation.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/prepare_mz.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/prepare_peaks.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/prepare_plot.html</loc></url>
