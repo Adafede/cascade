@@ -35,7 +35,8 @@ peaks_progress <- function(xs) {
             remove.time.baseline = FALSE,
             spec.smooth = FALSE,
             interpolate_rows = FALSE,
-            interpolate_cols = FALSE
+            interpolate_cols = FALSE,
+            show_progress = FALSE
           )
 
         pks <- chromatographR::get_peaks(
@@ -48,7 +49,8 @@ peaks_progress <- function(xs) {
           sd.max = 50,
           max.iter = 1000,
           noise_threshold = 0.001,
-          show_progress = TRUE
+          show_progress = FALSE,
+          cl = "future"
         )
 
         peaks <- pks$`666`$`666` |>
