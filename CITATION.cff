@@ -7,7 +7,8 @@ cff-version: 1.2.0
 message: 'To cite package "cascade" in publications use:'
 type: software
 license: GPL-3.0-or-later
-title: 'cascade: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts'
+title: 'cascade: Contextualizing untargeted Annotation with Semi-quantitative Charged
+  Aerosol Detection for pertinent characterization of natural Extracts'
 version: 0.0.0.9000
 abstract: This package provides the infrastructure to perform Automated Composition
   Assessment of Natural Extracts.
@@ -16,6 +17,17 @@ authors:
   given-names: Adriano
   email: adafede@gmail.com
   orcid: https://orcid.org/0000-0003-0443-9902
+preferred-citation:
+  type: generic
+  title: 'cascade: Contextualizing untargeted Annotation with Semi-quantitative Charged
+    Aerosol Detection for pertinent characterization of natural Extracts'
+  authors:
+  - family-names: Rutz
+    given-names: Adriano
+    email: adafede@gmail.com
+    orcid: https://orcid.org/0000-0003-0443-9902
+  year: '2024'
+  notes: R package, version 0.0.9000
 repository: https://bioconductor.org/
 repository-code: https://github.com/adafede/cascade
 url: https://adafede.github.io/cascade
@@ -32,6 +44,30 @@ keywords:
 - computational metabolomics
 - specialized metabolome
 references:
+- type: article
+  title: 'Automated Composition Assessment of Natural Extracts: Untargeted Mass Spectrometry-Based
+    Metabolite Profiling Integrating Semiquantitative Detection'
+  authors:
+  - family-names: Rutz
+    given-names: Adriano
+    orcid: https://orcid.org/0000-0003-0443-9902
+  - family-names: Wolfender
+    given-names: Jean-Luc
+    orcid: https://orcid.org/0000-0002-0125-952X
+  journal: Journal of Agricultural and Food Chemistry
+  year: '2023'
+  volume: '71'
+  issue: '46'
+  url: https://doi.org/10.1021/acs.jafc.3c03099
+  keywords:
+  - metabolite annotation
+  - charged aerosol detector
+  - semi-quantitative
+  - natural products
+  - computational metabolomics
+  - specialized metabolome
+  doi: 10.1021/acs.jafc.3c03099
+  issn: 1664-462X
 - type: software
   title: 'R: A Language and Environment for Statistical Computing'
   notes: Depends
