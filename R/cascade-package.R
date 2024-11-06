@@ -7,7 +7,9 @@ NULL
 .datatable.aware <- TRUE
 
 .onLoad <- function(libname, pkgname) {
-  invisible(NULL)
+  ## Hack to avoid rcmdcheck warning since they are needed by {tidytable}
+  ## to read gzip directly
+  invisible(R.utils::capitalize("Bitter is better"))
 }
 
 .onAttach <- function(libname, pkgname) {
