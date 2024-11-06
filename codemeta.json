@@ -354,7 +354,57 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteannotation", "chargedaerosoldetector", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
-  "fileSize": "163007.824KB",
+  "fileSize": "163009.211KB",
+  "citation": [
+    {
+      "@type": "CreativeWork",
+      "datePublished": "2024",
+      "author": [
+        {
+          "@type": "Person",
+          "givenName": "Adriano",
+          "familyName": "Rutz",
+          "email": "adafede@gmail.com",
+          "@id": "https://orcid.org/0000-0003-0443-9902"
+        }
+      ],
+      "name": "cascade: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts",
+      "description": "R package, version 0.0.9000"
+    },
+    {
+      "@type": "ScholarlyArticle",
+      "datePublished": "2023",
+      "author": [
+        {
+          "@type": "Person",
+          "givenName": "Adriano",
+          "familyName": "Rutz",
+          "@id": "https://orcid.org/0000-0003-0443-9902"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Jean-Luc",
+          "familyName": "Wolfender",
+          "@id": "https://orcid.org/0000-0002-0125-952X"
+        }
+      ],
+      "name": "Automated Composition Assessment of Natural Extracts: Untargeted Mass Spectrometry-Based Metabolite Profiling Integrating Semiquantitative Detection",
+      "identifier": "10.1021/acs.jafc.3c03099",
+      "url": "https://doi.org/10.1021/acs.jafc.3c03099",
+      "@id": "https://doi.org/10.1021/acs.jafc.3c03099",
+      "sameAs": "https://doi.org/10.1021/acs.jafc.3c03099",
+      "isPartOf": {
+        "@type": "PublicationIssue",
+        "issueNumber": "46",
+        "datePublished": "2023",
+        "isPartOf": {
+          "@type": ["PublicationVolume", "Periodical"],
+          "volumeNumber": "71",
+          "name": "Journal of Agricultural and Food Chemistry"
+        }
+      }
+    }
+  ],
   "releaseNotes": "https://github.com/adafede/cascade/blob/master/NEWS.md",
   "readme": "https://github.com/Adafede/cascade/blob/main/README.md",
   "contIntegration": ["https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/adafede/cascade"],

@@ -1,0 +1,35 @@
+citHeader("To cite cascade in publications use:")
+
+bibentry(
+  bibtype  = "Misc",
+  title    = "cascade: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts",
+  author   = c(
+    person(given = "Adriano", family = "Rutz", email = "adafede@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-0443-9902"))
+    ),
+  year     = "2024",
+  note     = "R package, version 0.0.9000",
+)
+
+bibentry(
+  bibtype  = "Article",
+  title    = "Automated Composition Assessment of Natural Extracts: Untargeted Mass Spectrometry-Based Metabolite Profiling Integrating Semiquantitative Detection",
+  author   = c(
+    person(given = "Adriano", family = "Rutz", comment = c(ORCID = "0000-0003-0443-9902")),
+    person(given = "Jean-Luc", family = "Wolfender", comment = c(ORCID = "0000-0002-0125-952X"))
+    ),
+  journal  = "Journal of Agricultural and Food Chemistry",
+  year     = "2023",
+  volume   = "71",
+  number   = "46",
+  url      = "https://doi.org/10.1021/acs.jafc.3c03099",
+  language = "en",
+  keywords = "metabolite annotation, charged aerosol detector, semi-quantitative, natural products, computational metabolomics, specialized metabolome",
+  doi      = "10.1021/acs.jafc.3c03099",
+  issn     = "1664-462X",
+  pmc      = "PMC10683005",
+  pmid     = "37949451",
+  qid      = "Q123938369",
+  textVersion = paste(
+  "Adriano Rutz and Jean-Luc Wolfender. (10 November 2023). Automated Composition Assessment of Natural Extracts: Untargeted Mass Spectrometry-Based Metabolite Profiling Integrating Semiquantitative Detection. Journal of Agricultural and Food Chemistry. 71 (46), 18010-18023. doi:10.1021/acs.jafc.3c03099. pmc:PMC10683005. pmid:37949451. qid:Q123938369."
+  )
+)
