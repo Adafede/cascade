@@ -186,19 +186,6 @@ references:
   doi: 10.32614/CRAN.package.ggalluvial
   version: '>= 0.12.5'
 - type: software
-  title: ggfittext
-  abstract: 'ggfittext: Fit Text Inside a Box in ''ggplot2'''
-  notes: Imports
-  url: https://wilkox.org/ggfittext/
-  repository: https://CRAN.R-project.org/package=ggfittext
-  authors:
-  - family-names: Wilkins
-    given-names: David
-    email: david@wilkox.org
-  year: '2024'
-  doi: 10.32614/CRAN.package.ggfittext
-  version: '>= 0.10.2'
-- type: software
   title: ggplot2
   abstract: 'ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics'
   notes: Imports
@@ -351,23 +338,6 @@ references:
   doi: 10.18129/B9.bioc.mzR
   version: '>= 2.36.0'
 - type: software
-  title: pbapply
-  abstract: 'pbapply: Adding Progress Bar to ''*apply'' Functions'
-  notes: Imports
-  url: https://github.com/psolymos/pbapply
-  repository: https://CRAN.R-project.org/package=pbapply
-  authors:
-  - family-names: Solymos
-    given-names: Peter
-    email: psolymos@gmail.com
-    orcid: https://orcid.org/0000-0001-7337-1740
-  - family-names: Zawadzki
-    given-names: Zygmunt
-    email: zygmunt@zstat.pl
-  year: '2024'
-  doi: 10.32614/CRAN.package.pbapply
-  version: '>= 1.7.2'
-- type: software
   title: plotly
   abstract: 'plotly: Create Interactive Web Graphics via ''plotly.js'''
   notes: Imports
@@ -432,19 +402,6 @@ references:
   doi: 10.32614/CRAN.package.purrr
   version: '>= 1.0.2'
 - type: software
-  title: RCurl
-  abstract: 'RCurl: General Network (HTTP/FTP/...) Client Interface for R'
-  notes: Imports
-  repository: https://CRAN.R-project.org/package=RCurl
-  authors:
-  - family-names: Temple Lang
-    given-names: Duncan
-    email: duncan@r-project.org
-    orcid: https://orcid.org/0000-0003-0159-1546
-  year: '2024'
-  doi: 10.32614/CRAN.package.RCurl
-  version: '>= 1.98.1.16'
-- type: software
   title: tibble
   abstract: 'tibble: Simple Data Frames'
   notes: Imports
@@ -474,6 +431,19 @@ references:
   year: '2024'
   doi: 10.32614/CRAN.package.tidytable
   version: '>= 0.11.1'
+- type: software
+  title: tima
+  abstract: 'tima: Taxonomically Informed Metabolite Annotation'
+  notes: Imports
+  url: https://taxonomicallyinformedannotation.github.io/tima
+  repository: https://bioconductor.org/
+  authors:
+  - family-names: Rutz
+    given-names: Adriano
+    email: adafede@gmail.com
+    orcid: https://orcid.org/0000-0003-0443-9902
+  year: '2024'
+  version: '>= 2.11.0'
 - type: software
   title: WikidataQueryServiceR
   abstract: 'WikidataQueryServiceR: API Client Library for ''Wikidata Query Service'''
@@ -525,18 +495,6 @@ references:
     orcid: https://orcid.org/0000-0002-3242-0582
   year: '2024'
   doi: 10.32614/CRAN.package.BiocManager
-- type: software
-  title: httr2
-  abstract: 'httr2: Perform HTTP Requests and Process the Responses'
-  notes: Suggests
-  url: https://httr2.r-lib.org
-  repository: https://CRAN.R-project.org/package=httr2
-  authors:
-  - family-names: Wickham
-    given-names: Hadley
-    email: hadley@posit.co
-  year: '2024'
-  doi: 10.32614/CRAN.package.httr2
 - type: software
   title: knitr
   abstract: 'knitr: A General-Purpose Package for Dynamic Report Generation in R'
