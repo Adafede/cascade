@@ -22,9 +22,6 @@
 #' @param start Start
 #' @param end End
 #' @param limit Limit
-#' @param create_dir_f Create dir function
-#' @param get_file_f Get file function
-#' @param get_last_version_from_zenodo_f Get last version from Zenodo function
 #'
 #' @return IDs
 #'
@@ -38,20 +35,14 @@ generate_ids <- function(taxa = c("Swertia", "Kopsia", "Ginkgo"),
                          filter_ms_conditions = TRUE,
                          start = "0",
                          end = "9999",
-                         limit = "1000000",
-                         create_dir_f = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/create_dir.R",
-                         get_file_f = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/get_file.R",
-                         get_last_version_from_zenodo_f = "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/get_last_version_from_zenodo.R") {
-  source(file = create_dir_f)
-  source(file = get_file_f)
-  source(file = get_last_version_from_zenodo_f)
+                         limit = "1000000") {
   query_part_1 <- "SELECT ?structure ?structureLabel ?structure_id ?structureSmiles (GROUP_CONCAT(?taxon_name; SEPARATOR = \"|\") AS ?taxaLabels) (GROUP_CONCAT(?taxon; SEPARATOR = \"|\") AS ?taxa) (GROUP_CONCAT(?art_title; SEPARATOR = \"|\") AS ?referencesLabels) (GROUP_CONCAT(?art_doi; SEPARATOR = \"|\") AS ?references_ids) (GROUP_CONCAT(?art; SEPARATOR = \"|\") AS ?references) WHERE {\n  ?taxon (wdt:P171*) wd:"
   query_part_2 <- ";\n  wdt:P225 ?taxon_name.\n  ?structure wdt:P235 ?structure_id;\n  wdt:P233 ?structureSmiles;\n  p:P703 ?statement.\n  ?statement ps:P703 ?taxon;\n  prov:wasDerivedFrom ?ref.\n  ?ref pr:P248 ?art.\n  ?art wdt:P1476 ?art_title;\n  wdt:P356 ?art_doi;\n  wdt:P577 ?art_date.\n  FILTER(((YEAR(?art_date)) >= "
   query_part_3 <- " ) && ((YEAR(?art_date)) <= "
   query_part_4 <- " ))\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". }\n}\nGROUP BY ?structure ?structure_id ?structureLabel ?structureSmiles"
 
   message("Getting last LOTUS version")
-  get_last_version_from_zenodo(
+  tima::get_last_version_from_zenodo(
     doi = "10.5281/zenodo.5794106",
     pattern = "frozen_metadata.csv.gz",
     "data/source/libraries/lotus.csv.gz"

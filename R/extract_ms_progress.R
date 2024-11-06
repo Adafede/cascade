@@ -9,7 +9,7 @@
 #' @examples NULL
 extract_ms_progress <- function(xs, ms_data, peaks_prelist) {
   p <- progressr::progressor(along = xs)
-  pbapply::pblapply(
+  future.apply::future_lapply(
     X = xs,
     FUN = function(x, ms_data, peaks_prelist) {
       p()
