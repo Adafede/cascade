@@ -6,19 +6,32 @@
 #'
 #' @examples NULL
 transform_ms <- function(x) {
-  feature <- seq_along(x)
-  future.apply::future_lapply(X = feature, function(z) {
+  custom_min <- function(x) {
+    if (length(x) > 0) {
+      min(x)
+    } else {
+      Inf
+    }
+  }
+  custom_max <- function(x) {
+    if (length(x) > 0) {
+      max(x)
+    } else {
+      Inf
+    }
+  }
+  lapply(X = seq_along(x), function(z, min_int = 0.1) {
     data.frame(
       intensity = x[[z]][1]@intensity,
       rtime = x[[z]][1]@rtime
     ) |>
       tidytable::filter(!is.na(intensity)) |>
-      tidytable::mutate(intensity = (intensity - min(intensity)) / (max(intensity) -
-        min(intensity))) |>
-      tidytable::filter(intensity >= 0.1) |>
+      tidytable::mutate(intensity = (intensity - custom_min(intensity)) / (custom_max(intensity) -
+        custom_min(intensity))) |>
+      tidytable::filter(intensity >= min_int) |>
       ## see https://github.com/sneumann/xcms/issues/593
-      tidytable::mutate(rtime = (rtime - min(rtime)) / (max(rtime) -
-        min(rtime))) |>
+      tidytable::mutate(rtime = (rtime - custom_min(rtime)) / (custom_max(rtime) -
+        custom_min(rtime))) |>
       tidytable::arrange(rtime)
   })
 }

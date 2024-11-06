@@ -6,10 +6,13 @@
 #'
 #' @examples NULL
 extract_ms_peak <- function(x) {
-  future.apply::future_lapply(X = seq_along(x), function(z) {
-    MSnbase::Chromatogram(
-      intensity = x[[z]]$intensity,
-      rtime = x[[z]]$rtime
+  seq_along(x) |>
+    furrr::future_map(
+      .f = function(z) {
+        MSnbase::Chromatogram(
+          intensity = x[[z]]$intensity,
+          rtime = x[[z]]$rtime
+        )
+      }
     )
-  })
 }
