@@ -178,33 +178,21 @@ references:
   doi: 10.32614/CRAN.package.forcats
   version: '>= 1.0.0'
 - type: software
-  title: future
-  abstract: 'future: Unified Parallel and Distributed Processing in R for Everyone'
+  title: furrr
+  abstract: 'furrr: Apply Mapping Functions in Parallel using Futures'
   notes: Imports
-  url: https://future.futureverse.org
-  repository: https://CRAN.R-project.org/package=future
+  url: https://furrr.futureverse.org/
+  repository: https://CRAN.R-project.org/package=furrr
   authors:
-  - family-names: Bengtsson
-    given-names: Henrik
-    email: henrikb@braju.com
-    orcid: https://orcid.org/0000-0002-7579-5165
+  - family-names: Vaughan
+    given-names: Davis
+    email: davis@rstudio.com
+  - family-names: Dancho
+    given-names: Matt
+    email: mdancho@business-science.io
   year: '2024'
-  doi: 10.32614/CRAN.package.future
-  version: '>= 1.34.0'
-- type: software
-  title: future.apply
-  abstract: 'future.apply: Apply Function to Elements in Parallel using Futures'
-  notes: Imports
-  url: https://future.apply.futureverse.org
-  repository: https://CRAN.R-project.org/package=future.apply
-  authors:
-  - family-names: Bengtsson
-    given-names: Henrik
-    email: henrikb@braju.com
-    orcid: https://orcid.org/0000-0002-7579-5165
-  year: '2024'
-  doi: 10.32614/CRAN.package.future.apply
-  version: '>= 1.11.2'
+  doi: 10.32614/CRAN.package.furrr
+  version: '>= 0.3.1'
 - type: software
   title: ggplot2
   abstract: 'ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics'
