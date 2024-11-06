@@ -143,7 +143,7 @@ table_final <- table_medium |>
   dplyr::left_join(lotus_long) |>
   dplyr::group_by(peak_id, inchikey_2D) |>
   dplyr::mutate(reference = paste(reference, collapse = "; ")) |>
-  dplyr::mutate(Structure = RCurl::curlEscape(smiles_2D)) |>
+  dplyr::mutate(Structure = URLencode(smiles_2D)) |>
   dplyr::mutate(
     reference = ifelse(
       test = reference == "NA",

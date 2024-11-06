@@ -11,13 +11,7 @@ generate_ids(
   filter_ms_conditions = TRUE,
   start = "0",
   end = "9999",
-  limit = "1000000",
-  create_dir_f =
-    "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/create_dir.R",
-  get_file_f =
-    "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/get_file.R",
-  get_last_version_from_zenodo_f =
-    "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima/main/R/get_last_version_from_zenodo.R"
+  limit = "1000000"
 )
 }
 \arguments{
@@ -34,12 +28,6 @@ generate_ids(
 \item{end}{End}
 
 \item{limit}{Limit}
-
-\item{create_dir_f}{Create dir function}
-
-\item{get_file_f}{Get file function}
-
-\item{get_last_version_from_zenodo_f}{Get last version from Zenodo function}
 }
 \value{
 IDs
