@@ -20,18 +20,16 @@ signal_sharpening <- function(time,
                               sigma = 0.05,
                               Smoothing_width = 8,
                               Baseline_adjust = 0) {
-  smooth_1 <- zoo::rollmean(
+  smooth_1 <- caTools::runmean(
     x = intensity,
     k = Smoothing_width,
-    align = "center",
-    fill = 0
+    align = "center"
   ) + Baseline_adjust
 
-  smooth_2 <- zoo::rollmean(
+  smooth_2 <- caTools::runmean(
     x = smooth_1,
     k = Smoothing_width,
-    align = "center",
-    fill = 0
+    align = "center"
   )
 
   deriv_2 <- second_der(
@@ -39,11 +37,10 @@ signal_sharpening <- function(time,
     y = smooth_2
   )
 
-  smooth_3 <- zoo::rollmean(
+  smooth_3 <- caTools::runmean(
     x = deriv_2,
     k = Smoothing_width,
-    align = "center",
-    fill = 0
+    align = "center"
   )
 
   deriv_4 <- second_der(
@@ -51,11 +48,10 @@ signal_sharpening <- function(time,
     y = smooth_3
   )
 
-  smooth_4 <- zoo::rollmean(
+  smooth_4 <- caTools::runmean(
     x = deriv_4,
     k = 8,
-    align = "center",
-    fill = 0
+    align = "center"
   )
 
   sharpened <- smooth_1[5:length(smooth_1)] - (sigma / k2 * smooth_3[3:length(smooth_3)]) + (sigma / k4 * smooth_4)

@@ -106,10 +106,16 @@
     },
     "3": {
       "@type": "SoftwareApplication",
-      "identifier": "chromatographR",
-      "name": "chromatographR",
-      "version": ">= 0.7.1",
-      "sameAs": "https://github.com/ethanbass/chromatographR"
+      "identifier": "caTools",
+      "name": "caTools",
+      "version": ">= 1.18.3",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=caTools"
     },
     "4": {
       "@type": "SoftwareApplication",
@@ -330,23 +336,10 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=WikidataQueryServiceR"
     },
-    "22": {
-      "@type": "SoftwareApplication",
-      "identifier": "zoo",
-      "name": "zoo",
-      "version": ">= 1.8.12",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=zoo"
-    },
     "SystemRequirements": null
   },
   "keywords": ["metaboliteannotation", "chargedaerosoldetector", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
-  "fileSize": "163010.973KB",
+  "fileSize": "163034.489KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
