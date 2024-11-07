@@ -38,6 +38,8 @@ get_peaks(
 \item{noise_threshold}{Noise Threshold}
 
 \item{collapse}{Collapse}
+
+\item{...}{...}
 }
 \value{
 Peaks

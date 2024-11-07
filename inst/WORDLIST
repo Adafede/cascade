@@ -3,6 +3,7 @@ CLI
 CMD
 Codecov
 CSI
+Chrom
 Chromato
 Chromatograms
 DDA
@@ -28,6 +29,7 @@ Rescale
 ROTL
 RforMassSpectrometry
 RTs
+Sd
 Subtables
 Swertia
 TIMA
@@ -52,10 +54,13 @@ eluent
 emi
 erosol
 etection
+ethanbass
 fi
 fourier
+github
 harged
 https
+iter
 litt
 mol
 Molinfo
