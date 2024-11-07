@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# CASCADE <img src='https://raw.githubusercontent.com/adafede/cascade/dev/man/figures/logo.svg' align="right" height="139" />
+# CASCADE <img src='https://raw.githubusercontent.com/adafede/cascade/main/man/figures/logo.svg' align="right" height="139" />
 
 <!-- badges: start -->
 
