@@ -19,7 +19,7 @@ peaks_progress <- function(xs) {
             tibble::column_to_rownames("time") |>
             as.matrix()
         ) |>
-          chromatographR::get_peaks(
+          get_peaks(
             lambdas = c("666"),
             # fit = c("egh", "gaussian", "raw"),
             # fit = c("egh"),
@@ -27,9 +27,7 @@ peaks_progress <- function(xs) {
             # fit = c("raw"),
             sd.max = 50,
             max.iter = 1000,
-            noise_threshold = 0.001,
-            show_progress = FALSE,
-            cl = "future"
+            noise_threshold = 0.001
           ) |>
           purrr::pluck("666") |>
           purrr::pluck("666") |>
