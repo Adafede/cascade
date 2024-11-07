@@ -17,6 +17,7 @@
 #' @param estimate_purity Estimate purity
 #' @param noise_threshold Noise Threshold
 #' @param collapse Collapse
+#' @param ... ...
 #'
 #' @return Peaks
 #'
@@ -203,7 +204,26 @@ get_peaks <- function(chrom_list,
               if ((smooth_window %% 2) == 0) {
                 smooth_window <- smooth_window + 1
               }
-              d <- pracma::savgol(diff(y), fl = smooth_window)
+              savgol <- function(T, fl, forder = 4, dorder = 0) {
+                stopifnot(is.numeric(T), is.numeric(fl))
+                if (fl <= 1 || fl %% 2 == 0) {
+                  stop("Argument 'fl' must be an odd integer greater than 1.")
+                }
+                n <- length(T)
+
+                # -- calculate filter coefficients --
+                fc <- (fl - 1) / 2 # index: window left and right
+                X <- outer(-fc:fc, 0:forder, FUN = "^") # polynomial terms and coeffs
+                Y <- pinv(X) # pseudoinverse
+
+                # -- filter via convolution and take care of the end points --
+                T2 <- convolve(T, rev(Y[(dorder + 1), ]), type = "o") # convolve(...)
+                T2 <- T2[(fc + 1):(length(T2) - fc)]
+
+                Tsg <- (-1)^dorder * T2
+                return(Tsg)
+              }
+              d <- savgol(diff(y), fl = smooth_window)
             } else if (smooth_type == "mva") {
               d <- caTools::runmean(diff(y), k = smooth_window)
             } else if (smooth_type == "gaussian") {
