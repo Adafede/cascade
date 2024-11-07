@@ -96,17 +96,17 @@ references:
   doi: 10.32614/CRAN.package.baseline
   version: '>= 1.3.5'
 - type: software
-  title: chromatographR
-  abstract: 'chromatographR: Chromatographic Data Analysis Toolset'
+  title: caTools
+  abstract: 'caTools: Tools: Moving Window Statistics, GIF, Base64, ROC AUC, etc'
   notes: Imports
-  url: https://ethanbass.github.io/chromatographR/
+  repository: https://CRAN.R-project.org/package=caTools
   authors:
-  - family-names: Bass
-    given-names: Ethan
-    email: ethanbass@gmail.com
-    orcid: https://orcid.org/0000-0002-6175-6739
+  - family-names: Tuszynski
+    given-names: Jarek
+    email: jaroslaw.w.tuszynski@saic.com
   year: '2024'
-  version: '>= 0.7.1'
+  doi: 10.32614/CRAN.package.caTools
+  version: '>= 1.18.3'
 - type: software
   title: data.table
   abstract: 'data.table: Extension of `data.frame`'
@@ -487,27 +487,6 @@ references:
   year: '2024'
   doi: 10.32614/CRAN.package.WikidataQueryServiceR
   version: '>= 1.0.0'
-- type: software
-  title: zoo
-  abstract: 'zoo: S3 Infrastructure for Regular and Irregular Time Series (Z''s Ordered
-    Observations)'
-  notes: Imports
-  url: https://zoo.R-Forge.R-project.org/
-  repository: https://CRAN.R-project.org/package=zoo
-  authors:
-  - family-names: Zeileis
-    given-names: Achim
-    email: Achim.Zeileis@R-project.org
-    orcid: https://orcid.org/0000-0003-0918-3766
-  - family-names: Grothendieck
-    given-names: Gabor
-    email: ggrothendieck@gmail.com
-  - family-names: Ryan
-    given-names: Jeffrey A.
-    email: jeff.a.ryan@gmail.com
-  year: '2024'
-  doi: 10.32614/CRAN.package.zoo
-  version: '>= 1.8.12'
 - type: software
   title: BiocManager
   abstract: 'BiocManager: Access the Bioconductor Project Package Repository'
