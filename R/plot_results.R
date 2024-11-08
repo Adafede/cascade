@@ -86,9 +86,6 @@ plot_results_1 <- function(list, chromatogram, mode = "pos", time_min, time_max)
   return(returned_list)
 }
 
-source(file = "R/no_other.R")
-source(file = "R/prepare_hierarchy.R")
-
 #' Plot results 2
 #'
 #' @include prepare_hierarchy.R
