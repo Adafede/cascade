@@ -15,13 +15,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-This vignette describes the very basic steps of **CASCADE**.
+This vignette describes the minimal requirements for **C**ontextualization of untargeted **A**nnotation with **S**emi-quantitative **C**harged **A**erosol **D**etection for pertinent characterization of natural **E**xtracts.
 
 ## Pre-requisites
 
-- A file containing DDA MS data with additional signals (PDA, ELSD, CAD)
-- A file containing features, as obtained by [mzmine](https://mzio.io)
-- A file containing annotations, as obtained by [TIMA](https://taxonomicallyinformedannotation.github.io/tima)
+- A file ([.mzML](https://en.wikipedia.org/wiki/Mass_spectrometry_data_format#mzML)) containing [DDA MS](https://en.wikipedia.org/w/index.php?title=Data-dependent_acquisition) data with an additional detector ([PDA](https://en.wikipedia.org/wiki/UV_detectors), [ELSD](https://en.wikipedia.org/wiki/Evaporative_light_scattering_detector), [CAD](https://en.wikipedia.org/wiki/Charged_aerosol_detector))
+- A file ([.csv](https://en.wikipedia.org/wiki/Comma-separated_values)) containing features, as obtained by [mzmine](https://mzio.io)
+- A file ([.tsv](https://en.wikipedia.org/wiki/Tab-separated_values)) containing annotations, as obtained by [TIMA](https://taxonomicallyinformedannotation.github.io/tima)
 
 All coming steps admit you already installed `cascade`:
 
