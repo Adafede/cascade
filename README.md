@@ -36,15 +36,18 @@ since then. The workflow is illustrated below.
 
 Here is what you *minimally* need:
 
-- A file (.mzML) containing DDA MS data with an additional detector
-  (PDA, ELSD, CAD)
-- A file (.csv) containing features, as obtained by
-  [mzmine](https://mzio.io/)
-
-Optionally, you may want to add:
-
-- Your own manual or automated annotations (we currently support
-  annotations coming from
+- A file
+  ([.mzML](https://en.wikipedia.org/wiki/Mass_spectrometry_data_format#mzML))
+  containing [DDA
+  MS](https://en.wikipedia.org/w/index.php?title=Data-dependent_acquisition)
+  data with an additional detector
+  ([PDA](https://en.wikipedia.org/wiki/UV_detectors),
+  [ELSD](https://en.wikipedia.org/wiki/Evaporative_light_scattering_detector),
+  [CAD](https://en.wikipedia.org/wiki/Charged_aerosol_detector))
+- A file ([.csv](https://en.wikipedia.org/wiki/Comma-separated_values))
+  containing features, as obtained by [mzmine](https://mzio.io)
+- A file ([.tsv](https://en.wikipedia.org/wiki/Tab-separated_values))
+  containing annotations, as obtained by
   [TIMA](https://taxonomicallyinformedannotation.github.io/tima)
 
 ## Installation
@@ -64,7 +67,7 @@ install.packages(
 ```
 
 Once installed, you are ready to go through our
-[documentation](https://adafede.github.io/cascade/articles/), with the
+[documentation](https://adafede.github.io/cascade/articles), with the
 major steps detailed.
 
 ## Main Citations
