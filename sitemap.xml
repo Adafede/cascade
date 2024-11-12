@@ -11,7 +11,6 @@
 <url><loc>https://adafede.github.io/cascade/news/index.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/add_chromato_line.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/baseline_chromatogram.html</loc></url>
-<url><loc>https://adafede.github.io/cascade/reference/baseline_chromatograms_progress.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/cascade-package.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/change_intensity_name.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/check_chromatograms.html</loc></url>
@@ -24,6 +23,7 @@
 <url><loc>https://adafede.github.io/cascade/reference/extract_ms_peak.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/extract_ms_progress.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/filter_fft.html</loc></url>
+<url><loc>https://adafede.github.io/cascade/reference/format_gt.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/generate_ids.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/generate_pseudochromatograms.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/generate_tables.html</loc></url>
@@ -74,20 +74,14 @@
 <url><loc>https://adafede.github.io/cascade/reference/prepare_rt.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/preprocess_chromatograms.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/preprocess_peaks.html</loc></url>
-<url><loc>https://adafede.github.io/cascade/reference/prettyTables_progress.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/process_compare_peaks.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/queries_progress.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/save_histograms_progress.html</loc></url>
-<url><loc>https://adafede.github.io/cascade/reference/save_prettySubtables_progress.html</loc></url>
-<url><loc>https://adafede.github.io/cascade/reference/save_prettyTables_progress.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/save_treemaps_progress.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/second_der.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/signal_sharpening.html</loc></url>
-<url><loc>https://adafede.github.io/cascade/reference/subtables_progress.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/tables_progress.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/taxon_name_to_qid.html</loc></url>
-<url><loc>https://adafede.github.io/cascade/reference/temp_gt_function.html</loc></url>
-<url><loc>https://adafede.github.io/cascade/reference/transform_baseline.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/transform_ms.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/treemaps_progress.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/treemaps_progress_no_title.html</loc></url>
