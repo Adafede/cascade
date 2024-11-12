@@ -52,7 +52,6 @@ Collate:
     'normalize_chromatograms_list.R'
     'add_chromato_line.R'
     'baseline_chromatogram.R'
-    'baseline_chromatograms_progress.R'
     'cascade-package.R'
     'change_intensity_name.R'
     'check_chromatograms.R'
@@ -117,15 +116,10 @@ Collate:
     'load_ms_data.R'
     'plot_chromatogram.R'
     'prehistograms_progress.R'
-    'prettyTables_progress.R'
     'transform_ms.R'
     'process_compare_peaks.R'
     'save_histograms_progress.R'
-    'save_prettySubtables_progress.R'
-    'save_prettyTables_progress.R'
     'save_treemaps_progress.R'
-    'subtables_progress.R'
-    'transform_baseline.R'
 VignetteBuilder: 
     knitr
 biocViews: metabolite annotation, charged aerosol detector, semi-quantitative, natural products, computational metabolomics, specialized metabolome

@@ -7,8 +7,10 @@
 #' @return A formatted GT table
 #'
 #' @examples NULL
-temp_gt_function <- function(table, title, subtitle) {
-  prettyTable <- table |>
+format_gt <- function(table,
+                      title = "",
+                      subtitle = "") {
+  pretty_table <- table |>
     dplyr::mutate(
       structure = purrr::map(structure, ~ htmltools::a(href = .x, .x)),
       structure = purrr::map(structure, ~ gt::html(as.character(.x)))
@@ -33,5 +35,5 @@ temp_gt_function <- function(table, title, subtitle) {
       locations = gt::cells_body(columns = structureImage),
       fn = molinfo
     )
-  return(prettyTable)
+  return(pretty_table)
 }
