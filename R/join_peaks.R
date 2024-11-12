@@ -12,7 +12,7 @@ join_peaks <- function(chromatograms, peaks, min_area) {
   data.table::setkey(chromatograms, rt_1, rt_2)
 
   data.table::foverlaps(peaks, chromatograms) |>
-    tidytable::filter(id == i.id) |>
+    # tidytable::filter(id == i.id) |>
     tidytable::group_by(peak_id, id) |>
     tidytable::mutate(integral = sum(intensity)) |>
     tidytable::ungroup() |>

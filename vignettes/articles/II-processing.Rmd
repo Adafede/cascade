@@ -44,10 +44,12 @@ process_compare_peaks(show_example = TRUE)
 
 And this basically it! 🚀
 
+## Pseudo chromatograms
+
 If you know want to add some cosmetics, and you already have a [TIMA](https://taxonomicallyinformedannotation.github.io/tima) annotation table, you can then run:
 
-```{r process-plot-pseudochromatograms, message = FALSE, warning=FALSE}
-plots_list <- process_plot_pseudochromatograms(show_example = TRUE)
+```{r generate-pseudochromatograms, message = FALSE, warning=FALSE}
+plots_list <- generate_pseudochromatograms(show_example = TRUE)
 ```
 
 The different plots offer the following views:
@@ -96,6 +98,21 @@ Or both together for comparison:
 
 ```{r treemap-both, warning=FALSE}
 plots_list$treemaps$special
+```
+
+## Tabular reports
+
+If you prefer tables rather than figures, you can also:
+
+```{r generate-tables, message = FALSE, warning=FALSE}
+tables_list <- generate_tables(show_example = TRUE)
+```
+
+This will export the table as CSV and/or HTML.
+A small preview of the HTML table is presented below:
+
+```{r glimpse-tables, message = FALSE, warning=FALSE}
+tables_list$pretty_table
 ```
 
 For some other available helper functions, we now recommend you to read the [next vignette](https://adafede.github.io/cascade/articles/III-bonus.html).
