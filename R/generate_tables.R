@@ -221,8 +221,8 @@ generate_tables <- function(annotations = NULL,
       fn = molinfo
     ) |>
     gt::sub_missing(
-      columns = tidyselect::everything(),
-      rows = tidyselect::everything(),
+      columns = tidytable::everything(),
+      rows = tidytable::everything(),
       missing_text = ""
     ) |>
     gt::opt_interactive(use_filters = TRUE)

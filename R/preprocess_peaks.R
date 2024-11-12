@@ -10,7 +10,7 @@
 #' @param detector Detector
 #' @param df_features DF features
 #' @param df_long DF long
-#' @param list List
+#' @param df_xy DF X Y
 #' @param name Name
 #' @param shift shift
 #' @param min_area Minimum area

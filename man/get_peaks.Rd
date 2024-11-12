@@ -48,7 +48,7 @@ Peaks
 Get peaks
 }
 \note{
-This was imported from {chromatographR} package and parallelization
+This was imported from \{chromatographR\} package and parallelization
 was removed as it was causing issues on Windows.
 }
 \examples{

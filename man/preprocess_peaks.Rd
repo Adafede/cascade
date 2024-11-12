@@ -21,13 +21,13 @@ preprocess_peaks(
 
 \item{df_long}{DF long}
 
+\item{df_xy}{DF X Y}
+
 \item{name}{Name}
 
 \item{shift}{shift}
 
 \item{min_area}{Minimum area}
-
-\item{list}{List}
 }
 \value{
 A list of lists and dataframe with preprocessed peaks
