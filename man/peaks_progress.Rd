@@ -4,10 +4,10 @@
 \alias{peaks_progress}
 \title{Peaks progress}
 \usage{
-peaks_progress(xs)
+peaks_progress(df_xy)
 }
 \arguments{
-\item{xs}{XS}
+\item{df_xy}{Df X Y}
 }
 \value{
 A list of peaks

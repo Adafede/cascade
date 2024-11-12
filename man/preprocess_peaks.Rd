@@ -8,7 +8,7 @@ preprocess_peaks(
   detector = "cad",
   df_features,
   df_long,
-  list,
+  df_xy,
   name,
   shift = 0,
   min_area = 0
@@ -21,13 +21,13 @@ preprocess_peaks(
 
 \item{df_long}{DF long}
 
-\item{list}{List}
-
 \item{name}{Name}
 
 \item{shift}{shift}
 
 \item{min_area}{Minimum area}
+
+\item{list}{List}
 }
 \value{
 A list of lists and dataframe with preprocessed peaks

@@ -4,12 +4,12 @@
 \alias{normalize_chromato}
 \title{Normalize chromato}
 \usage{
-normalize_chromato(x, list = list)
+normalize_chromato(x, df_xy)
 }
 \arguments{
 \item{x}{X}
 
-\item{list}{List}
+\item{df_xy}{Df X Y}
 }
 \value{
 A normalized chromato

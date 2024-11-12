@@ -19,13 +19,18 @@ test_that(desc = "Process compare peaks", code = {
   process_compare_peaks(show_example = TRUE)
   succeed()
 })
-test_that(desc = "Process plot pseudochromatograms", code = {
+test_that(desc = "Generate pseudochromatograms", code = {
   message("\n")
-  process_plot_pseudochromatograms(show_example = TRUE)
+  generate_pseudochromatograms(show_example = TRUE)
   succeed()
 })
 test_that(desc = "Generate IDs", code = {
   message("\n")
   generate_ids()
+  succeed()
+})
+test_that(desc = "Generate Tables", code = {
+  message("\n")
+  generate_tables()
   succeed()
 })
