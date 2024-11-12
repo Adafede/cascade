@@ -24,13 +24,13 @@ test_that(desc = "Generate pseudochromatograms", code = {
   generate_pseudochromatograms(show_example = TRUE)
   succeed()
 })
+test_that(desc = "Generate Tables", code = {
+  message("\n")
+  generate_tables(show_example = TRUE)
+  succeed()
+})
 test_that(desc = "Generate IDs", code = {
   message("\n")
   generate_ids()
-  succeed()
-})
-test_that(desc = "Generate Tables", code = {
-  message("\n")
-  generate_tables()
   succeed()
 })
