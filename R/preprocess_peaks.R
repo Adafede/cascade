@@ -21,15 +21,13 @@
 preprocess_peaks <- function(detector = "cad",
                              df_features,
                              df_long,
-                             list,
+                             df_xy,
                              name,
                              shift = 0,
                              min_area = 0) {
   message("preprocessing ", detector, " peaks")
   ## data.table call outside of future because buggy else
-  peaks <- peaks_progress(list)
-
-  names(peaks) <- name
+  peaks <- peaks_progress(df_xy = df_xy)
 
   ## data.table call outside of future because buggy else
   peaks_long <- tidytable::bind_rows(peaks, .id = "id") |>
@@ -84,7 +82,7 @@ preprocess_peaks <- function(detector = "cad",
   list_chromato_with_peak <- list_df_features_with_peaks_long |>
     furrr::future_map(
       .f = normalize_chromato,
-      list = list
+      df_xy = df_xy
     )
 
   message("preparing peaks chromato")

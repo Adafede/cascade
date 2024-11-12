@@ -1,4 +1,4 @@
-#' Process plot pseudochromatograms
+#' Generate pseudochromatograms
 #'
 #' @export
 #'
@@ -32,25 +32,25 @@
 #'
 #' @examples
 #' \dontrun{
-#' process_plot_pseudochromatograms(show_example = TRUE)
+#' generate_pseudochromatograms(show_example = TRUE)
 #' }
-process_plot_pseudochromatograms <- function(annotations = NULL,
-                                             features_informed = NULL,
-                                             features_not_informed = NULL,
-                                             file = NULL,
-                                             detector = "cad",
-                                             show_example = FALSE,
-                                             min_confidence = 0.4,
-                                             min_similarity_prefilter = 0.6,
-                                             min_similarity_filter = 0.8,
-                                             mode = "pos",
-                                             organism = "Swertia chirayita",
-                                             fourier_components = 0.01,
-                                             frequency = 1,
-                                             resample = 1,
-                                             shift = 0.05,
-                                             time_min = 0.5,
-                                             time_max = 32.5) {
+generate_pseudochromatograms <- function(annotations = NULL,
+                                         features_informed = NULL,
+                                         features_not_informed = NULL,
+                                         file = NULL,
+                                         detector = "cad",
+                                         show_example = FALSE,
+                                         min_confidence = 0.4,
+                                         min_similarity_prefilter = 0.6,
+                                         min_similarity_filter = 0.8,
+                                         mode = "pos",
+                                         organism = "Swertia chirayita",
+                                         fourier_components = 0.01,
+                                         frequency = 1,
+                                         resample = 1,
+                                         shift = 0.05,
+                                         time_min = 0.5,
+                                         time_max = 32.5) {
   message("loading annotations")
   annotation_table <- annotations |>
     load_annotations(show_example = show_example)

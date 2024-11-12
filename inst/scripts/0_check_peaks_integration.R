@@ -7,6 +7,21 @@ message("Authors: \n", "AR")
 message("Contributors: \n", "...")
 
 check_peaks_integration(show_example = TRUE)
+# check_peaks_integration(
+#   file = "data/source/mzml/210619_AR_06_V_03_2_01.mzML",
+#   features = "data/interim/mzmine/lists/extract.csv",
+#   detector = "cad",
+#   chromatogram = "baselined",
+#   min_area = 0.005,
+#   min_intensity = 1E4,
+#   shift = 0.05,
+#   show_example = FALSE,
+#   fourier_components = 0.01,
+#   time_min = 0.5,
+#   time_max = 32.5,
+#   frequency = 1,
+#   resample = 1
+# )
 
 end <- Sys.time()
 

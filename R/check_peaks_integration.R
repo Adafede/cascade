@@ -90,10 +90,10 @@ check_peaks_integration <- function(file = NULL,
         "baselined" = chromatograms_list$chromatograms_baselined_long
       ) |>
         tidytable::mutate(intensity = intensity / max(intensity)),
-      list = switch(chromatogram,
-        "original" = chromatograms_list$chromatograms_original,
-        "improved" = chromatograms_list$chromatograms_improved,
-        "baselined" = chromatograms_list$chromatograms_baselined
+      df_xy = switch(chromatogram,
+        "original" = chromatograms_list$chromatograms_original[[1]],
+        "improved" = chromatograms_list$chromatograms_improved[[1]],
+        "baselined" = chromatograms_list$chromatograms_baselined[[1]]
       ),
       min_area = min_area,
       shift = shift,

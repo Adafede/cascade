@@ -53,6 +53,7 @@ jobs:
           cascade::check_chromatograms_alignment(show_example = TRUE)
           cascade::check_peaks_integration(show_example = TRUE)
           cascade::process_compare_peaks(show_example = TRUE)
-          cascade::process_plot_pseudochromatograms(show_example = TRUE)
+          cascade::generate_pseudochromatograms(show_example = TRUE)
           cascade::generate_ids()
+          cascade::generate_tables()
         shell: Rscript {0}
