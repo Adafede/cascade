@@ -42,5 +42,5 @@ More details are available in the related [vignettes](https://adafede.github.io/
 
 ## A note about parallelization
 
-This package uses `{future}`.
+This package uses `{furrr}` from the [futureverse](https://www.futureverse.org/).
 If you think you could benefit from parallelization, have a look at <https://future.futureverse.org/reference/plan.html> to see how to set it up.
