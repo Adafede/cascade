@@ -125,8 +125,7 @@ process_compare_peaks <- function(file = NULL,
     extract_ms_progress(
       ms_data = ms_data,
       peaks_prelist = peaks_prelist
-    ) |>
-    progressr::with_progress() |>
+    )|>
     suppressMessages()
 
   message("transforming ms chromatograms")
