@@ -18,6 +18,7 @@
 #' @param features Features path
 #' @param type Type. "original", "baselined" or "improved"
 #' @param detector Detector
+#' @param headers Headers
 #' @param export_dir Export directory
 #' @param show_example Show example? Default to FALSE
 #' @param fourier_components Fourier components
@@ -39,6 +40,7 @@ process_compare_peaks <- function(file = NULL,
                                   features = NULL,
                                   type = "baselined",
                                   detector = "cad",
+                                  headers = c("BasePeak_0", "PDA#1_TotalAbsorbance_0", "UV#1_CAD_1_0"),
                                   export_dir = "data/interim/peaks",
                                   show_example = FALSE,
                                   fourier_components = 0.01,
@@ -55,7 +57,7 @@ process_compare_peaks <- function(file = NULL,
 
   message("loading chromatograms")
   chromatograms_all <- file |>
-    load_chromatograms(show_example = show_example)
+    load_chromatograms(show_example = show_example, headers = headers)
 
   message("loading name")
   name <- file |>

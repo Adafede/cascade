@@ -15,6 +15,7 @@ check_chromatograms_alignment(
   frequency = 1,
   resample = 1,
   chromatograms = c("bpi_pos", "cad_pos", "pda_pos"),
+  headers = c("BasePeak_0", "PDA#1_TotalAbsorbance_0", "UV#1_CAD_1_0"),
   type = "baselined",
   normalize_intensity = TRUE,
   normalize_time = FALSE,
@@ -41,6 +42,8 @@ check_chromatograms_alignment(
 \item{resample}{Resample}
 
 \item{chromatograms}{Chromatograms to plot}
+
+\item{headers}{Headers}
 
 \item{type}{Type. "baselined" or "improved"}
 
