@@ -12,6 +12,7 @@ check_peaks_integration(show_example = TRUE)
 #   features = "data/interim/mzmine/lists/extract.csv",
 #   detector = "cad",
 #   chromatogram = "baselined",
+#   headers = c("BasePeak_0", "PDA#1_TotalAbsorbance_0", "UV#1_CAD_1_0"),
 #   min_area = 0.005,
 #   min_intensity = 1E4,
 #   shift = 0.05,

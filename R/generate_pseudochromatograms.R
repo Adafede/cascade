@@ -14,6 +14,7 @@
 #' @param features_informed Features informed
 #' @param features_not_informed Features not informed
 #' @param file File
+#' @param headers Headers
 #' @param detector Detector
 #' @param show_example Show example? Default to FALSE
 #' @param min_confidence Min confidence
@@ -38,6 +39,7 @@ generate_pseudochromatograms <- function(annotations = NULL,
                                          features_informed = NULL,
                                          features_not_informed = NULL,
                                          file = NULL,
+                                         headers = c("BasePeak_0", "PDA#1_TotalAbsorbance_0", "UV#1_CAD_1_0"),
                                          detector = "cad",
                                          show_example = FALSE,
                                          min_confidence = 0.4,
@@ -57,7 +59,7 @@ generate_pseudochromatograms <- function(annotations = NULL,
 
   message("loading chromatograms")
   chromatograms_all <- file |>
-    load_chromatograms(show_example = show_example)
+    load_chromatograms(show_example = show_example, headers = headers)
 
   message("loading name")
   name <- file |>

@@ -19,6 +19,7 @@
 #' @param frequency Frequency
 #' @param resample Resample
 #' @param chromatograms Chromatograms to plot
+#' @param headers Headers
 #' @param type Type. "baselined" or "improved"
 #' @param normalize_intensity Normalize intensity? Default to TRUE
 #' @param normalize_time Normalize time? Default to FALSE
@@ -40,16 +41,17 @@ check_chromatograms_alignment <- function(file_negative = NULL,
                                           frequency = 1,
                                           resample = 1,
                                           chromatograms = c("bpi_pos", "cad_pos", "pda_pos"),
+                                          headers = c("BasePeak_0", "PDA#1_TotalAbsorbance_0", "UV#1_CAD_1_0"),
                                           type = "baselined",
                                           normalize_intensity = TRUE,
                                           normalize_time = FALSE,
                                           show_example = FALSE) {
   if (!is.null(file_positive) | show_example) {
     if (show_example) {
-      chromatograms_positive <- load_chromatograms(show_example = show_example, example_polarity = "pos")
+      chromatograms_positive <- load_chromatograms(show_example = show_example, headers = headers, example_polarity = "pos")
     } else {
       chromatograms_positive <- file_positive |>
-        load_chromatograms()
+        load_chromatograms(headers = headers)
     }
 
     chromatogram_bpi_pos <- chromatograms_positive |>
@@ -118,10 +120,10 @@ check_chromatograms_alignment <- function(file_negative = NULL,
 
   if (!is.null(file_negative) | show_example) {
     if (show_example) {
-      chromatograms_negative <- load_chromatograms(show_example = show_example, example_polarity = "neg")
+      chromatograms_negative <- load_chromatograms(show_example = show_example, headers = headers, example_polarity = "neg")
     } else {
       chromatograms_negative <- file_negative |>
-        load_chromatograms()
+        load_chromatograms(headers = headers)
     }
 
     chromatogram_bpi_neg <- chromatograms_negative |>

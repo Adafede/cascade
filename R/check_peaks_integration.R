@@ -14,6 +14,7 @@
 #' @param features Features path
 #' @param detector Detector
 #' @param chromatogram Chromatogram
+#' @param headers Headers
 #' @param min_area Minimum area
 #' @param min_intensity Minimum intensity
 #' @param shift shift
@@ -34,6 +35,7 @@ check_peaks_integration <- function(file = NULL,
                                     features = NULL,
                                     detector = "cad",
                                     chromatogram = "baselined",
+                                    headers = c("BasePeak_0", "PDA#1_TotalAbsorbance_0", "UV#1_CAD_1_0"),
                                     min_area = 0.005,
                                     min_intensity = 1E4,
                                     shift = 0.05,
@@ -45,7 +47,7 @@ check_peaks_integration <- function(file = NULL,
                                     resample = 1) {
   message("loading chromatograms")
   chromatograms_all <- file |>
-    load_chromatograms(show_example = show_example)
+    load_chromatograms(show_example = show_example, headers = headers)
 
   message("loading name")
   name <- file |>

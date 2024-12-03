@@ -12,6 +12,7 @@ generate_pseudochromatograms(show_example = TRUE)
 #   features_informed = "data/interim/peaks/210619_AR_06_V_03_2_01_featuresInformed_cad.tsv",
 #   features_not_informed = "data/interim/peaks/210619_AR_06_V_03_2_01_featuresNotInformed_cad.tsv",
 #   file = "data/source/mzml/210619_AR_06_V_03_2_01.mzML",
+#   headers = c("BasePeak_0", "PDA#1_TotalAbsorbance_0", "UV#1_CAD_1_0"),
 #   detector = "cad",
 #   show_example = FALSE,
 #   min_confidence = 0.4,

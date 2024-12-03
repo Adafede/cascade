@@ -9,6 +9,7 @@ process_compare_peaks(
   features = NULL,
   type = "baselined",
   detector = "cad",
+  headers = c("BasePeak_0", "PDA#1_TotalAbsorbance_0", "UV#1_CAD_1_0"),
   export_dir = "data/interim/peaks",
   show_example = FALSE,
   fourier_components = 0.01,
@@ -29,6 +30,8 @@ process_compare_peaks(
 \item{type}{Type. "original", "baselined" or "improved"}
 
 \item{detector}{Detector}
+
+\item{headers}{Headers}
 
 \item{export_dir}{Export directory}
 
