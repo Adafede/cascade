@@ -1,6 +1,7 @@
 #' Load chromatograms
 #'
 #' @param file File
+#' @param headers Headers
 #' @param show_example Show example? Default to FALSE
 #' @param example_polarity Example polarity
 #'
@@ -8,6 +9,7 @@
 #'
 #' @examples NULL
 load_chromatograms <- function(file = NULL,
+                               headers = c("BasePeak_0", "PDA#1_TotalAbsorbance_0", "UV#1_CAD_1_0"),
                                show_example = FALSE,
                                example_polarity = "pos") {
   if (show_example) {
@@ -24,8 +26,12 @@ load_chromatograms <- function(file = NULL,
       )
     )
   } else {
-    file |>
-      mzR::openMSfile() |>
-      mzR::chromatograms()
+    file_pointer <- file |>
+      mzR::openMSfile()
+    file_headers <- file_pointer |>
+      mzR::chromatogramHeader()
+    indices <- file_headers$chromatogramIndex[file_headers$chromatogramId %in% headers]
+    chromatograms <- file_pointer |>
+      mzR::chromatograms(chrom = indices)
   }
 }

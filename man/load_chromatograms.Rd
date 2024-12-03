@@ -4,10 +4,17 @@
 \alias{load_chromatograms}
 \title{Load chromatograms}
 \usage{
-load_chromatograms(file = NULL, show_example = FALSE, example_polarity = "pos")
+load_chromatograms(
+  file = NULL,
+  headers = c("BasePeak_0", "PDA#1_TotalAbsorbance_0", "UV#1_CAD_1_0"),
+  show_example = FALSE,
+  example_polarity = "pos"
+)
 }
 \arguments{
 \item{file}{File}
+
+\item{headers}{Headers}
 
 \item{show_example}{Show example? Default to FALSE}
 
