@@ -44,6 +44,8 @@ Here is what you *minimally* need:
   ([PDA](https://en.wikipedia.org/wiki/UV_detectors),
   [ELSD](https://en.wikipedia.org/wiki/Evaporative_light_scattering_detector),
   [CAD](https://en.wikipedia.org/wiki/Charged_aerosol_detector))
+  - In case you don’t know how to obtain it, see:
+    [wiki/How-to-create-a-compliant-mzML-file](https://github.com/Adafede/cascade/wiki/How-to-create-a-compliant-mzML-file)
 - A file ([.csv](https://en.wikipedia.org/wiki/Comma-separated_values))
   containing features, as obtained by [mzmine](https://mzio.io)
 - A file ([.tsv](https://en.wikipedia.org/wiki/Tab-separated_values))
