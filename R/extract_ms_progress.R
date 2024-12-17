@@ -2,54 +2,67 @@
 #'
 #' @param xs XS
 #' @param ms_data MS Data
-#' @param peaks_prelist Peaks prelist
+#' @param rts RTs
+#' @param mzs MZs
+#' @param dfs DFs
 #'
 #' @return A list of extracted MS peaks
 #'
 #' @examples NULL
-extract_ms_progress <- function(xs, ms_data, peaks_prelist) {
+extract_ms_progress <- function(xs, ms_data, rts, mzs, nrows) {
   p <- progressr::progressor(along = xs)
+  safe_chromatogram <- function(ms_data, rt, mz, max_attempts = 10) {
+    for (attempt in seq_len(max_attempts)) {
+      tryCatch(
+        expr = {
+          return(
+            MSnbase::chromatogram(
+              ms_data,
+              rt = rt,
+              mz = mz,
+              BPPARAM = BiocParallel::SerialParam()
+            )
+          )
+        },
+        error = function(e) {
+          if (attempt < max_attempts) {
+            warning(
+              sprintf(
+                "Chromatogram extraction failed (Attempt %d). Retrying in %d seconds. Error: %s",
+                attempt,
+                attempt,
+                conditionMessage(e)
+              )
+            )
+          } else {
+            warning(
+              sprintf(
+                "Chromatogram extraction failed after %d attempts. Skipping. Error: %s",
+                max_attempts,
+                conditionMessage(e)
+              )
+            )
+            return(NULL)
+          }
+        }
+      )
+    }
+  }
   xs |>
-    furrr::future_map(
-      .f = function(x, ms_data, peaks_prelist) {
+    purrr::map(
+      .f = function(x, ms_data, rts, mzs, nrows) {
         p()
         message("CAD Peak: ", x)
-        lapply(
-          X = seq_along(seq_len(
-            nrow(peaks_prelist$list_df_features_with_peaks_long[[x]])
-          )),
-          FUN = function(z, ms_data, peaks_prelist) {
-            # message("CAD Peak: ", x, ", MS feature: ", z)
-            tryCatch(
-              expr = {
-                ms_data |>
-                  MSnbase::chromatogram(rt = peaks_prelist$list_rtr[[x]], mz = peaks_prelist$list_mzr[[x]][[z]])
-              },
-              error = function(e) {
-                message("Going too fast...1 sec")
-                Sys.sleep(1)
-                tryCatch(
-                  expr = {
-                    ms_data |>
-                      MSnbase::chromatogram(rt = peaks_prelist$list_rtr[[x]], mz = peaks_prelist$list_mzr[[x]][[z]])
-                  },
-                  error = function(e) {
-                    message("Going way too fast...2 secs")
-                    Sys.sleep(2)
-                    return(
-                      ms_data |>
-                        MSnbase::chromatogram(rt = peaks_prelist$list_rtr[[x]], mz = peaks_prelist$list_mzr[[x]][[z]])
-                    )
-                  }
-                )
-              }
-            )
-          },
+        safe_chromatogram(
           ms_data = ms_data,
-          peaks_prelist = peaks_prelist
-        )
+          rt = rts[[x]],
+          mz = Reduce(f = rbind, x = mzs[[x]])
+        ) |>
+          transform_ms()
       },
       ms_data = ms_data,
-      peaks_prelist = peaks_prelist
+      rts = rts,
+      mzs = mzs,
+      nrows = nrows
     )
 }

@@ -4,14 +4,18 @@
 \alias{extract_ms_progress}
 \title{Extract MS progress}
 \usage{
-extract_ms_progress(xs, ms_data, peaks_prelist)
+extract_ms_progress(xs, ms_data, rts, mzs, nrows)
 }
 \arguments{
 \item{xs}{XS}
 
 \item{ms_data}{MS Data}
 
-\item{peaks_prelist}{Peaks prelist}
+\item{rts}{RTs}
+
+\item{mzs}{MZs}
+
+\item{dfs}{DFs}
 }
 \value{
 A list of extracted MS peaks
