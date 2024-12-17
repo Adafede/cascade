@@ -126,18 +126,14 @@ process_compare_peaks <- function(file = NULL,
   list_ms_chromatograms <- seq_along(peaks_prelist$list_df_features_with_peaks_long) |>
     extract_ms_progress(
       ms_data = ms_data,
-      peaks_prelist = peaks_prelist
-    ) |>
-    suppressMessages()
-
-  message("transforming ms chromatograms")
-  list_ms_chromatograms_transformed <- list_ms_chromatograms |>
-    purrr::map(
-      .f = transform_ms
+      rts = peaks_prelist$list_rtr,
+      mzs = peaks_prelist$list_mzr,
+      nrows = peaks_prelist$list_df_features_with_peaks_long |>
+        purrr::map(.f = nrow)
     )
 
   message("extracting ms peaks")
-  list_ms_peaks <- list_ms_chromatograms_transformed |>
+  list_ms_peaks <- list_ms_chromatograms |>
     purrr::map(
       .f = extract_ms_peak
     )
