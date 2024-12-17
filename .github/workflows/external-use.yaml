@@ -44,6 +44,10 @@ jobs:
           sudo apt-get update && sudo apt-get install -y --no-install-recommends libcurl4-openssl-dev libfribidi-dev libharfbuzz-dev libnetcdf-dev \
           && sudo apt-get clean \
           && sudo rm -rf /var/lib/apt/lists/*
+      - name: Install dependencies on Windows (zlib needed as zlibbioc was deprecated)
+        if: matrix.os == 'windows-latest'
+        run: |
+          choco install zlib --force
       - name: Install
         run: |
           install.packages("cascade", repos = c("https://adafede.r-universe.dev", "https://bioc.r-universe.dev", "https://cloud.r-project.org"))
