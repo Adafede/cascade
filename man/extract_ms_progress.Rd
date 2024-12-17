@@ -15,7 +15,7 @@ extract_ms_progress(xs, ms_data, rts, mzs, nrows)
 
 \item{mzs}{MZs}
 
-\item{dfs}{DFs}
+\item{nrows}{N rows}
 }
 \value{
 A list of extracted MS peaks
