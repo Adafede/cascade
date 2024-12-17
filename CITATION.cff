@@ -137,7 +137,7 @@ references:
     orcid: https://orcid.org/0000-0003-3315-8114
   year: '2024'
   doi: 10.32614/CRAN.package.data.table
-  version: '>= 1.15.4'
+  version: '>= 1.16.4'
 - type: software
   title: dplyr
   abstract: 'dplyr: A Grammar of Data Manipulation'
@@ -391,7 +391,7 @@ references:
     orcid: https://orcid.org/0000-0002-7579-5165
   year: '2024'
   doi: 10.32614/CRAN.package.progressr
-  version: '>= 0.15.0'
+  version: '>= 0.15.1'
 - type: software
   title: purrr
   abstract: 'purrr: Functional Programming Tools'
@@ -421,6 +421,7 @@ references:
     email: henrikb@braju.com
   year: '2024'
   doi: 10.32614/CRAN.package.R.utils
+  version: '>= 2.12.3'
 - type: software
   title: tibble
   abstract: 'tibble: Simple Data Frames'
@@ -450,7 +451,7 @@ references:
     email: mark.t.fairbanks@gmail.com
   year: '2024'
   doi: 10.32614/CRAN.package.tidytable
-  version: '>= 0.11.1'
+  version: '>= 0.11.2'
 - type: software
   title: tima
   abstract: 'tima: Taxonomically Informed Metabolite Annotation'
