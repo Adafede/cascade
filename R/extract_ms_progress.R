@@ -4,7 +4,7 @@
 #' @param ms_data MS Data
 #' @param rts RTs
 #' @param mzs MZs
-#' @param nrow N rows
+#' @param nrows N rows
 #'
 #' @return A list of extracted MS peaks
 #'
