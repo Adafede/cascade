@@ -38,13 +38,19 @@ jobs:
         with:
           use-public-rspm: true
           Ncpus: ${{ steps.cpu-cores.outputs.count }}
-      - name: Install dependencies on Ubuntu
+      - name: Install dependencies (Linux)
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt-get update && sudo apt-get install -y --no-install-recommends libcurl4-openssl-dev libfribidi-dev libharfbuzz-dev libnetcdf-dev \
           && sudo apt-get clean \
           && sudo rm -rf /var/lib/apt/lists/*
-      - name: Install
+      - name: Install (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          install.packages("cascade", repos = c("https://adafede.r-universe.dev", "https://bioc.r-universe.dev", "https://cloud.r-project.org"), type = "source")
+        shell: Rscript {0}
+      - name: Install (MacOS and Windows)
+        if: matrix.os != 'ubuntu-latest'
         run: |
           install.packages("cascade", repos = c("https://adafede.r-universe.dev", "https://bioc.r-universe.dev", "https://cloud.r-project.org"), type = "binary")
         shell: Rscript {0}
