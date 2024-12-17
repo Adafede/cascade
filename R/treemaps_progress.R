@@ -12,7 +12,7 @@ treemaps_progress <- function(xs,
                               hierarchies) {
   p <- progressr::progressor(along = xs)
   setNames(object = xs, nm = xs) |>
-    furrr::future_map(
+    purrr::map(
       .f = function(x, hierarchies) {
         p()
         if (x != "special") {
@@ -100,7 +100,7 @@ treemaps_progress_no_title <- function(xs,
                                        hierarchies) {
   p <- progressr::progressor(along = xs)
   setNames(object = xs, nm = xs) |>
-    furrr::future_map(
+    purrr::map(
       .f = function(x, hierarchies) {
         p()
         if (x != "special") {

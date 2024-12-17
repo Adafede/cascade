@@ -20,7 +20,7 @@ improve_signals_progress <- function(xs,
                                      time_max = Inf) {
   p <- progressr::progressor(along = xs)
   xs |>
-    furrr::future_map(
+    purrr::map(
       .f = function(x,
                     fourier_components,
                     frequency,

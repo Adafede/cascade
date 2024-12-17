@@ -7,7 +7,7 @@
 #' @examples NULL
 prepare_mz <- function(x) {
   seq_along(seq_len(nrow(x))) |>
-    furrr::future_map(
+    purrr::map(
       .f = function(z) {
         x[z, ] |>
           tidytable::select(mzmin = mz_min, mzmax = mz_max) |>

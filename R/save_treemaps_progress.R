@@ -12,7 +12,7 @@ save_treemaps_progress <- function(xs, type = "treemap") {
     object = xs,
     nm = xs
   ) |>
-    furrr::future_map(
+    purrr::map(
       .f = function(x) {
         p()
         plotly::save_image(

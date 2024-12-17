@@ -66,7 +66,7 @@ preprocess_peaks <- function(detector = "cad",
 
   message("splitting by peak")
   list_df_features_with_peaks_per_peak <- list_df_features_with_peaks |>
-    furrr::future_map(
+    purrr::map(
       .f = function(x) {
         x <- x |>
           tidytable::group_split(peak_id)
@@ -80,20 +80,20 @@ preprocess_peaks <- function(detector = "cad",
 
   message("normalizing chromato")
   list_chromato_with_peak <- list_df_features_with_peaks_long |>
-    furrr::future_map(
+    purrr::map(
       .f = normalize_chromato,
       df_xy = df_xy
     )
 
   message("preparing peaks chromato")
   list_chromato_peaks <- list_chromato_with_peak |>
-    furrr::future_map(
+    purrr::map(
       .f = prepare_peaks
     )
 
   message("preparing rt")
   list_rtr <- list_df_features_with_peaks_long |>
-    furrr::future_map(
+    purrr::map(
       .f = prepare_rt,
       shift = shift
     )

@@ -9,7 +9,7 @@
 tables_progress <- function(xs, structures_classified) {
   p <- progressr::progressor(along = xs)
   xs |>
-    furrr::future_map(
+    purrr::map(
       .f = function(x, structures_classified) {
         p()
         if (nrow(x != 0)) {

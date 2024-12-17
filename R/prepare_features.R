@@ -16,6 +16,7 @@ prepare_features <- function(df, min_intensity, name) {
         rt = "rt",
         mz = "mz",
         area = "area",
+        status = paste0("datafile:", name, ":feature_state"),
         rt_1 = paste0("datafile:", name, ":rt_range:min"),
         rt_2 = paste0("datafile:", name, ":rt_range:max"),
         mz_min = paste0("datafile:", name, ":mz_range:min"),
@@ -24,6 +25,8 @@ prepare_features <- function(df, min_intensity, name) {
         intensity_max = paste0("datafile:", name, ":intensity_range:max")
       )
     )) |>
+    tidytable::filter(status == "DETECTED") |>
+    tidytable::select(-status) |>
     tidytable::mutate(tidytable::across(tidytable::everything(), as.numeric))
 
   message("... keeping features above desired intensity only")

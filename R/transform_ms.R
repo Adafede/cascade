@@ -22,8 +22,8 @@ transform_ms <- function(x) {
   }
   lapply(X = seq_along(x), function(z, min_int = 0.1) {
     data.frame(
-      intensity = x[[z]][1]@intensity,
-      rtime = x[[z]][1]@rtime
+      intensity = x[z, 1]@intensity,
+      rtime = x[z, 1]@rtime
     ) |>
       tidytable::filter(!is.na(intensity)) |>
       tidytable::mutate(intensity = (intensity - custom_min(intensity)) / (custom_max(intensity) -
