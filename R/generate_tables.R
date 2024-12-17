@@ -2,7 +2,7 @@
 #'
 #' @export
 #'
-#' @include check_export_dir
+#' @include check_export_dir.R
 #' @include keep_best_candidates.R
 #' @include load_annotations.R
 #' @include load_features_informed.R
