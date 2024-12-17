@@ -10,7 +10,7 @@
 compare_peaks <- function(x, list_ms_peaks, peaks_prelist) {
   if (length(list_ms_peaks[[x]]) != 0) {
     seq_along(list_ms_peaks[[x]]) |>
-      furrr::future_map(
+      purrr::map(
         .f = function(list_ms_peaks, x, z) {
           if (length(list_ms_peaks[[x]][[z]]) > 1) {
             MSnbase::compareChromatograms(peaks_prelist$list_chromato_peaks[[x]],

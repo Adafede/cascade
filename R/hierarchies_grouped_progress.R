@@ -8,7 +8,7 @@
 hierarchies_grouped_progress <- function(xs) {
   p <- progressr::progressor(along = xs)
   xs |>
-    furrr::future_map(
+    purrr::map(
       .f = function(x) {
         p()
         if (nrow(x) != 0) {
