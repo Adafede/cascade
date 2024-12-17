@@ -121,7 +121,7 @@
       "@type": "SoftwareApplication",
       "identifier": "data.table",
       "name": "data.table",
-      "version": ">= 1.15.4",
+      "version": ">= 1.16.4",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -251,7 +251,7 @@
       "@type": "SoftwareApplication",
       "identifier": "progressr",
       "name": "progressr",
-      "version": ">= 0.15.0",
+      "version": ">= 0.15.1",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -277,6 +277,7 @@
       "@type": "SoftwareApplication",
       "identifier": "R.utils",
       "name": "R.utils",
+      "version": ">= 2.12.3",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -302,7 +303,7 @@
       "@type": "SoftwareApplication",
       "identifier": "tidytable",
       "name": "tidytable",
-      "version": ">= 0.11.1",
+      "version": ">= 0.11.2",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -339,7 +340,7 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteannotation", "chargedaerosoldetector", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
-  "fileSize": "70115.941KB",
+  "fileSize": "70115.953KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
