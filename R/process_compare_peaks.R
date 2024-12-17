@@ -121,7 +121,7 @@ process_compare_peaks <- function(file = NULL,
 
   message("processing ", detector, " peaks")
   message("extracting ms chromatograms (longest step)")
-  message("count approx 1 minute per worker per 100 features (increasing with features number)")
+  message("count approx 1 minute per worker per 1000 features (increasing with features number)")
   message("varies a lot depending on features distribution")
   list_ms_chromatograms <- seq_along(peaks_prelist$list_df_features_with_peaks_long) |>
     extract_ms_progress(
