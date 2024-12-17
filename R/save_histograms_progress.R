@@ -11,7 +11,7 @@ save_histograms_progress <- function(xs) {
     object = xs,
     nm = xs
   ) |>
-    furrr::future_map(
+    purrr::map(
       .f = function(x) {
         p()
         ggplot2::ggsave(

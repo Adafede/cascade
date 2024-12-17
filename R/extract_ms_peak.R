@@ -7,7 +7,7 @@
 #' @examples NULL
 extract_ms_peak <- function(x) {
   seq_along(x) |>
-    furrr::future_map(
+    purrr::map(
       .f = function(z) {
         MSnbase::Chromatogram(
           intensity = x[[z]]$intensity,

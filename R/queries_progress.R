@@ -22,7 +22,7 @@ queries_progress <- function(xs,
                              query_part_4) {
   p <- progressr::progressor(along = xs)
   xs |>
-    furrr::future_map(
+    purrr::map(
       .f = function(x,
                     start,
                     end,
