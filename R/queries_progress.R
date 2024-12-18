@@ -20,9 +20,9 @@ queries_progress <- function(xs,
                              query_part_2,
                              query_part_3,
                              query_part_4) {
-  p <- progressr::progressor(along = xs)
   xs |>
     purrr::map(
+      .progress = TRUE,
       .f = function(x,
                     start,
                     end,
@@ -31,7 +31,6 @@ queries_progress <- function(xs,
                     query_part_2,
                     query_part_3,
                     query_part_4) {
-        p()
         paste0(
           query_part_1,
           x,

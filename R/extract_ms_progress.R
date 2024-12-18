@@ -10,7 +10,6 @@
 #'
 #' @examples NULL
 extract_ms_progress <- function(xs, ms_data, rts, mzs, nrows) {
-  p <- progressr::progressor(along = xs)
   safe_chromatogram <- function(ms_data, rt, mz, max_attempts = 10) {
     for (attempt in seq_len(max_attempts)) {
       tryCatch(
@@ -50,8 +49,8 @@ extract_ms_progress <- function(xs, ms_data, rts, mzs, nrows) {
   }
   xs |>
     purrr::map(
+      .progress = TRUE,
       .f = function(x, ms_data, rts, mzs, nrows) {
-        p()
         message("CAD Peak: ", x)
         safe_chromatogram(
           ms_data = ms_data,

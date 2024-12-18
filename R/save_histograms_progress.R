@@ -6,14 +6,13 @@
 #'
 #' @examples NULL
 save_histograms_progress <- function(xs) {
-  p <- progressr::progressor(along = xs)
   setNames(
     object = xs,
     nm = xs
   ) |>
     purrr::map(
+      .progress = TRUE,
       .f = function(x) {
-        p()
         ggplot2::ggsave(
           plot = histograms[[x]],
           filename = file.path(
