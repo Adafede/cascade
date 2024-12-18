@@ -388,20 +388,6 @@ references:
   doi: 10.32614/CRAN.package.plotly
   version: '>= 4.10.4'
 - type: software
-  title: progressr
-  abstract: 'progressr: An Inclusive, Unifying API for Progress Updates'
-  notes: Imports
-  url: https://progressr.futureverse.org
-  repository: https://CRAN.R-project.org/package=progressr
-  authors:
-  - family-names: Bengtsson
-    given-names: Henrik
-    email: henrikb@braju.com
-    orcid: https://orcid.org/0000-0002-7579-5165
-  year: '2024'
-  doi: 10.32614/CRAN.package.progressr
-  version: '>= 0.15.1'
-- type: software
   title: purrr
   abstract: 'purrr: Functional Programming Tools'
   notes: Imports
@@ -460,7 +446,7 @@ references:
     email: mark.t.fairbanks@gmail.com
   year: '2024'
   doi: 10.32614/CRAN.package.tidytable
-  version: '>= 0.11.2'
+  version: '>= 0.11.1'
 - type: software
   title: tima
   abstract: 'tima: Taxonomically Informed Metabolite Annotation'
