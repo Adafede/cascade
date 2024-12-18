@@ -8,7 +8,7 @@
   "codeRepository": "https://github.com/adafede/cascade",
   "issueTracker": "https://github.com/adafede/cascade/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.0.0.9000",
+  "version": "0.0.0.9001",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -327,7 +327,7 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteannotation", "chargedaerosoldetector", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
-  "fileSize": "70115.474KB",
+  "fileSize": "70115.034KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
