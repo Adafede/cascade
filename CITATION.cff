@@ -9,7 +9,7 @@ type: software
 license: GPL-3.0-or-later
 title: 'cascade: Contextualizing untargeted Annotation with Semi-quantitative Charged
   Aerosol Detection for pertinent characterization of natural Extracts'
-version: 0.0.0.9000
+version: 0.0.0.9001
 abstract: This package provides the infrastructure to perform Automated Composition
   Assessment of Natural Extracts.
 authors:
