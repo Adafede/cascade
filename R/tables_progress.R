@@ -7,11 +7,10 @@
 #'
 #' @examples NULL
 tables_progress <- function(xs, structures_classified) {
-  p <- progressr::progressor(along = xs)
   xs |>
     purrr::map(
+      .progress = TRUE,
       .f = function(x, structures_classified) {
-        p()
         if (nrow(x != 0)) {
           x |>
             tidytable::left_join(structures_classified) |>

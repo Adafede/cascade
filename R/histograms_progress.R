@@ -8,11 +8,10 @@
 #'
 #' @examples NULL
 histograms_progress <- function(xs) {
-  p <- progressr::progressor(along = xs)
   xs |>
     purrr::map(
+      .progress = TRUE,
       .f = function(x) {
-        p()
         plot_histograms(
           dataframe = x,
           label = "Organism"

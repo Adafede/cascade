@@ -6,11 +6,10 @@
 #'
 #' @examples NULL
 hierarchies_progress <- function(xs) {
-  p <- progressr::progressor(along = xs)
   xs |>
     purrr::map(
+      .progress = TRUE,
       .f = function(x) {
-        p()
         if (nrow(x) != 0) {
           prepare_hierarchy(
             dataframe = x |>

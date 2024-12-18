@@ -71,7 +71,7 @@ generate_ids <- function(taxa = c("Swertia", "Kopsia", "Ginkgo"),
 
   message("Converting taxa to QIDs")
   qids <- taxa |>
-    lapply(taxon_name_to_qid)
+    purrr::map(taxon_name_to_qid)
   names(qids) <- taxa
   comparison <- c("Swertia", "Kopsia")
 
@@ -97,11 +97,11 @@ generate_ids <- function(taxa = c("Swertia", "Kopsia", "Ginkgo"),
   tables <- tables_progress(xs = results, structures_classified = structures_classified)
 
   if (no_stereo) {
-    tables <- lapply(tables, make_no_stereo)
+    tables <- purrr::map(tables, make_no_stereo)
   }
 
   if (filter_ms_conditions) {
-    tables <- lapply(tables, make_chromatographiable)
+    tables <- purrr::map(tables, make_chromatographiable)
   }
 
   # tables$SwertiaExp <-
@@ -145,12 +145,12 @@ generate_ids <- function(taxa = c("Swertia", "Kopsia", "Ginkgo"),
 
   if (!is.null(comparison)) {
     message("Generating special comparison")
-    special <- lapply(
-      X = seq_along(comparison),
-      FUN = function(x) {
-        tables[[comparison[[x]]]]
-      }
-    )
+    special <- seq_along(comparison) |>
+      purrr::map(
+        .f = function(x) {
+          tables[[comparison[[x]]]]
+        }
+      )
     hierarchies[["special"]] <- prepare_hierarchy(
       dataframe = dplyr::bind_rows(special) |>
         dplyr::rowwise() |>
@@ -176,10 +176,10 @@ generate_ids <- function(taxa = c("Swertia", "Kopsia", "Ginkgo"),
   }
 
   prepared_plots <- hierarchies |>
-    lapply(prepare_plot)
+    purrr::map(prepare_plot)
 
   plots <- prepared_plots |>
-    lapply(plot_histograms_litt, label = "")
+    purrr::map(plot_histograms_litt, label = "")
 
   message("Generating treemaps")
   treemaps <-

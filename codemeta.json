@@ -249,19 +249,6 @@
     },
     "14": {
       "@type": "SoftwareApplication",
-      "identifier": "progressr",
-      "name": "progressr",
-      "version": ">= 0.15.1",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=progressr"
-    },
-    "15": {
-      "@type": "SoftwareApplication",
       "identifier": "purrr",
       "name": "purrr",
       "version": ">= 1.0.2",
@@ -273,7 +260,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=purrr"
     },
-    "16": {
+    "15": {
       "@type": "SoftwareApplication",
       "identifier": "R.utils",
       "name": "R.utils",
@@ -286,7 +273,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=R.utils"
     },
-    "17": {
+    "16": {
       "@type": "SoftwareApplication",
       "identifier": "tibble",
       "name": "tibble",
@@ -299,11 +286,11 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tibble"
     },
-    "18": {
+    "17": {
       "@type": "SoftwareApplication",
       "identifier": "tidytable",
       "name": "tidytable",
-      "version": ">= 0.11.2",
+      "version": ">= 0.11.1",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -312,19 +299,19 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tidytable"
     },
-    "19": {
+    "18": {
       "@type": "SoftwareApplication",
       "identifier": "tima",
       "name": "tima",
       "version": ">= 2.11.0",
       "sameAs": "https://github.com/taxonomicallyinformedannotation/tima"
     },
-    "20": {
+    "19": {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils"
     },
-    "21": {
+    "20": {
       "@type": "SoftwareApplication",
       "identifier": "WikidataQueryServiceR",
       "name": "WikidataQueryServiceR",
@@ -340,7 +327,7 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteannotation", "chargedaerosoldetector", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
-  "fileSize": "70116.12KB",
+  "fileSize": "70115.474KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",

@@ -18,16 +18,15 @@ improve_signals_progress <- function(xs,
                                      resample = 1,
                                      time_min = 0,
                                      time_max = Inf) {
-  p <- progressr::progressor(along = xs)
   xs |>
     purrr::map(
+      .progress = TRUE,
       .f = function(x,
                     fourier_components,
                     frequency,
                     resample,
                     time_min,
                     time_max) {
-        p()
         improve_signal(
           df = x |>
             tidytable::select(time, intensity),

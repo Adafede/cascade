@@ -6,12 +6,10 @@
 #'
 #' @examples NULL
 wiki_progress <- function(xs) {
-  p <- progressr::progressor(along = xs)
-  lapply(
-    X = xs,
-    FUN = function(x) {
-      p()
-      WikidataQueryServiceR::query_wikidata(x)
-    }
-  )
+  xs |>
+    purrr::map(
+      .f = function(x) {
+        WikidataQueryServiceR::query_wikidata(x)
+      }
+    )
 }
