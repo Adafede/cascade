@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 [![R-Universe](https://adafede.r-universe.dev/badges/cascade)](https://adafede.r-universe.dev/cascade)
 [![Codecov test coverage](https://codecov.io/gh/adafede/cascade/graph/badge.svg)](https://app.codecov.io/gh/adafede/cascade)
 <!-- [![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://hub.docker.com/r/adafede/cascade/) -->
-<!-- [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5797920.svg)](https://doi.org/10.5281/zenodo.5797920) -->
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14515158.svg)](https://doi.org/10.5281/zenodo.14515158)
 <!-- badges: end -->
 
 **C**ontextualizing untargeted **A**nnotation with **S**emi-quantitative **C**harged **A**erosol **D**etection for pertinent characterization of natural **E**xtracts.
