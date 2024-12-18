@@ -10,11 +10,10 @@
 treemaps_progress <- function(xs,
                               type = "treemap",
                               hierarchies) {
-  p <- progressr::progressor(along = xs)
   setNames(object = xs, nm = xs) |>
     purrr::map(
+      .progress = TRUE,
       .f = function(x, hierarchies) {
-        p()
         if (x != "special") {
           plotly::plot_ly(
             data = hierarchies[[x]],
@@ -98,11 +97,9 @@ treemaps_progress <- function(xs,
 treemaps_progress_no_title <- function(xs,
                                        type = "treemap",
                                        hierarchies) {
-  p <- progressr::progressor(along = xs)
   setNames(object = xs, nm = xs) |>
     purrr::map(
       .f = function(x, hierarchies) {
-        p()
         if (x != "special") {
           plotly::plot_ly(
             data = hierarchies[[x]],

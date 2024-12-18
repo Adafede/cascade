@@ -7,14 +7,13 @@
 #'
 #' @examples NULL
 save_treemaps_progress <- function(xs, type = "treemap") {
-  p <- progressr::progressor(along = xs)
   setNames(
     object = xs,
     nm = xs
   ) |>
     purrr::map(
+      .progress = TRUE,
       .f = function(x) {
-        p()
         plotly::save_image(
           p = switch(type,
             "treemap" = treemaps,

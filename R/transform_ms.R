@@ -20,7 +20,7 @@ transform_ms <- function(x) {
       Inf
     }
   }
-  lapply(X = seq_along(x), function(z, min_int = 0.1) {
+  purrr::map(.x = seq_along(x), .f = function(z, min_int = 0.1) {
     data.frame(
       intensity = x[z, 1]@intensity,
       rtime = x[z, 1]@rtime

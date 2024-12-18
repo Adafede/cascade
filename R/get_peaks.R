@@ -152,8 +152,8 @@ get_peaks <- function(chrom_list,
   }
   peaks <- list()
 
-  result <- lapply(seq_along(chrom_list), function(sample) {
-    suppressWarnings(ptable <- lapply(lambdas, function(lambda) {
+  result <- purrr::map(seq_along(chrom_list), function(sample) {
+    suppressWarnings(ptable <- purrr::map(lambdas, function(lambda) {
       fit_peaks <- function(x,
                             lambda,
                             pos = NULL,
