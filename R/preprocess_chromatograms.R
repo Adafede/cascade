@@ -31,7 +31,7 @@ preprocess_chromatograms <- function(detector = "cad",
   message("preprocessing ", detector, " chromatograms")
   message("harmonizing names")
   chromatograms_original <-
-    purrr::map(list, FUN = change_intensity_name, name = signal_name)
+    purrr::map(.x = list, .f = change_intensity_name, name = signal_name)
 
   message("improving chromatograms")
   chromatograms_improved <-
@@ -62,7 +62,7 @@ preprocess_chromatograms <- function(detector = "cad",
 
   message("baselining chromatograms")
   chromatograms_baselined <- chromatograms_improved |>
-    purrr::map(FUN = baseline_chromatogram)
+    purrr::map(.f = baseline_chromatogram)
 
   chromatograms_baselined_long <-
     tidytable::bind_rows(chromatograms_baselined, .id = "id") |>
