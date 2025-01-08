@@ -11,18 +11,19 @@ format_gt <- function(table,
                       title = "",
                       subtitle = "") {
   pretty_table <- table |>
-    dplyr::mutate(
-      structure = purrr::map(structure, ~ htmltools::a(href = .x, .x)),
-      structure = purrr::map(structure, ~ gt::html(as.character(.x)))
+    tidytable::mutate(
+      structure = tidytable::map(structure, ~ htmltools::a(href = .x, .x)),
+      structure = tidytable::map(structure, ~ gt::html(as.character(.x)))
     ) |>
-    dplyr::mutate(
-      taxa = purrr::map(taxa, ~ htmltools::a(href = .x, .x)),
-      taxa = purrr::map(taxa, ~ gt::html(as.character(.x)))
+    tidytable::mutate(
+      taxa = tidytable::map(taxa, ~ htmltools::a(href = .x, .x)),
+      taxa = tidytable::map(taxa, ~ gt::html(as.character(.x)))
     ) |>
-    dplyr::mutate(
-      references = purrr::map(references, ~ htmltools::a(href = .x, .x)),
-      references = purrr::map(references, ~ gt::html(as.character(.x)))
+    tidytable::mutate(
+      references = tidytable::map(references, ~ htmltools::a(href = .x, .x)),
+      references = tidytable::map(references, ~ gt::html(as.character(.x)))
     ) |>
+    data.frame() |>
     gt::gt() |>
     # cols_width(
     #   everything() ~ px(200)
