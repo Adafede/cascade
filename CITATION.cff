@@ -77,7 +77,7 @@ references:
   institution:
     name: R Foundation for Statistical Computing
     address: Vienna, Austria
-  year: '2024'
+  year: '2025'
   version: '>= 4.3.0'
 - type: software
   title: baseline
@@ -92,7 +92,7 @@ references:
     orcid: https://orcid.org/0000-0001-6468-9423
   - family-names: Mevik
     given-names: Bjørn-Helge
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.baseline
   version: '>= 1.3.5'
 - type: software
@@ -117,7 +117,7 @@ references:
     email: rct@thompsonclan.org
   - family-names: Turaga
     given-names: Nitesh
-  year: '2024'
+  year: '2025'
   doi: 10.18129/B9.bioc.BiocParallel
   version: '>= 1.36.0'
 - type: software
@@ -129,7 +129,7 @@ references:
   - family-names: Tuszynski
     given-names: Jarek
     email: jaroslaw.w.tuszynski@saic.com
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.caTools
   version: '>= 1.18.3'
 - type: software
@@ -160,7 +160,7 @@ references:
   - family-names: Schwendinger
     given-names: Benjamin
     orcid: https://orcid.org/0000-0003-3315-8114
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.data.table
   version: '>= 1.16.4'
 - type: software
@@ -186,7 +186,7 @@ references:
     given-names: Davis
     email: davis@posit.co
     orcid: https://orcid.org/0000-0003-4777-038X
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.dplyr
   version: '>= 1.1.4'
 - type: software
@@ -199,7 +199,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@rstudio.com
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.forcats
   version: '>= 1.0.0'
 - type: software
@@ -240,7 +240,7 @@ references:
     given-names: Teun
     name-particle: van den
     orcid: https://orcid.org/0000-0002-9335-7468
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.ggplot2
   version: '>= 3.5.1'
 - type: software
@@ -279,7 +279,7 @@ references:
     orcid: https://orcid.org/0000-0002-4001-8358
   - family-names: Roy
     given-names: Olivier
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.gt
   version: '>= 0.11.1'
 - type: software
@@ -309,7 +309,7 @@ references:
     email: yihui@posit.co
   - family-names: Allen
     given-names: Jeff
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.htmltools
   version: '>= 0.5.8.1'
 - type: software
@@ -331,7 +331,7 @@ references:
     given-names: Sebastian
     email: mail@sebastiangibb.de
     orcid: https://orcid.org/0000-0001-7406-4443
-  year: '2024'
+  year: '2025'
   doi: 10.18129/B9.bioc.MSnbase
   version: '>= 2.28.1'
 - type: software
@@ -351,7 +351,7 @@ references:
   - family-names: Kou
     given-names: Qiakng
     email: qkou@umail.iu.edu
-  year: '2024'
+  year: '2025'
   doi: 10.18129/B9.bioc.mzR
   version: '>= 2.36.0'
 - type: software
@@ -384,7 +384,7 @@ references:
   - family-names: Despouy
     given-names: Pedro
     email: pedro@plot.ly
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.plotly
   version: '>= 4.10.4'
 - type: software
@@ -401,7 +401,7 @@ references:
   - family-names: Henry
     given-names: Lionel
     email: lionel@rstudio.com
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.purrr
   version: '>= 1.0.2'
 - type: software
@@ -414,7 +414,7 @@ references:
   - family-names: Bengtsson
     given-names: Henrik
     email: henrikb@braju.com
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.R.utils
   version: '>= 2.12.3'
 - type: software
@@ -431,7 +431,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@rstudio.com
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.tibble
   version: '>= 3.2.1'
 - type: software
@@ -444,9 +444,9 @@ references:
   - family-names: Fairbanks
     given-names: Mark
     email: mark.t.fairbanks@gmail.com
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.tidytable
-  version: '>= 0.11.1'
+  version: '>= 0.11.2'
 - type: software
   title: tima
   abstract: 'tima: Taxonomically Informed Metabolite Annotation'
@@ -458,7 +458,7 @@ references:
     given-names: Adriano
     email: adafede@gmail.com
     orcid: https://orcid.org/0000-0003-0443-9902
-  year: '2024'
+  year: '2025'
   version: '>= 2.11.0'
 - type: software
   title: utils
@@ -469,7 +469,7 @@ references:
   institution:
     name: R Foundation for Statistical Computing
     address: Vienna, Austria
-  year: '2024'
+  year: '2025'
 - type: software
   title: WikidataQueryServiceR
   abstract: 'WikidataQueryServiceR: API Client Library for ''Wikidata Query Service'''
@@ -480,7 +480,7 @@ references:
   - family-names: Popov
     given-names: Mikhail
     email: mikhail@wikimedia.org
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.WikidataQueryServiceR
   version: '>= 1.0.0'
 - type: software
@@ -498,7 +498,7 @@ references:
     given-names: Marcel
     email: marcel.ramos@sph.cuny.edu
     orcid: https://orcid.org/0000-0002-3242-0582
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.BiocManager
 - type: software
   title: knitr
@@ -511,7 +511,7 @@ references:
     given-names: Yihui
     email: xie@yihui.name
     orcid: https://orcid.org/0000-0003-0645-5666
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.knitr
 - type: software
   title: lifecycle
@@ -527,7 +527,7 @@ references:
     given-names: Hadley
     email: hadley@posit.co
     orcid: https://orcid.org/0000-0003-4757-117X
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.lifecycle
 - type: software
   title: testthat
@@ -539,7 +539,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@posit.co
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.testthat
   version: '>= 3.0.0'
 
