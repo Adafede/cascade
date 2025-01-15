@@ -185,7 +185,7 @@ plot_results_2 <- function(list) {
       ignore.case = TRUE
     )) |>
     tidytable::group_by(parents, ids, labels, species, sample) |>
-    tidytable::summarise(values = sum(values))
+    tidytable::summarize(values = sum(values))
 
   message("... on confident")
   # table_taxo_maj_cor_conf_signal <-
@@ -340,7 +340,7 @@ plot_results_2 <- function(list) {
   # }
 
   # sunburst_signal_based_pos <- table_taxo_maj_cor_signal |>
-  #   dplyr::filter(grepl(
+  #   tidytable::filter(grepl(
   #     pattern = "_pos",
   #     x = sample,
   #     ignore.case = TRUE
@@ -349,7 +349,7 @@ plot_results_2 <- function(list) {
   #   plotly::layout(colorway = sunburst_microshades_grey_signal_pos)
 
   # sunburst_signal_based_neg <- table_taxo_maj_cor_signal |>
-  #   dplyr::filter(grepl(
+  #   tidytable::filter(grepl(
   #     pattern = "_neg",
   #     x = sample,
   #     ignore.case = TRUE
@@ -362,7 +362,7 @@ plot_results_2 <- function(list) {
     plotly::layout(colorway = sunburst_microshades_grey_signal_duo)
 
   # sunburst_ms_based_pos <- table_taxo_maj_cor_ms |>
-  #   dplyr::filter(grepl(
+  #   tidytable::filter(grepl(
   #     pattern = "_pos",
   #     x = sample,
   #     ignore.case = TRUE
@@ -371,7 +371,7 @@ plot_results_2 <- function(list) {
   #   plotly::layout(colorway = sunburst_microshades_grey_ms_pos)
 
   # sunburst_ms_based_neg <- table_taxo_maj_cor_ms |>
-  #   dplyr::filter(grepl(
+  #   tidytable::filter(grepl(
   #     pattern = "_neg",
   #     x = sample,
   #     ignore.case = TRUE

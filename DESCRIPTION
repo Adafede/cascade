@@ -19,7 +19,6 @@ Imports:
     BiocParallel (>= 1.36.0),
     caTools (>= 1.18.3),
     data.table (>= 1.16.4),
-    dplyr (>= 1.1.4),
     forcats (>= 1.0.0),
     ggplot2 (>= 3.5.1),
     gt (>= 0.11.1),

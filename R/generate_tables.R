@@ -93,7 +93,7 @@ generate_tables <- function(annotations = NULL,
 
   if (exists("tables_peaks_neg")) {
     table_peaks <- table_peaks |>
-      dplyr::bind_rows(table_peaks_neg)
+      tidytable::bind_rows(table_peaks_neg)
   }
 
   data.table::setkey(table_peaks, peak_rt_min, peak_rt_max)
@@ -176,20 +176,20 @@ generate_tables <- function(annotations = NULL,
     tidytable::mutate(reference = paste(reference, collapse = "; ")) |>
     tidytable::mutate(Structure = URLencode(smiles_no_stereo)) |>
     tidytable::mutate(
-      reference = ifelse(
-        test = reference == "NA",
-        yes = NA,
-        no = reference
+      reference = tidytable::if_else(
+        condition = reference == "NA",
+        true = NA,
+        false = reference
       ),
-      Structure = ifelse(
-        test = Structure == "NA",
-        yes = "",
-        no = Structure
+      Structure = tidytable::if_else(
+        condition = Structure == "NA",
+        true = "",
+        false = Structure
       ),
-      score_final = ifelse(
-        test = score_final > 1,
-        yes = as.character(">1.00"),
-        no = as.character(score_final)
+      score_final = tidytable::if_else(
+        condition = score_final > 1,
+        true = as.character(">1.00"),
+        false = as.character(score_final)
       )
     ) |>
     tidytable::ungroup() |>

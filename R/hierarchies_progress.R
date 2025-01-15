@@ -1,11 +1,15 @@
 #' Hierarchies Progress
 #'
 #' @param xs XS
+#' @param comparison Comparison
 #'
 #' @return A list of hierarchies
 #'
 #' @examples NULL
-hierarchies_progress <- function(xs) {
+hierarchies_progress <- function(xs, comparison) {
+  if (comparison |> is.null()) {
+    comparison <- NA
+  }
   xs |>
     purrr::map(
       .progress = TRUE,
@@ -13,28 +17,29 @@ hierarchies_progress <- function(xs) {
         if (nrow(x) != 0) {
           prepare_hierarchy(
             dataframe = x |>
-              dplyr::mutate(
+              tidytable::mutate(
                 best_candidate_1 = chemical_pathway,
                 best_candidate_2 = chemical_superclass,
-                best_candidate_3 = chemical_class,
-                organism = ifelse(
-                  test = grepl(pattern = "\\W+", x = i),
-                  yes = taxaLabels,
-                  no = gsub(
-                    pattern = " .*",
-                    replacement = "",
-                    x = taxaLabels
-                  )
+                best_candidate_3 = chemical_class
+              ) |>
+              tidytable::mutate_rowwise(
+                organism = tidytable::if_else(
+                  condition = i |>
+                    grepl(pattern = "\\W+") |>
+                    all(),
+                  true = taxaLabels,
+                  false = taxaLabels |>
+                    gsub(pattern = " .*", replacement = ""),
                 )
               ) |>
-              dplyr::mutate(sample = organism, species = organism) |>
-              dplyr::select(-taxa, -taxaLabels, -references, -referencesLabels) |>
-              dplyr::distinct(),
+              tidytable::mutate(sample = organism, species = organism) |>
+              tidytable::select(-taxa, -taxaLabels, -references, -referencesLabels) |>
+              tidytable::distinct(),
             type = "literature"
           )
         } else {
           data.frame() |>
-            dplyr::mutate(
+            tidytable::mutate(
               parents = NA,
               ids = NA,
               labels = NA,
@@ -42,7 +47,7 @@ hierarchies_progress <- function(xs) {
               species = NA,
               values = 0
             ) |>
-            dplyr::mutate_if(is.logical, as.character)
+            tidytable::mutate(tidytable::across(.cols = tidytable::where(is.logical), .fns = as.character))
         }
       }
     )

@@ -120,38 +120,38 @@ prepare_comparison <- function(features_informed = NULL,
   message("keeping multiple features only if none was reported in the species")
   peaks_maj_precor_taxo <- peaks_maj_precor |>
     tidytable::rowwise() |>
-    tidytable::mutate(taxo = ifelse(
-      test = grepl(pattern = best_candidate_organism, x = species),
-      yes = 1,
-      no = 0
+    tidytable::mutate(taxo = tidytable::if_else(
+      condition = grepl(pattern = best_candidate_organism, x = species),
+      true = 1,
+      false = 0
     )) |>
-    tidytable::mutate(taxo = ifelse(
-      test = is.na(taxo),
-      yes = 0,
-      no = taxo
+    tidytable::mutate(taxo = tidytable::if_else(
+      condition = is.na(taxo),
+      true = 0,
+      false = taxo
     )) |>
-    tidytable::mutate(taxo_2 = ifelse(
-      test = best_candidate_organism %in% species,
-      yes = 1,
-      no = 0
+    tidytable::mutate(taxo_2 = tidytable::if_else(
+      condition = best_candidate_organism %in% species,
+      true = 1,
+      false = 0
     )) |>
     tidytable::group_by(sample, peak_id) |> ## TODO switch to ID if needed
     tidytable::mutate(sum = sum(taxo)) |>
     tidytable::mutate(sum_2 = sum(taxo_2)) |>
-    tidytable::mutate(keep = ifelse(
-      test = taxo_2 == 1,
-      yes = "Y",
-      no = ifelse(
-        test = taxo == 1,
-        yes = ifelse(
-          test = sum != sum_2 & sum_2 == 0,
-          yes = "Y",
-          no = "N"
+    tidytable::mutate(keep = tidytable::if_else(
+      condition = taxo_2 == 1,
+      true = "Y",
+      false = tidytable::if_else(
+        condition = taxo == 1,
+        true = tidytable::if_else(
+          condition = sum != sum_2 & sum_2 == 0,
+          true = "Y",
+          false = "N"
         ),
-        no = ifelse(
-          test = sum == 0,
-          yes = "Y",
-          no = "N"
+        false = tidytable::if_else(
+          condition = sum == 0,
+          true = "Y",
+          false = "N"
         )
       )
     )) |>

@@ -11,7 +11,13 @@ make_other <- function(dataframe, value = "peak_area") {
     tidytable::group_by(best_candidate_1, best_candidate_2) |>
     tidytable::mutate(new = sum(!!as.name(value))) |>
     tidytable::group_by(best_candidate_1) |>
-    tidytable::slice_max(new, n = 4, with_ties = FALSE) |>
+    ## COMMENT replacement because not working
+    tidytable::arrange(tidytable::desc(new)) |>
+    tidytable::mutate(row_number = tidytable::row_number(), .by = best_candidate_1) |>
+    tidytable::filter(row_number <= 4L) |>
+    tidytable::select(-row_number) |>
+    ## COMMENT replacement because not working
+    # tidytable::slice_max(new, n = 4L, with_ties = FALSE) |>
     tidytable::ungroup() |>
     tidytable::select(
       smiles_2D,

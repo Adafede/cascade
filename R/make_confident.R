@@ -9,20 +9,20 @@
 make_confident <- function(df, score) {
   df |>
     tidytable::mutate(
-      best_candidate_1 = ifelse(
-        test = as.numeric(score_final) >= score,
-        yes = best_candidate_1,
-        no = "notConfident"
+      best_candidate_1 = tidytable::if_else(
+        condition = as.numeric(score_final) >= score,
+        true = best_candidate_1,
+        false = "notConfident"
       ),
-      best_candidate_2 = ifelse(
-        test = as.numeric(score_final) >= score,
-        yes = best_candidate_2,
-        no = "notConfident notConfident"
+      best_candidate_2 = tidytable::if_else(
+        condition = as.numeric(score_final) >= score,
+        true = best_candidate_2,
+        false = "notConfident notConfident"
       ),
-      best_candidate_3 = ifelse(
-        test = as.numeric(score_final) >= score,
-        yes = best_candidate_3,
-        no = "notConfident notConfident notConfident"
+      best_candidate_3 = tidytable::if_else(
+        condition = as.numeric(score_final) >= score,
+        true = best_candidate_3,
+        false = "notConfident notConfident notConfident"
       )
     )
 }

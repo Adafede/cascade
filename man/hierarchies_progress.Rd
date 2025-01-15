@@ -4,10 +4,12 @@
 \alias{hierarchies_progress}
 \title{Hierarchies Progress}
 \usage{
-hierarchies_progress(xs)
+hierarchies_progress(xs, comparison)
 }
 \arguments{
 \item{xs}{XS}
+
+\item{comparison}{Comparison}
 }
 \value{
 A list of hierarchies

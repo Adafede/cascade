@@ -6,7 +6,7 @@
 \usage{
 generate_ids(
   taxa = c("Swertia", "Kopsia", "Ginkgo"),
-  comparison = c("Swertia", "Kopsia"),
+  comparison = NULL,
   no_stereo = TRUE,
   filter_ms_conditions = TRUE,
   start = "0",

@@ -29,7 +29,8 @@ treemaps_progress <- function(xs,
             plotly::layout(
               colorway = microshades_colors,
               title = paste(x, "(", nrow(
-                tables[[x]] |> tidytable::distinct(structure)
+                tables[[x]] |>
+                  tidytable::distinct(structure)
               ), ")"),
               margin = list(t = 40)
             )
