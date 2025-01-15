@@ -30,7 +30,7 @@
 #' generate_ids()
 #' }
 generate_ids <- function(taxa = c("Swertia", "Kopsia", "Ginkgo"),
-                         comparison = c("Swertia", "Kopsia"),
+                         comparison = NULL,
                          no_stereo = TRUE,
                          filter_ms_conditions = TRUE,
                          start = "0",
@@ -90,7 +90,9 @@ generate_ids <- function(taxa = c("Swertia", "Kopsia", "Ginkgo"),
   results <- wiki_progress(xs = queries)
 
   message("Removing empty results")
-  results <- purrr::keep(results, ~ nrow(.) > 0)
+  results <- purrr::keep(results, function(result) {
+    nrow(result) > 0
+  })
 
   message("Cleaning tables and adding columns")
   tables <- tables_progress(xs = results, structures_classified = structures_classified)
@@ -103,33 +105,10 @@ generate_ids <- function(taxa = c("Swertia", "Kopsia", "Ginkgo"),
     tables <- purrr::map(tables, make_chromatographiable)
   }
 
-  # tables$SwertiaExp <-
-  #   readr::read_tsv("data/paper/prettyTable.tsv") |>
-  #   dplyr::select(
-  #     structure = Structure,
-  #     chemical_pathway = `Chemical Pathway`,
-  #     chemical_superclass = `Chemical Superclass`,
-  #     chemical_class = `Chemical Class`,
-  #     n = `Peak Area [%]`
-  #   ) |>
-  #   dplyr::mutate(
-  #     structureLabel = "bla",
-  #     structureImage = "bla",
-  #     taxaLabels = "SwertiaExp",
-  #     taxa = "SwertiaExp",
-  #     referencesLabels = "bla",
-  #     references = "bla",
-  #     structure_exact_mass = 0,
-  #     structure_xlop = 0,
-  #   ) |>
-  #   dplyr::rowwise() |>
-  #   dplyr::slice(rep(1:dplyr::n(), each = n * 100)) |>
-  #   dplyr::filter(!is.na(structure))
-
   message("Generating chemical hierarchies...")
   message("... for single taxa")
   hierarchies_simple <-
-    hierarchies_progress(tables)
+    hierarchies_progress(tables, comparison = comparison)
   message("... for grouped taxa")
   hierarchies_grouped <- hierarchies_grouped_progress(xs = tables)
   message("... combining")
@@ -151,25 +130,27 @@ generate_ids <- function(taxa = c("Swertia", "Kopsia", "Ginkgo"),
         }
       )
     hierarchies[["special"]] <- prepare_hierarchy(
-      dataframe = dplyr::bind_rows(special) |>
-        dplyr::rowwise() |>
-        dplyr::mutate(
+      dataframe = tidytable::bind_rows(special) |>
+        tidytable::rowwise() |>
+        tidytable::mutate(
           best_candidate_1 = chemical_pathway,
           best_candidate_2 = chemical_superclass,
           best_candidate_3 = chemical_class,
-          organism = ifelse(
-            test = all(grepl(pattern = "\\W+", x = comparison)),
-            yes = taxaLabels,
-            no = gsub(
-              pattern = " .*",
-              replacement = "",
-              x = taxaLabels
-            )
+          organism = tidytable::if_else(
+            condition = comparison |>
+              grepl(pattern = "\\W+") |>
+              all(),
+            true = taxaLabels,
+            false = taxaLabels |>
+              gsub(
+                pattern = " .*",
+                replacement = ""
+              )
           )
         ) |>
-        dplyr::mutate(sample = organism, species = organism) |>
-        dplyr::select(-taxa, -taxaLabels, -references, -referencesLabels) |>
-        dplyr::distinct(),
+        tidytable::mutate(sample = organism, species = organism) |>
+        tidytable::select(-taxa, -taxaLabels, -references, -referencesLabels) |>
+        tidytable::distinct(),
       type = "literature"
     )
   }
