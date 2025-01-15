@@ -9,12 +9,12 @@
 #' @examples NULL
 keep_best_candidates <- function(df) {
   df |>
-    dplyr::mutate_all(list(~ gsub(
+    tidytable::mutate(tidytable::across(.cols = tidytable::everything(), .fns = ~ gsub(
       pattern = "\\|.*",
       replacement = "",
       x = .x
     ))) |>
-    dplyr::mutate(
+    tidytable::mutate(
       best_candidate_1 = gsub(
         pattern = " or .*",
         replacement = "",
@@ -31,7 +31,7 @@ keep_best_candidates <- function(df) {
         x = candidate_structure_tax_npc_03cla
       )
     ) |>
-    dplyr::distinct(
+    tidytable::distinct(
       feature_id,
       mz = feature_mz,
       rt = feature_rt,
@@ -53,36 +53,36 @@ keep_best_candidates <- function(df) {
       best_candidate_3,
       mode
     ) |>
-    dplyr::mutate_all(list(~ y_as_na(x = ., y = ""))) |>
-    dplyr::mutate(
-      best_candidate_1 = dplyr::if_else(
+    tidytable::mutate(tidytable::across(.cols = tidytable::everything(), .fns = ~ y_as_na(x = ., y = ""))) |>
+    tidytable::mutate(
+      best_candidate_1 = tidytable::if_else(
         condition = is.na(smiles_2D),
         true = "notAnnotated",
         false = best_candidate_1
       ),
-      best_candidate_2 = dplyr::if_else(
+      best_candidate_2 = tidytable::if_else(
         condition = is.na(smiles_2D),
         true = paste(best_candidate_1, "notAnnotated"),
         false = best_candidate_2
       ),
-      best_candidate_3 = dplyr::if_else(
+      best_candidate_3 = tidytable::if_else(
         condition = is.na(smiles_2D),
         true = paste(best_candidate_2, "notAnnotated"),
         false = best_candidate_3
       ),
-      best_candidate_1 = dplyr::if_else(
+      best_candidate_1 = tidytable::if_else(
         condition = !is.na(smiles_2D) &
           is.na(best_candidate_1),
         true = "notClassified",
         false = best_candidate_1
       ),
-      best_candidate_2 = dplyr::if_else(
+      best_candidate_2 = tidytable::if_else(
         condition = !is.na(smiles_2D) &
           is.na(best_candidate_2),
         true = paste(best_candidate_1, "notClassified"),
         false = best_candidate_2
       ),
-      best_candidate_3 = dplyr::if_else(
+      best_candidate_3 = tidytable::if_else(
         condition = !is.na(smiles_2D) &
           is.na(best_candidate_3),
         true = paste(best_candidate_2, "notClassified"),

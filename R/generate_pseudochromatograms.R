@@ -90,8 +90,8 @@ generate_pseudochromatograms <- function(annotations = NULL,
   message("keeping only best candidates above desired threshold")
   candidates_confident <- annotation_table |>
     keep_best_candidates() |>
-    dplyr::mutate(species = organism) |>
-    dplyr::mutate(feature_id = as.numeric(feature_id)) |>
+    tidytable::mutate(species = organism) |>
+    tidytable::mutate(feature_id = as.numeric(feature_id)) |>
     make_confident(score = min_confidence)
 
   message("loading compared peaks")
