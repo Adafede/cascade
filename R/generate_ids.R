@@ -73,7 +73,6 @@ generate_ids <- function(taxa = c("Swertia", "Kopsia", "Ginkgo"),
   qids <- taxa |>
     purrr::map(taxon_name_to_qid)
   names(qids) <- taxa
-  comparison <- c("Swertia", "Kopsia")
 
   message("Building queries")
   queries <- queries_progress(
