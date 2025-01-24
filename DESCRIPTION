@@ -2,7 +2,10 @@ Package: cascade
 Title: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts
 Version: 0.0.0.9001
 Authors@R: c(
-    person("Adriano", "Rutz", , "adafede@gmail.com", role = c("aut", "cre"),
+    person(given = "Adriano",
+           family = "Rutz",
+           email = "adafede@gmail.com",
+           role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-0443-9902"))
   )
 Maintainer: Adriano Rutz <adafede@gmail.com>
