@@ -119,7 +119,7 @@ references:
     given-names: Nitesh
   year: '2025'
   doi: 10.18129/B9.bioc.BiocParallel
-  version: '>= 1.40.0'
+  version: '>= 1.36.0'
 - type: software
   title: caTools
   abstract: 'caTools: Tools: Moving Window Statistics, GIF, Base64, ROC AUC, etc'
@@ -307,7 +307,7 @@ references:
     orcid: https://orcid.org/0000-0001-7406-4443
   year: '2025'
   doi: 10.18129/B9.bioc.MSnbase
-  version: '>= 2.32.0'
+  version: '>= 2.28.1'
 - type: software
   title: mzR
   abstract: 'mzR: parser for netCDF, mzXML and mzML and mzIdentML files (mass spectrometry
@@ -327,7 +327,7 @@ references:
     email: qkou@umail.iu.edu
   year: '2025'
   doi: 10.18129/B9.bioc.mzR
-  version: '>= 2.40.0'
+  version: '>= 2.36.0'
 - type: software
   title: plotly
   abstract: 'plotly: Create Interactive Web Graphics via ''plotly.js'''
@@ -433,7 +433,7 @@ references:
     email: adafede@gmail.com
     orcid: https://orcid.org/0000-0003-0443-9902
   year: '2025'
-  version: '>= 2.11.0'
+  version: '>= 2.11.1'
 - type: software
   title: utils
   abstract: 'R: A Language and Environment for Statistical Computing'
