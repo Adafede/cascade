@@ -290,7 +290,7 @@
       "@type": "SoftwareApplication",
       "identifier": "tima",
       "name": "tima",
-      "version": ">= 2.11.0",
+      "version": ">= 2.11.1",
       "sameAs": "https://github.com/taxonomicallyinformedannotation/tima"
     },
     "18": {
@@ -314,7 +314,7 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteannotation", "chargedaerosoldetector", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
-  "fileSize": "70116.297KB",
+  "fileSize": "163099.983KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
