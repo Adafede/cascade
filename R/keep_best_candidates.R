@@ -36,7 +36,7 @@ keep_best_candidates <- function(df) {
       mz = feature_mz,
       rt = feature_rt,
       smiles_2D = candidate_structure_smiles_no_stereo,
-      inchikey_2D = candidate_structure_inchikey_no_stereo,
+      inchikey_2D = candidate_structure_inchikey_connectivity_layer,
       molecular_formula = candidate_structure_molecular_formula,
       score_biological,
       score_chemical,
