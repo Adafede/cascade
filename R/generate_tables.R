@@ -112,7 +112,7 @@ generate_tables <- function(annotations = NULL,
       best_candidate_3,
       score_final,
       best_candidate_organism,
-      inchikey_no_stereo = inchikey_2D
+      inchikey_connectivity_layer = inchikey_2D
     )
 
   data.table::setkey(table_processed, peak_rt_min, peak_rt_max)
@@ -147,7 +147,7 @@ generate_tables <- function(annotations = NULL,
       best_candidate_3,
       score_final,
       best_candidate_organism,
-      inchikey_no_stereo
+      inchikey_connectivity_layer
     ) |>
     tidytable::mutate(
       peak_rt = round(x = peak_rt, digits = 2),
@@ -158,13 +158,13 @@ generate_tables <- function(annotations = NULL,
     )
 
   lotus_long <- lotus |>
-    tidytable::mutate(inchikey_no_stereo = gsub(
+    tidytable::mutate(inchikey_connectivity_layer = gsub(
       pattern = "-.*",
       replacement = "",
       x = structure_inchikey
     )) |>
     tidytable::pivot_longer(cols = 2:11, names_prefix = "organism_taxonomy_") |>
-    tidytable::select(inchikey_no_stereo,
+    tidytable::select(inchikey_connectivity_layer,
       reference = reference_doi,
       best_candidate_organism = value
     ) |>
@@ -172,7 +172,7 @@ generate_tables <- function(annotations = NULL,
 
   table_final <- table_medium |>
     tidytable::left_join(lotus_long) |>
-    tidytable::group_by(peak_id, inchikey_no_stereo) |>
+    tidytable::group_by(peak_id, inchikey_connectivity_layer) |>
     tidytable::mutate(reference = paste(reference, collapse = "; ")) |>
     tidytable::mutate(Structure = URLencode(smiles_no_stereo)) |>
     tidytable::mutate(
@@ -202,7 +202,7 @@ generate_tables <- function(annotations = NULL,
       `Feature RT [min]` = feature_rt,
       `Feature m/z` = feature_mz,
       Structure,
-      `InChIKey no stereo` = inchikey_no_stereo,
+      `InChIKey no stereo` = inchikey_connectivity_layer,
       `Annotation Score` = score_final,
       `Chemical Pathway` = best_candidate_1,
       `Chemical Superclass` = best_candidate_2,
