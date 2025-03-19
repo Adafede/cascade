@@ -17,7 +17,7 @@ prepare_plot <- function(dataframe, organism = "species") {
       !grepl(pattern = "-", x = parents)) |>
     tidytable::filter(!is.na(get(organism))) |>
     tidytable::mutate(species = get(organism)) |>
-    tidytable::group_by(labels) |>
+    tidytable::group_by(ids) |>
     tidytable::mutate(valuez = sum(values)) |>
     tidytable::ungroup() |>
     tidytable::arrange(desc(valuez)) |>
