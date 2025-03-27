@@ -12,21 +12,25 @@
 #' @return A list of data frames with improved signals
 #'
 #' @examples NULL
-improve_signals_progress <- function(xs,
-                                     fourier_components = 0.01,
-                                     frequency = 2,
-                                     resample = 1,
-                                     time_min = 0,
-                                     time_max = Inf) {
+improve_signals_progress <- function(
+  xs,
+  fourier_components = 0.01,
+  frequency = 2,
+  resample = 1,
+  time_min = 0,
+  time_max = Inf
+) {
   xs |>
     purrr::map(
       .progress = TRUE,
-      .f = function(x,
-                    fourier_components,
-                    frequency,
-                    resample,
-                    time_min,
-                    time_max) {
+      .f = function(
+        x,
+        fourier_components,
+        frequency,
+        resample,
+        time_min,
+        time_max
+      ) {
         improve_signal(
           df = x |>
             tidytable::select(time, intensity),

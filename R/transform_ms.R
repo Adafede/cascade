@@ -26,12 +26,18 @@ transform_ms <- function(x) {
       rtime = x[z, 1]@rtime
     ) |>
       tidytable::filter(!is.na(intensity)) |>
-      tidytable::mutate(intensity = (intensity - custom_min(intensity)) / (custom_max(intensity) -
-        custom_min(intensity))) |>
+      tidytable::mutate(
+        intensity = (intensity - custom_min(intensity)) /
+          (custom_max(intensity) -
+            custom_min(intensity))
+      ) |>
       tidytable::filter(intensity >= min_int) |>
       ## see https://github.com/sneumann/xcms/issues/593
-      tidytable::mutate(rtime = (rtime - custom_min(rtime)) / (custom_max(rtime) -
-        custom_min(rtime))) |>
+      tidytable::mutate(
+        rtime = (rtime - custom_min(rtime)) /
+          (custom_max(rtime) -
+            custom_min(rtime))
+      ) |>
       tidytable::arrange(rtime)
   })
 }

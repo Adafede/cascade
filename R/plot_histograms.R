@@ -10,11 +10,7 @@
 #'
 #' @examples NULL
 plot_histograms <-
-  function(dataframe,
-           chromatogram,
-           label,
-           y = "values",
-           xlab = TRUE) {
+  function(dataframe, chromatogram, label, y = "values", xlab = TRUE) {
     absolute <- ggplot2::ggplot() +
       ggplot2::geom_line(
         data = chromatogram,
@@ -86,11 +82,9 @@ plot_histograms_confident <-
           ggplot2::geom_bar(
             data = dataframe,
             mapping = ggplot2::aes(
-              x = switch(level,
-                "max" = peak_rt,
-                "min" = feature_rt
-              ),
-              y = switch(level,
+              x = switch(level, "max" = peak_rt, "min" = feature_rt),
+              y = switch(
+                level,
                 "max" = peak_area / max(peak_area * n),
                 "min" = feature_area / max(feature_area * m)
               ),
@@ -103,11 +97,9 @@ plot_histograms_confident <-
           ggplot2::geom_bar(
             data = dataframe,
             mapping = ggplot2::aes(
-              x = switch(level,
-                "max" = peak_rt,
-                "min" = feature_rt
-              ),
-              y = switch(level,
+              x = switch(level, "max" = peak_rt, "min" = feature_rt),
+              y = switch(
+                level,
                 "max" = peak_area / max(peak_area * n),
                 "min" = feature_area / max(feature_area * m)
               ),
@@ -156,12 +148,14 @@ plot_histograms_confident <-
 #'
 #' @examples NULL
 plot_histograms_taxo <-
-  function(dataframe,
-           chromatogram,
-           level = "max",
-           mode = "pos",
-           time_min,
-           time_max) {
+  function(
+    dataframe,
+    chromatogram,
+    level = "max",
+    mode = "pos",
+    time_min,
+    time_max
+  ) {
     dataframe <- dataframe |>
       tidytable::group_by(peak_area) |>
       tidytable::mutate(n = max(tidytable::row_number())) |>
@@ -188,11 +182,9 @@ plot_histograms_taxo <-
           ggplot2::geom_bar(
             data = dataframe,
             mapping = ggplot2::aes(
-              x = switch(level,
-                "max" = peak_rt,
-                "min" = feature_rt
-              ),
-              y = switch(level,
+              x = switch(level, "max" = peak_rt, "min" = feature_rt),
+              y = switch(
+                level,
                 "max" = peak_area / max(abs(peak_area * n)),
                 "min" = feature_area / max(abs(feature_area * m))
               ),
@@ -205,11 +197,9 @@ plot_histograms_taxo <-
           ggplot2::geom_bar(
             data = dataframe,
             mapping = ggplot2::aes(
-              x = switch(level,
-                "max" = peak_rt,
-                "min" = feature_rt
-              ),
-              y = switch(level,
+              x = switch(level, "max" = peak_rt, "min" = feature_rt),
+              y = switch(
+                level,
                 "max" = peak_area / max(abs(peak_area * n)),
                 "min" = feature_area / max(abs(feature_area * m))
               ),
@@ -220,8 +210,10 @@ plot_histograms_taxo <-
           )
         }
       } +
-      ggplot2::scale_fill_manual(values = levels(dataframe$color_2) |>
-        as.character()) +
+      ggplot2::scale_fill_manual(
+        values = levels(dataframe$color_2) |>
+          as.character()
+      ) +
       ggplot2::labs(fill = "Already reported in") +
       ggplot2::theme_bw() +
       ggplot2::theme(
@@ -254,11 +246,11 @@ plot_histograms_taxo <-
 #'
 #' @examples NULL
 plot_histograms_litt <-
-  function(dataframe,
-           label,
-           y = "values",
-           xlab = TRUE) {
-    absolute <- ggplot2::ggplot(dataframe, ggplot2::aes(x = sample, y = get(y), fill = ids)) +
+  function(dataframe, label, y = "values", xlab = TRUE) {
+    absolute <- ggplot2::ggplot(
+      dataframe,
+      ggplot2::aes(x = sample, y = get(y), fill = ids)
+    ) +
       ggplot2::geom_bar(
         stat = "identity",
         position = ggplot2::position_stack(reverse = TRUE)

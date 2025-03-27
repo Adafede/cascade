@@ -9,11 +9,14 @@
 #' @examples NULL
 keep_best_candidates <- function(df) {
   df |>
-    tidytable::mutate(tidytable::across(.cols = tidytable::everything(), .fns = ~ gsub(
-      pattern = "\\|.*",
-      replacement = "",
-      x = .x
-    ))) |>
+    tidytable::mutate(tidytable::across(
+      .cols = tidytable::everything(),
+      .fns = ~ gsub(
+        pattern = "\\|.*",
+        replacement = "",
+        x = .x
+      )
+    )) |>
     tidytable::mutate(
       best_candidate_1 = gsub(
         pattern = " or .*",
@@ -53,7 +56,10 @@ keep_best_candidates <- function(df) {
       best_candidate_3,
       mode
     ) |>
-    tidytable::mutate(tidytable::across(.cols = tidytable::everything(), .fns = ~ y_as_na(x = ., y = ""))) |>
+    tidytable::mutate(tidytable::across(
+      .cols = tidytable::everything(),
+      .fns = ~ y_as_na(x = ., y = "")
+    )) |>
     tidytable::mutate(
       best_candidate_1 = tidytable::if_else(
         condition = is.na(smiles_2D),

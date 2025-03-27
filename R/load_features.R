@@ -6,8 +6,7 @@
 #' @return A table of features
 #'
 #' @examples NULL
-load_features <- function(file = NULL,
-                          show_example = FALSE) {
+load_features <- function(file = NULL, show_example = FALSE) {
   if (show_example) {
     # feature_table |>
     #   saveRDS(file = "inst/extdata/features.rds")

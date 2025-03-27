@@ -18,16 +18,18 @@
 #' @return A list of preprocessed chromatograms
 #'
 #' @examples NULL
-preprocess_chromatograms <- function(detector = "cad",
-                                     fourier_components = 0.01,
-                                     frequency = 2,
-                                     list,
-                                     name,
-                                     resample = 1,
-                                     shift = 0,
-                                     signal_name = "UV.1_CAD_1_0",
-                                     time_min = 0,
-                                     time_max = Inf) {
+preprocess_chromatograms <- function(
+  detector = "cad",
+  fourier_components = 0.01,
+  frequency = 2,
+  list,
+  name,
+  resample = 1,
+  shift = 0,
+  signal_name = "UV.1_CAD_1_0",
+  time_min = 0,
+  time_max = Inf
+) {
   message("preprocessing ", detector, " chromatograms")
   message("harmonizing names")
   chromatograms_original <-

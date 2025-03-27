@@ -7,9 +7,7 @@
 #' @return A formatted GT table
 #'
 #' @examples NULL
-format_gt <- function(table,
-                      title = "",
-                      subtitle = "") {
+format_gt <- function(table, title = "", subtitle = "") {
   pretty_table <- table |>
     tidytable::mutate(
       structure = tidytable::map(structure, ~ htmltools::a(href = .x, .x)),

@@ -7,9 +7,7 @@
 #' @return A list of treemaps
 #'
 #' @examples NULL
-treemaps_progress <- function(xs,
-                              type = "treemap",
-                              hierarchies) {
+treemaps_progress <- function(xs, type = "treemap", hierarchies) {
   setNames(object = xs, nm = xs) |>
     purrr::map(
       .progress = TRUE,
@@ -28,10 +26,15 @@ treemaps_progress <- function(xs,
           ) |>
             plotly::layout(
               colorway = microshades_colors,
-              title = paste(x, "(", nrow(
-                tables[[x]] |>
-                  tidytable::distinct(structure)
-              ), ")"),
+              title = paste(
+                x,
+                "(",
+                nrow(
+                  tables[[x]] |>
+                    tidytable::distinct(structure)
+                ),
+                ")"
+              ),
               margin = list(t = 40)
             )
         } else {
@@ -66,14 +69,18 @@ treemaps_progress <- function(xs,
                 "\n",
                 unique(hierarchies[[x]]$species)[1],
                 "(",
-                nrow(tables[[unique(hierarchies[[x]]$species)[1]]] |>
-                  tidytable::distinct(structure)),
+                nrow(
+                  tables[[unique(hierarchies[[x]]$species)[1]]] |>
+                    tidytable::distinct(structure)
+                ),
                 ")",
                 "                                 ",
                 unique(hierarchies[[x]]$species)[2],
                 "(",
-                nrow(tables[[unique(hierarchies[[x]]$species)[2]]] |>
-                  tidytable::distinct(structure)),
+                nrow(
+                  tables[[unique(hierarchies[[x]]$species)[2]]] |>
+                    tidytable::distinct(structure)
+                ),
                 ")"
               ),
               grid = list(rows = 1, columns = 2),
@@ -95,9 +102,7 @@ treemaps_progress <- function(xs,
 #' @return A list of treemaps with no title
 #'
 #' @examples NULL
-treemaps_progress_no_title <- function(xs,
-                                       type = "treemap",
-                                       hierarchies) {
+treemaps_progress_no_title <- function(xs, type = "treemap", hierarchies) {
   setNames(object = xs, nm = xs) |>
     purrr::map(
       .f = function(x, hierarchies) {

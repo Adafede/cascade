@@ -29,13 +29,15 @@
 #' \dontrun{
 #' generate_ids()
 #' }
-generate_ids <- function(taxa = c("Swertia", "Kopsia", "Ginkgo"),
-                         comparison = NULL,
-                         no_stereo = TRUE,
-                         filter_ms_conditions = TRUE,
-                         start = "0",
-                         end = "9999",
-                         limit = "1000000") {
+generate_ids <- function(
+  taxa = c("Swertia", "Kopsia", "Ginkgo"),
+  comparison = NULL,
+  no_stereo = TRUE,
+  filter_ms_conditions = TRUE,
+  start = "0",
+  end = "9999",
+  limit = "1000000"
+) {
   query_part_1 <- "SELECT ?structure ?structureLabel ?structure_id ?structureSmiles (GROUP_CONCAT(?taxon_name; SEPARATOR = \"|\") AS ?taxaLabels) (GROUP_CONCAT(?taxon; SEPARATOR = \"|\") AS ?taxa) (GROUP_CONCAT(?art_title; SEPARATOR = \"|\") AS ?referencesLabels) (GROUP_CONCAT(?art_doi; SEPARATOR = \"|\") AS ?references_ids) (GROUP_CONCAT(?art; SEPARATOR = \"|\") AS ?references) WHERE {\n  ?taxon (wdt:P171*) wd:"
   query_part_2 <- ";\n  wdt:P225 ?taxon_name.\n  ?structure wdt:P235 ?structure_id;\n  wdt:P233 ?structureSmiles;\n  p:P703 ?statement.\n  ?statement ps:P703 ?taxon;\n  prov:wasDerivedFrom ?ref.\n  ?ref pr:P248 ?art.\n  ?art wdt:P1476 ?art_title;\n  wdt:P356 ?art_doi;\n  wdt:P577 ?art_date.\n  FILTER(((YEAR(?art_date)) >= "
   query_part_3 <- " ) && ((YEAR(?art_date)) <= "
@@ -95,7 +97,10 @@ generate_ids <- function(taxa = c("Swertia", "Kopsia", "Ginkgo"),
   })
 
   message("Cleaning tables and adding columns")
-  tables <- tables_progress(xs = results, structures_classified = structures_classified)
+  tables <- tables_progress(
+    xs = results,
+    structures_classified = structures_classified
+  )
 
   if (no_stereo) {
     tables <- purrr::map(tables, make_no_stereo)
@@ -163,23 +168,36 @@ generate_ids <- function(taxa = c("Swertia", "Kopsia", "Ginkgo"),
 
   message("Generating treemaps")
   treemaps <-
-    treemaps_progress_no_title(xs = names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies))], hierarchies = hierarchies)
+    treemaps_progress_no_title(
+      xs = names(hierarchies)[
+        !grepl(pattern = "_grouped", x = names(hierarchies))
+      ],
+      hierarchies = hierarchies
+    )
 
   message("Generating sunbursts")
   sunbursts <-
     treemaps_progress_no_title(
-      xs = names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies))],
+      xs = names(hierarchies)[
+        !grepl(pattern = "_grouped", x = names(hierarchies))
+      ],
       type = "sunburst",
       hierarchies = hierarchies
     )
 
   message("Filtering treemaps")
   treemaps <-
-    within(treemaps, rm(list = names(treemaps)[grepl(pattern = "ae$", x = names(treemaps))]))
+    within(
+      treemaps,
+      rm(list = names(treemaps)[grepl(pattern = "ae$", x = names(treemaps))])
+    )
 
   message("Filtering sunbursts")
   sunbursts <-
-    within(sunbursts, rm(list = names(sunbursts)[grepl(pattern = "ae$", x = names(sunbursts))]))
+    within(
+      sunbursts,
+      rm(list = names(sunbursts)[grepl(pattern = "ae$", x = names(sunbursts))])
+    )
 
   return(list(
     plots = plots,

@@ -6,12 +6,13 @@
 #' @return MS data
 #'
 #' @examples NULL
-load_ms_data <- function(file = NULL,
-                         show_example = FALSE) {
+load_ms_data <- function(file = NULL, show_example = FALSE) {
   if (show_example) {
     # ms_data <- file |>
     #   MSnbase::readMSData(mode = "inMemory", msLevel. = 1)
-    message("Loading example MS file in memory, doing it on disk will be more efficient")
+    message(
+      "Loading example MS file in memory, doing it on disk will be more efficient"
+    )
     # ms_data |>
     #   saveRDS(file = "inst/extdata/ms_data.rds")
     readRDS(system.file("extdata", "ms_data.rds", package = "cascade"))

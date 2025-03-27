@@ -11,33 +11,38 @@
 #' @return A list of peaks
 #'
 #' @examples NULL
-prepare_comparison <- function(features_informed = NULL,
-                               features_not_informed = NULL,
-                               candidates_confident,
-                               min_similarity_prefilter = 0.6,
-                               min_similarity_filter = 0.8,
-                               mode = "pos",
-                               show_example = FALSE) {
+prepare_comparison <- function(
+  features_informed = NULL,
+  features_not_informed = NULL,
+  candidates_confident,
+  min_similarity_prefilter = 0.6,
+  min_similarity_filter = 0.8,
+  mode = "pos",
+  show_example = FALSE
+) {
   peaks_compared <- features_informed |>
     load_features_informed(show_example = show_example) |>
     tidytable::mutate(mode = mode)
   peaks_outside <- features_not_informed |>
     load_features_not_informed(show_example = show_example) |>
     tidytable::mutate(mode = mode) |>
-    tidytable::mutate(tidytable::across(tidytable::all_of(
-      c(
-        "peak_id",
-        "peak_rt_min",
-        "peak_rt_apex",
-        "peak_rt_max",
-        "peak_area",
-        "feature_id",
-        "feature_rt",
-        "feature_mz",
-        "feature_area",
-        "comparison_score"
-      )
-    ), as.numeric))
+    tidytable::mutate(tidytable::across(
+      tidytable::all_of(
+        c(
+          "peak_id",
+          "peak_rt_min",
+          "peak_rt_apex",
+          "peak_rt_max",
+          "peak_area",
+          "feature_id",
+          "feature_rt",
+          "feature_mz",
+          "feature_area",
+          "comparison_score"
+        )
+      ),
+      as.numeric
+    ))
 
   peaks_all <- peaks_compared |>
     tidytable::bind_rows(peaks_outside)
@@ -120,41 +125,49 @@ prepare_comparison <- function(features_informed = NULL,
   message("keeping multiple features only if none was reported in the species")
   peaks_maj_precor_taxo <- peaks_maj_precor |>
     tidytable::rowwise() |>
-    tidytable::mutate(taxo = tidytable::if_else(
-      condition = grepl(pattern = best_candidate_organism, x = species),
-      true = 1,
-      false = 0
-    )) |>
-    tidytable::mutate(taxo = tidytable::if_else(
-      condition = is.na(taxo),
-      true = 0,
-      false = taxo
-    )) |>
-    tidytable::mutate(taxo_2 = tidytable::if_else(
-      condition = best_candidate_organism %in% species,
-      true = 1,
-      false = 0
-    )) |>
+    tidytable::mutate(
+      taxo = tidytable::if_else(
+        condition = grepl(pattern = best_candidate_organism, x = species),
+        true = 1,
+        false = 0
+      )
+    ) |>
+    tidytable::mutate(
+      taxo = tidytable::if_else(
+        condition = is.na(taxo),
+        true = 0,
+        false = taxo
+      )
+    ) |>
+    tidytable::mutate(
+      taxo_2 = tidytable::if_else(
+        condition = best_candidate_organism %in% species,
+        true = 1,
+        false = 0
+      )
+    ) |>
     tidytable::group_by(sample, peak_id) |> ## TODO switch to ID if needed
     tidytable::mutate(sum = sum(taxo)) |>
     tidytable::mutate(sum_2 = sum(taxo_2)) |>
-    tidytable::mutate(keep = tidytable::if_else(
-      condition = taxo_2 == 1,
-      true = "Y",
-      false = tidytable::if_else(
-        condition = taxo == 1,
-        true = tidytable::if_else(
-          condition = sum != sum_2 & sum_2 == 0,
-          true = "Y",
-          false = "N"
-        ),
+    tidytable::mutate(
+      keep = tidytable::if_else(
+        condition = taxo_2 == 1,
+        true = "Y",
         false = tidytable::if_else(
-          condition = sum == 0,
-          true = "Y",
-          false = "N"
+          condition = taxo == 1,
+          true = tidytable::if_else(
+            condition = sum != sum_2 & sum_2 == 0,
+            true = "Y",
+            false = "N"
+          ),
+          false = tidytable::if_else(
+            condition = sum == 0,
+            true = "Y",
+            false = "N"
+          )
         )
       )
-    )) |>
+    ) |>
     tidytable::filter(keep == "Y") |> ## TODO decide if genus
     tidytable::ungroup()
 

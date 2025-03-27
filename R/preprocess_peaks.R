@@ -18,13 +18,15 @@
 #' @return A list of lists and dataframe with preprocessed peaks
 #'
 #' @examples NULL
-preprocess_peaks <- function(detector = "cad",
-                             df_features,
-                             df_long,
-                             df_xy,
-                             name,
-                             shift = 0,
-                             min_area = 0) {
+preprocess_peaks <- function(
+  detector = "cad",
+  df_features,
+  df_long,
+  df_xy,
+  name,
+  shift = 0,
+  min_area = 0
+) {
   message("preprocessing ", detector, " peaks")
   ## data.table call outside of future because buggy else
   peaks <- peaks_progress(df_xy = df_xy)

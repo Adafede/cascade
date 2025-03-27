@@ -35,24 +35,26 @@
 #' \dontrun{
 #' generate_pseudochromatograms(show_example = TRUE)
 #' }
-generate_pseudochromatograms <- function(annotations = NULL,
-                                         features_informed = NULL,
-                                         features_not_informed = NULL,
-                                         file = NULL,
-                                         headers = c("BasePeak_0", "PDA#1_TotalAbsorbance_0", "UV#1_CAD_1_0"),
-                                         detector = "cad",
-                                         show_example = FALSE,
-                                         min_confidence = 0.4,
-                                         min_similarity_prefilter = 0.6,
-                                         min_similarity_filter = 0.8,
-                                         mode = "pos",
-                                         organism = "Swertia chirayita",
-                                         fourier_components = 0.01,
-                                         frequency = 1,
-                                         resample = 1,
-                                         shift = 0.05,
-                                         time_min = 0.5,
-                                         time_max = 32.5) {
+generate_pseudochromatograms <- function(
+  annotations = NULL,
+  features_informed = NULL,
+  features_not_informed = NULL,
+  file = NULL,
+  headers = c("BasePeak_0", "PDA#1_TotalAbsorbance_0", "UV#1_CAD_1_0"),
+  detector = "cad",
+  show_example = FALSE,
+  min_confidence = 0.4,
+  min_similarity_prefilter = 0.6,
+  min_similarity_filter = 0.8,
+  mode = "pos",
+  organism = "Swertia chirayita",
+  fourier_components = 0.01,
+  frequency = 1,
+  resample = 1,
+  shift = 0.05,
+  time_min = 0.5,
+  time_max = 32.5
+) {
   message("loading annotations")
   annotation_table <- annotations |>
     load_annotations(show_example = show_example)
@@ -69,12 +71,14 @@ generate_pseudochromatograms <- function(annotations = NULL,
   chromatograms_list <- preprocess_chromatograms(
     detector = detector,
     name = name,
-    list = switch(detector,
+    list = switch(
+      detector,
       "bpi" = chromatograms_all[c(TRUE, FALSE, FALSE)],
       "cad" = chromatograms_all[c(FALSE, FALSE, TRUE)],
       "pda" = chromatograms_all[c(FALSE, TRUE, FALSE)]
     ),
-    signal_name = switch(detector,
+    signal_name = switch(
+      detector,
       "bpi" = "BasePeak_0",
       "cad" = "UV.1_CAD_1_0",
       "pda" = "PDA.1_TotalAbsorbance_0"
@@ -159,7 +163,12 @@ generate_pseudochromatograms <- function(annotations = NULL,
     tidytable::arrange(sample)
 
   treemaps <-
-    treemaps_progress_no_title(xs = names(hierarchies)[!grepl(pattern = "_grouped", x = names(hierarchies))], hierarchies = hierarchies)
+    treemaps_progress_no_title(
+      xs = names(hierarchies)[
+        !grepl(pattern = "_grouped", x = names(hierarchies))
+      ],
+      hierarchies = hierarchies
+    )
 
   return(list(
     plots_1 = plots_1, # plots_2 = plots_2,

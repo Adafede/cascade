@@ -31,20 +31,22 @@
 #' \dontrun{
 #' check_peaks_integration(show_example = TRUE)
 #' }
-check_peaks_integration <- function(file = NULL,
-                                    features = NULL,
-                                    detector = "cad",
-                                    chromatogram = "baselined",
-                                    headers = c("BasePeak_0", "PDA#1_TotalAbsorbance_0", "UV#1_CAD_1_0"),
-                                    min_area = 0.005,
-                                    min_intensity = 1E4,
-                                    shift = 0.05,
-                                    show_example = FALSE,
-                                    fourier_components = 0.01,
-                                    time_min = 0.5,
-                                    time_max = 32.5,
-                                    frequency = 1,
-                                    resample = 1) {
+check_peaks_integration <- function(
+  file = NULL,
+  features = NULL,
+  detector = "cad",
+  chromatogram = "baselined",
+  headers = c("BasePeak_0", "PDA#1_TotalAbsorbance_0", "UV#1_CAD_1_0"),
+  min_area = 0.005,
+  min_intensity = 1E4,
+  shift = 0.05,
+  show_example = FALSE,
+  fourier_components = 0.01,
+  time_min = 0.5,
+  time_max = 32.5,
+  frequency = 1,
+  resample = 1
+) {
   message("loading chromatograms")
   chromatograms_all <- file |>
     load_chromatograms(show_example = show_example, headers = headers)
@@ -65,12 +67,14 @@ check_peaks_integration <- function(file = NULL,
   chromatograms_list <- preprocess_chromatograms(
     detector = detector,
     name = name,
-    list = switch(detector,
+    list = switch(
+      detector,
       "bpi" = chromatograms_all[c(TRUE, FALSE, FALSE)],
       "cad" = chromatograms_all[c(FALSE, FALSE, TRUE)],
       "pda" = chromatograms_all[c(FALSE, TRUE, FALSE)]
     ),
-    signal_name = switch(detector,
+    signal_name = switch(
+      detector,
       "bpi" = "BasePeak_0",
       "cad" = "UV.1_CAD_1_0",
       "pda" = "PDA.1_TotalAbsorbance_0"
@@ -86,13 +90,15 @@ check_peaks_integration <- function(file = NULL,
   peaks <-
     preprocess_peaks(
       df_features = df_features,
-      df_long = switch(chromatogram,
+      df_long = switch(
+        chromatogram,
         "original" = chromatograms_list$chromatograms_original_long,
         "improved" = chromatograms_list$chromatograms_improved_long,
         "baselined" = chromatograms_list$chromatograms_baselined_long
       ) |>
         tidytable::mutate(intensity = intensity / max(intensity)),
-      df_xy = switch(chromatogram,
+      df_xy = switch(
+        chromatogram,
         "original" = chromatograms_list$chromatograms_original[[1]],
         "improved" = chromatograms_list$chromatograms_improved[[1]],
         "baselined" = chromatograms_list$chromatograms_baselined[[1]]
@@ -102,7 +108,8 @@ check_peaks_integration <- function(file = NULL,
       name = name
     )
 
-  chromatogram_normalized <- switch(chromatogram,
+  chromatogram_normalized <- switch(
+    chromatogram,
     "original" = chromatograms_list$chromatograms_original_long |>
       tidytable::bind_rows() |>
       tidytable::filter(row_number() %% 10 == 1) |>
