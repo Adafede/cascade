@@ -10,11 +10,7 @@
 #'
 #' @examples NULL
 make_chromatographiable <-
-  function(df,
-           mass_min = 50,
-           mass_max = 1500,
-           logp_min = -1,
-           logp_max = 6) {
+  function(df, mass_min = 50, mass_max = 1500, logp_min = -1, logp_max = 6) {
     message("Keeping chromatographiable structures only")
     df |>
       tidytable::filter(structure_exact_mass >= mass_min) |>

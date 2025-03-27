@@ -12,9 +12,14 @@ hierarchies_grouped_progress <- function(xs) {
       .f = function(x) {
         if (nrow(x) != 0) {
           ## dirty workaround
-          if (nrow(x |>
-            tidytable::filter(!grepl(pattern = "var. ", x = taxaLabels)) |>
-            tidytable::distinct(taxa)) != 1) {
+          if (
+            nrow(
+              x |>
+                tidytable::filter(!grepl(pattern = "var. ", x = taxaLabels)) |>
+                tidytable::distinct(taxa)
+            ) !=
+              1
+          ) {
             prepare_hierarchy(
               dataframe = x |>
                 tidytable::mutate(
@@ -24,7 +29,12 @@ hierarchies_grouped_progress <- function(xs) {
                   organism = taxaLabels
                 ) |>
                 tidytable::mutate(sample = organism, species = organism) |>
-                tidytable::select(-taxa, -taxaLabels, -references, -referencesLabels) |>
+                tidytable::select(
+                  -taxa,
+                  -taxaLabels,
+                  -references,
+                  -referencesLabels
+                ) |>
                 tidytable::distinct(),
               type = "literature"
             )
@@ -39,7 +49,10 @@ hierarchies_grouped_progress <- function(xs) {
               species = NA,
               values = 0
             ) |>
-            tidytable::mutate(tidytable::across(.cols = tidytable::where(is.logical), .fns = as.character))
+            tidytable::mutate(tidytable::across(
+              .cols = tidytable::where(is.logical),
+              .fns = as.character
+            ))
         }
       }
     )

@@ -13,7 +13,10 @@ make_other <- function(dataframe, value = "peak_area") {
     tidytable::group_by(best_candidate_1) |>
     ## COMMENT replacement because not working
     tidytable::arrange(tidytable::desc(new)) |>
-    tidytable::mutate(row_number = tidytable::row_number(), .by = best_candidate_1) |>
+    tidytable::mutate(
+      row_number = tidytable::row_number(),
+      .by = best_candidate_1
+    ) |>
     tidytable::filter(row_number <= 4L) |>
     tidytable::select(-row_number) |>
     ## COMMENT replacement because not working

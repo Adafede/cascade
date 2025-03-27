@@ -13,18 +13,21 @@
 #' @return A sharpened signal
 #'
 #' @examples NULL
-signal_sharpening <- function(time,
-                              intensity,
-                              k2 = 250,
-                              k4 = 1250000,
-                              sigma = 0.05,
-                              Smoothing_width = 8,
-                              Baseline_adjust = 0) {
+signal_sharpening <- function(
+  time,
+  intensity,
+  k2 = 250,
+  k4 = 1250000,
+  sigma = 0.05,
+  Smoothing_width = 8,
+  Baseline_adjust = 0
+) {
   smooth_1 <- caTools::runmean(
     x = intensity,
     k = Smoothing_width,
     align = "center"
-  ) + Baseline_adjust
+  ) +
+    Baseline_adjust
 
   smooth_2 <- caTools::runmean(
     x = smooth_1,
@@ -54,7 +57,9 @@ signal_sharpening <- function(time,
     align = "center"
   )
 
-  sharpened <- smooth_1[5:length(smooth_1)] - (sigma / k2 * smooth_3[3:length(smooth_3)]) + (sigma / k4 * smooth_4)
+  sharpened <- smooth_1[5:length(smooth_1)] -
+    (sigma / k2 * smooth_3[3:length(smooth_3)]) +
+    (sigma / k4 * smooth_4)
   sharpened[is.na(sharpened)] <- 0
   # sharpened <- sharpened / max(sharpened)
 

@@ -17,13 +17,18 @@ tables_progress <- function(xs, structures_classified) {
             tidytable::mutate(structureImage = URLencode(structureSmiles)) |>
             tidytable::relocate(structureImage, .after = structure) |>
             tidytable::relocate(structureLabel, .before = structure) |>
-            tidytable::select(-references_ids, -structure_id, -structureSmiles) |>
+            tidytable::select(
+              -references_ids,
+              -structure_id,
+              -structureSmiles
+            ) |>
             tidytable::separate_longer_delim(
               c("taxa", "taxaLabels", "references", "referencesLabels"),
               delim = "|"
             ) |>
             tidytable::group_by(structure) |>
-            tidytable::fill(c("taxa", "taxaLabels", "references", "referencesLabels"),
+            tidytable::fill(
+              c("taxa", "taxaLabels", "references", "referencesLabels"),
               .direction = "downup"
             ) |>
             tidytable::group_by(structureLabel) |>

@@ -25,15 +25,17 @@
 #' \dontrun{
 #' generate_tables()
 #' }
-generate_tables <- function(annotations = NULL,
-                            file_negative = NULL,
-                            file_positive = NULL,
-                            min_confidence = 0.4,
-                            show_example = FALSE,
-                            export_csv = TRUE,
-                            export_html = TRUE,
-                            export_dir = "data/processed",
-                            export_name = "cascade_table") {
+generate_tables <- function(
+  annotations = NULL,
+  file_negative = NULL,
+  file_positive = NULL,
+  min_confidence = 0.4,
+  show_example = FALSE,
+  export_csv = TRUE,
+  export_html = TRUE,
+  export_dir = "data/processed",
+  export_name = "cascade_table"
+) {
   message("loading informed features")
   if (!is.null(file_positive) | show_example) {
     message("... positive mode")
@@ -88,7 +90,6 @@ generate_tables <- function(annotations = NULL,
   ) |>
     tidytable::distinct()
 
-
   table_peaks <- tables_peaks_pos
 
   if (exists("tables_peaks_neg")) {
@@ -131,8 +132,10 @@ generate_tables <- function(annotations = NULL,
     tidytable::distinct(newrt, newarea, .keep_all = TRUE) |>
     tidytable::arrange(newrt) |>
     tidytable::mutate(diff = newrt - tidytable::lag(newrt)) |> # eliminate rounding duplicates
-    tidytable::filter(!is.na(diff) &
-      diff > 0.05) |>
+    tidytable::filter(
+      !is.na(diff) &
+        diff > 0.05
+    ) |>
     tidytable::mutate(peak_id = tidytable::row_number()) |>
     tidytable::select(
       peak_id,
@@ -158,13 +161,16 @@ generate_tables <- function(annotations = NULL,
     )
 
   lotus_long <- lotus |>
-    tidytable::mutate(inchikey_connectivity_layer = gsub(
-      pattern = "-.*",
-      replacement = "",
-      x = structure_inchikey
-    )) |>
+    tidytable::mutate(
+      inchikey_connectivity_layer = gsub(
+        pattern = "-.*",
+        replacement = "",
+        x = structure_inchikey
+      )
+    ) |>
     tidytable::pivot_longer(cols = 2:11, names_prefix = "organism_taxonomy_") |>
-    tidytable::select(inchikey_connectivity_layer,
+    tidytable::select(
+      inchikey_connectivity_layer,
       reference = reference_doi,
       best_candidate_organism = value
     ) |>
@@ -236,7 +242,10 @@ generate_tables <- function(annotations = NULL,
   if (export_csv) {
     message("...CSV")
     table_final |>
-      tidytable::fwrite(file = file.path(export_dir, paste0(export_name, ".tsv")), sep = "\t")
+      tidytable::fwrite(
+        file = file.path(export_dir, paste0(export_name, ".tsv")),
+        sep = "\t"
+      )
   }
   if (export_html) {
     message("...HTML")

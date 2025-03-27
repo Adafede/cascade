@@ -32,17 +32,19 @@ p_acn_i <- function(acn_eluent, q1, q2, q3) {
 #' @return The concentration
 #'
 #' @examples NULL
-predict_response <- function(acn = 100,
-                             peak_area,
-                             p1q1 = 0.00001,
-                             p1q2 = -0.0006,
-                             p1q3 = -0.0778,
-                             p2q1 = 0.00002,
-                             p2q2 = -0.00022,
-                             p2q3 = 0.05499,
-                             p3q1 = -0.00017,
-                             p3q2 = 0.0209,
-                             p3q3 = 1.4041) {
+predict_response <- function(
+  acn = 100,
+  peak_area,
+  p1q1 = 0.00001,
+  p1q2 = -0.0006,
+  p1q3 = -0.0778,
+  p2q1 = 0.00002,
+  p2q2 = -0.00022,
+  p2q3 = 0.05499,
+  p3q1 = -0.00017,
+  p3q2 = 0.0209,
+  p3q3 = 1.4041
+) {
   p_acn_1 <- p_acn_i(
     acn_eluent = acn,
     q1 = p1q1,

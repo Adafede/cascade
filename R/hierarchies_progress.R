@@ -33,7 +33,12 @@ hierarchies_progress <- function(xs, comparison) {
                 )
               ) |>
               tidytable::mutate(sample = organism, species = organism) |>
-              tidytable::select(-taxa, -taxaLabels, -references, -referencesLabels) |>
+              tidytable::select(
+                -taxa,
+                -taxaLabels,
+                -references,
+                -referencesLabels
+              ) |>
               tidytable::distinct(),
             type = "literature"
           )
@@ -47,7 +52,10 @@ hierarchies_progress <- function(xs, comparison) {
               species = NA,
               values = 0
             ) |>
-            tidytable::mutate(tidytable::across(.cols = tidytable::where(is.logical), .fns = as.character))
+            tidytable::mutate(tidytable::across(
+              .cols = tidytable::where(is.logical),
+              .fns = as.character
+            ))
         }
       }
     )

@@ -7,9 +7,7 @@
 #' @return A table of annotations
 #'
 #' @examples NULL
-load_annotations <- function(file = NULL,
-                             show_example = FALSE,
-                             mode = "pos") {
+load_annotations <- function(file = NULL, show_example = FALSE, mode = "pos") {
   if (show_example) {
     # annotation_table |>
     #   saveRDS(file = "inst/extdata/annotations.rds")

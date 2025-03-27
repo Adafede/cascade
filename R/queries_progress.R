@@ -12,25 +12,29 @@
 #' @return A list of queries
 #'
 #' @examples NULL
-queries_progress <- function(xs,
-                             start = "0",
-                             end = "9999",
-                             limit = "1000000",
-                             query_part_1,
-                             query_part_2,
-                             query_part_3,
-                             query_part_4) {
+queries_progress <- function(
+  xs,
+  start = "0",
+  end = "9999",
+  limit = "1000000",
+  query_part_1,
+  query_part_2,
+  query_part_3,
+  query_part_4
+) {
   xs |>
     purrr::map(
       .progress = TRUE,
-      .f = function(x,
-                    start,
-                    end,
-                    limit,
-                    query_part_1,
-                    query_part_2,
-                    query_part_3,
-                    query_part_4) {
+      .f = function(
+        x,
+        start,
+        end,
+        limit,
+        query_part_1,
+        query_part_2,
+        query_part_3,
+        query_part_4
+      ) {
         paste0(
           query_part_1,
           x,

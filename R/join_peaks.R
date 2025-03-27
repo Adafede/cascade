@@ -16,7 +16,15 @@ join_peaks <- function(chromatograms, peaks, min_area) {
     tidytable::group_by(peak_id, id) |>
     tidytable::mutate(integral = sum(intensity)) |>
     tidytable::ungroup() |>
-    tidytable::distinct(peak_id, id, peak_max, rt_apex, rt_min, rt_max, integral) |>
+    tidytable::distinct(
+      peak_id,
+      id,
+      peak_max,
+      rt_apex,
+      rt_min,
+      rt_max,
+      integral
+    ) |>
     tidytable::group_by(id) |>
     tidytable::filter(integral / sum(integral) >= min_area) |>
     tidytable::data.table()
