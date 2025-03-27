@@ -14,18 +14,25 @@
 #'
 #' @examples NULL
 improve_signal <-
-  function(df,
-           fourier_components = 0.01,
-           frequency = 2,
-           resample = 1,
-           time_min = 0,
-           time_max = Inf) {
+  function(
+    df,
+    fourier_components = 0.01,
+    frequency = 2,
+    resample = 1,
+    time_min = 0,
+    time_max = Inf
+  ) {
     df_fourier <- df |>
       ## in case we have negative intensity
       ## 100 to be on the safe side
       tidytable::mutate(intensity = intensity + 100) |>
       tidytable::mutate(intensity = intensity - (min(intensity) - 0.001)) |>
-      tidytable::mutate(intensity_fourier = filter_fft(x = intensity, components = fourier_components))
+      tidytable::mutate(
+        intensity_fourier = filter_fft(
+          x = intensity,
+          components = fourier_components
+        )
+      )
 
     f <- approxfun(x = df_fourier$time, y = df_fourier$intensity_fourier)
 
@@ -43,5 +50,8 @@ improve_signal <-
 
     intensity_sharpened <- signal_sharpening(time = time, intensity = intensity)
 
-    return(data.frame("time" = time[5:length(time)], "intensity" = intensity_sharpened))
+    return(data.frame(
+      "time" = time[5:length(time)],
+      "intensity" = intensity_sharpened
+    ))
   }

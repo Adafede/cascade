@@ -11,27 +11,34 @@
 #' @return A plot
 #'
 #' @examples NULL
-check_chromatograms <- function(chromatograms = c("bpi_pos", "cad_pos", "pda_pos"),
-                                normalize_time = FALSE,
-                                shift_cad = 0,
-                                shift_pda = 0,
-                                type = "improved") {
+check_chromatograms <- function(
+  chromatograms = c("bpi_pos", "cad_pos", "pda_pos"),
+  normalize_time = FALSE,
+  shift_cad = 0,
+  shift_pda = 0,
+  type = "improved"
+) {
   stopifnot(
-    "chromatograms must be in of 'bpi_pos', 'bpi_neg', 'cad_pos', 'cad_neg', 'pda_pos', 'pda_neg'" = chromatograms %in% c(
-      "bpi_pos",
-      "cad_pos",
-      "pda_pos",
-      "bpi_neg",
-      "cad_neg",
-      "pda_neg"
-    )
+    "chromatograms must be in of 'bpi_pos', 'bpi_neg', 'cad_pos', 'cad_neg', 'pda_pos', 'pda_neg'" = chromatograms %in%
+      c(
+        "bpi_pos",
+        "cad_pos",
+        "pda_pos",
+        "bpi_neg",
+        "cad_neg",
+        "pda_neg"
+      )
   )
-  stopifnot("type must be one of 'improved' or 'baselined'" = type %in% c("improved", "baselined"))
+  stopifnot(
+    "type must be one of 'improved' or 'baselined'" = type %in%
+      c("improved", "baselined")
+  )
   plot <- plotly::plot_ly()
   if ("cad_pos" %in% chromatograms) {
     plot <- plot |>
       add_chromato_line(
-        chromato = switch(type,
+        chromato = switch(
+          type,
           "baselined" = chromatogram_cad_pos_baselined,
           "improved" = chromatogram_cad_pos_improved
         ),
@@ -44,7 +51,8 @@ check_chromatograms <- function(chromatograms = c("bpi_pos", "cad_pos", "pda_pos
   if ("cad_neg" %in% chromatograms) {
     plot <- plot |>
       add_chromato_line(
-        chromato = switch(type,
+        chromato = switch(
+          type,
           "baselined" = chromatogram_cad_neg_baselined,
           "improved" = chromatogram_cad_neg_improved
         ),
@@ -58,7 +66,8 @@ check_chromatograms <- function(chromatograms = c("bpi_pos", "cad_pos", "pda_pos
   if ("pda_pos" %in% chromatograms) {
     plot <- plot |>
       add_chromato_line(
-        chromato = switch(type,
+        chromato = switch(
+          type,
           "baselined" = chromatogram_pda_pos_baselined,
           "improved" = chromatogram_pda_pos_improved
         ),
@@ -71,7 +80,8 @@ check_chromatograms <- function(chromatograms = c("bpi_pos", "cad_pos", "pda_pos
   if ("pda_neg" %in% chromatograms) {
     plot <- plot |>
       add_chromato_line(
-        chromato = switch(type,
+        chromato = switch(
+          type,
           "baselined" = chromatogram_pda_neg_baselined,
           "improved" = chromatogram_pda_neg_improved
         ),
@@ -85,7 +95,8 @@ check_chromatograms <- function(chromatograms = c("bpi_pos", "cad_pos", "pda_pos
   if ("bpi_pos" %in% chromatograms) {
     plot <- plot |>
       add_chromato_line(
-        chromato = switch(type,
+        chromato = switch(
+          type,
           "baselined" = chromatogram_bpi_pos_baselined,
           "improved" = chromatogram_bpi_pos_improved
         ),
@@ -98,7 +109,8 @@ check_chromatograms <- function(chromatograms = c("bpi_pos", "cad_pos", "pda_pos
   if ("bpi_neg" %in% chromatograms) {
     plot <- plot |>
       add_chromato_line(
-        chromato = switch(type,
+        chromato = switch(
+          type,
           "baselined" = chromatogram_bpi_neg_baselined,
           "improved" = chromatogram_bpi_neg_improved
         ),

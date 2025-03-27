@@ -9,29 +9,35 @@
 #'
 #' @examples NULL
 prepare_hierarchy <-
-  function(dataframe,
-           type = "analysis",
-           detector = "ms",
-           rescale = FALSE) {
-    stopifnot("'type' must be either 'analysis' or 'literature'" = type %in% c("analysis", "literature"))
+  function(dataframe, type = "analysis", detector = "ms", rescale = FALSE) {
+    stopifnot(
+      "'type' must be either 'analysis' or 'literature'" = type %in%
+        c("analysis", "literature")
+    )
 
     if (type == "analysis") {
       df <- dataframe |>
-        tidytable::mutate(best_candidate_1 = tidytable::if_else(
-          condition = !is.na(smiles_2D),
-          true = best_candidate_1,
-          false = "Other"
-        )) |>
-        tidytable::mutate(best_candidate_2 = tidytable::if_else(
-          condition = !is.na(smiles_2D),
-          true = best_candidate_2,
-          false = paste(best_candidate_1, "notAnnotated", sep = " ")
-        )) |>
-        tidytable::mutate(best_candidate_3 = tidytable::if_else(
-          condition = !is.na(smiles_2D),
-          true = best_candidate_3,
-          false = paste(best_candidate_2, "notAnnotated", sep = " ")
-        )) |>
+        tidytable::mutate(
+          best_candidate_1 = tidytable::if_else(
+            condition = !is.na(smiles_2D),
+            true = best_candidate_1,
+            false = "Other"
+          )
+        ) |>
+        tidytable::mutate(
+          best_candidate_2 = tidytable::if_else(
+            condition = !is.na(smiles_2D),
+            true = best_candidate_2,
+            false = paste(best_candidate_1, "notAnnotated", sep = " ")
+          )
+        ) |>
+        tidytable::mutate(
+          best_candidate_3 = tidytable::if_else(
+            condition = !is.na(smiles_2D),
+            true = best_candidate_3,
+            false = paste(best_candidate_2, "notAnnotated", sep = " ")
+          )
+        ) |>
         tidytable::mutate(
           best_candidate_2 = tidytable::if_else(
             condition = best_candidate_2 != "notClassified",
@@ -48,21 +54,24 @@ prepare_hierarchy <-
         ) |>
         tidytable::mutate(
           best_candidate_1 = tidytable::if_else(
-            condition = best_candidate_3 != "notClassified notClassified notClassified",
+            condition = best_candidate_3 !=
+              "notClassified notClassified notClassified",
             true = best_candidate_1,
             false = "Other"
           )
         ) |>
         tidytable::mutate(
           best_candidate_2 = tidytable::if_else(
-            condition = best_candidate_3 != "notClassified notClassified notClassified",
+            condition = best_candidate_3 !=
+              "notClassified notClassified notClassified",
             true = best_candidate_2,
             false = "Other notClassified"
           )
         ) |>
         tidytable::mutate(
           best_candidate_3 = tidytable::if_else(
-            condition = best_candidate_3 != "notClassified notClassified notClassified",
+            condition = best_candidate_3 !=
+              "notClassified notClassified notClassified",
             true = best_candidate_3,
             false = "Other notClassified notClassified"
           )
@@ -70,7 +79,10 @@ prepare_hierarchy <-
         tidytable::mutate(chemical_pathway = best_candidate_1)
 
       df_notConfident <- df |>
-        tidytable::filter(grepl(pattern = "notConfident", x = best_candidate_2)) |>
+        tidytable::filter(grepl(
+          pattern = "notConfident",
+          x = best_candidate_2
+        )) |>
         tidytable::mutate(
           smiles_2D = NA,
           best_candidate_1 = "Other",
@@ -83,7 +95,9 @@ prepare_hierarchy <-
         tidytable::distinct(id, peak_id, sample, .keep_all = TRUE)
 
       df_confident <- df |>
-        tidytable::filter(!grepl(pattern = "notConfident", x = best_candidate_2))
+        tidytable::filter(
+          !grepl(pattern = "notConfident", x = best_candidate_2)
+        )
 
       dataframe2 <- rbind(df_confident, df_notConfident) |>
         tidytable::group_by(chemical_pathway)
@@ -106,29 +120,39 @@ prepare_hierarchy <-
             false = paste(best_candidate_2, "notClassified", sep = " ")
           )
         ) |>
-        tidytable::mutate(chemical_pathway = tidytable::if_else(
-          condition = grepl(pattern = "not", x = best_candidate_1),
-          true = "Other",
-          false = best_candidate_1
-        ))
+        tidytable::mutate(
+          chemical_pathway = tidytable::if_else(
+            condition = grepl(pattern = "not", x = best_candidate_1),
+            true = "Other",
+            false = best_candidate_1
+          )
+        )
     }
 
     ## dirty temp fix because of bad npclassifier naming
     dataframe2 <- dataframe2 |>
       tidytable::rowwise() |>
-      tidytable::mutate(safety = tidytable::if_else(
-        condition = best_candidate_3 == best_candidate_2,
-        true = "Y",
-        false = "N"
-      )) |>
-      tidytable::mutate(best_candidate_3 = tidytable::if_else(
-        condition = safety == "Y",
-        true = paste(best_candidate_3, "sub"),
-        false = best_candidate_3
-      ))
+      tidytable::mutate(
+        safety = tidytable::if_else(
+          condition = best_candidate_3 == best_candidate_2,
+          true = "Y",
+          false = "N"
+        )
+      ) |>
+      tidytable::mutate(
+        best_candidate_3 = tidytable::if_else(
+          condition = safety == "Y",
+          true = paste(best_candidate_3, "sub"),
+          false = best_candidate_3
+        )
+      )
 
     parents <- dataframe2 |>
-      tidytable::distinct(labels = best_candidate_1, ids = best_candidate_1, chemical_pathway) |>
+      tidytable::distinct(
+        labels = best_candidate_1,
+        ids = best_candidate_1,
+        chemical_pathway
+      ) |>
       tidytable::mutate(parents = "") |>
       tidytable::distinct() |>
       tidytable::mutate(
@@ -176,26 +200,48 @@ prepare_hierarchy <-
       tidytable::distinct()
 
     children_1 <- dataframe2 |>
-      tidytable::distinct(best_candidate_1, best_candidate_2, chemical_pathway) |>
-      tidytable::mutate(ids = paste(best_candidate_1, best_candidate_2, sep = "-")) |>
+      tidytable::distinct(
+        best_candidate_1,
+        best_candidate_2,
+        chemical_pathway
+      ) |>
+      tidytable::mutate(
+        ids = paste(best_candidate_1, best_candidate_2, sep = "-")
+      ) |>
       tidytable::distinct(labels = best_candidate_2, ids, chemical_pathway) |>
-      tidytable::mutate(parents = gsub(
-        pattern = "-.*",
-        replacement = "",
-        x = ids
+      tidytable::mutate(
+        parents = gsub(
+          pattern = "-.*",
+          replacement = "",
+          x = ids
+        )
+      ) |>
+      tidytable::mutate(tidytable::across(
+        .cols = tidytable::everything(),
+        .fns = ~ gsub(
+          x = .x,
+          pattern = "-NA$",
+          replacement = "",
+        )
       )) |>
-      tidytable::mutate(tidytable::across(.cols = tidytable::everything(), .fns = ~ gsub(
-        x = .x,
-        pattern = "-NA$",
-        replacement = "",
-      ))) |>
       tidytable::filter(!is.na(labels)) |>
       tidytable::distinct()
 
     children_2 <- dataframe2 |>
-      tidytable::distinct(best_candidate_2, best_candidate_3, chemical_pathway) |>
-      tidytable::mutate(ids = paste(best_candidate_2, best_candidate_3, sep = "-")) |>
-      tidytable::distinct(labels = best_candidate_3, ids, join = best_candidate_2, chemical_pathway) |>
+      tidytable::distinct(
+        best_candidate_2,
+        best_candidate_3,
+        chemical_pathway
+      ) |>
+      tidytable::mutate(
+        ids = paste(best_candidate_2, best_candidate_3, sep = "-")
+      ) |>
+      tidytable::distinct(
+        labels = best_candidate_3,
+        ids,
+        join = best_candidate_2,
+        chemical_pathway
+      ) |>
       tidytable::mutate(
         join = gsub(
           pattern = "([a-zA-Z]|\\))(-)([a-zA-Z]|[0-9])(.*)",
@@ -203,20 +249,32 @@ prepare_hierarchy <-
           x = join
         )
       ) |>
-      tidytable::mutate(tidytable::across(.cols = tidytable::everything(), .fns = ~ gsub(
-        x = .x,
-        pattern = "-NA$",
-        replacement = "",
-      ))) |>
-      tidytable::mutate(tidytable::across(.cols = tidytable::everything(), .fns = ~ gsub(
-        x = .x,
-        pattern = "^NA$",
-        replacement = NA,
-      ))) |>
-      tidytable::full_join(children_1,
+      tidytable::mutate(tidytable::across(
+        .cols = tidytable::everything(),
+        .fns = ~ gsub(
+          x = .x,
+          pattern = "-NA$",
+          replacement = "",
+        )
+      )) |>
+      tidytable::mutate(tidytable::across(
+        .cols = tidytable::everything(),
+        .fns = ~ gsub(
+          x = .x,
+          pattern = "^NA$",
+          replacement = NA,
+        )
+      )) |>
+      tidytable::full_join(
+        children_1,
         by = c("join" = "labels", "chemical_pathway" = "chemical_pathway")
       ) |>
-      tidytable::distinct(ids = ids.x, labels, parents = ids.y, chemical_pathway) |>
+      tidytable::distinct(
+        ids = ids.x,
+        labels,
+        parents = ids.y,
+        chemical_pathway
+      ) |>
       tidytable::filter(!is.na(labels)) |>
       tidytable::distinct()
 
@@ -225,26 +283,36 @@ prepare_hierarchy <-
       tidytable::distinct() |>
       tidytable::group_by(ids) |>
       tidytable::add_count() |> ## for ambiguous classes
-      tidytable::filter(parents != "" |
-        !is.na(ids) |
-        !is.na(labels)) |>
+      tidytable::filter(
+        parents != "" |
+          !is.na(ids) |
+          !is.na(labels)
+      ) |>
       tidytable::ungroup()
 
     suppressMessages(
       table <- dataframe2 |>
-        tidytable::mutate(ids = paste0(
-          best_candidate_2, "-", best_candidate_3
-        )) |>
-        tidytable::mutate(ids = gsub(
-          x = ids,
-          pattern = "-NA$",
-          replacement = "",
-        )) |>
-        tidytable::mutate(ids = gsub(
-          x = ids,
-          pattern = "^NA$",
-          replacement = NA,
-        )) |>
+        tidytable::mutate(
+          ids = paste0(
+            best_candidate_2,
+            "-",
+            best_candidate_3
+          )
+        ) |>
+        tidytable::mutate(
+          ids = gsub(
+            x = ids,
+            pattern = "-NA$",
+            replacement = "",
+          )
+        ) |>
+        tidytable::mutate(
+          ids = gsub(
+            x = ids,
+            pattern = "^NA$",
+            replacement = NA,
+          )
+        ) |>
         tidytable::full_join(genealogy) |>
         tidytable::mutate(
           best_candidate_3 = tidytable::if_else(
@@ -319,10 +387,24 @@ prepare_hierarchy <-
     }
 
     top_parents_table <- table_1_1 |>
-      tidytable::distinct(chemical_pathway, parents, ids, labels, values_2, n) |>
+      tidytable::distinct(
+        chemical_pathway,
+        parents,
+        ids,
+        labels,
+        values_2,
+        n
+      ) |>
       tidytable::inner_join(
         table_1_1 |>
-          tidytable::distinct(chemical_pathway, parents, ids, labels, values_2, n),
+          tidytable::distinct(
+            chemical_pathway,
+            parents,
+            ids,
+            labels,
+            values_2,
+            n
+          ),
         by = c("ids" = "parents")
       ) |>
       tidytable::filter(!grepl(pattern = "-", x = parents)) |>
@@ -372,7 +454,14 @@ prepare_hierarchy <-
             false = n + 0
           )
         ) |>
-        tidytable::select(chemical_pathway, parents = i.parents, ids = parents, labels, sum, n)
+        tidytable::select(
+          chemical_pathway,
+          parents = i.parents,
+          ids = parents,
+          labels,
+          sum,
+          n
+        )
     )
 
     table_3_1 <- table_3 |>
@@ -406,7 +495,10 @@ prepare_hierarchy <-
 
     suppressMessages(
       low_medium_table <-
-        tidytable::anti_join(table_3, tidytable::bind_rows(table_3_1, top_medium_table)) |>
+        tidytable::anti_join(
+          table_3,
+          tidytable::bind_rows(table_3_1, top_medium_table)
+        ) |>
         tidytable::select(chemical_pathway, parents, ids, labels) |>
         tidytable::filter(!is.na(parents)) |>
         tidytable::distinct()
@@ -453,29 +545,35 @@ prepare_hierarchy <-
       tidytable::filter(!labels %in% genealogy_new_med$labels) |>
       tidytable::filter(parents %in% top_medium_table$ids) |>
       tidytable::filter(parents != "") |>
-      tidytable::mutate(new_labels = paste(
-        gsub(
-          pattern = "^([^-]*)-(.*)",
-          replacement = "",
-          x = parents
-        ),
-        labels
+      tidytable::mutate(
+        new_labels = paste(
+          gsub(
+            pattern = "^([^-]*)-(.*)",
+            replacement = "",
+            x = parents
+          ),
+          labels
+        ) |>
+          trimws()
       ) |>
-        trimws()) |>
-      tidytable::mutate(ids = paste(
-        gsub(
-          pattern = "^([^-]*)-(.*)",
-          replacement = "\\2",
-          x = parents
-        ),
-        new_labels,
-        sep = "-"
-      )) |>
-      tidytable::mutate(new_labels = tidytable::if_else(
-        condition = grepl(pattern = "^Other", x = parents),
-        true = labels,
-        false = new_labels
-      ))
+      tidytable::mutate(
+        ids = paste(
+          gsub(
+            pattern = "^([^-]*)-(.*)",
+            replacement = "\\2",
+            x = parents
+          ),
+          new_labels,
+          sep = "-"
+        )
+      ) |>
+      tidytable::mutate(
+        new_labels = tidytable::if_else(
+          condition = grepl(pattern = "^Other", x = parents),
+          true = labels,
+          false = new_labels
+        )
+      )
 
     genealogy_new_med_2 <-
       tidytable::bind_rows(genealogy_new_med, table_next) |>
@@ -501,16 +599,21 @@ prepare_hierarchy <-
     table_other <- genealogy_new_med_2 |>
       tidytable::filter(grepl(pattern = " Other-", x = ids)) |>
       tidytable::distinct(chemical_pathway, ids = parents) |>
-      tidytable::mutate(parents = (gsub(
-        pattern = "-.*",
-        replacement = "\\1",
-        x = ids
-      ))) |>
-      tidytable::mutate(labels = (gsub(
-        pattern = ".*-",
-        replacement = "\\1",
-        x = ids
-      )), new_labels = labels)
+      tidytable::mutate(
+        parents = (gsub(
+          pattern = "-.*",
+          replacement = "\\1",
+          x = ids
+        ))
+      ) |>
+      tidytable::mutate(
+        labels = (gsub(
+          pattern = ".*-",
+          replacement = "\\1",
+          x = ids
+        )),
+        new_labels = labels
+      )
 
     genealogy_new_med_3 <-
       tidytable::bind_rows(genealogy_new_med_2, table_children, table_other) |>
@@ -538,11 +641,14 @@ prepare_hierarchy <-
           new_labels = best_candidate_3
         ) |>
         tidytable::select(chemical_pathway, parents, ids, labels, new_labels) |>
-        tidytable::mutate(tidytable::across(.cols = tidytable::everything(), .fns = ~ gsub(
-          x = .x,
-          pattern = "-NA$",
-          replacement = "",
-        )))
+        tidytable::mutate(tidytable::across(
+          .cols = tidytable::everything(),
+          .fns = ~ gsub(
+            x = .x,
+            pattern = "-NA$",
+            replacement = "",
+          )
+        ))
     )
 
     suppressMessages(
@@ -576,11 +682,14 @@ prepare_hierarchy <-
         ) |>
         tidytable::select(chemical_pathway, parents, ids, labels, new_labels) |>
         tidytable::distinct() |>
-        tidytable::mutate(tidytable::across(.cols = tidytable::everything(), .fns = ~ gsub(
-          x = .x,
-          pattern = "-NA$",
-          replacement = "",
-        ))) |>
+        tidytable::mutate(tidytable::across(
+          .cols = tidytable::everything(),
+          .fns = ~ gsub(
+            x = .x,
+            pattern = "-NA$",
+            replacement = "",
+          )
+        )) |>
         tidytable::filter(!is.na(labels))
     )
 
@@ -613,19 +722,20 @@ prepare_hierarchy <-
       if (nrow(table_new) > 0) {
         table_new <- table_new |>
           tidytable::rowwise() |>
-          tidytable::filter(grepl(pattern = id, x = sample) |
-            ## Comment these if
-            is.na(id)) |> ## using wrong feature table
+          tidytable::filter(
+            grepl(pattern = id, x = sample) |
+              ## Comment these if
+              is.na(id)
+          ) |> ## using wrong feature table
           tidytable::ungroup()
       } else {
         table_new <- table_new |>
           tidytable::mutate(integral = NA, new_labels = NA)
       }
       table_new <- table_new |>
-        tidytable::mutate(intensity = switch(detector,
-          "ms" = intensity,
-          "cad" = integral
-        )) |>
+        tidytable::mutate(
+          intensity = switch(detector, "ms" = intensity, "cad" = integral)
+        ) |>
         tidytable::distinct(
           feature_id,
           smiles_2D,
@@ -646,7 +756,15 @@ prepare_hierarchy <-
         tidytable::group_by(parents, ids, sample, intensity) |>
         tidytable::add_count(name = "values") |>
         tidytable::ungroup() |>
-        tidytable::select(parents, ids, labels, values, sample, intensity, species) |>
+        tidytable::select(
+          parents,
+          ids,
+          labels,
+          values,
+          sample,
+          intensity,
+          species
+        ) |>
         tidytable::distinct() |>
         tidytable::filter(!is.na(ids))
     } else {
@@ -655,7 +773,15 @@ prepare_hierarchy <-
         tidytable::group_by(parents, ids, sample) |>
         tidytable::add_count(name = "values") |>
         tidytable::ungroup() |>
-        tidytable::select(parents, ids, labels, values, sample, organism, species) |>
+        tidytable::select(
+          parents,
+          ids,
+          labels,
+          values,
+          sample,
+          organism,
+          species
+        ) |>
         tidytable::distinct() |>
         tidytable::filter(!is.na(ids))
     }
@@ -670,8 +796,10 @@ prepare_hierarchy <-
 
     table_1_1_new <- rbind(
       table_1_new |>
-        tidytable::mutate(labels = labels |>
-          as.character()),
+        tidytable::mutate(
+          labels = labels |>
+            as.character()
+        ),
       additional_row
     ) |>
       tidytable::ungroup()
@@ -681,21 +809,29 @@ prepare_hierarchy <-
       tidytable::distinct(parents, ids, labels)
 
     final_table_4_1 <- table_1_1_new |>
-      tidytable::filter(grepl(pattern = "-", x = parents) &
-        parents %in% missing_children_1$parents) |>
+      tidytable::filter(
+        grepl(pattern = "-", x = parents) &
+          parents %in% missing_children_1$parents
+      ) |>
       tidytable::group_by(
         c("parents", "ids", "labels", "sample", "species")
       ) |>
-      tidytable::summarize(values = sum(switch(type,
-        "analysis" = intensity,
-        "literature" = values
-      )), .groups = "drop") |>
+      tidytable::summarize(
+        values = sum(switch(
+          type,
+          "analysis" = intensity,
+          "literature" = values
+        )),
+        .groups = "drop"
+      ) |>
       tidytable::filter(!is.na(labels)) |>
-      tidytable::mutate(join = gsub(
-        pattern = "-.*",
-        replacement = "",
-        x = parents
-      )) |>
+      tidytable::mutate(
+        join = gsub(
+          pattern = "-.*",
+          replacement = "",
+          x = parents
+        )
+      ) |>
       tidytable::ungroup()
 
     final_table_4 <- final_table_4_1 |>
@@ -726,13 +862,19 @@ prepare_hierarchy <-
 
     final_table_3_3 <- table_1_1_new |>
       tidytable::filter(!is.na(species)) |>
-      tidytable::filter(grepl(pattern = "-", x = parents) &
-        !parents %in% missing_children_1$parents) |>
+      tidytable::filter(
+        grepl(pattern = "-", x = parents) &
+          !parents %in% missing_children_1$parents
+      ) |>
       tidytable::group_by(c("parents", "ids", "labels", "sample", "species")) |>
-      tidytable::summarize(values = sum(switch(type,
-        "analysis" = intensity,
-        "literature" = values
-      )), .groups = "drop") |>
+      tidytable::summarize(
+        values = sum(switch(
+          type,
+          "analysis" = intensity,
+          "literature" = values
+        )),
+        .groups = "drop"
+      ) |>
       tidytable::ungroup()
 
     final_table_3 <-
@@ -741,9 +883,15 @@ prepare_hierarchy <-
       tidytable::arrange(parents, ids)
 
     final_table_2 <- table_1_1_new |>
-      tidytable::select(-tidytable::any_of(c(
-        "values", "sample", "intensity", "species", "organism"
-      ))) |>
+      tidytable::select(
+        -tidytable::any_of(c(
+          "values",
+          "sample",
+          "intensity",
+          "species",
+          "organism"
+        ))
+      ) |>
       tidytable::left_join(
         final_table_3 |>
           tidytable::select(tidytable::any_of(
@@ -759,9 +907,15 @@ prepare_hierarchy <-
       tidytable::filter(!is.na(values))
 
     final_table_1 <- table_1_1_new |>
-      tidytable::select(-tidytable::any_of(c(
-        "values", "sample", "intensity", "species", "organism"
-      ))) |>
+      tidytable::select(
+        -tidytable::any_of(c(
+          "values",
+          "sample",
+          "intensity",
+          "species",
+          "organism"
+        ))
+      ) |>
       tidytable::left_join(
         final_table_2 |>
           tidytable::select(tidytable::any_of(
@@ -777,7 +931,12 @@ prepare_hierarchy <-
       tidytable::ungroup()
 
     final_table <-
-      tidytable::bind_rows(final_table_1, final_table_2, final_table_3, final_table_4) |>
+      tidytable::bind_rows(
+        final_table_1,
+        final_table_2,
+        final_table_3,
+        final_table_4
+      ) |>
       # tidytable::filter(!grepl(pattern = "^Other", x = ids)) |>
       tidytable::filter(!is.na(sample))
 

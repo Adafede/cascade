@@ -13,7 +13,8 @@ compare_peaks <- function(x, list_ms_peaks, peaks_prelist) {
       purrr::map(
         .f = function(list_ms_peaks, x, z) {
           if (length(list_ms_peaks[[x]][[z]]) > 1) {
-            MSnbase::compareChromatograms(peaks_prelist$list_chromato_peaks[[x]],
+            MSnbase::compareChromatograms(
+              peaks_prelist$list_chromato_peaks[[x]],
               y = list_ms_peaks[[x]][[z]],
               method = "closest"
             )

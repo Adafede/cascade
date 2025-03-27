@@ -15,12 +15,10 @@ save_treemaps_progress <- function(xs, type = "treemap") {
       .progress = TRUE,
       .f = function(x) {
         plotly::save_image(
-          p = switch(type,
-            "treemap" = treemaps,
-            "sunburst" = sunbursts
-          )[[x]],
+          p = switch(type, "treemap" = treemaps, "sunburst" = sunbursts)[[x]],
           file = file.path(
-            switch(type,
+            switch(
+              type,
               "treemap" = paths$data$treemaps$path,
               "sunburst" = paths$data$sunbursts$path
             ),

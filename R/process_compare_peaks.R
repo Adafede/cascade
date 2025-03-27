@@ -36,21 +36,23 @@
 #' \dontrun{
 #' check_chromatograms_alignment(show_example = TRUE)
 #' }
-process_compare_peaks <- function(file = NULL,
-                                  features = NULL,
-                                  type = "baselined",
-                                  detector = "cad",
-                                  headers = c("BasePeak_0", "PDA#1_TotalAbsorbance_0", "UV#1_CAD_1_0"),
-                                  export_dir = "data/interim/peaks",
-                                  show_example = FALSE,
-                                  fourier_components = 0.01,
-                                  frequency = 1,
-                                  min_area = 0.005,
-                                  min_intensity = 1E4,
-                                  resample = 1,
-                                  shift = 0.05,
-                                  time_min = 0.5,
-                                  time_max = 32.5) {
+process_compare_peaks <- function(
+  file = NULL,
+  features = NULL,
+  type = "baselined",
+  detector = "cad",
+  headers = c("BasePeak_0", "PDA#1_TotalAbsorbance_0", "UV#1_CAD_1_0"),
+  export_dir = "data/interim/peaks",
+  show_example = FALSE,
+  fourier_components = 0.01,
+  frequency = 1,
+  min_area = 0.005,
+  min_intensity = 1E4,
+  resample = 1,
+  shift = 0.05,
+  time_min = 0.5,
+  time_max = 32.5
+) {
   message("loading MS data")
   ms_data <- file |>
     load_ms_data(show_example = show_example)
@@ -81,12 +83,14 @@ process_compare_peaks <- function(file = NULL,
   chromatograms_list <- preprocess_chromatograms(
     detector = detector,
     name = name,
-    list = switch(detector,
+    list = switch(
+      detector,
       "bpi" = chromatograms_all[c(TRUE, FALSE, FALSE)],
       "cad" = chromatograms_all[c(FALSE, FALSE, TRUE)],
       "pda" = chromatograms_all[c(FALSE, TRUE, FALSE)]
     ),
-    signal_name = switch(detector,
+    signal_name = switch(
+      detector,
       "bpi" = "BasePeak_0",
       "cad" = "UV.1_CAD_1_0",
       "pda" = "PDA.1_TotalAbsorbance_0"
@@ -103,13 +107,15 @@ process_compare_peaks <- function(file = NULL,
   peaks_prelist <- preprocess_peaks(
     detector = detector,
     df_features = df_features,
-    df_long = switch(type,
+    df_long = switch(
+      type,
       "original" = chromatograms_list$chromatograms_original_long,
       "improved" = chromatograms_list$chromatograms_improved_long,
       "baselined" = chromatograms_list$chromatograms_baselined_long
     ) |>
       tidytable::mutate(intensity = intensity / max(intensity)),
-    df_xy = switch(type,
+    df_xy = switch(
+      type,
       "original" = chromatograms_list$chromatograms_original[[1]],
       "improved" = chromatograms_list$chromatograms_improved[[1]],
       "baselined" = chromatograms_list$chromatograms_baselined[[1]]
@@ -121,9 +127,13 @@ process_compare_peaks <- function(file = NULL,
 
   message("processing ", detector, " peaks")
   message("extracting ms chromatograms (longest step)")
-  message("count approx 1 minute per worker per 1000 features (increasing with features number)")
+  message(
+    "count approx 1 minute per worker per 1000 features (increasing with features number)"
+  )
   message("varies a lot depending on features distribution")
-  list_ms_chromatograms <- seq_along(peaks_prelist$list_df_features_with_peaks_long) |>
+  list_ms_chromatograms <- seq_along(
+    peaks_prelist$list_df_features_with_peaks_long
+  ) |>
     extract_ms_progress(
       ms_data = ms_data,
       rts = peaks_prelist$list_rtr,

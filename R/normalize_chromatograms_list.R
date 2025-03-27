@@ -9,10 +9,12 @@
 #'
 #' @examples NULL
 normalize_chromatograms_list <-
-  function(list,
-           shift = 0,
-           normalize_intensity = TRUE,
-           normalize_time = FALSE) {
+  function(
+    list,
+    shift = 0,
+    normalize_intensity = TRUE,
+    normalize_time = FALSE
+  ) {
     df <- list |>
       tidytable::mutate(time = time + shift) |>
       data.frame()

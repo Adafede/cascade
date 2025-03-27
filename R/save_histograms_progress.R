@@ -28,7 +28,9 @@ save_histograms_progress <- function(xs) {
             )
           ),
           width = 16 * max((dimensions[[x]] / 30), 1),
-          height = 9 * max((size[[x]] / 100), 1) * max((dimensions[[x]] / 30), 1),
+          height = 9 *
+            max((size[[x]] / 100), 1) *
+            max((dimensions[[x]] / 30), 1),
           limitsize = FALSE
         )
       }
