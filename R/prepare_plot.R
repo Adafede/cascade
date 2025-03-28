@@ -21,9 +21,10 @@ prepare_plot <- function(dataframe, organism = "species") {
     ) |>
     tidytable::filter(!is.na(get(organism))) |>
     tidytable::mutate(species = get(organism)) |>
-    tidytable::group_by(ids) |>
+    tidytable::group_by(parents) |>
     tidytable::mutate(valuez = sum(values)) |>
     tidytable::ungroup() |>
+    tidytable::arrange(desc(values)) |>
     tidytable::arrange(desc(valuez)) |>
     tidytable::mutate(
       group = factor(parents, levels = unique(parents)) |>
