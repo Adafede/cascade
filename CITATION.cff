@@ -60,12 +60,12 @@ references:
   issue: '46'
   url: https://doi.org/10.1021/acs.jafc.3c03099
   keywords:
-  - metaboliteAnnotation
-  - chargedAerosolDetector
-  - semiQuantitative
-  - naturalProducts
-  - computationalMetabolomics
-  - specializedMetabolome
+  - metabolite annotation
+  - charged aerosol detector
+  - semi-quantitative
+  - natural products
+  - computational metabolomics
+  - specialized metabolome
   doi: 10.1021/acs.jafc.3c03099
   issn: 1664-462X
 - type: software
@@ -160,6 +160,10 @@ references:
   - family-names: Schwendinger
     given-names: Benjamin
     orcid: https://orcid.org/0000-0003-3315-8114
+  - family-names: Krylov
+    given-names: Ivan
+    email: ikrylov@disroot.org
+    orcid: https://orcid.org/0000-0002-0172-3812
   year: '2025'
   doi: 10.32614/CRAN.package.data.table
   version: '>= 1.16.4'
@@ -370,11 +374,11 @@ references:
   authors:
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
+    email: hadley@posit.co
     orcid: https://orcid.org/0000-0003-4757-117X
   - family-names: Henry
     given-names: Lionel
-    email: lionel@rstudio.com
+    email: lionel@posit.co
   year: '2025'
   doi: 10.32614/CRAN.package.purrr
   version: '>= 1.0.2'
