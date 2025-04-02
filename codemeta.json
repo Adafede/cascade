@@ -313,8 +313,8 @@
     },
     "SystemRequirements": null
   },
-  "keywords": ["metaboliteannotation", "chargedaerosoldetector", "semi-quantitative", "naturalproducts", "computationalmetabolomics", "specializedmetabolome"],
-  "fileSize": "163083.017KB",
+  "keywords": ["metaboliteAnnotation", "chargedAerosolDetector", "semiQuantitative", "naturalProducts", "computationalMetabolomics", "specializedMetabolome"],
+  "fileSize": "163083.047KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",

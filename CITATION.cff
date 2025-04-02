@@ -37,12 +37,12 @@ contact:
   email: adafede@gmail.com
   orcid: https://orcid.org/0000-0003-0443-9902
 keywords:
-- metabolite annotation
-- charged aerosol detector
-- semi-quantitative
-- natural products
-- computational metabolomics
-- specialized metabolome
+- metaboliteAnnotation
+- chargedAerosolDetector
+- semiQuantitative
+- naturalProducts
+- computationalMetabolomics
+- specializedMetabolome
 references:
 - type: article
   title: 'Automated Composition Assessment of Natural Extracts: Untargeted Mass Spectrometry-Based
@@ -60,12 +60,12 @@ references:
   issue: '46'
   url: https://doi.org/10.1021/acs.jafc.3c03099
   keywords:
-  - metabolite annotation
-  - charged aerosol detector
-  - semi-quantitative
-  - natural products
-  - computational metabolomics
-  - specialized metabolome
+  - metaboliteAnnotation
+  - chargedAerosolDetector
+  - semiQuantitative
+  - naturalProducts
+  - computationalMetabolomics
+  - specializedMetabolome
   doi: 10.1021/acs.jafc.3c03099
   issn: 1664-462X
 - type: software
