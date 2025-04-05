@@ -318,7 +318,7 @@
   "citation": [
     {
       "@type": "SoftwareSourceCode",
-      "datePublished": "2024",
+      "datePublished": "2025",
       "author": [
         {
           "@type": "Person",
@@ -329,7 +329,7 @@
         }
       ],
       "name": "cascade: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts",
-      "description": "R package, version 0.0.9000"
+      "description": "R package, version 0.0.9001"
     },
     {
       "@type": "ScholarlyArticle",
