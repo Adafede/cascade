@@ -6,8 +6,8 @@ bibentry(
   author   = c(
     person(given = "Adriano", family = "Rutz", email = "adafede@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-0443-9902"))
     ),
-  year     = "2024",
-  note     = "R package, version 0.0.9000",
+  year     = "2025",
+  note     = "R package, version 0.0.9001",
 )
 
 bibentry(
