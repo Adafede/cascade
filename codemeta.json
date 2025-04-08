@@ -134,7 +134,7 @@
       "@type": "SoftwareApplication",
       "identifier": "data.table",
       "name": "data.table",
-      "version": ">= 1.16.4",
+      "version": ">= 1.17.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -173,7 +173,7 @@
       "@type": "SoftwareApplication",
       "identifier": "gt",
       "name": "gt",
-      "version": ">= 0.11.1",
+      "version": ">= 1.0.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -238,7 +238,7 @@
       "@type": "SoftwareApplication",
       "identifier": "purrr",
       "name": "purrr",
-      "version": ">= 1.0.2",
+      "version": ">= 1.0.4",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -251,7 +251,7 @@
       "@type": "SoftwareApplication",
       "identifier": "R.utils",
       "name": "R.utils",
-      "version": ">= 2.12.3",
+      "version": ">= 2.13.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -290,7 +290,7 @@
       "@type": "SoftwareApplication",
       "identifier": "tima",
       "name": "tima",
-      "version": ">= 2.11.1",
+      "version": ">= 2.12.0",
       "sameAs": "https://github.com/taxonomicallyinformedannotation/tima"
     },
     "18": {
@@ -314,7 +314,7 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteAnnotation", "chargedAerosolDetector", "semiQuantitative", "naturalProducts", "computationalMetabolomics", "specializedMetabolome"],
-  "fileSize": "163086.589KB",
+  "fileSize": "163087.583KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
