@@ -14,7 +14,9 @@ tables_progress <- function(xs, structures_classified) {
         if (nrow(x != 0)) {
           x |>
             tidytable::left_join(structures_classified) |>
-            tidytable::mutate(structureImage = URLencode(structureSmiles)) |>
+            tidytable::mutate(
+              structureImage = utils::URLencode(structureSmiles)
+            ) |>
             tidytable::relocate(structureImage, .after = structure) |>
             tidytable::relocate(structureLabel, .before = structure) |>
             tidytable::select(

@@ -129,7 +129,7 @@ check_peaks_integration <- function(
       peak_max = peak_max / max(peak_max)
     )
 
-  approx_f <- approxfun(
+  approx_f <- stats::approxfun(
     x = chromatogram_normalized |>
       tidytable::pull(time),
     y = chromatogram_normalized |>

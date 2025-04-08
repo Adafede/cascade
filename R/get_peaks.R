@@ -61,7 +61,7 @@ get_peaks <- function(
     }
     get_time_resolution <- function(chrom_list, idx = 1) {
       ts <- get_times(x = chrom_list, idx = idx)
-      signif(median(diff(ts)))
+      signif(stats::median(diff(ts)))
     }
 
     timepoints <- get_times(chrom_list, idx = idx)
@@ -245,7 +245,7 @@ get_peaks <- function(
                   Y <- pinv(X) # pseudoinverse
 
                   # -- filter via convolution and take care of the end points --
-                  T2 <- convolve(T, rev(Y[(dorder + 1), ]), type = "o") # convolve(...)
+                  T2 <- stats::convolve(T, rev(Y[(dorder + 1), ]), type = "o") # convolve(...)
                   T2 <- T2[(fc + 1):(length(T2) - fc)]
 
                   Tsg <- (-1)^dorder * T2
@@ -256,7 +256,7 @@ get_peaks <- function(
                 d <- caTools::runmean(diff(y), k = smooth_window)
               } else if (smooth_type == "gaussian") {
                 d <- diff(
-                  ksmooth(
+                  stats::ksmooth(
                     seq_along(y),
                     y,
                     kernel = "normal",
@@ -422,7 +422,7 @@ get_peaks <- function(
               }
 
               # call the Nonlinear Least Squares, either fitting the floor too or not
-              controlList <- nls.control(
+              controlList <- stats::nls.control(
                 maxiter = max.iter,
                 minFactor = 1 / 512,
                 warnOnly = TRUE
@@ -443,7 +443,7 @@ get_peaks <- function(
                 )
               } else {
                 if (is.null(start.floor)) {
-                  start.floor <- quantile(y, seq(0, 1, 0.1))[2]
+                  start.floor <- stats::quantile(y, seq(0, 1, 0.1))[2]
                 }
                 starts <- c(starts, "floor" = start.floor)
                 nlsAns <- try(
@@ -479,13 +479,13 @@ get_peaks <- function(
                   0
                 }
               } else {
-                coefs <- coef(nlsAns)
+                coefs <- stats::coef(nlsAns)
                 out <- list(
                   "center" = coefs[1],
                   "width" = coefs[2],
                   "height" = coefs[3],
-                  "y" = fitted(nlsAns),
-                  "residual" = residuals(nlsAns)
+                  "y" = stats::fitted(nlsAns),
+                  "residual" = stats::residuals(nlsAns)
                 )
                 floorAns <- if (fit.floor) {
                   coefs[4]
@@ -510,9 +510,9 @@ get_peaks <- function(
                 max.iter = max.iter
               )
             )
-            area <- sum(diff(peak.loc) * mean(c(m$y[-1], tail(m$y, -1)))) # trapezoidal integration
+            area <- sum(diff(peak.loc) * mean(c(m$y[-1], utils::tail(m$y, -1)))) # trapezoidal integration
             r.squared <- try(
-              summary(lm(m$y ~ y[peak.loc]))$r.squared,
+              summary(stats::lm(m$y ~ y[peak.loc]))$r.squared,
               silent = TRUE
             )
             purity <- get_purity(
@@ -580,7 +580,7 @@ get_peaks <- function(
                 start.tau <- 0
               }
               # call the Nonlinear Least Squares, either fitting the floor too or not
-              controlList <- nls.control(
+              controlList <- stats::nls.control(
                 maxiter = max.iter,
                 minFactor = 1 / 512,
                 warnOnly = TRUE
@@ -602,7 +602,7 @@ get_peaks <- function(
                 )
               } else {
                 if (is.null(start.floor)) {
-                  start.floor <- quantile(y1, seq(0, 1, 0.1))[2]
+                  start.floor <- stats::quantile(y1, seq(0, 1, 0.1))[2]
                 }
                 starts <- c(starts, "floor" = start.floor)
                 nlsAns <- try(
@@ -639,14 +639,14 @@ get_peaks <- function(
                   0
                 }
               } else {
-                coefs <- coef(nlsAns)
+                coefs <- stats::coef(nlsAns)
                 out <- list(
                   "center" = coefs[1],
                   "width" = coefs[2],
                   "height" = coefs[3],
                   "tau" = coefs[4],
-                  "y" = fitted(nlsAns),
-                  "residual" = residuals(nlsAns)
+                  "y" = stats::fitted(nlsAns),
+                  "residual" = stats::residuals(nlsAns)
                 )
                 floorAns <- if (fit.floor) {
                   coefs[5]
@@ -673,7 +673,7 @@ get_peaks <- function(
               )
             )
             r.squared <- try(
-              summary(lm(m$y ~ y[peak.loc]))$r.squared,
+              summary(stats::lm(m$y ~ y[peak.loc]))$r.squared,
               silent = TRUE
             )
             purity <- get_purity(
@@ -683,7 +683,7 @@ get_peaks <- function(
               noise_threshold = noise_threshold
             )
             # trapezoidal integration
-            area <- sum(diff(peak.loc) * mean(c(m$y[-1], tail(m$y, -1))))
+            area <- sum(diff(peak.loc) * mean(c(m$y[-1], utils::tail(m$y, -1))))
             c(
               "rt" = m$center,
               "start" = pos[2],
@@ -712,7 +712,8 @@ get_peaks <- function(
 
             # perform trapezoidal integration on raw signal
             area <- sum(
-              diff(peak.loc) * mean(c(y[peak.loc][-1], tail(y[peak.loc], -1)))
+              diff(peak.loc) *
+                mean(c(y[peak.loc][-1], utils::tail(y[peak.loc], -1)))
             )
             purity <- get_purity(
               x = x,

@@ -112,6 +112,7 @@ Collate:
     'load_features_informed.R'
     'load_annotations.R'
     'generate_tables.R'
+    'globals.R'
     'histograms_progress.R'
     'load_features_not_informed.R'
     'load_ms_data.R'

@@ -6,7 +6,7 @@
 #'
 #' @examples NULL
 save_histograms_progress <- function(xs) {
-  setNames(
+  stats::setNames(
     object = xs,
     nm = xs
   ) |>
