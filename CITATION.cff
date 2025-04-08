@@ -166,7 +166,7 @@ references:
     orcid: https://orcid.org/0000-0002-0172-3812
   year: '2025'
   doi: 10.32614/CRAN.package.data.table
-  version: '>= 1.16.4'
+  version: '>= 1.17.0'
 - type: software
   title: forcats
   abstract: 'forcats: Tools for Working with Categorical Variables (Factors)'
@@ -259,7 +259,7 @@ references:
     given-names: Olivier
   year: '2025'
   doi: 10.32614/CRAN.package.gt
-  version: '>= 0.11.1'
+  version: '>= 1.0.0'
 - type: software
   title: htmltools
   abstract: 'htmltools: Tools for HTML'
@@ -381,7 +381,7 @@ references:
     email: lionel@posit.co
   year: '2025'
   doi: 10.32614/CRAN.package.purrr
-  version: '>= 1.0.2'
+  version: '>= 1.0.4'
 - type: software
   title: R.utils
   abstract: 'R.utils: Various Programming Utilities'
@@ -394,7 +394,7 @@ references:
     email: henrikb@braju.com
   year: '2025'
   doi: 10.32614/CRAN.package.R.utils
-  version: '>= 2.12.3'
+  version: '>= 2.13.0'
 - type: software
   title: tibble
   abstract: 'tibble: Simple Data Frames'
@@ -437,7 +437,7 @@ references:
     email: adafede@gmail.com
     orcid: https://orcid.org/0000-0003-0443-9902
   year: '2025'
-  version: '>= 2.11.1'
+  version: '>= 2.12.0'
 - type: software
   title: utils
   abstract: 'R: A Language and Environment for Statistical Computing'
