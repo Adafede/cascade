@@ -48,7 +48,8 @@ check_chromatograms_alignment <- function(
   normalize_time = FALSE,
   show_example = FALSE
 ) {
-  if (!is.null(file_positive) | show_example) {
+  chromatograms_list <- list()
+  if (!is.null(file_positive) || show_example) {
     if (show_example) {
       chromatograms_positive <- load_chromatograms(
         show_example = show_example,
@@ -67,7 +68,7 @@ check_chromatograms_alignment <- function(
     chromatogram_pda_pos <- chromatograms_positive |>
       extract_chromatogram("pda")
 
-    chromatogram_bpi_pos_improved <<- chromatogram_bpi_pos |>
+    chromatograms_list$chromatogram_bpi_pos_improved <- chromatogram_bpi_pos |>
       improve_signal(
         time_min = time_min,
         time_max = time_max,
@@ -79,7 +80,7 @@ check_chromatograms_alignment <- function(
         normalize_intensity = normalize_intensity,
         normalize_time = normalize_time
       )
-    chromatogram_cad_pos_improved <<- chromatogram_cad_pos |>
+    chromatograms_list$chromatogram_cad_pos_improved <- chromatogram_cad_pos |>
       improve_signal(
         time_min = time_min,
         time_max = time_max,
@@ -91,7 +92,7 @@ check_chromatograms_alignment <- function(
         normalize_intensity = normalize_intensity,
         normalize_time = normalize_time
       )
-    chromatogram_pda_pos_improved <<- chromatogram_pda_pos |>
+    chromatograms_list$chromatogram_pda_pos_improved <- chromatogram_pda_pos |>
       improve_signal(
         time_min = time_min,
         time_max = time_max,
@@ -104,19 +105,19 @@ check_chromatograms_alignment <- function(
         normalize_time = normalize_time
       )
 
-    chromatogram_bpi_pos_baselined <<- chromatogram_bpi_pos_improved |>
+    chromatograms_list$chromatogram_bpi_pos_baselined <- chromatograms_list$chromatogram_bpi_pos_improved |>
       baseline_chromatogram() |>
       normalize_chromatograms_list(
         normalize_intensity = normalize_intensity,
         normalize_time = normalize_time
       )
-    chromatogram_cad_pos_baselined <<- chromatogram_cad_pos_improved |>
+    chromatograms_list$chromatogram_cad_pos_baselined <- chromatograms_list$chromatogram_cad_pos_improved |>
       baseline_chromatogram() |>
       normalize_chromatograms_list(
         normalize_intensity = normalize_intensity,
         normalize_time = normalize_time
       )
-    chromatogram_pda_pos_baselined <<- chromatogram_pda_pos_improved |>
+    chromatograms_list$chromatogram_pda_pos_baselined <- chromatograms_list$chromatogram_pda_pos_improved |>
       baseline_chromatogram() |>
       normalize_chromatograms_list(
         normalize_intensity = normalize_intensity,
@@ -124,7 +125,7 @@ check_chromatograms_alignment <- function(
       )
   }
 
-  if (!is.null(file_negative) | show_example) {
+  if (!is.null(file_negative) || show_example) {
     if (show_example) {
       chromatograms_negative <- load_chromatograms(
         show_example = show_example,
@@ -143,7 +144,7 @@ check_chromatograms_alignment <- function(
     chromatogram_pda_neg <- chromatograms_negative |>
       extract_chromatogram("pda")
 
-    chromatogram_bpi_neg_improved <<- chromatogram_bpi_neg |>
+    chromatograms_list$chromatogram_bpi_neg_improved <- chromatogram_bpi_neg |>
       improve_signal(
         time_min = time_min,
         time_max = time_max,
@@ -155,7 +156,7 @@ check_chromatograms_alignment <- function(
         normalize_intensity = normalize_intensity,
         normalize_time = normalize_time
       )
-    chromatogram_cad_neg_improved <<- chromatogram_cad_neg |>
+    chromatograms_list$chromatogram_cad_neg_improved <- chromatogram_cad_neg |>
       improve_signal(
         time_min = time_min,
         time_max = time_max,
@@ -167,7 +168,7 @@ check_chromatograms_alignment <- function(
         normalize_intensity = normalize_intensity,
         normalize_time = normalize_time
       )
-    chromatogram_pda_neg_improved <<- chromatogram_pda_neg |>
+    chromatograms_list$chromatogram_pda_neg_improved <- chromatogram_pda_neg |>
       improve_signal(
         time_min = time_min,
         time_max = time_max,
@@ -180,19 +181,19 @@ check_chromatograms_alignment <- function(
         normalize_time = normalize_time
       )
 
-    chromatogram_bpi_neg_baselined <<- chromatogram_bpi_neg_improved |>
+    chromatograms_list$chromatogram_bpi_neg_baselined <- chromatograms_list$chromatogram_bpi_neg_improved |>
       baseline_chromatogram() |>
       normalize_chromatograms_list(
         normalize_intensity = normalize_intensity,
         normalize_time = normalize_time
       )
-    chromatogram_cad_neg_baselined <<- chromatogram_cad_neg_improved |>
+    chromatograms_list$chromatogram_cad_neg_baselined <- chromatograms_list$chromatogram_cad_neg_improved |>
       baseline_chromatogram() |>
       normalize_chromatograms_list(
         normalize_intensity = normalize_intensity,
         normalize_time = normalize_time
       )
-    chromatogram_pda_neg_baselined <<- chromatogram_pda_neg_improved |>
+    chromatograms_list$chromatogram_pda_neg_baselined <- chromatograms_list$chromatogram_pda_neg_improved |>
       baseline_chromatogram() |>
       normalize_chromatograms_list(
         normalize_intensity = normalize_intensity,
@@ -201,9 +202,10 @@ check_chromatograms_alignment <- function(
   }
 
   check_chromatograms(
+    chromatograms = chromatograms,
+    chromatograms_list = chromatograms_list,
     shift_cad = cad_shift,
     shift_pda = pda_shift,
-    type = type,
-    chromatograms = chromatograms
+    type = type
   )
 }
