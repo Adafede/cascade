@@ -34,7 +34,7 @@ improve_signal <-
         )
       )
 
-    f <- approxfun(x = df_fourier$time, y = df_fourier$intensity_fourier)
+    f <- stats::approxfun(x = df_fourier$time, y = df_fourier$intensity_fourier)
 
     time <- seq(
       from = time_min,

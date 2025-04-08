@@ -8,7 +8,7 @@
 #'
 #' @examples NULL
 treemaps_progress <- function(xs, type = "treemap", hierarchies) {
-  setNames(object = xs, nm = xs) |>
+  stats::setNames(object = xs, nm = xs) |>
     purrr::map(
       .progress = TRUE,
       .f = function(x, hierarchies) {
@@ -103,7 +103,7 @@ treemaps_progress <- function(xs, type = "treemap", hierarchies) {
 #'
 #' @examples NULL
 treemaps_progress_no_title <- function(xs, type = "treemap", hierarchies) {
-  setNames(object = xs, nm = xs) |>
+  stats::setNames(object = xs, nm = xs) |>
     purrr::map(
       .f = function(x, hierarchies) {
         if (x != "special") {

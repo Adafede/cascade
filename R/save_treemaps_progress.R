@@ -7,7 +7,7 @@
 #'
 #' @examples NULL
 save_treemaps_progress <- function(xs, type = "treemap") {
-  setNames(
+  stats::setNames(
     object = xs,
     nm = xs
   ) |>
