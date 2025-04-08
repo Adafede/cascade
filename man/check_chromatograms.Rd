@@ -6,6 +6,7 @@
 \usage{
 check_chromatograms(
   chromatograms = c("bpi_pos", "cad_pos", "pda_pos"),
+  chromatograms_list,
   normalize_time = FALSE,
   shift_cad = 0,
   shift_pda = 0,
@@ -14,6 +15,8 @@ check_chromatograms(
 }
 \arguments{
 \item{chromatograms}{Chromatograms}
+
+\item{chromatograms_list}{Chromatograms list}
 
 \item{normalize_time}{Normalized time}
 

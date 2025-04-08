@@ -3,6 +3,7 @@
 #' @include add_chromato_line.R
 #'
 #' @param chromatograms Chromatograms
+#' @param chromatograms_list Chromatograms list
 #' @param normalize_time Normalized time
 #' @param shift_cad Shift CAD
 #' @param shift_pda Shift PDA
@@ -13,6 +14,7 @@
 #' @examples NULL
 check_chromatograms <- function(
   chromatograms = c("bpi_pos", "cad_pos", "pda_pos"),
+  chromatograms_list,
   normalize_time = FALSE,
   shift_cad = 0,
   shift_pda = 0,
@@ -39,8 +41,8 @@ check_chromatograms <- function(
       add_chromato_line(
         chromato = switch(
           type,
-          "baselined" = chromatogram_cad_pos_baselined,
-          "improved" = chromatogram_cad_pos_improved
+          "baselined" = chromatograms_list$chromatogram_cad_pos_baselined,
+          "improved" = chromatograms_list$chromatogram_cad_pos_improved
         ),
         shift = shift_cad,
         normalize_time = normalize_time,
@@ -53,8 +55,8 @@ check_chromatograms <- function(
       add_chromato_line(
         chromato = switch(
           type,
-          "baselined" = chromatogram_cad_neg_baselined,
-          "improved" = chromatogram_cad_neg_improved
+          "baselined" = chromatograms_list$chromatogram_cad_neg_baselined,
+          "improved" = chromatograms_list$chromatogram_cad_neg_improved
         ),
         shift = shift_cad,
         normalize_time = normalize_time,
@@ -68,8 +70,8 @@ check_chromatograms <- function(
       add_chromato_line(
         chromato = switch(
           type,
-          "baselined" = chromatogram_pda_pos_baselined,
-          "improved" = chromatogram_pda_pos_improved
+          "baselined" = chromatograms_list$chromatogram_pda_pos_baselined,
+          "improved" = chromatograms_list$chromatogram_pda_pos_improved
         ),
         shift = shift_pda,
         normalize_time = normalize_time,
@@ -82,8 +84,8 @@ check_chromatograms <- function(
       add_chromato_line(
         chromato = switch(
           type,
-          "baselined" = chromatogram_pda_neg_baselined,
-          "improved" = chromatogram_pda_neg_improved
+          "baselined" = chromatograms_list$chromatogram_pda_neg_baselined,
+          "improved" = chromatograms_list$chromatogram_pda_neg_improved
         ),
         shift = shift_pda,
         normalize_time = normalize_time,
@@ -97,8 +99,8 @@ check_chromatograms <- function(
       add_chromato_line(
         chromato = switch(
           type,
-          "baselined" = chromatogram_bpi_pos_baselined,
-          "improved" = chromatogram_bpi_pos_improved
+          "baselined" = chromatograms_list$chromatogram_bpi_pos_baselined,
+          "improved" = chromatograms_list$chromatogram_bpi_pos_improved
         ),
         shift = 0,
         normalize_time = normalize_time,
@@ -111,8 +113,8 @@ check_chromatograms <- function(
       add_chromato_line(
         chromato = switch(
           type,
-          "baselined" = chromatogram_bpi_neg_baselined,
-          "improved" = chromatogram_bpi_neg_improved
+          "baselined" = chromatograms_list$chromatogram_bpi_neg_baselined,
+          "improved" = chromatograms_list$chromatogram_bpi_neg_improved
         ),
         shift = 0,
         normalize_time = normalize_time,
