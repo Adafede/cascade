@@ -9,8 +9,8 @@
 filter_fft <- function(x, components) {
   # nucleR::filterFFT(data = x, pcKeepComp = components, useOptim = TRUE)
   x[is.na(x)] <- 0
-  temp <- fft(x)
+  temp <- stats::fft(x)
   keep <- round(length(temp) * components)
   temp[keep:(length(temp) - keep)] <- 0
-  return(Re(fft(temp, inverse = TRUE)) / length(temp))
+  return(Re(stats::fft(temp, inverse = TRUE)) / length(temp))
 }

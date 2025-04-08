@@ -430,7 +430,7 @@ prepare_hierarchy <-
 
     if (nrow(top_parents_table > length(microshades))) {
       top_parents_table <- top_parents_table |>
-        head(length(microshades)) ## in case of equal numbers among classes
+        utils::head(length(microshades)) ## in case of equal numbers among classes
     }
 
     top_parents <- top_parents_table$labels

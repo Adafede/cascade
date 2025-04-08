@@ -180,7 +180,7 @@ generate_tables <- function(
     tidytable::left_join(lotus_long) |>
     tidytable::group_by(peak_id, inchikey_connectivity_layer) |>
     tidytable::mutate(reference = paste(reference, collapse = "; ")) |>
-    tidytable::mutate(Structure = URLencode(smiles_no_stereo)) |>
+    tidytable::mutate(Structure = utils::URLencode(smiles_no_stereo)) |>
     tidytable::mutate(
       reference = tidytable::if_else(
         condition = reference == "NA",
