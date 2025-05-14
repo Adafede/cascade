@@ -7,7 +7,7 @@
   "relatedLink": "https://adafede.github.io/cascade",
   "codeRepository": "https://github.com/adafede/cascade",
   "issueTracker": "https://github.com/adafede/cascade/issues",
-  "license": "https://spdx.org/licenses/GPL-3.0",
+  "license": "https://spdx.org/licenses/AGPL-3.0",
   "version": "0.0.0.9001",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
@@ -314,7 +314,7 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteAnnotation", "chargedAerosolDetector", "semiQuantitative", "naturalProducts", "computationalMetabolomics", "specializedMetabolome"],
-  "fileSize": "163087.363KB",
+  "fileSize": "163087.506KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
