@@ -6,6 +6,7 @@
 \usage{
 prepare_tima_annotations(
   annotations = NULL,
+  predicted_classes = FALSE,
   min_score_initial = 0,
   min_score_biological = 0,
   min_score_chemical = 0,
@@ -19,6 +20,8 @@ prepare_tima_annotations(
 }
 \arguments{
 \item{annotations}{annotations}
+
+\item{predicted_classes}{Show predicted classes? Default to FALSE}
 
 \item{min_score_initial}{Minimal initial score}
 
