@@ -33,7 +33,7 @@ This vignette describes additional helper functions to visualize [TIMA](https://
 
 To check the full results:
 
-```{r tima-plots, message = FALSE, warning=FALSE}
+```{r tima-plots, message = FALSE, warning=FALSE, fig.height=10}
 cascade::prepare_tima_annotations(
   show_example = TRUE
 ) |> 
@@ -49,7 +49,7 @@ cascade::prepare_tima_annotations(
 
 To compare different filtering thresholds:
 
-```{r tima-plots-1, warning=FALSE, fig.height=5}
+```{r tima-plots-1, warning=FALSE, fig.height=10}
 list(
   prepare_tima_annotations(
   show_example = TRUE
