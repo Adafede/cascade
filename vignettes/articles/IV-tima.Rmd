@@ -47,19 +47,36 @@ cascade::prepare_tima_annotations(
 #   cascade::plot_tima_histograms()
 ```
 
-To compare different filtering thresholds:
+To compare annotated and predicted classes:
 
 ```{r tima-plots-1, warning=FALSE, fig.height=10}
 list(
-  prepare_tima_annotations(
-  show_example = TRUE
+  cascade::prepare_tima_annotations(
+    show_example = TRUE
+    ),
+  cascade::prepare_tima_annotations(
+    show_example = TRUE,
+    predicted_classes = TRUE
+    )
+  ) |>
+  tidytable::bind_rows() |>
+  list() |>
+  cascade::plot_tima_histograms()
+```
+
+To compare different filtering thresholds:
+
+```{r tima-plots-2, warning=FALSE, fig.height=10}
+list(
+  cascade::prepare_tima_annotations(
+    show_example = TRUE
   ), 
-  prepare_tima_annotations(
-  show_example = TRUE,
-  min_score_biological = 0.2,
-  min_score_final = 0.4
+  cascade::prepare_tima_annotations(
+    show_example = TRUE,
+    min_score_biological = 0.2,
+    min_score_final = 0.4
   ),
-  prepare_tima_annotations(
+  cascade::prepare_tima_annotations(
     show_example = TRUE,
     min_score_initial = 0.2,
     min_score_biological = 0.2,
@@ -68,11 +85,11 @@ list(
     min_matched_peaks_absolute = 6L,
     min_matched_peaks_percentage = 0.5,
     min_peaks = 10L
-  )
+    )
   ) |>
   tidytable::bind_rows() |>
   list() |> 
-  plot_tima_histograms()
+  cascade::plot_tima_histograms()
 ```
 
 We hope you enjoyed using **CASCADE** and are pleased to hear from you!
