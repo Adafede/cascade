@@ -4,6 +4,7 @@
 <url><loc>https://adafede.github.io/cascade/articles/I-basics.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/articles/II-processing.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/articles/III-bonus.html</loc></url>
+<url><loc>https://adafede.github.io/cascade/articles/IV-tima.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/articles/cascade.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/articles/index.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/authors.html</loc></url>
@@ -62,6 +63,7 @@
 <url><loc>https://adafede.github.io/cascade/reference/plot_peak_detection.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/plot_results_1.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/plot_results_2.html</loc></url>
+<url><loc>https://adafede.github.io/cascade/reference/plot_tima_histograms.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/predict_response.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/prehistograms_progress.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/prepare_comparison.html</loc></url>
@@ -72,6 +74,7 @@
 <url><loc>https://adafede.github.io/cascade/reference/prepare_plot.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/prepare_plot_2.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/prepare_rt.html</loc></url>
+<url><loc>https://adafede.github.io/cascade/reference/prepare_tima_annotations.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/preprocess_chromatograms.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/preprocess_peaks.html</loc></url>
 <url><loc>https://adafede.github.io/cascade/reference/process_compare_peaks.html</loc></url>

@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>3 Bonus • cascade</title>
+<title>4 Visualizing raw TIMA results • cascade</title>
 <script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="3 Bonus">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="4 Visualizing raw TIMA results">
 <meta property="og:image" content="https://github.com/adafede/cascade/blob/main/man/figures/logo.svg">
 <meta property="og:image:alt" content="Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts">
 <meta name="twitter:card" content="summary">
@@ -73,60 +73,68 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.svg" class="logo" alt=""><h1>3 Bonus</h1>
+      <img src="../logo.svg" class="logo" alt=""><h1>4 Visualizing raw TIMA results</h1>
                         <h4 data-toc-skip class="author">Adriano
 Rutz</h4>
             
             <h4 data-toc-skip class="date">2025-05-16</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/adafede/cascade/blob/main/vignettes/articles/III-bonus.Rmd" class="external-link"><code>vignettes/articles/III-bonus.Rmd</code></a></small>
-      <div class="d-none name"><code>III-bonus.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/adafede/cascade/blob/main/vignettes/articles/IV-tima.Rmd" class="external-link"><code>vignettes/articles/IV-tima.Rmd</code></a></small>
+      <div class="d-none name"><code>IV-tima.Rmd</code></div>
     </div>
 
     
     
-<p>This vignette describes some additional bonus helper functions. A lot
-of it is based on previous work done in the frame of the <a href="https://doi.org/10.7554/eLife.70780" class="external-link">LOTUS initiative</a>.</p>
+<p>This vignette describes additional helper functions to visualize <a href="https://taxonomicallyinformedannotation.github.io/tima/" class="external-link">TIMA</a>
+results.</p>
 <div class="section level2">
-<h2 id="quick-overview-of-the-literature">Quick overview of the literature<a class="anchor" aria-label="anchor" href="#quick-overview-of-the-literature"></a>
+<h2 id="visualization">Visualization<a class="anchor" aria-label="anchor" href="#visualization"></a>
 </h2>
-<p>To check (and eventually compare to your own results) what is known
-in the literature about different organisms:</p>
+<p>To check the full results:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bonus_plots_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate_ids.html">generate_ids</a></span><span class="op">(</span></span>
-<span>  taxa <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Swertia"</span>, <span class="st">"Kopsia"</span>, <span class="st">"Ginkgo"</span><span class="op">)</span>,</span>
-<span>  comparison <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Swertia"</span>, <span class="st">"Kopsia"</span><span class="op">)</span>,</span>
-<span>  no_stereo <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  filter_ms_conditions <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  start <span class="op">=</span> <span class="st">"1950"</span>,</span>
-<span>  end <span class="op">=</span> <span class="st">"2025"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2025-05-16 11:26:08] A file with the same size is already present. Skipping</span></span></code></pre></div>
-<div class="section level3">
-<h3 id="compounds-found-in-swertia">Compounds found in Swertia<a class="anchor" aria-label="anchor" href="#compounds-found-in-swertia"></a>
-</h3>
+<code class="sourceCode R"><span><span class="fu">cascade</span><span class="fu">::</span><span class="fu"><a href="../reference/prepare_tima_annotations.html">prepare_tima_annotations</a></span><span class="op">(</span></span>
+<span>  show_example <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">cascade</span><span class="fu">::</span><span class="fu"><a href="../reference/plot_tima_histograms.html">plot_tima_histograms</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="IV-tima_files/figure-html/tima-plots-1.png" width="700"></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bonus_plots_list</span><span class="op">$</span><span class="va">plots</span><span class="op">$</span><span class="va">Swertia</span></span></code></pre></div>
-<p><img src="III-bonus_files/figure-html/wikidata-swertia-1-1.png" width="700"></p>
-</div>
-<div class="section level3">
-<h3 id="compounds-found-in-kopsia-per-species">Compounds found in Kopsia (per species)<a class="anchor" aria-label="anchor" href="#compounds-found-in-kopsia-per-species"></a>
-</h3>
+<code class="sourceCode R"><span><span class="co"># cascade::prepare_tima_annotations(</span></span>
+<span><span class="co">#   annotations = list(</span></span>
+<span><span class="co">#     "yourExperiment1"="PathToYourTimaOutput1",</span></span>
+<span><span class="co">#     "yourExperiment2"="PathToYourTimaOutput2"</span></span>
+<span><span class="co">#     )</span></span>
+<span><span class="co"># ) |&gt; </span></span>
+<span><span class="co">#   cascade::plot_tima_histograms()</span></span></code></pre></div>
+<p>To compare different filtering thresholds:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bonus_plots_list</span><span class="op">$</span><span class="va">plots</span><span class="op">$</span><span class="va">Kopsia_grouped</span></span></code></pre></div>
-<p><img src="III-bonus_files/figure-html/wikidata-kopsia-1-1.png" width="700"></p>
-</div>
-<div class="section level3">
-<h3 id="comparison">Comparison<a class="anchor" aria-label="anchor" href="#comparison"></a>
-</h3>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bonus_plots_list</span><span class="op">$</span><span class="va">plots</span><span class="op">$</span><span class="va">special</span></span></code></pre></div>
-<p><img src="III-bonus_files/figure-html/wikidata-swertia-kopsia-1.png" width="700"></p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/prepare_tima_annotations.html">prepare_tima_annotations</a></span><span class="op">(</span></span>
+<span>  show_example <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span>, </span>
+<span>  <span class="fu"><a href="../reference/prepare_tima_annotations.html">prepare_tima_annotations</a></span><span class="op">(</span></span>
+<span>  show_example <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  min_score_biological <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>  min_score_final <span class="op">=</span> <span class="fl">0.4</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/prepare_tima_annotations.html">prepare_tima_annotations</a></span><span class="op">(</span></span>
+<span>    show_example <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    min_score_initial <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>    min_score_biological <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>    min_score_chemical <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>    min_score_final <span class="op">=</span> <span class="fl">0.4</span>,</span>
+<span>    min_matched_peaks_absolute <span class="op">=</span> <span class="fl">6L</span>,</span>
+<span>    min_matched_peaks_percentage <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>    min_peaks <span class="op">=</span> <span class="fl">10L</span></span>
+<span>  <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">tidytable</span><span class="fu">::</span><span class="fu"><a href="https://markfairbanks.github.io/tidytable/reference/bind_cols.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/plot_tima_histograms.html">plot_tima_histograms</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="IV-tima_files/figure-html/tima-plots-1-1.png" width="700"></p>
 <p>We hope you enjoyed using <strong>CASCADE</strong> and are pleased to
 hear from you!</p>
 <p>For any remark or suggestion, please <a href="https://github.com/adafede/cascade/issues" class="external-link">fill an issue</a> or
 feel free to contact us directly.</p>
-</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
