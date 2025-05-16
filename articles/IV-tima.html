@@ -105,18 +105,33 @@ results.</p>
 <span><span class="co">#     )</span></span>
 <span><span class="co"># ) |&gt; </span></span>
 <span><span class="co">#   cascade::plot_tima_histograms()</span></span></code></pre></div>
-<p>To compare different filtering thresholds:</p>
+<p>To compare annotated and predicted classes:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="../reference/prepare_tima_annotations.html">prepare_tima_annotations</a></span><span class="op">(</span></span>
-<span>  show_example <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="fu">cascade</span><span class="fu">::</span><span class="fu"><a href="../reference/prepare_tima_annotations.html">prepare_tima_annotations</a></span><span class="op">(</span></span>
+<span>    show_example <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>  <span class="fu">cascade</span><span class="fu">::</span><span class="fu"><a href="../reference/prepare_tima_annotations.html">prepare_tima_annotations</a></span><span class="op">(</span></span>
+<span>    show_example <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    predicted_classes <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">tidytable</span><span class="fu">::</span><span class="fu"><a href="https://markfairbanks.github.io/tidytable/reference/bind_cols.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">cascade</span><span class="fu">::</span><span class="fu"><a href="../reference/plot_tima_histograms.html">plot_tima_histograms</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="IV-tima_files/figure-html/tima-plots-1-1.png" width="700"></p>
+<p>To compare different filtering thresholds:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  <span class="fu">cascade</span><span class="fu">::</span><span class="fu"><a href="../reference/prepare_tima_annotations.html">prepare_tima_annotations</a></span><span class="op">(</span></span>
+<span>    show_example <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span>, </span>
-<span>  <span class="fu"><a href="../reference/prepare_tima_annotations.html">prepare_tima_annotations</a></span><span class="op">(</span></span>
-<span>  show_example <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  min_score_biological <span class="op">=</span> <span class="fl">0.2</span>,</span>
-<span>  min_score_final <span class="op">=</span> <span class="fl">0.4</span></span>
+<span>  <span class="fu">cascade</span><span class="fu">::</span><span class="fu"><a href="../reference/prepare_tima_annotations.html">prepare_tima_annotations</a></span><span class="op">(</span></span>
+<span>    show_example <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    min_score_biological <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>    min_score_final <span class="op">=</span> <span class="fl">0.4</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="../reference/prepare_tima_annotations.html">prepare_tima_annotations</a></span><span class="op">(</span></span>
+<span>  <span class="fu">cascade</span><span class="fu">::</span><span class="fu"><a href="../reference/prepare_tima_annotations.html">prepare_tima_annotations</a></span><span class="op">(</span></span>
 <span>    show_example <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    min_score_initial <span class="op">=</span> <span class="fl">0.2</span>,</span>
 <span>    min_score_biological <span class="op">=</span> <span class="fl">0.2</span>,</span>
@@ -125,12 +140,12 @@ results.</p>
 <span>    min_matched_peaks_absolute <span class="op">=</span> <span class="fl">6L</span>,</span>
 <span>    min_matched_peaks_percentage <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>    min_peaks <span class="op">=</span> <span class="fl">10L</span></span>
-<span>  <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">tidytable</span><span class="fu">::</span><span class="fu"><a href="https://markfairbanks.github.io/tidytable/reference/bind_cols.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="../reference/plot_tima_histograms.html">plot_tima_histograms</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IV-tima_files/figure-html/tima-plots-1-1.png" width="700"></p>
+<span>  <span class="fu">cascade</span><span class="fu">::</span><span class="fu"><a href="../reference/plot_tima_histograms.html">plot_tima_histograms</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="IV-tima_files/figure-html/tima-plots-2-1.png" width="700"></p>
 <p>We hope you enjoyed using <strong>CASCADE</strong> and are pleased to
 hear from you!</p>
 <p>For any remark or suggestion, please <a href="https://github.com/adafede/cascade/issues" class="external-link">fill an issue</a> or
