@@ -84,7 +84,7 @@ prepare_tima_annotations <- function(
             candidate_structure_tax_npc_03cla = feature_pred_tax_npc_03cla_val
           )
       }
-      table |>
+      table <- table |>
         tidytable::filter(
           score_biological |> as.numeric() >= min_score_biological
         ) |>
@@ -107,9 +107,31 @@ prepare_tima_annotations <- function(
               }
             ))
         ) |>
-        make_confident(score = min_score_final) |>
+        make_confident(score = min_score_final)
+
+      if (predicted_classes) {
+        table <- table |>
+          tidytable::mutate(
+            best_candidate_1 = consensus_1,
+            best_candidate_2 = consensus_2,
+            best_candidate_3 = consensus_3
+          )
+      }
+
+      table |>
         tidytable::arrange(tidytable::desc(score_final)) |>
-        tidytable::distinct(inchikey_2D, .keep_all = TRUE) |>
+        # ## COMMENT: Dirty way to reduce the number of features
+        # ## while keeping some unannotated ones
+        # tidytable::mutate(
+        #   feature_id = tidytable::coalesce(
+        #     inchikey_2D,
+        #     rt |>
+        #       as.numeric() |>
+        #       round(digits = 1L) |>
+        #       as.character()
+        #   )
+        # ) |>
+        tidytable::distinct(feature_id, .keep_all = TRUE) |>
         tidytable::mutate(
           intensity = 1,
           comparison_score = 1,
