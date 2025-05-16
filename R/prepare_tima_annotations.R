@@ -7,6 +7,7 @@
 #' @include make_confident.R
 #'
 #' @param annotations annotations
+#' @param predicted_classes Show predicted classes? Default to FALSE
 #' @param min_score_initial Minimal initial score
 #' @param min_score_biological Minimal biological score
 #' @param min_score_chemical Minimal chemical score
@@ -22,6 +23,7 @@
 #' @examples NULL
 prepare_tima_annotations <- function(
   annotations = NULL,
+  predicted_classes = FALSE,
   min_score_initial = 0.0,
   min_score_biological = 0.0,
   min_score_chemical = 0.0,
@@ -42,17 +44,47 @@ prepare_tima_annotations <- function(
   if (annotations |> is.null()) {
     annotations <- c("annotations" = tempfile())
   }
+  if (predicted_classes) {
+    names(annotations) <- names(annotations) |>
+      paste("pred", sep = "_")
+  }
   tables_prepared <- annotations |>
     purrr::imap(.f = function(x, name) {
-      x |>
+      table <- x |>
         load_annotations(show_example = show_example) |>
         tidytable::mutate(tidytable::across(
           .cols = tidytable::everything(),
           .fns = function(x) {
             x |> gsub(pattern = "\\|.*", replacement = "")
           }
-        )) |>
-        tidytable::filter(score_initial |> as.numeric() >= min_score_initial) |>
+        ))
+      if (!predicted_classes) {
+        table <- table |>
+          tidytable::filter(
+            score_initial |> as.numeric() >= min_score_initial
+          ) |>
+          tidytable::filter(
+            candidate_count_similarity_peaks_matched >=
+              feature_spectrum_peaks |>
+                as.numeric() *
+                min_matched_peaks_absolute |
+              candidate_count_similarity_peaks_matched |> as.numeric() >=
+                min_matched_peaks_absolute
+          ) |>
+          tidytable::filter(
+            feature_spectrum_peaks |> as.numeric() >= min_peaks
+          ) |>
+          tidytable::filter(candidate_library %in% libraries)
+      }
+      if (predicted_classes) {
+        table <- table |>
+          tidytable::mutate(
+            candidate_structure_tax_npc_01pat = feature_pred_tax_npc_01pat_val,
+            candidate_structure_tax_npc_02sup = feature_pred_tax_npc_02sup_val,
+            candidate_structure_tax_npc_03cla = feature_pred_tax_npc_03cla_val
+          )
+      }
+      table |>
         tidytable::filter(
           score_biological |> as.numeric() >= min_score_biological
         ) |>
@@ -60,18 +92,6 @@ prepare_tima_annotations <- function(
           score_chemical |> as.numeric() >= min_score_chemical
         ) |>
         tidytable::filter(score_final |> as.numeric() >= min_score_final) |>
-        tidytable::filter(
-          candidate_count_similarity_peaks_matched >=
-            feature_spectrum_peaks |>
-              as.numeric() *
-              min_matched_peaks_absolute |
-            candidate_count_similarity_peaks_matched |> as.numeric() >=
-              min_matched_peaks_absolute
-        ) |>
-        tidytable::filter(
-          feature_spectrum_peaks |> as.numeric() >= min_peaks
-        ) |>
-        tidytable::filter(candidate_library %in% libraries) |>
         keep_best_candidates() |>
         tidytable::inner_join(
           x |>
