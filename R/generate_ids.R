@@ -38,10 +38,10 @@ generate_ids <- function(
   end = "9999",
   limit = "1000000"
 ) {
-  query_part_1 <- "SELECT ?structure ?structureLabel ?structure_id ?structureSmiles (GROUP_CONCAT(?taxon_name; SEPARATOR = \"|\") AS ?taxaLabels) (GROUP_CONCAT(?taxon; SEPARATOR = \"|\") AS ?taxa) (GROUP_CONCAT(?art_title; SEPARATOR = \"|\") AS ?referencesLabels) (GROUP_CONCAT(?art_doi; SEPARATOR = \"|\") AS ?references_ids) (GROUP_CONCAT(?art; SEPARATOR = \"|\") AS ?references) WHERE {\n  ?taxon (wdt:P171*) wd:"
-  query_part_2 <- ";\n  wdt:P225 ?taxon_name.\n  ?structure wdt:P235 ?structure_id;\n  wdt:P233 ?structureSmiles;\n  p:P703 ?statement.\n  ?statement ps:P703 ?taxon;\n  prov:wasDerivedFrom ?ref.\n  ?ref pr:P248 ?art.\n  SERVICE <https://query-scholarly.wikidata.org/sparql> { \n ?art wdt:P1476 ?art_title;\n  wdt:P356 ?art_doi;\n  wdt:P577 ?art_date.\n  }\n FILTER(((YEAR(?art_date)) >= "
+  query_part_1 <- "SELECT DISTINCT ?structure ?structureLabel ?structure_id ?structureSmiles ?taxaLabels ?taxa ?referencesLabels ?references_ids ?references WHERE {\n  ?taxa (wdt:P171*) wd:"
+  query_part_2 <- ";\n  wdt:P225 ?taxaLabels. \n  ?structure wdt:P235 ?structure_id;\n  wdt:P233 ?structureSmiles;\n  p:P703 ?statement.\n  ?statement ps:P703 ?taxa;\n  prov:wasDerivedFrom ?ref.\n  ?ref pr:P248 ?references.\n  SERVICE <https://query-scholarly.wikidata.org/sparql> { \n ?references wdt:P1476 ?referencesLabels;\n  wdt:P356 ?references_ids;\n  wdt:P577 ?art_date.\n  }\n FILTER(((YEAR(?art_date)) >= "
   query_part_3 <- " ) && ((YEAR(?art_date)) <= "
-  query_part_4 <- " ))\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". }\n}\nGROUP BY ?structure ?structure_id ?structureLabel ?structureSmiles"
+  query_part_4 <- " ))\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE], mul, en\". }\n}"
 
   message("Getting last LOTUS version")
   tima::get_last_version_from_zenodo(

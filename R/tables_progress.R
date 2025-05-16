@@ -24,15 +24,15 @@ tables_progress <- function(xs, structures_classified) {
               -structure_id,
               -structureSmiles
             ) |>
-            tidytable::separate_longer_delim(
-              c("taxa", "taxaLabels", "references", "referencesLabels"),
-              delim = "|"
-            ) |>
+            # tidytable::separate_longer_delim(
+            #   c("taxa", "taxaLabels", "references", "referencesLabels"),
+            #   delim = "|"
+            # ) |>
             tidytable::group_by(structure) |>
-            tidytable::fill(
-              c("taxa", "taxaLabels", "references", "referencesLabels"),
-              .direction = "downup"
-            ) |>
+            # tidytable::fill(
+            #   c("taxa", "taxaLabels", "references", "referencesLabels"),
+            #   .direction = "downup"
+            # ) |>
             tidytable::group_by(structureLabel) |>
             tidytable::add_count(sort = TRUE) |>
             tidytable::select(-n) |>
