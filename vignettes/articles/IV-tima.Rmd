@@ -1,0 +1,80 @@
+---
+title: 4 Visualizing raw TIMA results
+author: Adriano Rutz
+creative_commons: CC BY-SA
+date: "`r Sys.Date()`"
+opengraph:
+    image:
+      src: https://github.com/adafede/cascade/blob/main/man/figures/logo.svg
+      alt: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts
+    twitter:
+      creator: "@adafede"
+vignette: >
+  %\VignetteIndexEntry{2 Processing}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+knitr::opts_knit$set(root.dir = system.file(package = "cascade"))
+```
+
+```{r cascade, include = FALSE}
+library("cascade")
+```
+
+This vignette describes additional helper functions to visualize [TIMA](https://taxonomicallyinformedannotation.github.io/tima/) results.
+
+## Visualization
+
+To check the full results:
+
+```{r tima-plots, message = FALSE, warning=FALSE}
+cascade::prepare_tima_annotations(
+  show_example = TRUE
+) |> 
+  cascade::plot_tima_histograms()
+# cascade::prepare_tima_annotations(
+#   annotations = list(
+#     "yourExperiment1"="PathToYourTimaOutput1",
+#     "yourExperiment2"="PathToYourTimaOutput2"
+#     )
+# ) |> 
+#   cascade::plot_tima_histograms()
+```
+
+To compare different filtering thresholds:
+
+```{r tima-plots-1, warning=FALSE, fig.height=5}
+list(
+  prepare_tima_annotations(
+  show_example = TRUE
+  ), 
+  prepare_tima_annotations(
+  show_example = TRUE,
+  min_score_biological = 0.2,
+  min_score_final = 0.4
+  ),
+  prepare_tima_annotations(
+    show_example = TRUE,
+    min_score_initial = 0.2,
+    min_score_biological = 0.2,
+    min_score_chemical = 0.2,
+    min_score_final = 0.4,
+    min_matched_peaks_absolute = 6L,
+    min_matched_peaks_percentage = 0.5,
+    min_peaks = 10L
+  )
+  ) |>
+  tidytable::bind_rows() |>
+  list() |> 
+  plot_tima_histograms()
+```
+
+We hope you enjoyed using **CASCADE** and are pleased to hear from you!
+
+For any remark or suggestion, please  [fill an issue](https://github.com/adafede/cascade/issues) or feel free to contact us directly.
