@@ -47,7 +47,7 @@ prepare_tima_annotations <- function(
       x |>
         load_annotations(show_example = show_example) |>
         tidytable::mutate(tidytable::across(
-          .cols = tidyselect::everything(),
+          .cols = tidytable::everything(),
           .fns = function(x) {
             x |> gsub(pattern = "\\|.*", replacement = "")
           }
@@ -81,7 +81,7 @@ prepare_tima_annotations <- function(
               inchikey_2D = candidate_structure_inchikey_connectivity_layer
             ) |>
             tidytable::mutate(tidytable::across(
-              .cols = tidyselect::everything(),
+              .cols = tidytable::everything(),
               .fns = function(x) {
                 x |> gsub(pattern = "\\|.*", replacement = "")
               }
