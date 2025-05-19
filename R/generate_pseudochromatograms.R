@@ -150,7 +150,7 @@ generate_pseudochromatograms <- function(
       tidytable::mutate(id = "peaks_maj") |>
       tidytable::mutate(sample = id, species = id) |>
       tidytable::select(-taxo, -taxo_2, -sum, -sum_2, -keep) |>
-      rbind(
+      tidytable::bind_rows(
         compared_peaks_list$peaks_min_precor_taxo_cor |>
           tidytable::filter(mode == mode) |>
           tidytable::mutate(id = "peaks_min") |>

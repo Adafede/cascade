@@ -65,7 +65,7 @@ prepare_plot <- function(dataframe, organism = "species") {
     samples_2 <- presamples |>
       tidytable::filter(group < tempval)
 
-    samples <- rbind(samples_0, samples_1, samples_2)
+    samples <- tidytable::bind_rows(samples_0, samples_1, samples_2)
   } else {
     samples <- presamples
   }
@@ -107,7 +107,7 @@ prepare_plot <- function(dataframe, organism = "species") {
     tidytable::ungroup()
 
   samples <-
-    rbind(
+    tidytable::bind_rows(
       samples |>
         tidytable::filter(!is.na(color)),
       quickfix
