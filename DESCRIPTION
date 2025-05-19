@@ -117,7 +117,7 @@ Collate:
     'load_features_not_informed.R'
     'load_ms_data.R'
     'plot_chromatogram.R'
-    'plot_tima_histograms.R'
+    'plot_tima.R'
     'prehistograms_progress.R'
     'prepare_tima_annotations.R'
     'transform_ms.R'

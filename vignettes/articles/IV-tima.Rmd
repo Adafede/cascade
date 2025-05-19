@@ -33,18 +33,29 @@ This vignette describes additional helper functions to visualize [TIMA](https://
 
 To check the full results:
 
-```{r tima-plots, message = FALSE, warning=FALSE, fig.height=10}
-cascade::prepare_tima_annotations(
+```{r tima-plots, message = FALSE, warning=FALSE}
+plots <- cascade::prepare_tima_annotations(
   show_example = TRUE
 ) |> 
-  cascade::plot_tima_histograms()
+  cascade::plot_tima()
 # cascade::prepare_tima_annotations(
 #   annotations = list(
 #     "yourExperiment1"="PathToYourTimaOutput1",
 #     "yourExperiment2"="PathToYourTimaOutput2"
 #     )
 # ) |> 
-#   cascade::plot_tima_histograms()
+#   cascade::plot_tima()
+```
+```{r tima-plots-h, message = FALSE, warning=FALSE, fig.height=10}
+plots$histogram
+```
+
+```{r tima-plots-t, message = FALSE, warning=FALSE, fig.height=10}
+plots$treemap
+```
+
+```{r tima-plots-s, message = FALSE, warning=FALSE, fig.height=10}
+plots$sunburst
 ```
 
 To compare annotated and predicted classes:
@@ -61,7 +72,8 @@ list(
   ) |>
   tidytable::bind_rows() |>
   list() |>
-  cascade::plot_tima_histograms()
+  cascade::plot_tima() |>
+  purrr::pluck("histogram")
 ```
 
 To compare different filtering thresholds:
@@ -89,7 +101,8 @@ list(
   ) |>
   tidytable::bind_rows() |>
   list() |> 
-  cascade::plot_tima_histograms()
+  cascade::plot_tima() |>
+  purrr::pluck("histogram")
 ```
 
 We hope you enjoyed using **CASCADE** and are pleased to hear from you!

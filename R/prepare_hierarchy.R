@@ -99,7 +99,7 @@ prepare_hierarchy <-
           !grepl(pattern = "notConfident", x = best_candidate_2)
         )
 
-      dataframe2 <- rbind(df_confident, df_notConfident) |>
+      dataframe2 <- tidytable::bind_rows(df_confident, df_notConfident) |>
         tidytable::group_by(chemical_pathway)
     } else {
       dataframe2 <- dataframe |>
@@ -278,7 +278,7 @@ prepare_hierarchy <-
       tidytable::filter(!is.na(labels)) |>
       tidytable::distinct()
 
-    genealogy <- rbind(parents, children_1, children_2) |>
+    genealogy <- tidytable::bind_rows(parents, children_1, children_2) |>
       tidytable::ungroup() |>
       tidytable::distinct() |>
       tidytable::group_by(ids) |>
@@ -694,7 +694,7 @@ prepare_hierarchy <-
     )
 
     missing_children <-
-      rbind(missing_children_1, missing_children_2)
+      tidytable::bind_rows(missing_children_1, missing_children_2)
 
     genealogy_new_med_4 <-
       tidytable::bind_rows(
@@ -723,7 +723,8 @@ prepare_hierarchy <-
         table_new <- table_new |>
           tidytable::rowwise() |>
           tidytable::filter(
-            grepl(pattern = id, x = sample) |
+            id %in%
+              sample |
               ## Comment these if
               is.na(id)
           ) |> ## using wrong feature table
@@ -794,7 +795,7 @@ prepare_hierarchy <-
         labels = "Other other other"
       )
 
-    table_1_1_new <- rbind(
+    table_1_1_new <- tidytable::bind_rows(
       table_1_new |>
         tidytable::mutate(
           labels = labels |>
