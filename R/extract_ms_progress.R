@@ -55,7 +55,7 @@ extract_ms_progress <- function(xs, ms_data, rts, mzs, nrows) {
         safe_chromatogram(
           ms_data = ms_data,
           rt = rts[[x]],
-          mz = Reduce(f = tidytable::bind_rows, x = mzs[[x]])
+          mz = Reduce(f = rbind, x = mzs[[x]])
         ) |>
           transform_ms()
       },
