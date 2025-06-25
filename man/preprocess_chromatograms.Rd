@@ -34,8 +34,6 @@ preprocess_chromatograms(
 \item{time_min}{Time min}
 
 \item{time_max}{Time max}
-
-\item{signal_name}{Signal name}
 }
 \value{
 A list of preprocessed chromatograms

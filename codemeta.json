@@ -262,6 +262,19 @@
     },
     "15": {
       "@type": "SoftwareApplication",
+      "identifier": "stringi",
+      "name": "stringi",
+      "version": ">= 1.8.7",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=stringi"
+    },
+    "16": {
+      "@type": "SoftwareApplication",
       "identifier": "tibble",
       "name": "tibble",
       "version": ">= 3.2.1",
@@ -273,7 +286,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tibble"
     },
-    "16": {
+    "17": {
       "@type": "SoftwareApplication",
       "identifier": "tidytable",
       "name": "tidytable",
@@ -286,19 +299,19 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tidytable"
     },
-    "17": {
+    "18": {
       "@type": "SoftwareApplication",
       "identifier": "tima",
       "name": "tima",
       "version": ">= 2.12.0",
       "sameAs": "https://github.com/taxonomicallyinformedannotation/tima"
     },
-    "18": {
+    "19": {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils"
     },
-    "19": {
+    "20": {
       "@type": "SoftwareApplication",
       "identifier": "WikidataQueryServiceR",
       "name": "WikidataQueryServiceR",
@@ -314,7 +327,7 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteAnnotation", "chargedAerosolDetector", "semiQuantitative", "naturalProducts", "computationalMetabolomics", "specializedMetabolome"],
-  "fileSize": "166914.99KB",
+  "fileSize": "166915.099KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",

@@ -1,16 +1,16 @@
 #' Change intensity name
 #'
 #' @param df Dataframe
-#' @param name Name
+#' @param name_rt Name RT
+#' @param name_intensity Name intensity
 #'
 #' @return A dataframe with changed intensity name
 #'
 #' @examples NULL
 change_intensity_name <- function(
-  df,
-  name_rt = "rtime",
-  name_intensity = "intensity"
-) {
+    df,
+    name_rt = "rtime",
+    name_intensity = "intensity") {
   df |>
     ## Old, see https://github.com/sneumann/mzR/issues/304
     ## TODO Fix could be better

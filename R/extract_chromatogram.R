@@ -4,6 +4,7 @@
 #'
 #' @param list List
 #' @param type Type
+#' @param headers Headers
 #'
 #' @return An extracted chromatogram
 #'
@@ -13,8 +14,7 @@ extract_chromatogram <- function(list, type, headers) {
     "type must be one of 'bpi, 'cad',or 'pda'" = type %in%
       c("bpi", "cad", "pda")
   )
-  name <- switch(
-    type,
+  name <- switch(type,
     "bpi" = headers["bpi"] |> as.character(),
     "cad" = headers["cad"] |> as.character(),
     "pda" = headers["pda"] |> as.character()

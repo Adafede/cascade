@@ -9,7 +9,9 @@ change_intensity_name(df, name_rt = "rtime", name_intensity = "intensity")
 \arguments{
 \item{df}{Dataframe}
 
-\item{name}{Name}
+\item{name_rt}{Name RT}
+
+\item{name_intensity}{Name intensity}
 }
 \value{
 A dataframe with changed intensity name
