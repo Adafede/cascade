@@ -4,7 +4,7 @@
 \alias{change_intensity_name}
 \title{Change intensity name}
 \usage{
-change_intensity_name(df, name)
+change_intensity_name(df, name_rt = "rtime", name_intensity = "intensity")
 }
 \arguments{
 \item{df}{Dataframe}
