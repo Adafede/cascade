@@ -11,7 +11,6 @@
 #' @param name Name
 #' @param resample Resample
 #' @param shift Shift
-#' @param signal_name Signal name
 #' @param time_min Time min
 #' @param time_max Time max
 #'
@@ -19,17 +18,16 @@
 #'
 #' @examples NULL
 preprocess_chromatograms <- function(
-  detector = "cad",
-  fourier_components = 0.01,
-  frequency = 2,
-  list,
-  name,
-  resample = 1,
-  shift = 0,
-  # signal_name = "UV.1_CAD_1_0",
-  time_min = 0,
-  time_max = Inf
-) {
+    detector = "cad",
+    fourier_components = 0.01,
+    frequency = 2,
+    list,
+    name,
+    resample = 1,
+    shift = 0,
+    # signal_name = "UV.1_CAD_1_0",
+    time_min = 0,
+    time_max = Inf) {
   message("preprocessing ", detector, " chromatograms")
   # message("harmonizing names")
   # chromatograms_original <-
