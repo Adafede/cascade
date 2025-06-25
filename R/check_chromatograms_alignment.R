@@ -42,7 +42,11 @@ check_chromatograms_alignment <- function(
   frequency = 1,
   resample = 1,
   chromatograms = c("bpi_pos", "cad_pos", "pda_pos"),
-  headers = c("BasePeak_0", "PDA#1_TotalAbsorbance_0", "UV#1_CAD_1_0"),
+  headers = c(
+    "bpi" = "BasePeak_0",
+    "pda" = "PDA#1_TotalAbsorbance_0",
+    "cad" = "UV#1_CAD_1_0"
+  ),
   type = "baselined",
   normalize_intensity = TRUE,
   normalize_time = FALSE,
@@ -61,68 +65,84 @@ check_chromatograms_alignment <- function(
         load_chromatograms(headers = headers)
     }
 
-    chromatogram_bpi_pos <- chromatograms_positive |>
-      extract_chromatogram("bpi")
-    chromatogram_cad_pos <- chromatograms_positive |>
-      extract_chromatogram("cad")
-    chromatogram_pda_pos <- chromatograms_positive |>
-      extract_chromatogram("pda")
-
-    chromatograms_list$chromatogram_bpi_pos_improved <- chromatogram_bpi_pos |>
-      improve_signal(
-        time_min = time_min,
-        time_max = time_max,
-        fourier_components = fourier_components,
-        frequency = frequency,
-        resample = resample
-      ) |>
-      normalize_chromatograms_list(
-        normalize_intensity = normalize_intensity,
-        normalize_time = normalize_time
-      )
-    chromatograms_list$chromatogram_cad_pos_improved <- chromatogram_cad_pos |>
-      improve_signal(
-        time_min = time_min,
-        time_max = time_max,
-        fourier_components = fourier_components,
-        frequency = frequency,
-        resample = resample
-      ) |>
-      normalize_chromatograms_list(
-        normalize_intensity = normalize_intensity,
-        normalize_time = normalize_time
-      )
-    chromatograms_list$chromatogram_pda_pos_improved <- chromatogram_pda_pos |>
-      improve_signal(
-        time_min = time_min,
-        time_max = time_max,
-        fourier_components = fourier_components,
-        frequency = frequency,
-        resample = resample
-      ) |>
-      normalize_chromatograms_list(
-        normalize_intensity = normalize_intensity,
-        normalize_time = normalize_time
-      )
-
-    chromatograms_list$chromatogram_bpi_pos_baselined <- chromatograms_list$chromatogram_bpi_pos_improved |>
-      baseline_chromatogram() |>
-      normalize_chromatograms_list(
-        normalize_intensity = normalize_intensity,
-        normalize_time = normalize_time
-      )
-    chromatograms_list$chromatogram_cad_pos_baselined <- chromatograms_list$chromatogram_cad_pos_improved |>
-      baseline_chromatogram() |>
-      normalize_chromatograms_list(
-        normalize_intensity = normalize_intensity,
-        normalize_time = normalize_time
-      )
-    chromatograms_list$chromatogram_pda_pos_baselined <- chromatograms_list$chromatogram_pda_pos_improved |>
-      baseline_chromatogram() |>
-      normalize_chromatograms_list(
-        normalize_intensity = normalize_intensity,
-        normalize_time = normalize_time
-      )
+    if (
+      chromatograms |>
+        stringi::stri_detect_fixed(pattern = "bpi") |>
+        any()
+    ) {
+      chromatogram_bpi_pos <- chromatograms_positive |>
+        extract_chromatogram(type = "bpi", headers = headers)
+      chromatograms_list$chromatogram_bpi_pos_improved <- chromatogram_bpi_pos |>
+        improve_signal(
+          time_min = time_min,
+          time_max = time_max,
+          fourier_components = fourier_components,
+          frequency = frequency,
+          resample = resample
+        ) |>
+        normalize_chromatograms_list(
+          normalize_intensity = normalize_intensity,
+          normalize_time = normalize_time
+        )
+      chromatograms_list$chromatogram_bpi_pos_baselined <- chromatograms_list$chromatogram_bpi_pos_improved |>
+        baseline_chromatogram() |>
+        normalize_chromatograms_list(
+          normalize_intensity = normalize_intensity,
+          normalize_time = normalize_time
+        )
+    }
+    if (
+      chromatograms |>
+        stringi::stri_detect_fixed(pattern = "cad") |>
+        any()
+    ) {
+      chromatogram_cad_pos <- chromatograms_positive |>
+        extract_chromatogram(type = "cad", headers = headers)
+      chromatograms_list$chromatogram_cad_pos_improved <- chromatogram_cad_pos |>
+        improve_signal(
+          time_min = time_min,
+          time_max = time_max,
+          fourier_components = fourier_components,
+          frequency = frequency,
+          resample = resample
+        ) |>
+        normalize_chromatograms_list(
+          normalize_intensity = normalize_intensity,
+          normalize_time = normalize_time
+        )
+      chromatograms_list$chromatogram_cad_pos_baselined <- chromatograms_list$chromatogram_cad_pos_improved |>
+        baseline_chromatogram() |>
+        normalize_chromatograms_list(
+          normalize_intensity = normalize_intensity,
+          normalize_time = normalize_time
+        )
+    }
+    if (
+      chromatograms |>
+        stringi::stri_detect_fixed(pattern = "pda") |>
+        any()
+    ) {
+      chromatogram_pda_pos <- chromatograms_positive |>
+        extract_chromatogram(type = "pda", headers = headers)
+      chromatograms_list$chromatogram_pda_pos_improved <- chromatogram_pda_pos |>
+        improve_signal(
+          time_min = time_min,
+          time_max = time_max,
+          fourier_components = fourier_components,
+          frequency = frequency,
+          resample = resample
+        ) |>
+        normalize_chromatograms_list(
+          normalize_intensity = normalize_intensity,
+          normalize_time = normalize_time
+        )
+      chromatograms_list$chromatogram_pda_pos_baselined <- chromatograms_list$chromatogram_pda_pos_improved |>
+        baseline_chromatogram() |>
+        normalize_chromatograms_list(
+          normalize_intensity = normalize_intensity,
+          normalize_time = normalize_time
+        )
+    }
   }
 
   if (!is.null(file_negative) || show_example) {
@@ -137,68 +157,84 @@ check_chromatograms_alignment <- function(
         load_chromatograms(headers = headers)
     }
 
-    chromatogram_bpi_neg <- chromatograms_negative |>
-      extract_chromatogram("bpi")
-    chromatogram_cad_neg <- chromatograms_negative |>
-      extract_chromatogram("cad")
-    chromatogram_pda_neg <- chromatograms_negative |>
-      extract_chromatogram("pda")
-
-    chromatograms_list$chromatogram_bpi_neg_improved <- chromatogram_bpi_neg |>
-      improve_signal(
-        time_min = time_min,
-        time_max = time_max,
-        fourier_components = fourier_components,
-        frequency = frequency,
-        resample = resample
-      ) |>
-      normalize_chromatograms_list(
-        normalize_intensity = normalize_intensity,
-        normalize_time = normalize_time
-      )
-    chromatograms_list$chromatogram_cad_neg_improved <- chromatogram_cad_neg |>
-      improve_signal(
-        time_min = time_min,
-        time_max = time_max,
-        fourier_components = fourier_components,
-        frequency = frequency,
-        resample = resample
-      ) |>
-      normalize_chromatograms_list(
-        normalize_intensity = normalize_intensity,
-        normalize_time = normalize_time
-      )
-    chromatograms_list$chromatogram_pda_neg_improved <- chromatogram_pda_neg |>
-      improve_signal(
-        time_min = time_min,
-        time_max = time_max,
-        fourier_components = fourier_components,
-        frequency = frequency,
-        resample = resample
-      ) |>
-      normalize_chromatograms_list(
-        normalize_intensity = normalize_intensity,
-        normalize_time = normalize_time
-      )
-
-    chromatograms_list$chromatogram_bpi_neg_baselined <- chromatograms_list$chromatogram_bpi_neg_improved |>
-      baseline_chromatogram() |>
-      normalize_chromatograms_list(
-        normalize_intensity = normalize_intensity,
-        normalize_time = normalize_time
-      )
-    chromatograms_list$chromatogram_cad_neg_baselined <- chromatograms_list$chromatogram_cad_neg_improved |>
-      baseline_chromatogram() |>
-      normalize_chromatograms_list(
-        normalize_intensity = normalize_intensity,
-        normalize_time = normalize_time
-      )
-    chromatograms_list$chromatogram_pda_neg_baselined <- chromatograms_list$chromatogram_pda_neg_improved |>
-      baseline_chromatogram() |>
-      normalize_chromatograms_list(
-        normalize_intensity = normalize_intensity,
-        normalize_time = normalize_time
-      )
+    if (
+      chromatograms |>
+        stringi::stri_detect_fixed(pattern = "bpi") |>
+        any()
+    ) {
+      chromatogram_bpi_neg <- chromatograms_negative |>
+        extract_chromatogram("bpi", headers = headers)
+      chromatograms_list$chromatogram_bpi_neg_improved <- chromatogram_bpi_neg |>
+        improve_signal(
+          time_min = time_min,
+          time_max = time_max,
+          fourier_components = fourier_components,
+          frequency = frequency,
+          resample = resample
+        ) |>
+        normalize_chromatograms_list(
+          normalize_intensity = normalize_intensity,
+          normalize_time = normalize_time
+        )
+      chromatograms_list$chromatogram_bpi_neg_baselined <- chromatograms_list$chromatogram_bpi_neg_improved |>
+        baseline_chromatogram() |>
+        normalize_chromatograms_list(
+          normalize_intensity = normalize_intensity,
+          normalize_time = normalize_time
+        )
+    }
+    if (
+      chromatograms |>
+        stringi::stri_detect_fixed(pattern = "cad") |>
+        any()
+    ) {
+      chromatogram_cad_neg <- chromatograms_negative |>
+        extract_chromatogram("cad", headers = headers)
+      chromatograms_list$chromatogram_cad_neg_improved <- chromatogram_cad_neg |>
+        improve_signal(
+          time_min = time_min,
+          time_max = time_max,
+          fourier_components = fourier_components,
+          frequency = frequency,
+          resample = resample
+        ) |>
+        normalize_chromatograms_list(
+          normalize_intensity = normalize_intensity,
+          normalize_time = normalize_time
+        )
+      chromatograms_list$chromatogram_cad_neg_baselined <- chromatograms_list$chromatogram_cad_neg_improved |>
+        baseline_chromatogram() |>
+        normalize_chromatograms_list(
+          normalize_intensity = normalize_intensity,
+          normalize_time = normalize_time
+        )
+    }
+    if (
+      chromatograms |>
+        stringi::stri_detect_fixed(pattern = "pda") |>
+        any()
+    ) {
+      chromatogram_pda_neg <- chromatograms_negative |>
+        extract_chromatogram("pda", headers = headers)
+      chromatograms_list$chromatogram_pda_neg_improved <- chromatogram_pda_neg |>
+        improve_signal(
+          time_min = time_min,
+          time_max = time_max,
+          fourier_components = fourier_components,
+          frequency = frequency,
+          resample = resample
+        ) |>
+        normalize_chromatograms_list(
+          normalize_intensity = normalize_intensity,
+          normalize_time = normalize_time
+        )
+      chromatograms_list$chromatogram_pda_neg_baselined <- chromatograms_list$chromatogram_pda_neg_improved |>
+        baseline_chromatogram() |>
+        normalize_chromatograms_list(
+          normalize_intensity = normalize_intensity,
+          normalize_time = normalize_time
+        )
+    }
   }
 
   check_chromatograms(

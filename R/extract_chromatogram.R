@@ -8,26 +8,20 @@
 #' @return An extracted chromatogram
 #'
 #' @examples NULL
-extract_chromatogram <- function(list, type) {
+extract_chromatogram <- function(list, type, headers) {
   stopifnot(
     "type must be one of 'bpi, 'cad',or 'pda'" = type %in%
       c("bpi", "cad", "pda")
   )
+  name <- switch(
+    type,
+    "bpi" = headers["bpi"] |> as.character(),
+    "cad" = headers["cad"] |> as.character(),
+    "pda" = headers["pda"] |> as.character()
+  )
   return(
-    list[switch(
-      type,
-      "bpi" = c(TRUE, FALSE, FALSE),
-      "cad" = c(FALSE, FALSE, TRUE),
-      "pda" = c(FALSE, TRUE, FALSE)
-    )] |>
+    list[which(headers == name)] |>
       purrr::pluck(1) |>
-      change_intensity_name(
-        name = switch(
-          type,
-          "bpi" = "BasePeak_0",
-          "cad" = "UV.1_CAD_1_0",
-          "pda" = "PDA.1_TotalAbsorbance_0"
-        )
-      )
+      change_intensity_name()
   )
 }
