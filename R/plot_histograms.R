@@ -14,7 +14,7 @@ plot_histograms <-
     absolute <- ggplot2::ggplot() +
       ggplot2::geom_line(
         data = chromatogram,
-        mapping = ggplot2::aes(x = time, y = intensity / max(intensity)),
+        mapping = ggplot2::aes(x = rtime, y = intensity / max(intensity)),
         col = "black",
         size = 0.1
       ) +
@@ -73,7 +73,7 @@ plot_histograms_confident <-
     plot <- ggplot2::ggplot() +
       ggplot2::geom_line(
         data = chromatogram,
-        mapping = ggplot2::aes(x = time, y = intensity / max(intensity)),
+        mapping = ggplot2::aes(x = rtime, y = intensity / max(intensity)),
         col = "black",
         size = 0.1
       ) +
@@ -173,7 +173,7 @@ plot_histograms_taxo <-
     plot <- ggplot2::ggplot() +
       ggplot2::geom_line(
         data = chromatogram,
-        mapping = ggplot2::aes(x = time, y = intensity / max(abs(intensity))),
+        mapping = ggplot2::aes(x = rtime, y = intensity / max(abs(intensity))),
         col = "black",
         size = 0.1
       ) +

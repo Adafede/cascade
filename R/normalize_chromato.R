@@ -9,8 +9,8 @@
 normalize_chromato <- function(x, df_xy) {
   df_xy |>
     tidytable::filter(
-      time >= x$rt_min[1] &
-        time <= x$rt_max[1]
+      rtime >= x$rt_min[1] &
+        rtime <= x$rt_max[1]
     ) |>
     tidytable::mutate(
       intensity = (intensity - min(intensity)) /

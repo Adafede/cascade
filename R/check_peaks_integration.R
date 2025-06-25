@@ -131,7 +131,7 @@ check_peaks_integration <- function(
 
   approx_f <- stats::approxfun(
     x = chromatogram_normalized |>
-      tidytable::pull(time),
+      tidytable::pull(rtime),
     y = chromatogram_normalized |>
       tidytable::pull(intensity)
   )

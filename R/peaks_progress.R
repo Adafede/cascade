@@ -10,10 +10,10 @@
 peaks_progress <- function(df_xy) {
   list(
     "666" = df_xy |>
-      tidytable::filter(time >= 0) |>
-      tidytable::select(time, intensity) |>
+      tidytable::filter(rtime >= 0) |>
+      tidytable::select(rtime, intensity) |>
       tidytable::rename(`666` = intensity) |>
-      tibble::column_to_rownames("time") |>
+      tibble::column_to_rownames("rtime") |>
       as.matrix()
   ) |>
     get_peaks(

@@ -12,7 +12,7 @@ plot_peak_detection <- function(df1, df2, fun) {
     plotly::plot_ly() |>
     plotly::add_trace(
       data = df1,
-      x = ~time,
+      x = ~rtime,
       y = ~intensity,
       type = "scatter",
       mode = "line",
