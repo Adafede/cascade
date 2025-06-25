@@ -26,14 +26,15 @@ preprocess_chromatograms <- function(
   name,
   resample = 1,
   shift = 0,
-  signal_name = "UV.1_CAD_1_0",
+  # signal_name = "UV.1_CAD_1_0",
   time_min = 0,
   time_max = Inf
 ) {
   message("preprocessing ", detector, " chromatograms")
-  message("harmonizing names")
-  chromatograms_original <-
-    purrr::map(.x = list, .f = change_intensity_name, name = signal_name)
+  # message("harmonizing names")
+  # chromatograms_original <-
+  #   purrr::map(.x = list, .f = change_intensity_name, name_intensity = signal_name)
+  chromatograms_original <- list
 
   message("improving chromatograms")
   chromatograms_improved <-
