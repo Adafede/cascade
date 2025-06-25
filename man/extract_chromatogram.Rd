@@ -10,6 +10,8 @@ extract_chromatogram(list, type, headers)
 \item{list}{List}
 
 \item{type}{Type}
+
+\item{headers}{Headers}
 }
 \value{
 An extracted chromatogram

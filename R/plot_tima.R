@@ -5,7 +5,7 @@
 #' @include plot_histograms.R
 #' @include prepare_hierarchy.R
 #' @include prepare_plot.R
-#' @include treemaps_progress_no_title.R
+#' @include treemaps_progress.R
 #'
 #' @param tables Tables
 #'
