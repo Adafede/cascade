@@ -16,7 +16,7 @@ normalize_chromatograms_list <-
     normalize_time = FALSE
   ) {
     df <- list |>
-      tidytable::mutate(time = time + shift) |>
+      tidytable::mutate(rtime = rtime + shift) |>
       data.frame()
 
     if (normalize_intensity) {
@@ -26,8 +26,8 @@ normalize_chromatograms_list <-
     }
     if (normalize_time) {
       df <- df |>
-        tidytable::mutate(time_2 = max(time)) |>
-        tidytable::mutate(time = time / time_2) |>
+        tidytable::mutate(time_2 = max(rtime)) |>
+        tidytable::mutate(rtime = rtime / time_2) |>
         tidytable::ungroup() |>
         data.frame()
     }

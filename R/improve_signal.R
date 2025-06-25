@@ -34,24 +34,27 @@ improve_signal <-
         )
       )
 
-    f <- stats::approxfun(x = df_fourier$time, y = df_fourier$intensity_fourier)
+    f <- stats::approxfun(
+      x = df_fourier$rtime,
+      y = df_fourier$intensity_fourier
+    )
 
     time <- seq(
       from = time_min,
-      to = min(max(df_fourier$time), time_max),
+      to = min(max(df_fourier$rtime), time_max),
       by = 1 / (frequency * 60 * resample)
     )
 
     intensity <- f(seq(
       from = time_min,
-      to = min(max(df_fourier$time), time_max),
+      to = min(max(df_fourier$rtime), time_max),
       by = 1 / (frequency * 60 * resample)
     ))
 
     intensity_sharpened <- signal_sharpening(time = time, intensity = intensity)
 
     return(data.frame(
-      "time" = time[5:length(time)],
+      "rtime" = time[5:length(time)],
       "intensity" = intensity_sharpened
     ))
   }
