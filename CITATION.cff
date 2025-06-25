@@ -396,6 +396,20 @@ references:
   doi: 10.32614/CRAN.package.R.utils
   version: '>= 2.13.0'
 - type: software
+  title: stringi
+  abstract: 'stringi: Fast and Portable Character String Processing Facilities'
+  notes: Imports
+  url: https://stringi.gagolewski.com/
+  repository: https://CRAN.R-project.org/package=stringi
+  authors:
+  - family-names: Gagolewski
+    given-names: Marek
+    email: marek@gagolewski.com
+    orcid: https://orcid.org/0000-0003-0637-6028
+  year: '2025'
+  doi: 10.32614/CRAN.package.stringi
+  version: '>= 1.8.7'
+- type: software
   title: tibble
   abstract: 'tibble: Simple Data Frames'
   notes: Imports
