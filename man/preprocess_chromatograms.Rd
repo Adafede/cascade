@@ -12,7 +12,6 @@ preprocess_chromatograms(
   name,
   resample = 1,
   shift = 0,
-  signal_name = "UV.1_CAD_1_0",
   time_min = 0,
   time_max = Inf
 )
@@ -32,11 +31,11 @@ preprocess_chromatograms(
 
 \item{shift}{Shift}
 
-\item{signal_name}{Signal name}
-
 \item{time_min}{Time min}
 
 \item{time_max}{Time max}
+
+\item{signal_name}{Signal name}
 }
 \value{
 A list of preprocessed chromatograms

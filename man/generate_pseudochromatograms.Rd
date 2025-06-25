@@ -9,7 +9,7 @@ generate_pseudochromatograms(
   features_informed = NULL,
   features_not_informed = NULL,
   file = NULL,
-  headers = c("BasePeak_0", "PDA#1_TotalAbsorbance_0", "UV#1_CAD_1_0"),
+  headers = c(bpi = "BasePeak_0", pda = "PDA#1_TotalAbsorbance_0", cad = "UV#1_CAD_1_0"),
   detector = "cad",
   show_example = FALSE,
   min_confidence = 0.4,

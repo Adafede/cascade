@@ -4,7 +4,7 @@
 \alias{extract_chromatogram}
 \title{Extract chromatogram}
 \usage{
-extract_chromatogram(list, type)
+extract_chromatogram(list, type, headers)
 }
 \arguments{
 \item{list}{List}
