@@ -8,6 +8,7 @@ utils::globalVariables(
     "best_candidate_organism",
     "candidate_count_similarity_peaks_matched",
     "candidate_library",
+    "candidate_score_similarity",
     "candidate_structure_inchikey_connectivity_layer",
     "candidate_structure_molecular_formula",
     "candidate_structure_organism_occurrence_closest",
