@@ -51,15 +51,15 @@ preprocess_chromatograms <- function(
 
   chromatograms_original_long <-
     tidytable::bind_rows(chromatograms_original, .id = "id") |>
-    tidytable::mutate(time = time + shift) |>
+    tidytable::mutate(rtime = rtime + shift) |>
     tidytable::mutate(intensity = intensity - (min(intensity))) |>
-    tidytable::mutate(rt_1 = time, rt_2 = time) |>
+    tidytable::mutate(rt_1 = rtime, rt_2 = rtime) |>
     tidytable::data.table()
 
   chromatograms_improved_long <-
     tidytable::bind_rows(chromatograms_improved, .id = "id") |>
-    tidytable::mutate(time = time + shift) |>
-    tidytable::mutate(rt_1 = time, rt_2 = time) |>
+    tidytable::mutate(rtime = rtime + shift) |>
+    tidytable::mutate(rt_1 = rtime, rt_2 = rtime) |>
     tidytable::data.table()
 
   message("baselining chromatograms")
@@ -69,7 +69,7 @@ preprocess_chromatograms <- function(
   chromatograms_baselined_long <-
     tidytable::bind_rows(chromatograms_baselined, .id = "id") |>
     tidytable::mutate(intensity = intensity - (min(intensity))) |>
-    tidytable::mutate(rt_1 = time, rt_2 = time) |>
+    tidytable::mutate(rt_1 = rtime, rt_2 = rtime) |>
     tidytable::data.table()
 
   returned_list <- list(

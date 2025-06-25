@@ -8,7 +8,7 @@
 prepare_peaks <- function(x) {
   MSnbase::Chromatogram(
     intensity = x$intensity,
-    rtime = (x$time - min(x$time)) /
-      (max(x$time) - min(x$time))
+    rtime = (x$rtime - min(x$rtime)) /
+      (max(x$rtime) - min(x$rtime))
   ) ## see https://github.com/sneumann/xcms/issues/593
 }

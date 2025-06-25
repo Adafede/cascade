@@ -33,7 +33,7 @@ improve_signals_progress <- function(
       ) {
         improve_signal(
           df = x |>
-            tidytable::select(time, intensity),
+            tidytable::select(rtime, intensity),
           fourier_components = fourier_components,
           frequency = frequency,
           resample = resample,

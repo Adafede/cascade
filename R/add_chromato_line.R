@@ -29,7 +29,7 @@ add_chromato_line <- function(
           shift = shift,
           normalize_time = normalize_time
         ),
-      x = ~time,
+      x = ~rtime,
       y = ~ switch(polarity, "pos" = intensity, "neg" = -1 * intensity),
       name = name,
       line = list(width = 1, color = color)
