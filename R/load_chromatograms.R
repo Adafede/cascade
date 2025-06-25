@@ -10,7 +10,11 @@
 #' @examples NULL
 load_chromatograms <- function(
   file = NULL,
-  headers = c("BasePeak_0", "PDA#1_TotalAbsorbance_0", "UV#1_CAD_1_0"),
+  headers = c(
+    "bpi" = "BasePeak_0",
+    "pda" = "PDA#1_TotalAbsorbance_0",
+    "cad" = "UV#1_CAD_1_0"
+  ),
   show_example = FALSE,
   example_polarity = "pos"
 ) {
@@ -19,7 +23,7 @@ load_chromatograms <- function(
     #   saveRDS(file = "inst/extdata/chromatograms_positive.rds")
     # chromatograms_negative |>
     #   saveRDS(file = "inst/extdata/chromatograms_negative.rds")
-    switch(
+    chromatograms <- switch(
       example_polarity,
       "pos" = readRDS(
         system.file(
@@ -36,6 +40,16 @@ load_chromatograms <- function(
         )
       )
     )
+    names(chromatograms) <- headers |>
+      names()
+    chromatograms <- chromatograms |>
+      ## TODO dirty fix
+      purrr::map(
+        .f = function(df) {
+          df |> tidytable::rename(rtime = 1, intensity = 2)
+        }
+      )
+    return(chromatograms)
   } else {
     file_pointer <- file |>
       mzR::openMSfile()
@@ -46,5 +60,8 @@ load_chromatograms <- function(
     ]
     chromatograms <- file_pointer |>
       mzR::chromatograms(chrom = indices)
+    names(chromatograms) <- headers |>
+      names()
+    return(chromatograms)
   }
 }

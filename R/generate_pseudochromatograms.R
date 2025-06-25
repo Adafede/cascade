@@ -40,7 +40,11 @@ generate_pseudochromatograms <- function(
   features_informed = NULL,
   features_not_informed = NULL,
   file = NULL,
-  headers = c("BasePeak_0", "PDA#1_TotalAbsorbance_0", "UV#1_CAD_1_0"),
+  headers = c(
+    "bpi" = "BasePeak_0",
+    "pda" = "PDA#1_TotalAbsorbance_0",
+    "cad" = "UV#1_CAD_1_0"
+  ),
   detector = "cad",
   show_example = FALSE,
   min_confidence = 0.4,
@@ -68,21 +72,18 @@ generate_pseudochromatograms <- function(
     load_name(show_example = show_example)
 
   message("preprocessing chromatograms")
+  switch <- switch(
+    detector,
+    "bpi" = headers["bpi"],
+    "cad" = headers["cad"],
+    "pda" = headers["pda"]
+  )
+  list <- chromatograms_all[switch |> names()]
   chromatograms_list <- preprocess_chromatograms(
     detector = detector,
     name = name,
-    list = switch(
-      detector,
-      "bpi" = chromatograms_all[c(TRUE, FALSE, FALSE)],
-      "cad" = chromatograms_all[c(FALSE, FALSE, TRUE)],
-      "pda" = chromatograms_all[c(FALSE, TRUE, FALSE)]
-    ),
-    signal_name = switch(
-      detector,
-      "bpi" = "BasePeak_0",
-      "cad" = "UV.1_CAD_1_0",
-      "pda" = "PDA.1_TotalAbsorbance_0"
-    ),
+    list = list,
+    # signal_name = signal_name,
     shift = shift,
     fourier_components = fourier_components,
     time_min = time_min,

@@ -36,7 +36,11 @@ check_peaks_integration <- function(
   features = NULL,
   detector = "cad",
   chromatogram = "baselined",
-  headers = c("BasePeak_0", "PDA#1_TotalAbsorbance_0", "UV#1_CAD_1_0"),
+  headers = c(
+    "bpi" = "BasePeak_0",
+    "pda" = "PDA#1_TotalAbsorbance_0",
+    "cad" = "UV#1_CAD_1_0"
+  ),
   min_area = 0.005,
   min_intensity = 1E4,
   shift = 0.05,
@@ -64,21 +68,18 @@ check_peaks_integration <- function(
     prepare_features(min_intensity = min_intensity, name = name)
 
   message("Preprocessing chromatograms")
+  switch <- switch(
+    detector,
+    "bpi" = headers["bpi"],
+    "cad" = headers["cad"],
+    "pda" = headers["pda"]
+  )
+  list <- chromatograms_all[switch |> names()]
   chromatograms_list <- preprocess_chromatograms(
     detector = detector,
     name = name,
-    list = switch(
-      detector,
-      "bpi" = chromatograms_all[c(TRUE, FALSE, FALSE)],
-      "cad" = chromatograms_all[c(FALSE, FALSE, TRUE)],
-      "pda" = chromatograms_all[c(FALSE, TRUE, FALSE)]
-    ),
-    signal_name = switch(
-      detector,
-      "bpi" = "BasePeak_0",
-      "cad" = "UV.1_CAD_1_0",
-      "pda" = "PDA.1_TotalAbsorbance_0"
-    ),
+    list = list,
+    # signal_name = signal_name,
     shift = shift,
     fourier_components = fourier_components,
     time_min = time_min,
