@@ -3,12 +3,13 @@ title: 4 Visualizing raw TIMA results
 author: 
   name: Adriano Rutz
   orcid: 0000-0003-0443-9902
-citation: true
+citation:
+  url: https://adafede.github.io/cascade/articles/IV-tima.html
 comments:
   hypothesis:
     showHighlights: always
 creative_commons: CC BY-SA
-date: "`r Sys.Date()`"
+date: today
 format:
   html:
     # code-links:
@@ -19,12 +20,13 @@ knitr:
   opts_chunk:
     collapse: true
     comment: '#>'
+lang: en
 opengraph:
     image:
       src: https://github.com/adafede/cascade/blob/main/man/figures/logo.svg
       alt: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts
 vignette: >
-  %\VignetteIndexEntry{2 Processing}
+  %\VignetteIndexEntry{4 TIMA}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---

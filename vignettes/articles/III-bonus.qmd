@@ -3,18 +3,20 @@ title: 3 Bonus
 author: 
   name: Adriano Rutz
   orcid: 0000-0003-0443-9902
-citation: true
+citation:
+  url: https://adafede.github.io/cascade/articles/III-bonus.html
 comments:
   hypothesis:
     showHighlights: always
 creative_commons: CC BY-SA
-date: "`r Sys.Date()`"
+date: today
 format:
   html:
     # code-links:
     #  - repo: https://github.com/adafede/cascade
     smooth-scroll: true
 google-scholar: true
+lang: en
 knitr:
   opts_chunk:
     collapse: true
@@ -24,7 +26,7 @@ opengraph:
       src: https://github.com/adafede/cascade/blob/main/man/figures/logo.svg
       alt: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts
 vignette: >
-  %\VignetteIndexEntry{2 Processing}
+  %\VignetteIndexEntry{3 Bonus}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
