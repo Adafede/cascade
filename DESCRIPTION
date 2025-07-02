@@ -126,7 +126,8 @@ Collate:
     'save_histograms_progress.R'
     'save_treemaps_progress.R'
 VignetteBuilder: 
-    knitr
+    knitr,
+    quarto
 biocViews: metaboliteAnnotation, chargedAerosolDetector, semiQuantitative, naturalProducts, computationalMetabolomics, specializedMetabolome
 X-schema.org-keywords: metaboliteAnnotation, chargedAerosolDetector, semiQuantitative, naturalProducts, computationalMetabolomics, specializedMetabolome
 Language: en-US
