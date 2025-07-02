@@ -3,25 +3,31 @@ title: 1 Basics
 author: 
   - name: Adriano Rutz
     orcid: 0000-0003-0443-9902
+comments:
+  hypothesis:
+    showHighlights: always
 creative_commons: CC BY-SA
 date: "`r Sys.Date()`"
+format:
+  html:
+    # code-links:
+    #  - repo: https://github.com/adafede/cascade
+    smooth-scroll: true
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
+  opts_knit:
+    root.dir: system.file(package = "cascade")
 opengraph:
     image:
       src: https://github.com/adafede/cascade/blob/main/man/figures/logo.svg
       alt: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts
 vignette: >
   %\VignetteIndexEntry{1 Basics}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
-
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-knitr::opts_knit$set(root.dir = system.file(package = "cascade"))
-```
 
 ```{r cascade, include = FALSE}
 library("cascade")
