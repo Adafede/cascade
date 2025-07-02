@@ -1,8 +1,9 @@
 ---
 title: General comments about the use of CASCADE
 author: 
-  - name: Adriano Rutz
-    orcid: 0000-0003-0443-9902
+  name: Adriano Rutz
+  orcid: 0000-0003-0443-9902
+citation: true
 comments:
   hypothesis:
     showHighlights: always
@@ -13,6 +14,7 @@ format:
     # code-links:
     #  - repo: https://github.com/adafede/cascade
     smooth-scroll: true
+google-scholar: true
 knitr:
   opts_chunk:
     collapse: true
