@@ -3,12 +3,13 @@ title: 1 Basics
 author: 
   name: Adriano Rutz
   orcid: 0000-0003-0443-9902
-citation: true
+citation:
+  url: https://adafede.github.io/cascade/articles/I-basics.html
 comments:
   hypothesis:
     showHighlights: always
 creative_commons: CC BY-SA
-date: "`r Sys.Date()`"
+date: today
 format:
   html:
     # code-links:
@@ -19,6 +20,7 @@ knitr:
   opts_chunk:
     collapse: true
     comment: '#>'
+lang: en
 opengraph:
     image:
       src: https://github.com/adafede/cascade/blob/main/man/figures/logo.svg
