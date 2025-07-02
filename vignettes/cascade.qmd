@@ -1,14 +1,14 @@
 ---
 title: General comments about the use of CASCADE
-author: Adriano Rutz
+author: 
+  - name: Adriano Rutz
+    orcid: 0000-0003-0443-9902
 creative_commons: CC BY-SA
 date: "`r Sys.Date()`"
 opengraph:
     image:
       src: https://github.com/adafede/cascade/blob/main/man/figures/logo.svg
       alt: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts
-    twitter:
-      creator: "@adafede"
 vignette: >
   %\VignetteIndexEntry{General comments about the use of CASCADE}
   %\VignetteEngine{knitr::rmarkdown}
