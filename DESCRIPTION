@@ -40,11 +40,14 @@ Imports:
 Remotes:
     taxonomicallyinformedannotation/tima
 Suggests:
-    BiocManager,
-    knitr,
-    lifecycle,
+    BiocManager (>= 1.30.25),
+    knitr (>= 1.50),
+    quarto (>= 1.4.4),
+    lifecycle (>= 1.0.4),
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Config/testthat/parallel: true
+Config/testthat/start-first: build-article, build-quarto-article, build-reference, build
 Encoding: UTF-8
 LazyData: true
 ByteCompile: true
