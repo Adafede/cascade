@@ -14,8 +14,6 @@ creative_commons: CC BY-SA
 date: today
 format:
   html:
-    # code-links:
-    #  - repo: https://github.com/adafede/cascade
     smooth-scroll: true
 google-scholar: true
 lang: en
