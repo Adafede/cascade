@@ -6,6 +6,8 @@ author:
 citation:
   url: https://adafede.github.io/cascade/articles/cascade.html
 comments:
+  giscus: 
+    repo: adafede/cascade
   hypothesis:
     showHighlights: always
 creative_commons: CC BY-SA
