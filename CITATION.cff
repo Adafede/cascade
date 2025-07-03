@@ -443,7 +443,7 @@ references:
   title: tima
   abstract: 'tima: Taxonomically Informed Metabolite Annotation'
   notes: Imports
-  url: https://taxonomicallyinformedannotation.github.io/tima
+  url: https://taxonomicallyinformedannotation.github.io/tima-shinylive
   repository: https://bioconductor.org/
   authors:
   - family-names: Rutz
