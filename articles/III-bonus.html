@@ -104,7 +104,7 @@
 <span>  start <span class="op">=</span> <span class="st">"1950"</span>,</span>
 <span>  end <span class="op">=</span> <span class="st">"2025"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2025-07-03 16:09:26] A file with the same size is already present. Skipping</span></span></code></pre></div>
+<span><span class="co">#&gt; INFO [2025-07-03 16:31:54] A file with the same size is already present. Skipping</span></span></code></pre></div>
 </div>
 <section class="level3"><h3 id="compounds-found-in-swertia">Compounds found in Swertia<a class="anchor" aria-label="anchor" href="#compounds-found-in-swertia"></a>
 </h3>
@@ -227,7 +227,33 @@
       }
     }
   });
-  </script></main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+  </script><input type="hidden" id="giscus-base-theme" value="light"><input type="hidden" id="giscus-alt-theme" value="dark"><script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "adafede/cascade";
+    script.dataset.repoId = "R_kgDOGG59eg";
+    script.dataset.category = "General";
+    script.dataset.categoryId = "DIC_kwDOGG59es4Cj-IT";
+    script.dataset.mapping = "title";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script></main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
 
