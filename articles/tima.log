@@ -1,0 +1,3 @@
+INFO [2025-07-03 15:40:29] Downloading 230106_frozen_metadata.csv.gz from https://doi.org/10.5281/zenodo.5794106 (The LOTUS Initiative for Open Natural Products Research: frozen dataset union wikidata (with metadata); unique identifier: https://doi.org/10.5281/zenodo.7534071)
+INFO [2025-07-03 15:40:29] Directory data/source/libraries created.
+INFO [2025-07-03 15:40:51] A file with the same size is already present. Skipping

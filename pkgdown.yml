@@ -1,0 +1,13 @@
+pandoc: 3.1.11
+pkgdown: 2.1.3
+pkgdown_sha: ~
+articles:
+  cascade: cascade.html
+  articles/I-basics: I-basics.html
+  articles/II-processing: II-processing.html
+  articles/III-bonus: III-bonus.html
+  articles/IV-tima: IV-tima.html
+last_built: 2025-07-03T15:38Z
+urls:
+  reference: https://adafede.github.io/cascade/reference
+  article: https://adafede.github.io/cascade/articles
