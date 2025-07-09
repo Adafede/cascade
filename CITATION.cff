@@ -476,6 +476,24 @@ references:
   doi: 10.32614/CRAN.package.WikidataQueryServiceR
   version: '>= 1.0.0'
 - type: software
+  title: altdoc
+  abstract: 'altdoc: Package Documentation Websites with ''Quarto'', ''Docsify'',
+    ''Docute'', or ''MkDocs'''
+  notes: Suggests
+  url: https://altdoc.etiennebacher.com
+  repository: https://CRAN.R-project.org/package=altdoc
+  authors:
+  - family-names: Bacher
+    given-names: Etienne
+    email: etienne.bacher@protonmail.com
+  - family-names: Arel-Bundock
+    given-names: Vincent
+    email: vincent.arel-bundock@umontreal.ca
+    orcid: https://orcid.org/0000-0003-2042-7063
+  year: '2025'
+  doi: 10.32614/CRAN.package.altdoc
+  version: '>= 0.5.0'
+- type: software
   title: BiocManager
   abstract: 'BiocManager: Access the Bioconductor Project Package Repository'
   notes: Suggests
@@ -542,6 +560,23 @@ references:
   year: '2025'
   doi: 10.32614/CRAN.package.lifecycle
   version: '>= 1.0.4'
+- type: software
+  title: spelling
+  abstract: 'spelling: Tools for Spell Checking in R'
+  notes: Suggests
+  url: https://ropensci.r-universe.dev/spelling
+  repository: https://CRAN.R-project.org/package=spelling
+  authors:
+  - family-names: Ooms
+    given-names: Jeroen
+    email: jeroenooms@gmail.com
+    orcid: https://orcid.org/0000-0002-4035-0289
+  - family-names: Hester
+    given-names: Jim
+    email: james.hester@rstudio.com
+  year: '2025'
+  doi: 10.32614/CRAN.package.spelling
+  version: '>= 2.3.1'
 - type: software
   title: testthat
   abstract: 'testthat: Unit Testing for R'
