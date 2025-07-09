@@ -4,7 +4,7 @@ author:
   name: Adriano Rutz
   orcid: 0000-0003-0443-9902
 citation:
-  url: https://adafede.github.io/cascade/articles/III-bonus.html
+  url: https://adafede.github.io/cascade/vignettes/articles/III-bonus.html
 comments:
   giscus: 
     repo: adafede/cascade

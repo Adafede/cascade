@@ -1,5 +1,6 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+<!-- README.md is generated from README.qmd. Please edit that file -->
 
 # CASCADE <img src='https://raw.githubusercontent.com/adafede/cascade/main/man/figures/logo.svg' align="right" height="139" />
 
@@ -10,9 +11,8 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 [![No Maintenance
 Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 [![CRAN
-status](https://www.r-pkg.org/badges/version/tima)](https://CRAN.R-project.org/package=tima)
+status](https://www.r-pkg.org/badges/version/tima.png)](https://CRAN.R-project.org/package=tima)
 [![R-CMD-check](https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml)
-[![R-Universe](https://adafede.r-universe.dev/badges/cascade)](https://adafede.r-universe.dev/cascade)
 [![Codecov test
 coverage](https://codecov.io/gh/adafede/cascade/graph/badge.svg)](https://app.codecov.io/gh/adafede/cascade)
 <!-- [![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://hub.docker.com/r/adafede/cascade/) -->
@@ -27,7 +27,7 @@ natural **E**xtracts.
 interest. It has just been opened for the sake of transparency.
 
 The initial work is available at
-<https://doi.org/10.1021/acs.jafc.3c03099>, with some improvements made
+https://doi.org/10.1021/acs.jafc.3c03099, with some improvements made
 since then. The workflow is illustrated below.
 
 ![Workflow](https://raw.githubusercontent.com/adafede/cascade/main/man/figures/cascade-workflow.svg)  
@@ -36,21 +36,22 @@ since then. The workflow is illustrated below.
 
 Here is what you *minimally* need:
 
-- A file
-  ([.mzML](https://en.wikipedia.org/wiki/Mass_spectrometry_data_format#mzML))
-  containing [DDA
-  MS](https://en.wikipedia.org/w/index.php?title=Data-dependent_acquisition)
-  data with an additional detector
-  ([PDA](https://en.wikipedia.org/wiki/UV_detectors),
-  [ELSD](https://en.wikipedia.org/wiki/Evaporative_light_scattering_detector),
-  [CAD](https://en.wikipedia.org/wiki/Charged_aerosol_detector))
-  - In case you don’t know how to obtain it, see:
-    [wiki/How-to-create-a-compliant-mzML-file](https://github.com/Adafede/cascade/wiki/How-to-create-a-compliant-mzML-file)
-- A file ([.csv](https://en.wikipedia.org/wiki/Comma-separated_values))
-  containing features, as obtained by [mzmine](https://mzio.io)
-- A file ([.tsv](https://en.wikipedia.org/wiki/Tab-separated_values))
-  containing annotations, as obtained by
-  [TIMA](https://taxonomicallyinformedannotation.github.io/tima)
+-   A file
+    ([.mzML](https://en.wikipedia.org/wiki/Mass_spectrometry_data_format#mzML))
+    containing [DDA
+    MS](https://en.wikipedia.org/w/index.php?title=Data-dependent_acquisition)
+    data with an additional detector
+    ([PDA](https://en.wikipedia.org/wiki/UV_detectors),
+    [ELSD](https://en.wikipedia.org/wiki/Evaporative_light_scattering_detector),
+    [CAD](https://en.wikipedia.org/wiki/Charged_aerosol_detector))
+    -   In case you don’t know how to obtain it, see:
+        [wiki/How-to-create-a-compliant-mzML-file](https://github.com/Adafede/cascade/wiki/How-to-create-a-compliant-mzML-file)
+-   A file
+    ([.csv](https://en.wikipedia.org/wiki/Comma-separated_values))
+    containing features, as obtained by [mzmine](https://mzio.io)
+-   A file ([.tsv](https://en.wikipedia.org/wiki/Tab-separated_values))
+    containing annotations, as obtained by
+    [TIMA](https://taxonomicallyinformedannotation.github.io/tima)
 
 ## Installation
 
@@ -89,10 +90,10 @@ General: <https://doi.org/10.1038/s41587-023-01690-2>
 
 General: <https://doi.org/10.1038/s41592-019-0344-8>
 
-- *CSI:FingerId*: <https://doi.org/10.1073/pnas.1509788112>
-- *ZODIAC*: <https://doi.org/10.1038/s42256-020-00234-6>
-- *CANOPUS*: <https://doi.org/10.1038/s41587-020-0740-8>
-- *COSMIC*: <https://doi.org/10.1038/s41587-021-01045-9>
+-   *CSI:FingerId*: <https://doi.org/10.1073/pnas.1509788112>
+-   *ZODIAC*: <https://doi.org/10.1038/s42256-020-00234-6>
+-   *CANOPUS*: <https://doi.org/10.1038/s41587-020-0740-8>
+-   *COSMIC*: <https://doi.org/10.1038/s41587-021-01045-9>
 
 ### LOTUS
 
@@ -117,7 +118,7 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
 
 ### Others
 
-- The *RforMassSpectrometry* packages suite for MS2 matching:
-  <https://doi.org/10.3390/metabo12020173>
-- chromatographR: <https://doi.org/10.5281/zenodo.6944334>
-- NPClassifier: <https://doi.org/10.1021/acs.jnatprod.1c00399>
+-   The *RforMassSpectrometry* packages suite for MS2 matching:
+    <https://doi.org/10.3390/metabo12020173>
+-   chromatographR: <https://doi.org/10.5281/zenodo.6944334>
+-   NPClassifier: <https://doi.org/10.1021/acs.jnatprod.1c00399>

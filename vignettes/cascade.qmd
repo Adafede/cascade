@@ -4,7 +4,7 @@ author:
   name: Adriano Rutz
   orcid: 0000-0003-0443-9902
 citation:
-  url: https://adafede.github.io/cascade/articles/cascade.html
+  url: https://adafede.github.io/cascade/vignettes/cascade.html
 comments:
   giscus: 
     repo: adafede/cascade
@@ -54,4 +54,9 @@ install.packages(
 
 ## More details
 
-More details are available in the related [vignettes](https://adafede.github.io/cascade/articles).
+More details are available in the following vignettes:
+
+- <https://adafede.github.io/cascade/vignettes/articles/I-basics.html>
+- <https://adafede.github.io/cascade/vignettes/articles/II-processing.html>
+- <https://adafede.github.io/cascade/vignettes/articles/III-bonus.html>
+- <https://adafede.github.io/cascade/vignettes/articles/IV-tima.html>

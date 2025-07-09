@@ -4,7 +4,7 @@ author:
   name: Adriano Rutz
   orcid: 0000-0003-0443-9902
 citation:
-  url: https://adafede.github.io/cascade/articles/II-processing.html
+  url: https://adafede.github.io/cascade/articles/vignettes/II-processing.html
 comments:
   giscus: 
     repo: adafede/cascade
@@ -123,4 +123,4 @@ A small preview of the HTML table is presented below:
 tables_list$pretty_table
 ```
 
-For some other available helper functions, we now recommend you to read the [next vignette](https://adafede.github.io/cascade/articles/III-bonus.html).
+For some other available helper functions, we now recommend you to read the [next vignette](https://adafede.github.io/cascade/vignettes/articles/III-bonus.html).

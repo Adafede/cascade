@@ -4,7 +4,7 @@ author:
   name: Adriano Rutz
   orcid: 0000-0003-0443-9902
 citation:
-  url: https://adafede.github.io/cascade/articles/I-basics.html
+  url: https://adafede.github.io/cascade/vignettes/articles/I-basics.html
 comments:
   giscus: 
     repo: adafede/cascade
@@ -104,5 +104,5 @@ check_peaks_integration(
 )
 ```
 
-We now recommend you to read the [next vignette](https://adafede.github.io/cascade/articles/II-processing.html).
+We now recommend you to read the [next vignette](https://adafede.github.io/cascade/vignettes/articles/II-processing.html).
 
