@@ -8,9 +8,10 @@
 #'
 #' @examples NULL
 change_intensity_name <- function(
-    df,
-    name_rt = "rtime",
-    name_intensity = "intensity") {
+  df,
+  name_rt = "rtime",
+  name_intensity = "intensity"
+) {
   df |>
     ## Old, see https://github.com/sneumann/mzR/issues/304
     ## TODO Fix could be better
