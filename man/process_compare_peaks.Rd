@@ -60,7 +60,5 @@ A plot with (non-)aligned chromatograms
 Process compare peaks
 }
 \examples{
-\dontrun{
-check_chromatograms_alignment(show_example = TRUE)
-}
+NULL
 }
