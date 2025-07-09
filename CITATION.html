@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>cascade</title>
+<title>citation – cascade</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,41 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -338,7 +303,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">License</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./CITATION.html"> 
+    <a class="nav-link active" href="./CITATION.html" aria-current="page"> 
 <span class="menu-text">Citation</span></a>
   </li>  
 </ul>
@@ -365,21 +330,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#cascade" id="toc-cascade" class="nav-link active" data-scroll-target="#cascade">CASCADE <img src="https://raw.githubusercontent.com/adafede/cascade/main/man/figures/logo.svg" align="right" height="139"></a>
-  <ul class="collapse">
-  <li><a href="#requirements" id="toc-requirements" class="nav-link" data-scroll-target="#requirements">Requirements</a></li>
-  <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a></li>
-  <li><a href="#main-citations" id="toc-main-citations" class="nav-link" data-scroll-target="#main-citations">Main Citations</a>
-  <ul class="collapse">
-  <li><a href="#cascade-1" id="toc-cascade-1" class="nav-link" data-scroll-target="#cascade-1">CASCADE</a></li>
-  <li><a href="#mzmine" id="toc-mzmine" class="nav-link" data-scroll-target="#mzmine">mzmine</a></li>
-  <li><a href="#sirius" id="toc-sirius" class="nav-link" data-scroll-target="#sirius">SIRIUS</a></li>
-  <li><a href="#lotus" id="toc-lotus" class="nav-link" data-scroll-target="#lotus">LOTUS</a></li>
-  <li><a href="#isdb" id="toc-isdb" class="nav-link" data-scroll-target="#isdb">ISDB</a></li>
-  <li><a href="#tima" id="toc-tima" class="nav-link" data-scroll-target="#tima">TIMA</a></li>
-  <li><a href="#others" id="toc-others" class="nav-link" data-scroll-target="#others">Others</a></li>
-  </ul></li>
-  </ul></li>
+  <li><a href="#citation" id="toc-citation" class="nav-link active" data-scroll-target="#citation">Citation</a></li>
   </ul>
 </nav>
     </div>
@@ -390,88 +341,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<!-- README.md is generated from README.qmd. Please edit that file -->
-<section id="cascade" class="level1">
-<h1>CASCADE <img src="https://raw.githubusercontent.com/adafede/cascade/main/man/figures/logo.svg" align="right" height="139"></h1>
-<!-- badges: start -->
-<p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" class="img-fluid" alt="Lifecycle: experimental"></a> <a href="http://unmaintained.tech/"><img src="http://unmaintained.tech/badge.svg" class="img-fluid" alt="No Maintenance Intended"></a> <a href="https://CRAN.R-project.org/package=tima"><img src="https://www.r-pkg.org/badges/version/tima.png" class="img-fluid" alt="CRAN status"></a> <a href="https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml"><img src="https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml/badge.svg" class="img-fluid" alt="R-CMD-check"></a> <a href="https://app.codecov.io/gh/adafede/cascade"><img src="https://codecov.io/gh/adafede/cascade/graph/badge.svg" class="img-fluid" alt="Codecov test coverage"></a> <!-- [![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://hub.docker.com/r/adafede/cascade/) --> <a href="https://doi.org/10.5281/zenodo.14515158"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.14515158.svg" class="img-fluid" alt="DOI"></a> <!-- badges: end --></p>
-<p><strong>C</strong>ontextualizing untargeted <strong>A</strong>nnotation with <strong>S</strong>emi-quantitative <strong>C</strong>harged <strong>A</strong>erosol <strong>D</strong>etection for pertinent characterization of natural <strong>E</strong>xtracts.</p>
-<p>⚠️ This repository is not maintained and will not be except for extreme interest. It has just been opened for the sake of transparency.</p>
-<p>The initial work is available at https://doi.org/10.1021/acs.jafc.3c03099, with some improvements made since then. The workflow is illustrated below.</p>
-<p><img src="https://raw.githubusercontent.com/adafede/cascade/main/man/figures/cascade-workflow.svg" class="img-fluid" alt="Workflow"><br>
+<section id="citation" class="level1">
+<h1>Citation</h1>
+<p>To cite cascade in publications use:</p>
+<p>
+Rutz A (2025). <em>cascade: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts</em>. R package, version 0.0.9001.
 </p>
-<section id="requirements" class="level2">
-<h2 class="anchored" data-anchor-id="requirements">Requirements</h2>
-<p>Here is what you <em>minimally</em> need:</p>
-<ul>
-<li>A file (<a href="https://en.wikipedia.org/wiki/Mass_spectrometry_data_format#mzML">.mzML</a>) containing <a href="https://en.wikipedia.org/w/index.php?title=Data-dependent_acquisition">DDA MS</a> data with an additional detector (<a href="https://en.wikipedia.org/wiki/UV_detectors">PDA</a>, <a href="https://en.wikipedia.org/wiki/Evaporative_light_scattering_detector">ELSD</a>, <a href="https://en.wikipedia.org/wiki/Charged_aerosol_detector">CAD</a>)
-<ul>
-<li>In case you don’t know how to obtain it, see: <a href="https://github.com/Adafede/cascade/wiki/How-to-create-a-compliant-mzML-file">wiki/How-to-create-a-compliant-mzML-file</a></li>
-</ul></li>
-<li>A file (<a href="https://en.wikipedia.org/wiki/Comma-separated_values">.csv</a>) containing features, as obtained by <a href="https://mzio.io">mzmine</a></li>
-<li>A file (<a href="https://en.wikipedia.org/wiki/Tab-separated_values">.tsv</a>) containing annotations, as obtained by <a href="https://taxonomicallyinformedannotation.github.io/tima">TIMA</a></li>
-</ul>
-</section>
-<section id="installation" class="level2">
-<h2 class="anchored" data-anchor-id="installation">Installation</h2>
-<p>As the package is not (yet) available on CRAN, you will need to install with:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"cascade"</span>,</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">repos =</span> <span class="fu">c</span>(</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://adafede.r-universe.dev"</span>,</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://bioc.r-universe.dev"</span>,</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://cloud.r-project.org"</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Once installed, you are ready to go through our <a href="https://adafede.github.io/cascade/articles">documentation</a>, with the major steps detailed.</p>
-</section>
-<section id="main-citations" class="level2">
-<h2 class="anchored" data-anchor-id="main-citations">Main Citations</h2>
-<section id="cascade-1" class="level3">
-<h3 class="anchored" data-anchor-id="cascade-1">CASCADE</h3>
-<p><a href="https://doi.org/10.1021/acs.jafc.3c03099" class="uri">https://doi.org/10.1021/acs.jafc.3c03099</a></p>
-<p>According to which steps you used, please give credit to the authors of the tools/resources used.</p>
-</section>
-<section id="mzmine" class="level3">
-<h3 class="anchored" data-anchor-id="mzmine">mzmine</h3>
-<p>General: <a href="https://doi.org/10.1038/s41587-023-01690-2" class="uri">https://doi.org/10.1038/s41587-023-01690-2</a></p>
-</section>
-<section id="sirius" class="level3">
-<h3 class="anchored" data-anchor-id="sirius">SIRIUS</h3>
-<p>General: <a href="https://doi.org/10.1038/s41592-019-0344-8" class="uri">https://doi.org/10.1038/s41592-019-0344-8</a></p>
-<ul>
-<li><em>CSI:FingerId</em>: <a href="https://doi.org/10.1073/pnas.1509788112" class="uri">https://doi.org/10.1073/pnas.1509788112</a></li>
-<li><em>ZODIAC</em>: <a href="https://doi.org/10.1038/s42256-020-00234-6" class="uri">https://doi.org/10.1038/s42256-020-00234-6</a></li>
-<li><em>CANOPUS</em>: <a href="https://doi.org/10.1038/s41587-020-0740-8" class="uri">https://doi.org/10.1038/s41587-020-0740-8</a></li>
-<li><em>COSMIC</em>: <a href="https://doi.org/10.1038/s41587-021-01045-9" class="uri">https://doi.org/10.1038/s41587-021-01045-9</a></li>
-</ul>
-</section>
-<section id="lotus" class="level3">
-<h3 class="anchored" data-anchor-id="lotus">LOTUS</h3>
-<p>General: <a href="https://doi.org/10.7554/eLife.70780" class="uri">https://doi.org/10.7554/eLife.70780</a></p>
-<p>⚠️ Do not forget to cite which version you used: <a href="https://doi.org/10.5281/zenodo.5794106" class="uri">https://doi.org/10.5281/zenodo.5794106</a></p>
-</section>
-<section id="isdb" class="level3">
-<h3 class="anchored" data-anchor-id="isdb">ISDB</h3>
-<p>General: <a href="https://doi.org/10.1021/acs.analchem.5b04804" class="uri">https://doi.org/10.1021/acs.analchem.5b04804</a></p>
-<p>⚠️ Do not forget to cite which version you used: <a href="https://doi.org/10.5281/zenodo.5607185" class="uri">https://doi.org/10.5281/zenodo.5607185</a></p>
-</section>
-<section id="tima" class="level3">
-<h3 class="anchored" data-anchor-id="tima">TIMA</h3>
-<p>General: <a href="https://doi.org/10.3389/fpls.2019.01329" class="uri">https://doi.org/10.3389/fpls.2019.01329</a></p>
-<p>⚠️ Do not forget to cite which version you used: <a href="https://doi.org/10.5281/zenodo.5797920" class="uri">https://doi.org/10.5281/zenodo.5797920</a></p>
-</section>
-<section id="others" class="level3">
-<h3 class="anchored" data-anchor-id="others">Others</h3>
-<ul>
-<li>The <em>RforMassSpectrometry</em> packages suite for MS2 matching: <a href="https://doi.org/10.3390/metabo12020173" class="uri">https://doi.org/10.3390/metabo12020173</a></li>
-<li>chromatographR: <a href="https://doi.org/10.5281/zenodo.6944334" class="uri">https://doi.org/10.5281/zenodo.6944334</a></li>
-<li>NPClassifier: <a href="https://doi.org/10.1021/acs.jnatprod.1c00399" class="uri">https://doi.org/10.1021/acs.jnatprod.1c00399</a></li>
-</ul>
+<p>
+Rutz A, Wolfender J (2023). “Automated Composition Assessment of Natural Extracts: Untargeted Mass Spectrometry-Based Metabolite Profiling Integrating Semiquantitative Detection.” <em>Journal of Agricultural and Food Chemistry</em>, <b>71</b>(46). ISSN 1664-462X, <a href="https://doi.org/10.1021/acs.jafc.3c03099">doi:10.1021/acs.jafc.3c03099</a>, <a href="https://doi.org/10.1021/acs.jafc.3c03099">https://doi.org/10.1021/acs.jafc.3c03099</a>.
+</p>
 
 
-</section>
-</section>
 </section>
 
 </main> <!-- /main -->
