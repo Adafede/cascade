@@ -157,26 +157,24 @@ process_compare_peaks <- function(
       peaks_prelist = peaks_prelist
     )
 
-  message("selecting features with peaks")
-  df_features_with_peaks <-
-    peaks_prelist$list_df_features_with_peaks_long |>
-    tidytable::bind_rows()
-
-  message(
-    "there are ",
-    nrow(df_features_with_peaks),
-    " features - peaks pairs"
-  )
-
   message("summarizing comparison scores")
   comparison_scores <- list_comparison_score |>
     purrr::flatten()
 
   message("there are ", length(comparison_scores), " scores calculated")
 
-  message("joining")
-  df_features_with_peaks$comparison_score <-
-    as.numeric(comparison_scores)
+  message("selecting features with peaks")
+  list_df_features_with_scores <- Map(
+    function(df, score) {
+      df$comparison_score <- score
+      df
+    },
+    peaks_prelist$list_df_features_with_peaks_long,
+    comparison_scores
+  )
+
+  df_features_with_peaks <- list_df_features_with_scores |>
+    tidytable::bind_rows()
 
   message("final aesthetics")
   df_features_with_peaks_scored <- df_features_with_peaks |>
