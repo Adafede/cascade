@@ -2,7 +2,7 @@
 output: github_document
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- README.md is generated from README.qmd. Please edit that file -->
 
 # CASCADE <img src='https://raw.githubusercontent.com/adafede/cascade/main/man/figures/logo.svg' align="right" height="139" />
 
@@ -11,7 +11,6 @@ output: github_document
 [![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 [![CRAN status](https://www.r-pkg.org/badges/version/tima)](https://CRAN.R-project.org/package=tima)
 [![R-CMD-check](https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml)
-[![R-Universe](https://adafede.r-universe.dev/badges/cascade)](https://adafede.r-universe.dev/cascade)
 [![Codecov test coverage](https://codecov.io/gh/adafede/cascade/graph/badge.svg)](https://app.codecov.io/gh/adafede/cascade)
 <!-- [![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://hub.docker.com/r/adafede/cascade/) -->
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14515158.svg)](https://doi.org/10.5281/zenodo.14515158)
