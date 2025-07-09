@@ -1,0 +1,51 @@
+---
+project:
+  output-dir: ../docs/
+  type: website
+
+website:
+  title: "$ALTDOC_PACKAGE_NAME"
+  site-url: https://adafede.github.io/cascade/
+  favicon: man/figures/logo.svg
+  image: man/figures/logo.svg
+  page-navigation: true
+  navbar:
+    title: CASCADE
+    description: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts
+    logo: man/figures/logo.svg
+    logo-alt: cascade logo
+    search: true
+    left:
+      - text: Get started
+        file: vignettes/cascade.qmd
+      - text: Articles
+        menu:
+          - text: 1 Basics
+            file: vignettes/articles/I-basics.qmd
+          - text: 2 Processing
+            file: vignettes/articles/II-processing.qmd
+          - text: 3 Bonus
+            file: vignettes/articles/III-bonus.qmd
+          - text: 4 TIMA
+            file: vignettes/articles/IV-tima.qmd
+      # - text: Functions
+      #   href: ./man
+      - text: News
+        file: $ALTDOC_NEWS
+      - text: License
+        file: $ALTDOC_LICENSE
+      - text: Citation
+        file: $ALTDOC_CITATION
+    right:
+      - icon: github
+        href: $ALTDOC_PACKAGE_URL_GITHUB
+        aria-label: $ALTDOC_PACKAGE_NAME GitHub
+
+format:
+  html:
+    respect-user-color-scheme: true
+    toc: true
+    theme:
+      light: flatly
+      dark: darkly
+    # number-sections: false
