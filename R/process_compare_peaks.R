@@ -34,25 +34,26 @@
 #'
 #' @examples NULL
 process_compare_peaks <- function(
-    file = NULL,
-    features = NULL,
-    type = "baselined",
-    detector = "cad",
-    headers = c(
-      "bpi" = "BasePeak_0",
-      "pda" = "PDA#1_TotalAbsorbance_0",
-      "cad" = "UV#1_CAD_1_0"
-    ),
-    export_dir = "data/interim/peaks",
-    show_example = FALSE,
-    fourier_components = 0.01,
-    frequency = 1,
-    min_area = 0.005,
-    min_intensity = 1E4,
-    resample = 1,
-    shift = 0.05,
-    time_min = 0.5,
-    time_max = 32.5) {
+  file = NULL,
+  features = NULL,
+  type = "baselined",
+  detector = "cad",
+  headers = c(
+    "bpi" = "BasePeak_0",
+    "pda" = "PDA#1_TotalAbsorbance_0",
+    "cad" = "UV#1_CAD_1_0"
+  ),
+  export_dir = "data/interim/peaks",
+  show_example = FALSE,
+  fourier_components = 0.01,
+  frequency = 1,
+  min_area = 0.005,
+  min_intensity = 1E4,
+  resample = 1,
+  shift = 0.05,
+  time_min = 0.5,
+  time_max = 32.5
+) {
   message("loading MS data")
   ms_data <- file |>
     load_ms_data(show_example = show_example)
@@ -80,7 +81,8 @@ process_compare_peaks <- function(
     prepare_features(min_intensity = min_intensity, name = name)
 
   message("preprocessing chromatograms")
-  switch <- switch(detector,
+  switch <- switch(
+    detector,
     "bpi" = headers["bpi"],
     "cad" = headers["cad"],
     "pda" = headers["pda"]
@@ -103,13 +105,15 @@ process_compare_peaks <- function(
   peaks_prelist <- preprocess_peaks(
     detector = detector,
     df_features = df_features,
-    df_long = switch(type,
+    df_long = switch(
+      type,
       "original" = chromatograms_list$chromatograms_original_long,
       "improved" = chromatograms_list$chromatograms_improved_long,
       "baselined" = chromatograms_list$chromatograms_baselined_long
     ) |>
       tidytable::mutate(intensity = intensity / max(intensity)),
-    df_xy = switch(type,
+    df_xy = switch(
+      type,
       "original" = chromatograms_list$chromatograms_original[[1]],
       "improved" = chromatograms_list$chromatograms_improved[[1]],
       "baselined" = chromatograms_list$chromatograms_baselined[[1]]
