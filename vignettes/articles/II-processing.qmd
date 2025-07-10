@@ -65,24 +65,32 @@ The different plots offer the following views:
 ### Taxo (major peaks)
 
 ```{r taxo-major, warning=FALSE}
+#| dev: svglite
+
 plots_list$plots_1$histograms_taxo_maj
 ```
 
 ### Taxo (minor peaks)
 
 ```{r taxo-minor, warning=FALSE}
+#| dev: svglite
+
 plots_list$plots_1$histograms_taxo_min
 ```
 
 ### Confident unique annotations (major)
 
 ```{r confident-major, warning=FALSE}
+#| dev: svglite
+
 plots_list$plots_1$histograms_unique_conf_maj
 ```
 
 ### Confident unique annotations (minor)
 
 ```{r unique-minor, warning=FALSE}
+#| dev: svglite
+
 plots_list$plots_1$histograms_unique_conf_min
 ```
 
@@ -91,12 +99,16 @@ Or getting rid of the chromatogram:
 ### Treemap semi-quantitative (major)
 
 ```{r treemap-major, warning=FALSE}
+#| dev: svglite
+
 plots_list$treemaps$peaks_maj
 ```
 
 ### Treemap semi-quantitative (minor)
 
 ```{r treemap-minor, warning=FALSE}
+#| dev: svglite
+
 plots_list$treemaps$peaks_min
 ```
 
@@ -105,6 +117,8 @@ Or both together for comparison:
 ### Treemap both
 
 ```{r treemap-both, warning=FALSE}
+#| dev: svglite
+
 plots_list$treemaps$special
 ```
 
@@ -120,6 +134,8 @@ This will export the table as CSV and/or HTML.
 A small preview of the HTML table is presented below:
 
 ```{r glimpse-tables, message = FALSE, warning=FALSE}
+#| dev: svglite
+
 tables_list$pretty_table
 ```
 
