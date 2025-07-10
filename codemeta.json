@@ -369,7 +369,7 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteAnnotation", "chargedAerosolDetector", "semiQuantitative", "naturalProducts", "computationalMetabolomics", "specializedMetabolome"],
-  "fileSize": "166322.351KB",
+  "fileSize": "166318.023KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
@@ -422,6 +422,6 @@
   ],
   "releaseNotes": "https://github.com/adafede/cascade/blob/master/NEWS.md",
   "readme": "https://github.com/Adafede/cascade/blob/main/README.md",
-  "contIntegration": ["https://github.com/adafede/cascade/actions/workflows/R-CMD-check", "https://app.codecov.io/gh/adafede/cascade"],
+  "contIntegration": ["https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/adafede/cascade"],
   "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html#experimental"
 }
