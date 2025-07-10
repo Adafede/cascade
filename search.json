@@ -473,14 +473,26 @@
     "href": "man/generate_tables.html",
     "title": "cascade",
     "section": "",
-    "text": "Generate IDs\n\n\n\ngenerate_tables(\n  annotations = NULL,\n  file_negative = NULL,\n  file_positive = NULL,\n  min_confidence = 0.4,\n  show_example = FALSE,\n  export_csv = TRUE,\n  export_html = TRUE,\n  export_dir = \"data/processed\",\n  export_name = \"cascade_table\"\n)\n\n\n\n\n\n\n\nannotations\n\n\nAnnotations\n\n\n\n\nfile_negative\n\n\nFile negative\n\n\n\n\nfile_positive\n\n\nFile positive\n\n\n\n\nmin_confidence\n\n\nMin confidence\n\n\n\n\nshow_example\n\n\nShow example? Default to FALSE\n\n\n\n\nexport_csv\n\n\nExport CSV\n\n\n\n\nexport_html\n\n\nExport HTML\n\n\n\n\nexport_dir\n\n\nExport Dir\n\n\n\n\nexport_name\n\n\nExport name\n\n\n\n\n\n\nTables\n\n\n\n\nlibrary(\"cascade\")\n\ngenerate_tables()"
+    "text": "Generate IDs\n\n\n\ngenerate_tables(\n  annotations = NULL,\n  file_negative = NULL,\n  file_positive = NULL,\n  min_confidence = 0.4,\n  show_example = FALSE,\n  export_csv = TRUE,\n  export_html = TRUE,\n  export_dir = \"data/processed\",\n  export_name = \"cascade_table\"\n)\n\n\n\n\n\n\n\nannotations\n\n\nAnnotations\n\n\n\n\nfile_negative\n\n\nFile negative\n\n\n\n\nfile_positive\n\n\nFile positive\n\n\n\n\nmin_confidence\n\n\nMin confidence\n\n\n\n\nshow_example\n\n\nShow example? Default to FALSE\n\n\n\n\nexport_csv\n\n\nExport CSV\n\n\n\n\nexport_html\n\n\nExport HTML\n\n\n\n\nexport_dir\n\n\nExport Dir\n\n\n\n\nexport_name\n\n\nExport name\n\n\n\n\n\n\nTables\n\n\n\n\nlibrary(\"cascade\")\n\ngenerate_tables()",
+    "crumbs": [
+      "Get started",
+      "Functions",
+      "Generate",
+      "generate_tables"
+    ]
   },
   {
     "objectID": "man/generate_tables.html#generate-ids",
     "href": "man/generate_tables.html#generate-ids",
     "title": "cascade",
     "section": "",
-    "text": "Generate IDs\n\n\n\ngenerate_tables(\n  annotations = NULL,\n  file_negative = NULL,\n  file_positive = NULL,\n  min_confidence = 0.4,\n  show_example = FALSE,\n  export_csv = TRUE,\n  export_html = TRUE,\n  export_dir = \"data/processed\",\n  export_name = \"cascade_table\"\n)\n\n\n\n\n\n\n\nannotations\n\n\nAnnotations\n\n\n\n\nfile_negative\n\n\nFile negative\n\n\n\n\nfile_positive\n\n\nFile positive\n\n\n\n\nmin_confidence\n\n\nMin confidence\n\n\n\n\nshow_example\n\n\nShow example? Default to FALSE\n\n\n\n\nexport_csv\n\n\nExport CSV\n\n\n\n\nexport_html\n\n\nExport HTML\n\n\n\n\nexport_dir\n\n\nExport Dir\n\n\n\n\nexport_name\n\n\nExport name\n\n\n\n\n\n\nTables\n\n\n\n\nlibrary(\"cascade\")\n\ngenerate_tables()"
+    "text": "Generate IDs\n\n\n\ngenerate_tables(\n  annotations = NULL,\n  file_negative = NULL,\n  file_positive = NULL,\n  min_confidence = 0.4,\n  show_example = FALSE,\n  export_csv = TRUE,\n  export_html = TRUE,\n  export_dir = \"data/processed\",\n  export_name = \"cascade_table\"\n)\n\n\n\n\n\n\n\nannotations\n\n\nAnnotations\n\n\n\n\nfile_negative\n\n\nFile negative\n\n\n\n\nfile_positive\n\n\nFile positive\n\n\n\n\nmin_confidence\n\n\nMin confidence\n\n\n\n\nshow_example\n\n\nShow example? Default to FALSE\n\n\n\n\nexport_csv\n\n\nExport CSV\n\n\n\n\nexport_html\n\n\nExport HTML\n\n\n\n\nexport_dir\n\n\nExport Dir\n\n\n\n\nexport_name\n\n\nExport name\n\n\n\n\n\n\nTables\n\n\n\n\nlibrary(\"cascade\")\n\ngenerate_tables()",
+    "crumbs": [
+      "Get started",
+      "Functions",
+      "Generate",
+      "generate_tables"
+    ]
   },
   {
     "objectID": "man/format_gt.html",
@@ -592,7 +604,7 @@
     "href": "vignettes/articles/II-processing.html#compare-peaks-to-features",
     "title": "2 Processing",
     "section": "Compare peaks to features",
-    "text": "Compare peaks to features\nTo do so, you will need:\n\nA previously generated mzmine features’ table\n\nThen, you should be able to run\n\nprocess_compare_peaks(show_example = TRUE)\n#&gt; loading MS data\n#&gt; Loading example MS file in memory, doing it on disk will be more efficient\n#&gt; loading chromatograms\n#&gt; loading name\n#&gt; loading feature table\n#&gt; preparing features\n#&gt; selecting 10 random features for the example\n#&gt; ... preparing features\n#&gt; ... keeping features above desired intensity only\n#&gt; setting joining keys\n#&gt; preprocessing chromatograms\n#&gt; preprocessing cad chromatograms\n#&gt; improving chromatograms\n#&gt; baselining chromatograms\n#&gt; preprocessing peaks\n#&gt; preprocessing cad peaks\n#&gt; joining peaks\n#&gt; joining within given rt tolerance\n#&gt; selecting features outside peaks\n#&gt; splitting by file\n#&gt; splitting by peak\n#&gt; normalizing chromato\n#&gt; preparing peaks chromato\n#&gt; preparing rt\n#&gt; preparing mz\n#&gt; processing cad peaks\n#&gt; extracting ms chromatograms (longest step)\n#&gt; count approx 1 minute per worker per 1000 features (increasing with features number)\n#&gt; varies a lot depending on features distribution\n#&gt; CAD Peak: 1\n#&gt;  ■■■■                               9% |  ETA: 12m\n#&gt; CAD Peak: 2\n#&gt;  ■■■■■■                            18% |  ETA: 11m\n#&gt; CAD Peak: 3\n#&gt;  ■■■■■■■■■                         27% |  ETA:  9m\n#&gt; CAD Peak: 4\n#&gt;  ■■■■■■■■■■■■                      36% |  ETA:  8m\n#&gt; CAD Peak: 5\n#&gt;  ■■■■■■■■■■■■■■■                   45% |  ETA:  7m\n#&gt; CAD Peak: 6\n#&gt;  ■■■■■■■■■■■■■■■■■                 55% |  ETA:  6m\n#&gt; CAD Peak: 7\n#&gt;  ■■■■■■■■■■■■■■■■■■■■              64% |  ETA:  5m\n#&gt; CAD Peak: 8\n#&gt;  ■■■■■■■■■■■■■■■■■■■■■■■           73% |  ETA:  4m\n#&gt; CAD Peak: 9\n#&gt;  ■■■■■■■■■■■■■■■■■■■■■■■■■■        82% |  ETA:  2m\n#&gt; CAD Peak: 10\n#&gt;  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■      91% |  ETA:  1m\n#&gt; CAD Peak: 11\n#&gt; extracting ms peaks\n#&gt; comparing peaks\n#&gt; summarizing comparison scores\n#&gt; there are 11 scores calculated\n#&gt; selecting features with peaks\n#&gt; final aesthetics\n#&gt; checking export directory\n#&gt; exporting\n\nAnd this basically it! 🚀"
+    "text": "Compare peaks to features\nTo do so, you will need:\n\nA previously generated mzmine features’ table\n\nThen, you should be able to run\n\nprocess_compare_peaks(show_example = TRUE)\n#&gt; loading MS data\n#&gt; Loading example MS file in memory, doing it on disk will be more efficient\n#&gt; loading chromatograms\n#&gt; loading name\n#&gt; loading feature table\n#&gt; preparing features\n#&gt; selecting 10 random features for the example\n#&gt; ... preparing features\n#&gt; ... keeping features above desired intensity only\n#&gt; setting joining keys\n#&gt; preprocessing chromatograms\n#&gt; preprocessing cad chromatograms\n#&gt; improving chromatograms\n#&gt; baselining chromatograms\n#&gt; preprocessing peaks\n#&gt; preprocessing cad peaks\n#&gt; joining peaks\n#&gt; joining within given rt tolerance\n#&gt; selecting features outside peaks\n#&gt; splitting by file\n#&gt; splitting by peak\n#&gt; normalizing chromato\n#&gt; preparing peaks chromato\n#&gt; preparing rt\n#&gt; preparing mz\n#&gt; processing cad peaks\n#&gt; extracting ms chromatograms (longest step)\n#&gt; count approx 1 minute per worker per 1000 features (increasing with features number)\n#&gt; varies a lot depending on features distribution\n#&gt; CAD Peak: 1\n#&gt;  ■■■■                               9% |  ETA: 12m\n#&gt; CAD Peak: 2\n#&gt;  ■■■■■■                            18% |  ETA: 11m\n#&gt; CAD Peak: 3\n#&gt;  ■■■■■■■■■                         27% |  ETA: 10m\n#&gt; CAD Peak: 4\n#&gt;  ■■■■■■■■■■■■                      36% |  ETA:  8m\n#&gt; CAD Peak: 5\n#&gt;  ■■■■■■■■■■■■■■■                   45% |  ETA:  7m\n#&gt; CAD Peak: 6\n#&gt;  ■■■■■■■■■■■■■■■■■                 55% |  ETA:  6m\n#&gt; CAD Peak: 7\n#&gt;  ■■■■■■■■■■■■■■■■■■■■              64% |  ETA:  5m\n#&gt; CAD Peak: 8\n#&gt;  ■■■■■■■■■■■■■■■■■■■■■■■           73% |  ETA:  4m\n#&gt; CAD Peak: 9\n#&gt;  ■■■■■■■■■■■■■■■■■■■■■■■■■■        82% |  ETA:  2m\n#&gt; CAD Peak: 10\n#&gt;  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■      91% |  ETA:  1m\n#&gt; CAD Peak: 11\n#&gt; extracting ms peaks\n#&gt; comparing peaks\n#&gt; summarizing comparison scores\n#&gt; there are 11 scores calculated\n#&gt; selecting features with peaks\n#&gt; final aesthetics\n#&gt; checking export directory\n#&gt; exporting\n\nAnd this basically it! 🚀"
   },
   {
     "objectID": "vignettes/articles/II-processing.html#pseudo-chromatograms",
@@ -697,14 +709,26 @@
     "href": "man/generate_pseudochromatograms.html",
     "title": "cascade",
     "section": "",
-    "text": "Generate pseudochromatograms\n\n\n\ngenerate_pseudochromatograms(\n  annotations = NULL,\n  features_informed = NULL,\n  features_not_informed = NULL,\n  file = NULL,\n  headers = c(bpi = \"BasePeak_0\", pda = \"PDA#1_TotalAbsorbance_0\", cad = \"UV#1_CAD_1_0\"),\n  detector = \"cad\",\n  show_example = FALSE,\n  min_confidence = 0.4,\n  min_similarity_prefilter = 0.6,\n  min_similarity_filter = 0.8,\n  mode = \"pos\",\n  organism = \"Swertia chirayita\",\n  fourier_components = 0.01,\n  frequency = 1,\n  resample = 1,\n  shift = 0.05,\n  time_min = 0.5,\n  time_max = 32.5\n)\n\n\n\n\n\n\n\nannotations\n\n\nAnnotations\n\n\n\n\nfeatures_informed\n\n\nFeatures informed\n\n\n\n\nfeatures_not_informed\n\n\nFeatures not informed\n\n\n\n\nfile\n\n\nFile\n\n\n\n\nheaders\n\n\nHeaders\n\n\n\n\ndetector\n\n\nDetector\n\n\n\n\nshow_example\n\n\nShow example? Default to FALSE\n\n\n\n\nmin_confidence\n\n\nMin confidence\n\n\n\n\nmin_similarity_prefilter\n\n\nMin similarity pre filter\n\n\n\n\nmin_similarity_filter\n\n\nMin similarity filter\n\n\n\n\nmode\n\n\nMode\n\n\n\n\norganism\n\n\nOrganism\n\n\n\n\nfourier_components\n\n\nFourier components\n\n\n\n\nfrequency\n\n\nFrequency\n\n\n\n\nresample\n\n\nResample\n\n\n\n\nshift\n\n\nShift\n\n\n\n\ntime_min\n\n\nTime min\n\n\n\n\ntime_max\n\n\nTime max\n\n\n\n\n\n\nA list of plots\n\n\n\n\nlibrary(\"cascade\")\n\ngenerate_pseudochromatograms(show_example = TRUE)"
+    "text": "Generate pseudochromatograms\n\n\n\ngenerate_pseudochromatograms(\n  annotations = NULL,\n  features_informed = NULL,\n  features_not_informed = NULL,\n  file = NULL,\n  headers = c(bpi = \"BasePeak_0\", pda = \"PDA#1_TotalAbsorbance_0\", cad = \"UV#1_CAD_1_0\"),\n  detector = \"cad\",\n  show_example = FALSE,\n  min_confidence = 0.4,\n  min_similarity_prefilter = 0.6,\n  min_similarity_filter = 0.8,\n  mode = \"pos\",\n  organism = \"Swertia chirayita\",\n  fourier_components = 0.01,\n  frequency = 1,\n  resample = 1,\n  shift = 0.05,\n  time_min = 0.5,\n  time_max = 32.5\n)\n\n\n\n\n\n\n\nannotations\n\n\nAnnotations\n\n\n\n\nfeatures_informed\n\n\nFeatures informed\n\n\n\n\nfeatures_not_informed\n\n\nFeatures not informed\n\n\n\n\nfile\n\n\nFile\n\n\n\n\nheaders\n\n\nHeaders\n\n\n\n\ndetector\n\n\nDetector\n\n\n\n\nshow_example\n\n\nShow example? Default to FALSE\n\n\n\n\nmin_confidence\n\n\nMin confidence\n\n\n\n\nmin_similarity_prefilter\n\n\nMin similarity pre filter\n\n\n\n\nmin_similarity_filter\n\n\nMin similarity filter\n\n\n\n\nmode\n\n\nMode\n\n\n\n\norganism\n\n\nOrganism\n\n\n\n\nfourier_components\n\n\nFourier components\n\n\n\n\nfrequency\n\n\nFrequency\n\n\n\n\nresample\n\n\nResample\n\n\n\n\nshift\n\n\nShift\n\n\n\n\ntime_min\n\n\nTime min\n\n\n\n\ntime_max\n\n\nTime max\n\n\n\n\n\n\nA list of plots\n\n\n\n\nlibrary(\"cascade\")\n\ngenerate_pseudochromatograms(show_example = TRUE)",
+    "crumbs": [
+      "Get started",
+      "Functions",
+      "Generate",
+      "generate_pseudochromatograms"
+    ]
   },
   {
     "objectID": "man/generate_pseudochromatograms.html#generate-pseudochromatograms",
     "href": "man/generate_pseudochromatograms.html#generate-pseudochromatograms",
     "title": "cascade",
     "section": "",
-    "text": "Generate pseudochromatograms\n\n\n\ngenerate_pseudochromatograms(\n  annotations = NULL,\n  features_informed = NULL,\n  features_not_informed = NULL,\n  file = NULL,\n  headers = c(bpi = \"BasePeak_0\", pda = \"PDA#1_TotalAbsorbance_0\", cad = \"UV#1_CAD_1_0\"),\n  detector = \"cad\",\n  show_example = FALSE,\n  min_confidence = 0.4,\n  min_similarity_prefilter = 0.6,\n  min_similarity_filter = 0.8,\n  mode = \"pos\",\n  organism = \"Swertia chirayita\",\n  fourier_components = 0.01,\n  frequency = 1,\n  resample = 1,\n  shift = 0.05,\n  time_min = 0.5,\n  time_max = 32.5\n)\n\n\n\n\n\n\n\nannotations\n\n\nAnnotations\n\n\n\n\nfeatures_informed\n\n\nFeatures informed\n\n\n\n\nfeatures_not_informed\n\n\nFeatures not informed\n\n\n\n\nfile\n\n\nFile\n\n\n\n\nheaders\n\n\nHeaders\n\n\n\n\ndetector\n\n\nDetector\n\n\n\n\nshow_example\n\n\nShow example? Default to FALSE\n\n\n\n\nmin_confidence\n\n\nMin confidence\n\n\n\n\nmin_similarity_prefilter\n\n\nMin similarity pre filter\n\n\n\n\nmin_similarity_filter\n\n\nMin similarity filter\n\n\n\n\nmode\n\n\nMode\n\n\n\n\norganism\n\n\nOrganism\n\n\n\n\nfourier_components\n\n\nFourier components\n\n\n\n\nfrequency\n\n\nFrequency\n\n\n\n\nresample\n\n\nResample\n\n\n\n\nshift\n\n\nShift\n\n\n\n\ntime_min\n\n\nTime min\n\n\n\n\ntime_max\n\n\nTime max\n\n\n\n\n\n\nA list of plots\n\n\n\n\nlibrary(\"cascade\")\n\ngenerate_pseudochromatograms(show_example = TRUE)"
+    "text": "Generate pseudochromatograms\n\n\n\ngenerate_pseudochromatograms(\n  annotations = NULL,\n  features_informed = NULL,\n  features_not_informed = NULL,\n  file = NULL,\n  headers = c(bpi = \"BasePeak_0\", pda = \"PDA#1_TotalAbsorbance_0\", cad = \"UV#1_CAD_1_0\"),\n  detector = \"cad\",\n  show_example = FALSE,\n  min_confidence = 0.4,\n  min_similarity_prefilter = 0.6,\n  min_similarity_filter = 0.8,\n  mode = \"pos\",\n  organism = \"Swertia chirayita\",\n  fourier_components = 0.01,\n  frequency = 1,\n  resample = 1,\n  shift = 0.05,\n  time_min = 0.5,\n  time_max = 32.5\n)\n\n\n\n\n\n\n\nannotations\n\n\nAnnotations\n\n\n\n\nfeatures_informed\n\n\nFeatures informed\n\n\n\n\nfeatures_not_informed\n\n\nFeatures not informed\n\n\n\n\nfile\n\n\nFile\n\n\n\n\nheaders\n\n\nHeaders\n\n\n\n\ndetector\n\n\nDetector\n\n\n\n\nshow_example\n\n\nShow example? Default to FALSE\n\n\n\n\nmin_confidence\n\n\nMin confidence\n\n\n\n\nmin_similarity_prefilter\n\n\nMin similarity pre filter\n\n\n\n\nmin_similarity_filter\n\n\nMin similarity filter\n\n\n\n\nmode\n\n\nMode\n\n\n\n\norganism\n\n\nOrganism\n\n\n\n\nfourier_components\n\n\nFourier components\n\n\n\n\nfrequency\n\n\nFrequency\n\n\n\n\nresample\n\n\nResample\n\n\n\n\nshift\n\n\nShift\n\n\n\n\ntime_min\n\n\nTime min\n\n\n\n\ntime_max\n\n\nTime max\n\n\n\n\n\n\nA list of plots\n\n\n\n\nlibrary(\"cascade\")\n\ngenerate_pseudochromatograms(show_example = TRUE)",
+    "crumbs": [
+      "Get started",
+      "Functions",
+      "Generate",
+      "generate_pseudochromatograms"
+    ]
   },
   {
     "objectID": "man/predict_response.html",
@@ -851,14 +875,26 @@
     "href": "man/generate_ids.html",
     "title": "cascade",
     "section": "",
-    "text": "Generate IDs\n\n\n\ngenerate_ids(\n  taxa = c(\"Swertia\", \"Kopsia\", \"Ginkgo\"),\n  comparison = NULL,\n  no_stereo = TRUE,\n  filter_ms_conditions = TRUE,\n  start = \"0\",\n  end = \"9999\",\n  limit = \"1000000\"\n)\n\n\n\n\n\n\n\ntaxa\n\n\nTaxa\n\n\n\n\ncomparison\n\n\nComparison\n\n\n\n\nno_stereo\n\n\nNo stereo\n\n\n\n\nfilter_ms_conditions\n\n\nFilter MS conditions\n\n\n\n\nstart\n\n\nStart\n\n\n\n\nend\n\n\nEnd\n\n\n\n\nlimit\n\n\nLimit\n\n\n\n\n\n\nIDs\n\n\n\n\nlibrary(\"cascade\")\n\ngenerate_ids()"
+    "text": "Generate IDs\n\n\n\ngenerate_ids(\n  taxa = c(\"Swertia\", \"Kopsia\", \"Ginkgo\"),\n  comparison = NULL,\n  no_stereo = TRUE,\n  filter_ms_conditions = TRUE,\n  start = \"0\",\n  end = \"9999\",\n  limit = \"1000000\"\n)\n\n\n\n\n\n\n\ntaxa\n\n\nTaxa\n\n\n\n\ncomparison\n\n\nComparison\n\n\n\n\nno_stereo\n\n\nNo stereo\n\n\n\n\nfilter_ms_conditions\n\n\nFilter MS conditions\n\n\n\n\nstart\n\n\nStart\n\n\n\n\nend\n\n\nEnd\n\n\n\n\nlimit\n\n\nLimit\n\n\n\n\n\n\nIDs\n\n\n\n\nlibrary(\"cascade\")\n\ngenerate_ids()",
+    "crumbs": [
+      "Get started",
+      "Functions",
+      "Generate",
+      "generate_ids"
+    ]
   },
   {
     "objectID": "man/generate_ids.html#generate-ids",
     "href": "man/generate_ids.html#generate-ids",
     "title": "cascade",
     "section": "",
-    "text": "Generate IDs\n\n\n\ngenerate_ids(\n  taxa = c(\"Swertia\", \"Kopsia\", \"Ginkgo\"),\n  comparison = NULL,\n  no_stereo = TRUE,\n  filter_ms_conditions = TRUE,\n  start = \"0\",\n  end = \"9999\",\n  limit = \"1000000\"\n)\n\n\n\n\n\n\n\ntaxa\n\n\nTaxa\n\n\n\n\ncomparison\n\n\nComparison\n\n\n\n\nno_stereo\n\n\nNo stereo\n\n\n\n\nfilter_ms_conditions\n\n\nFilter MS conditions\n\n\n\n\nstart\n\n\nStart\n\n\n\n\nend\n\n\nEnd\n\n\n\n\nlimit\n\n\nLimit\n\n\n\n\n\n\nIDs\n\n\n\n\nlibrary(\"cascade\")\n\ngenerate_ids()"
+    "text": "Generate IDs\n\n\n\ngenerate_ids(\n  taxa = c(\"Swertia\", \"Kopsia\", \"Ginkgo\"),\n  comparison = NULL,\n  no_stereo = TRUE,\n  filter_ms_conditions = TRUE,\n  start = \"0\",\n  end = \"9999\",\n  limit = \"1000000\"\n)\n\n\n\n\n\n\n\ntaxa\n\n\nTaxa\n\n\n\n\ncomparison\n\n\nComparison\n\n\n\n\nno_stereo\n\n\nNo stereo\n\n\n\n\nfilter_ms_conditions\n\n\nFilter MS conditions\n\n\n\n\nstart\n\n\nStart\n\n\n\n\nend\n\n\nEnd\n\n\n\n\nlimit\n\n\nLimit\n\n\n\n\n\n\nIDs\n\n\n\n\nlibrary(\"cascade\")\n\ngenerate_ids()",
+    "crumbs": [
+      "Get started",
+      "Functions",
+      "Generate",
+      "generate_ids"
+    ]
   },
   {
     "objectID": "man/normalize_chromato.html",
@@ -949,14 +985,26 @@
     "href": "man/check_chromatograms_alignment.html",
     "title": "cascade",
     "section": "",
-    "text": "Check chromatograms alignment\n\n\n\ncheck_chromatograms_alignment(\n  file_negative = NULL,\n  file_positive = NULL,\n  time_min = 0.5,\n  time_max = 32.5,\n  cad_shift = 0.05,\n  pda_shift = 0.1,\n  fourier_components = 0.01,\n  frequency = 1,\n  resample = 1,\n  chromatograms = c(\"bpi_pos\", \"cad_pos\", \"pda_pos\"),\n  headers = c(bpi = \"BasePeak_0\", pda = \"PDA#1_TotalAbsorbance_0\", cad = \"UV#1_CAD_1_0\"),\n  type = \"baselined\",\n  normalize_intensity = TRUE,\n  normalize_time = FALSE,\n  show_example = FALSE\n)\n\n\n\n\n\n\n\nfile_negative\n\n\nNegative file path\n\n\n\n\nfile_positive\n\n\nPositive file path\n\n\n\n\ntime_min\n\n\nMinimum time\n\n\n\n\ntime_max\n\n\nMaximum time\n\n\n\n\ncad_shift\n\n\nCAD shift\n\n\n\n\npda_shift\n\n\nPDA shift\n\n\n\n\nfourier_components\n\n\nFourier components\n\n\n\n\nfrequency\n\n\nFrequency\n\n\n\n\nresample\n\n\nResample\n\n\n\n\nchromatograms\n\n\nChromatograms to plot\n\n\n\n\nheaders\n\n\nHeaders\n\n\n\n\ntype\n\n\nType. \"baselined\" or \"improved\"\n\n\n\n\nnormalize_intensity\n\n\nNormalize intensity? Default to TRUE\n\n\n\n\nnormalize_time\n\n\nNormalize time? Default to FALSE\n\n\n\n\nshow_example\n\n\nShow example? Default to FALSE\n\n\n\n\n\n\nA plot with (non-)aligned chromatograms\n\n\n\n\nlibrary(\"cascade\")\n\ncheck_chromatograms_alignment(show_example = TRUE)"
+    "text": "Check chromatograms alignment\n\n\n\ncheck_chromatograms_alignment(\n  file_negative = NULL,\n  file_positive = NULL,\n  time_min = 0.5,\n  time_max = 32.5,\n  cad_shift = 0.05,\n  pda_shift = 0.1,\n  fourier_components = 0.01,\n  frequency = 1,\n  resample = 1,\n  chromatograms = c(\"bpi_pos\", \"cad_pos\", \"pda_pos\"),\n  headers = c(bpi = \"BasePeak_0\", pda = \"PDA#1_TotalAbsorbance_0\", cad = \"UV#1_CAD_1_0\"),\n  type = \"baselined\",\n  normalize_intensity = TRUE,\n  normalize_time = FALSE,\n  show_example = FALSE\n)\n\n\n\n\n\n\n\nfile_negative\n\n\nNegative file path\n\n\n\n\nfile_positive\n\n\nPositive file path\n\n\n\n\ntime_min\n\n\nMinimum time\n\n\n\n\ntime_max\n\n\nMaximum time\n\n\n\n\ncad_shift\n\n\nCAD shift\n\n\n\n\npda_shift\n\n\nPDA shift\n\n\n\n\nfourier_components\n\n\nFourier components\n\n\n\n\nfrequency\n\n\nFrequency\n\n\n\n\nresample\n\n\nResample\n\n\n\n\nchromatograms\n\n\nChromatograms to plot\n\n\n\n\nheaders\n\n\nHeaders\n\n\n\n\ntype\n\n\nType. \"baselined\" or \"improved\"\n\n\n\n\nnormalize_intensity\n\n\nNormalize intensity? Default to TRUE\n\n\n\n\nnormalize_time\n\n\nNormalize time? Default to FALSE\n\n\n\n\nshow_example\n\n\nShow example? Default to FALSE\n\n\n\n\n\n\nA plot with (non-)aligned chromatograms\n\n\n\n\nlibrary(\"cascade\")\n\ncheck_chromatograms_alignment(show_example = TRUE)",
+    "crumbs": [
+      "Get started",
+      "Functions",
+      "Check",
+      "check_chromatograms_alignment"
+    ]
   },
   {
     "objectID": "man/check_chromatograms_alignment.html#check-chromatograms-alignment",
     "href": "man/check_chromatograms_alignment.html#check-chromatograms-alignment",
     "title": "cascade",
     "section": "",
-    "text": "Check chromatograms alignment\n\n\n\ncheck_chromatograms_alignment(\n  file_negative = NULL,\n  file_positive = NULL,\n  time_min = 0.5,\n  time_max = 32.5,\n  cad_shift = 0.05,\n  pda_shift = 0.1,\n  fourier_components = 0.01,\n  frequency = 1,\n  resample = 1,\n  chromatograms = c(\"bpi_pos\", \"cad_pos\", \"pda_pos\"),\n  headers = c(bpi = \"BasePeak_0\", pda = \"PDA#1_TotalAbsorbance_0\", cad = \"UV#1_CAD_1_0\"),\n  type = \"baselined\",\n  normalize_intensity = TRUE,\n  normalize_time = FALSE,\n  show_example = FALSE\n)\n\n\n\n\n\n\n\nfile_negative\n\n\nNegative file path\n\n\n\n\nfile_positive\n\n\nPositive file path\n\n\n\n\ntime_min\n\n\nMinimum time\n\n\n\n\ntime_max\n\n\nMaximum time\n\n\n\n\ncad_shift\n\n\nCAD shift\n\n\n\n\npda_shift\n\n\nPDA shift\n\n\n\n\nfourier_components\n\n\nFourier components\n\n\n\n\nfrequency\n\n\nFrequency\n\n\n\n\nresample\n\n\nResample\n\n\n\n\nchromatograms\n\n\nChromatograms to plot\n\n\n\n\nheaders\n\n\nHeaders\n\n\n\n\ntype\n\n\nType. \"baselined\" or \"improved\"\n\n\n\n\nnormalize_intensity\n\n\nNormalize intensity? Default to TRUE\n\n\n\n\nnormalize_time\n\n\nNormalize time? Default to FALSE\n\n\n\n\nshow_example\n\n\nShow example? Default to FALSE\n\n\n\n\n\n\nA plot with (non-)aligned chromatograms\n\n\n\n\nlibrary(\"cascade\")\n\ncheck_chromatograms_alignment(show_example = TRUE)"
+    "text": "Check chromatograms alignment\n\n\n\ncheck_chromatograms_alignment(\n  file_negative = NULL,\n  file_positive = NULL,\n  time_min = 0.5,\n  time_max = 32.5,\n  cad_shift = 0.05,\n  pda_shift = 0.1,\n  fourier_components = 0.01,\n  frequency = 1,\n  resample = 1,\n  chromatograms = c(\"bpi_pos\", \"cad_pos\", \"pda_pos\"),\n  headers = c(bpi = \"BasePeak_0\", pda = \"PDA#1_TotalAbsorbance_0\", cad = \"UV#1_CAD_1_0\"),\n  type = \"baselined\",\n  normalize_intensity = TRUE,\n  normalize_time = FALSE,\n  show_example = FALSE\n)\n\n\n\n\n\n\n\nfile_negative\n\n\nNegative file path\n\n\n\n\nfile_positive\n\n\nPositive file path\n\n\n\n\ntime_min\n\n\nMinimum time\n\n\n\n\ntime_max\n\n\nMaximum time\n\n\n\n\ncad_shift\n\n\nCAD shift\n\n\n\n\npda_shift\n\n\nPDA shift\n\n\n\n\nfourier_components\n\n\nFourier components\n\n\n\n\nfrequency\n\n\nFrequency\n\n\n\n\nresample\n\n\nResample\n\n\n\n\nchromatograms\n\n\nChromatograms to plot\n\n\n\n\nheaders\n\n\nHeaders\n\n\n\n\ntype\n\n\nType. \"baselined\" or \"improved\"\n\n\n\n\nnormalize_intensity\n\n\nNormalize intensity? Default to TRUE\n\n\n\n\nnormalize_time\n\n\nNormalize time? Default to FALSE\n\n\n\n\nshow_example\n\n\nShow example? Default to FALSE\n\n\n\n\n\n\nA plot with (non-)aligned chromatograms\n\n\n\n\nlibrary(\"cascade\")\n\ncheck_chromatograms_alignment(show_example = TRUE)",
+    "crumbs": [
+      "Get started",
+      "Functions",
+      "Check",
+      "check_chromatograms_alignment"
+    ]
   },
   {
     "objectID": "man/preprocess_peaks.html",
@@ -1075,14 +1123,26 @@
     "href": "man/check_peaks_integration.html",
     "title": "cascade",
     "section": "",
-    "text": "Check chromatograms alignment\n\n\n\ncheck_peaks_integration(\n  file = NULL,\n  features = NULL,\n  detector = \"cad\",\n  chromatogram = \"baselined\",\n  headers = c(bpi = \"BasePeak_0\", pda = \"PDA#1_TotalAbsorbance_0\", cad = \"UV#1_CAD_1_0\"),\n  min_area = 0.005,\n  min_intensity = 10000,\n  shift = 0.05,\n  show_example = FALSE,\n  fourier_components = 0.01,\n  time_min = 0.5,\n  time_max = 32.5,\n  frequency = 1,\n  resample = 1\n)\n\n\n\n\n\n\n\nfile\n\n\nFile path\n\n\n\n\nfeatures\n\n\nFeatures path\n\n\n\n\ndetector\n\n\nDetector\n\n\n\n\nchromatogram\n\n\nChromatogram\n\n\n\n\nheaders\n\n\nHeaders\n\n\n\n\nmin_area\n\n\nMinimum area\n\n\n\n\nmin_intensity\n\n\nMinimum intensity\n\n\n\n\nshift\n\n\nshift\n\n\n\n\nshow_example\n\n\nShow example? Default to FALSE\n\n\n\n\nfourier_components\n\n\nFourier components\n\n\n\n\ntime_min\n\n\nTime min\n\n\n\n\ntime_max\n\n\nTime max\n\n\n\n\nfrequency\n\n\nFrequency\n\n\n\n\nresample\n\n\nResample\n\n\n\n\n\n\nA plot with (non-)aligned chromatograms\n\n\n\n\nlibrary(\"cascade\")\n\ncheck_peaks_integration(show_example = TRUE)"
+    "text": "Check chromatograms alignment\n\n\n\ncheck_peaks_integration(\n  file = NULL,\n  features = NULL,\n  detector = \"cad\",\n  chromatogram = \"baselined\",\n  headers = c(bpi = \"BasePeak_0\", pda = \"PDA#1_TotalAbsorbance_0\", cad = \"UV#1_CAD_1_0\"),\n  min_area = 0.005,\n  min_intensity = 10000,\n  shift = 0.05,\n  show_example = FALSE,\n  fourier_components = 0.01,\n  time_min = 0.5,\n  time_max = 32.5,\n  frequency = 1,\n  resample = 1\n)\n\n\n\n\n\n\n\nfile\n\n\nFile path\n\n\n\n\nfeatures\n\n\nFeatures path\n\n\n\n\ndetector\n\n\nDetector\n\n\n\n\nchromatogram\n\n\nChromatogram\n\n\n\n\nheaders\n\n\nHeaders\n\n\n\n\nmin_area\n\n\nMinimum area\n\n\n\n\nmin_intensity\n\n\nMinimum intensity\n\n\n\n\nshift\n\n\nshift\n\n\n\n\nshow_example\n\n\nShow example? Default to FALSE\n\n\n\n\nfourier_components\n\n\nFourier components\n\n\n\n\ntime_min\n\n\nTime min\n\n\n\n\ntime_max\n\n\nTime max\n\n\n\n\nfrequency\n\n\nFrequency\n\n\n\n\nresample\n\n\nResample\n\n\n\n\n\n\nA plot with (non-)aligned chromatograms\n\n\n\n\nlibrary(\"cascade\")\n\ncheck_peaks_integration(show_example = TRUE)",
+    "crumbs": [
+      "Get started",
+      "Functions",
+      "Check",
+      "check_peaks_integration"
+    ]
   },
   {
     "objectID": "man/check_peaks_integration.html#check-chromatograms-alignment",
     "href": "man/check_peaks_integration.html#check-chromatograms-alignment",
     "title": "cascade",
     "section": "",
-    "text": "Check chromatograms alignment\n\n\n\ncheck_peaks_integration(\n  file = NULL,\n  features = NULL,\n  detector = \"cad\",\n  chromatogram = \"baselined\",\n  headers = c(bpi = \"BasePeak_0\", pda = \"PDA#1_TotalAbsorbance_0\", cad = \"UV#1_CAD_1_0\"),\n  min_area = 0.005,\n  min_intensity = 10000,\n  shift = 0.05,\n  show_example = FALSE,\n  fourier_components = 0.01,\n  time_min = 0.5,\n  time_max = 32.5,\n  frequency = 1,\n  resample = 1\n)\n\n\n\n\n\n\n\nfile\n\n\nFile path\n\n\n\n\nfeatures\n\n\nFeatures path\n\n\n\n\ndetector\n\n\nDetector\n\n\n\n\nchromatogram\n\n\nChromatogram\n\n\n\n\nheaders\n\n\nHeaders\n\n\n\n\nmin_area\n\n\nMinimum area\n\n\n\n\nmin_intensity\n\n\nMinimum intensity\n\n\n\n\nshift\n\n\nshift\n\n\n\n\nshow_example\n\n\nShow example? Default to FALSE\n\n\n\n\nfourier_components\n\n\nFourier components\n\n\n\n\ntime_min\n\n\nTime min\n\n\n\n\ntime_max\n\n\nTime max\n\n\n\n\nfrequency\n\n\nFrequency\n\n\n\n\nresample\n\n\nResample\n\n\n\n\n\n\nA plot with (non-)aligned chromatograms\n\n\n\n\nlibrary(\"cascade\")\n\ncheck_peaks_integration(show_example = TRUE)"
+    "text": "Check chromatograms alignment\n\n\n\ncheck_peaks_integration(\n  file = NULL,\n  features = NULL,\n  detector = \"cad\",\n  chromatogram = \"baselined\",\n  headers = c(bpi = \"BasePeak_0\", pda = \"PDA#1_TotalAbsorbance_0\", cad = \"UV#1_CAD_1_0\"),\n  min_area = 0.005,\n  min_intensity = 10000,\n  shift = 0.05,\n  show_example = FALSE,\n  fourier_components = 0.01,\n  time_min = 0.5,\n  time_max = 32.5,\n  frequency = 1,\n  resample = 1\n)\n\n\n\n\n\n\n\nfile\n\n\nFile path\n\n\n\n\nfeatures\n\n\nFeatures path\n\n\n\n\ndetector\n\n\nDetector\n\n\n\n\nchromatogram\n\n\nChromatogram\n\n\n\n\nheaders\n\n\nHeaders\n\n\n\n\nmin_area\n\n\nMinimum area\n\n\n\n\nmin_intensity\n\n\nMinimum intensity\n\n\n\n\nshift\n\n\nshift\n\n\n\n\nshow_example\n\n\nShow example? Default to FALSE\n\n\n\n\nfourier_components\n\n\nFourier components\n\n\n\n\ntime_min\n\n\nTime min\n\n\n\n\ntime_max\n\n\nTime max\n\n\n\n\nfrequency\n\n\nFrequency\n\n\n\n\nresample\n\n\nResample\n\n\n\n\n\n\nA plot with (non-)aligned chromatograms\n\n\n\n\nlibrary(\"cascade\")\n\ncheck_peaks_integration(show_example = TRUE)",
+    "crumbs": [
+      "Get started",
+      "Functions",
+      "Check",
+      "check_peaks_integration"
+    ]
   },
   {
     "objectID": "man/baseline_chromatogram.html",
@@ -1215,14 +1275,24 @@
     "href": "man/taxon_name_to_qid.html",
     "title": "cascade",
     "section": "",
-    "text": "Taxon name to QID\n\n\n\ntaxon_name_to_qid(taxon_name)\n\n\n\n\n\n\n\ntaxon_name\n\n\nTaxon name\n\n\n\n\n\n\nA QID\n\n\n\n\nlibrary(\"cascade\")\n\ntaxon_name_to_qid(taxon_name = \"Gentiana lutea\")"
+    "text": "Taxon name to QID\n\n\n\ntaxon_name_to_qid(taxon_name)\n\n\n\n\n\n\n\ntaxon_name\n\n\nTaxon name\n\n\n\n\n\n\nA QID\n\n\n\n\nlibrary(\"cascade\")\n\ntaxon_name_to_qid(taxon_name = \"Gentiana lutea\")",
+    "crumbs": [
+      "Get started",
+      "Functions",
+      "taxon_name_to_qid"
+    ]
   },
   {
     "objectID": "man/taxon_name_to_qid.html#taxon-name-to-qid",
     "href": "man/taxon_name_to_qid.html#taxon-name-to-qid",
     "title": "cascade",
     "section": "",
-    "text": "Taxon name to QID\n\n\n\ntaxon_name_to_qid(taxon_name)\n\n\n\n\n\n\n\ntaxon_name\n\n\nTaxon name\n\n\n\n\n\n\nA QID\n\n\n\n\nlibrary(\"cascade\")\n\ntaxon_name_to_qid(taxon_name = \"Gentiana lutea\")"
+    "text": "Taxon name to QID\n\n\n\ntaxon_name_to_qid(taxon_name)\n\n\n\n\n\n\n\ntaxon_name\n\n\nTaxon name\n\n\n\n\n\n\nA QID\n\n\n\n\nlibrary(\"cascade\")\n\ntaxon_name_to_qid(taxon_name = \"Gentiana lutea\")",
+    "crumbs": [
+      "Get started",
+      "Functions",
+      "taxon_name_to_qid"
+    ]
   },
   {
     "objectID": "index.html",
