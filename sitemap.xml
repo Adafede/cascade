@@ -2,350 +2,350 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://adafede.github.io/cascade/LICENSE.html</loc>
-    <lastmod>2025-07-09T17:42:51.031Z</lastmod>
+    <lastmod>2025-07-10T06:43:18.404Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/CITATION.html</loc>
-    <lastmod>2025-07-09T17:42:51.080Z</lastmod>
+    <lastmod>2025-07-10T06:43:18.451Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/load_name.html</loc>
-    <lastmod>2025-07-09T17:43:08.020Z</lastmod>
+    <lastmod>2025-07-10T06:43:41.296Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/no_other.html</loc>
-    <lastmod>2025-07-09T17:43:11.908Z</lastmod>
+    <lastmod>2025-07-10T06:43:46.366Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/prehistograms_progress.html</loc>
-    <lastmod>2025-07-09T17:43:18.186Z</lastmod>
+    <lastmod>2025-07-10T06:43:55.704Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/improve_signals_progress.html</loc>
-    <lastmod>2025-07-09T17:43:02.936Z</lastmod>
+    <lastmod>2025-07-10T06:43:34.411Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/keep_best_candidates.html</loc>
-    <lastmod>2025-07-09T17:43:04.100Z</lastmod>
+    <lastmod>2025-07-10T06:43:36.007Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/prepare_comparison.html</loc>
-    <lastmod>2025-07-09T17:43:18.646Z</lastmod>
+    <lastmod>2025-07-10T06:43:56.582Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/load_annotations.html</loc>
-    <lastmod>2025-07-09T17:43:04.841Z</lastmod>
+    <lastmod>2025-07-10T06:43:36.878Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/y_as_na.html</loc>
-    <lastmod>2025-07-09T17:43:31.266Z</lastmod>
+    <lastmod>2025-07-10T06:44:12.719Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/load_features_not_informed.html</loc>
-    <lastmod>2025-07-09T17:43:06.334Z</lastmod>
+    <lastmod>2025-07-10T06:43:38.993Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/molinfo.html</loc>
-    <lastmod>2025-07-09T17:43:11.411Z</lastmod>
+    <lastmod>2025-07-10T06:43:45.605Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/check_export_dir.html</loc>
-    <lastmod>2025-07-09T17:42:53.829Z</lastmod>
+    <lastmod>2025-07-10T06:43:22.233Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/histograms_progress.html</loc>
-    <lastmod>2025-07-09T17:43:01.935Z</lastmod>
+    <lastmod>2025-07-10T06:43:33.081Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/signal_sharpening.html</loc>
-    <lastmod>2025-07-09T17:43:28.009Z</lastmod>
+    <lastmod>2025-07-10T06:44:07.841Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/make_chromatographiable.html</loc>
-    <lastmod>2025-07-09T17:43:08.678Z</lastmod>
+    <lastmod>2025-07-10T06:43:41.944Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/make_other.html</loc>
-    <lastmod>2025-07-09T17:43:10.363Z</lastmod>
+    <lastmod>2025-07-10T06:43:44.186Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/p_acn_i.html</loc>
-    <lastmod>2025-07-09T17:43:13.474Z</lastmod>
+    <lastmod>2025-07-10T06:43:48.486Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/get_peaks.html</loc>
-    <lastmod>2025-07-09T17:43:00.146Z</lastmod>
+    <lastmod>2025-07-10T06:43:31.064Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/wiki_progress.html</loc>
-    <lastmod>2025-07-09T17:43:30.808Z</lastmod>
+    <lastmod>2025-07-10T06:44:11.974Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/save_treemaps_progress.html</loc>
-    <lastmod>2025-07-09T17:43:27.035Z</lastmod>
+    <lastmod>2025-07-10T06:44:06.447Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/plot_results_1.html</loc>
-    <lastmod>2025-07-09T17:43:16.626Z</lastmod>
+    <lastmod>2025-07-10T06:43:53.402Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/hierarchies_grouped_progress.html</loc>
-    <lastmod>2025-07-09T17:43:00.680Z</lastmod>
+    <lastmod>2025-07-10T06:43:31.683Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/process_compare_peaks.html</loc>
-    <lastmod>2025-07-09T17:43:25.452Z</lastmod>
+    <lastmod>2025-07-10T06:44:04.060Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/transform_ms.html</loc>
-    <lastmod>2025-07-09T17:43:29.663Z</lastmod>
+    <lastmod>2025-07-10T06:44:10.070Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/second_der.html</loc>
-    <lastmod>2025-07-09T17:43:27.512Z</lastmod>
+    <lastmod>2025-07-10T06:44:07.145Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/peaks_progress.html</loc>
-    <lastmod>2025-07-09T17:43:14.124Z</lastmod>
+    <lastmod>2025-07-10T06:43:49.228Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/check_chromatograms.html</loc>
-    <lastmod>2025-07-09T17:42:53.369Z</lastmod>
+    <lastmod>2025-07-10T06:43:21.475Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/preprocess_chromatograms.html</loc>
-    <lastmod>2025-07-09T17:43:24.452Z</lastmod>
+    <lastmod>2025-07-10T06:44:02.640Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/extract_ms_peak.html</loc>
-    <lastmod>2025-07-09T17:42:56.303Z</lastmod>
+    <lastmod>2025-07-10T06:43:26.179Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/normalize_chromatograms_list.html</loc>
-    <lastmod>2025-07-09T17:43:12.937Z</lastmod>
+    <lastmod>2025-07-10T06:43:47.844Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/improve_signal.html</loc>
-    <lastmod>2025-07-09T17:43:02.423Z</lastmod>
+    <lastmod>2025-07-10T06:43:33.826Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/make_no_stereo.html</loc>
-    <lastmod>2025-07-09T17:43:09.842Z</lastmod>
+    <lastmod>2025-07-10T06:43:43.595Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/generate_tables.html</loc>
-    <lastmod>2025-07-09T17:42:59.644Z</lastmod>
+    <lastmod>2025-07-10T06:43:30.285Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/format_gt.html</loc>
-    <lastmod>2025-07-09T17:42:57.989Z</lastmod>
+    <lastmod>2025-07-10T06:43:28.209Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/plot_peak_detection.html</loc>
-    <lastmod>2025-07-09T17:43:16.116Z</lastmod>
+    <lastmod>2025-07-10T06:43:52.637Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/load_features_informed.html</loc>
-    <lastmod>2025-07-09T17:43:05.849Z</lastmod>
+    <lastmod>2025-07-10T06:43:38.387Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/filter_fft.html</loc>
-    <lastmod>2025-07-09T17:42:57.448Z</lastmod>
+    <lastmod>2025-07-10T06:43:27.596Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/compare_peaks.html</loc>
-    <lastmod>2025-07-09T17:42:54.837Z</lastmod>
+    <lastmod>2025-07-10T06:43:23.877Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/extract_ms_progress.html</loc>
-    <lastmod>2025-07-09T17:42:56.958Z</lastmod>
+    <lastmod>2025-07-10T06:43:26.933Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/plot_tima.html</loc>
-    <lastmod>2025-07-09T17:43:17.308Z</lastmod>
+    <lastmod>2025-07-10T06:43:54.517Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/vignettes/articles/II-processing.html</loc>
-    <lastmod>2025-07-09T17:43:31.717Z</lastmod>
+    <lastmod>2025-07-10T06:44:13.313Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/vignettes/articles/IV-tima.html</loc>
-    <lastmod>2025-07-09T17:43:31.717Z</lastmod>
+    <lastmod>2025-07-10T06:44:13.313Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/vignettes/cascade.html</loc>
-    <lastmod>2025-07-09T17:43:31.717Z</lastmod>
+    <lastmod>2025-07-10T06:44:13.313Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/vignettes/articles/I-basics.html</loc>
-    <lastmod>2025-07-09T17:43:31.717Z</lastmod>
+    <lastmod>2025-07-10T06:44:13.313Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/vignettes/articles/III-bonus.html</loc>
-    <lastmod>2025-07-09T17:43:31.717Z</lastmod>
+    <lastmod>2025-07-10T06:44:13.313Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/deriv.html</loc>
-    <lastmod>2025-07-09T17:42:55.360Z</lastmod>
+    <lastmod>2025-07-10T06:43:24.689Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/generate_pseudochromatograms.html</loc>
-    <lastmod>2025-07-09T17:42:58.940Z</lastmod>
+    <lastmod>2025-07-10T06:43:29.709Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/predict_response.html</loc>
-    <lastmod>2025-07-09T17:43:17.984Z</lastmod>
+    <lastmod>2025-07-10T06:43:55.243Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/prepare_peaks.html</loc>
-    <lastmod>2025-07-09T17:43:20.678Z</lastmod>
+    <lastmod>2025-07-10T06:43:59.363Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/load_chromatograms.html</loc>
-    <lastmod>2025-07-09T17:43:05.343Z</lastmod>
+    <lastmod>2025-07-10T06:43:37.504Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/treemaps_progress_no_title.html</loc>
-    <lastmod>2025-07-09T17:43:30.153Z</lastmod>
+    <lastmod>2025-07-10T06:44:10.842Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/queries_progress.html</loc>
-    <lastmod>2025-07-09T17:43:25.932Z</lastmod>
+    <lastmod>2025-07-10T06:44:04.837Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/hierarchies_progress.html</loc>
-    <lastmod>2025-07-09T17:43:01.410Z</lastmod>
+    <lastmod>2025-07-10T06:43:32.322Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/plot_histograms_taxo.html</loc>
-    <lastmod>2025-07-09T17:43:15.714Z</lastmod>
+    <lastmod>2025-07-10T06:43:51.815Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/change_intensity_name.html</loc>
-    <lastmod>2025-07-09T17:42:52.405Z</lastmod>
+    <lastmod>2025-07-10T06:43:20.176Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/prepare_hierarchy.html</loc>
-    <lastmod>2025-07-09T17:43:19.654Z</lastmod>
+    <lastmod>2025-07-10T06:43:58.004Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/plot_chromatogram.html</loc>
-    <lastmod>2025-07-09T17:43:14.581Z</lastmod>
+    <lastmod>2025-07-10T06:43:49.936Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/generate_ids.html</loc>
-    <lastmod>2025-07-09T17:42:58.451Z</lastmod>
+    <lastmod>2025-07-10T06:43:28.941Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/normalize_chromato.html</loc>
-    <lastmod>2025-07-09T17:43:12.427Z</lastmod>
+    <lastmod>2025-07-10T06:43:47.079Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/prepare_features.html</loc>
-    <lastmod>2025-07-09T17:43:19.168Z</lastmod>
+    <lastmod>2025-07-10T06:43:57.240Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/prepare_tima_annotations.html</loc>
-    <lastmod>2025-07-09T17:43:22.595Z</lastmod>
+    <lastmod>2025-07-10T06:44:01.903Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/plot_histograms_confident.html</loc>
-    <lastmod>2025-07-09T17:43:15.031Z</lastmod>
+    <lastmod>2025-07-10T06:43:50.585Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/treemaps_progress.html</loc>
-    <lastmod>2025-07-09T17:43:30.611Z</lastmod>
+    <lastmod>2025-07-10T06:44:11.499Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/plot_histograms_litt.html</loc>
-    <lastmod>2025-07-09T17:43:15.520Z</lastmod>
+    <lastmod>2025-07-10T06:43:51.459Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/check_chromatograms_alignment.html</loc>
-    <lastmod>2025-07-09T17:42:52.890Z</lastmod>
+    <lastmod>2025-07-10T06:43:20.820Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/preprocess_peaks.html</loc>
-    <lastmod>2025-07-09T17:43:24.953Z</lastmod>
+    <lastmod>2025-07-10T06:44:03.405Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/load_ms_data.html</loc>
-    <lastmod>2025-07-09T17:43:07.528Z</lastmod>
+    <lastmod>2025-07-10T06:43:40.507Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/join_peaks.html</loc>
-    <lastmod>2025-07-09T17:43:03.438Z</lastmod>
+    <lastmod>2025-07-10T06:43:35.133Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/make_confident.html</loc>
-    <lastmod>2025-07-09T17:43:09.185Z</lastmod>
+    <lastmod>2025-07-10T06:43:42.834Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/prepare_mz.html</loc>
-    <lastmod>2025-07-09T17:43:20.157Z</lastmod>
+    <lastmod>2025-07-10T06:43:58.771Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/plot_histograms.html</loc>
-    <lastmod>2025-07-09T17:43:15.913Z</lastmod>
+    <lastmod>2025-07-10T06:43:52.279Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/load_features.html</loc>
-    <lastmod>2025-07-09T17:43:07.005Z</lastmod>
+    <lastmod>2025-07-10T06:43:39.762Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/prepare_plot.html</loc>
-    <lastmod>2025-07-09T17:43:21.828Z</lastmod>
+    <lastmod>2025-07-10T06:44:00.774Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/check_peaks_integration.html</loc>
-    <lastmod>2025-07-09T17:42:54.357Z</lastmod>
+    <lastmod>2025-07-10T06:43:23.116Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/baseline_chromatogram.html</loc>
-    <lastmod>2025-07-09T17:42:51.934Z</lastmod>
+    <lastmod>2025-07-10T06:43:19.389Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/add_chromato_line.html</loc>
-    <lastmod>2025-07-09T17:42:51.203Z</lastmod>
+    <lastmod>2025-07-10T06:43:18.575Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/save_histograms_progress.html</loc>
-    <lastmod>2025-07-09T17:43:26.389Z</lastmod>
+    <lastmod>2025-07-10T06:44:05.570Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/prepare_plot_2.html</loc>
-    <lastmod>2025-07-09T17:43:21.375Z</lastmod>
+    <lastmod>2025-07-10T06:44:00.113Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/extract_chromatogram.html</loc>
-    <lastmod>2025-07-09T17:42:55.847Z</lastmod>
+    <lastmod>2025-07-10T06:43:25.445Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/plot_results_2.html</loc>
-    <lastmod>2025-07-09T17:43:17.112Z</lastmod>
+    <lastmod>2025-07-10T06:43:54.168Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/middle_pts.html</loc>
-    <lastmod>2025-07-09T17:43:10.888Z</lastmod>
+    <lastmod>2025-07-10T06:43:44.958Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/prepare_rt.html</loc>
-    <lastmod>2025-07-09T17:43:22.020Z</lastmod>
+    <lastmod>2025-07-10T06:44:01.186Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/tables_progress.html</loc>
-    <lastmod>2025-07-09T17:43:28.537Z</lastmod>
+    <lastmod>2025-07-10T06:44:08.702Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/taxon_name_to_qid.html</loc>
-    <lastmod>2025-07-09T17:43:29.003Z</lastmod>
+    <lastmod>2025-07-10T06:44:09.354Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/index.html</loc>
-    <lastmod>2025-07-09T17:42:51.046Z</lastmod>
+    <lastmod>2025-07-10T06:43:18.418Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/NEWS.html</loc>
-    <lastmod>2025-07-09T17:42:51.022Z</lastmod>
+    <lastmod>2025-07-10T06:43:18.395Z</lastmod>
   </url>
 </urlset>
