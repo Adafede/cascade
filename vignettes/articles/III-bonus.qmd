@@ -55,19 +55,25 @@ bonus_plots_list <- generate_ids(
 
 ### Compounds found in Swertia 
 
-```{r wikidata-swertia-1, warning=FALSE, fig.height=5}
+```{r wikidata-swertia-1, warning=FALSE}
+#| dev: svglite
+
 bonus_plots_list$plots$Swertia
 ```
 
 ### Compounds found in Kopsia (per species)
 
 ```{r wikidata-kopsia-1, warning=FALSE}
+#| dev: svglite
+
 bonus_plots_list$plots$Kopsia_grouped
 ```
 
 ### Comparison
 
 ```{r wikidata-swertia-kopsia, warning=FALSE, fig.height=6}
+#| dev: svglite
+
 bonus_plots_list$plots$special
 ```
 

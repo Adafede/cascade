@@ -28,20 +28,6 @@ website:
             file: vignettes/articles/III-bonus.qmd
           - text: 4 TIMA
             file: vignettes/articles/IV-tima.qmd
-      - text: Functions
-        menu:
-          - text: check_chromatograms_alignment
-            file: man/check_chromatograms_alignment.qmd
-          - text: check_peaks_integration
-            file: man/check_peaks_integration.qmd
-          - text: generate_ids
-            file: man/generate_ids.qmd
-          - text: generate_pseudochromatograms
-            file: man/generate_pseudochromatograms.qmd
-          - text: generate_tables
-            file: man/generate_tables.qmd
-          - text: taxon_name_to_qid
-            file: man/taxon_name_to_qid.qmd
       - text: News
         file: $ALTDOC_NEWS
       - text: License
@@ -52,12 +38,32 @@ website:
       - icon: github
         href: $ALTDOC_PACKAGE_URL_GITHUB
         aria-label: $ALTDOC_PACKAGE_NAME GitHub
-
+  sidebar:
+    contents:
+      - section: Functions
+        contents:
+          - section: Check
+            contents:
+              - text: check_chromatograms_alignment
+                file: man/check_chromatograms_alignment.qmd
+              - text: check_peaks_integration
+                file: man/check_peaks_integration.qmd
+          - section: Generate
+            contents:
+            - text: generate_ids
+              file: man/generate_ids.qmd
+            - text: generate_pseudochromatograms
+              file: man/generate_pseudochromatograms.qmd
+            - text: generate_tables
+              file: man/generate_tables.qmd
+          - text: taxon_name_to_qid
+            file: man/taxon_name_to_qid.qmd
 format:
   html:
+    grid:
+      body-width: 1200px
     respect-user-color-scheme: true
     toc: true
     theme:
       light: flatly
       dark: darkly
-    # number-sections: false
