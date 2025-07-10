@@ -30,17 +30,17 @@ website:
             file: vignettes/articles/IV-tima.qmd
       - text: Functions
         menu:
-          - text: "`check_chromatograms_alignment`"
+          - text: check_chromatograms_alignment
             file: man/check_chromatograms_alignment.qmd
-          - text: "`check_peaks_integration`"
+          - text: check_peaks_integration
             file: man/check_peaks_integration.qmd
-          - text: "`generate_ids`"
+          - text: generate_ids
             file: man/generate_ids.qmd
-          - text: "`generate_pseudochromatograms`"
+          - text: generate_pseudochromatograms
             file: man/generate_pseudochromatograms.qmd
-          - text: "`generate_tables`"
+          - text: generate_tables
             file: man/generate_tables.qmd
-          - text: "`taxon_name_to_qid`"
+          - text: taxon_name_to_qid
             file: man/taxon_name_to_qid.qmd
       - text: News
         file: $ALTDOC_NEWS
