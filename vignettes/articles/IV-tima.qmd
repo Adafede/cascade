@@ -54,21 +54,30 @@ plots <- cascade::prepare_tima_annotations(
 # ) |> 
 #   cascade::plot_tima()
 ```
-```{r tima-plots-h, message = FALSE, warning=FALSE, fig.height=10}
+
+```{r tima-plots-h, message = FALSE, warning=FALSE, fig.height=9}
+#| dev: svglite
+
 plots$histogram
 ```
 
-```{r tima-plots-t, message = FALSE, warning=FALSE, fig.height=10}
+```{r tima-plots-t, message = FALSE, warning=FALSE}
+#| dev: svglite
+
 plots$treemap
 ```
 
-```{r tima-plots-s, message = FALSE, warning=FALSE, fig.height=10}
+```{r tima-plots-s, message = FALSE, warning=FALSE}
+#| dev: svglite
+
 plots$sunburst
 ```
 
 To compare annotated and predicted classes:
 
-```{r tima-plots-1, warning=FALSE, fig.height=10}
+```{r tima-plots-1, warning=FALSE, fig.height=12}
+#| dev: svglite
+
 list(
   cascade::prepare_tima_annotations(
     show_example = TRUE
@@ -87,6 +96,8 @@ list(
 To compare different filtering thresholds:
 
 ```{r tima-plots-2, warning=FALSE, fig.height=10}
+#| dev: svglite
+
 list(
   cascade::prepare_tima_annotations(
     show_example = TRUE
