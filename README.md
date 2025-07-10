@@ -12,9 +12,10 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/tima.png)](https://CRAN.R-project.org/package=tima)
-[![R-CMD-check](https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/adafede/cascade/actions/workflows/R-CMD-check/badge.svg)](https://github.com/adafede/cascade/actions/workflows/R-CMD-check)
 [![Codecov test
 coverage](https://codecov.io/gh/adafede/cascade/graph/badge.svg)](https://app.codecov.io/gh/adafede/cascade)
+[![r-universe badge](https://adafede.r-universe.dev/cascade/badges/version?&color=green&style=flat)](https://adafede.r-universe.dev/cascade)
 <!-- [![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://hub.docker.com/r/adafede/cascade/) -->
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14515158.svg)](https://doi.org/10.5281/zenodo.14515158)
 <!-- badges: end -->
