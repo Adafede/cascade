@@ -150,7 +150,7 @@
       "@type": "SoftwareApplication",
       "identifier": "baseline",
       "name": "baseline",
-      "version": ">= 1.3.5",
+      "version": ">= 1.3.7",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -189,7 +189,7 @@
       "@type": "SoftwareApplication",
       "identifier": "data.table",
       "name": "data.table",
-      "version": ">= 1.17.0",
+      "version": ">= 1.17.8",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -215,7 +215,7 @@
       "@type": "SoftwareApplication",
       "identifier": "ggplot2",
       "name": "ggplot2",
-      "version": ">= 3.5.1",
+      "version": ">= 3.5.2",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -280,7 +280,7 @@
       "@type": "SoftwareApplication",
       "identifier": "plotly",
       "name": "plotly",
-      "version": ">= 4.10.4",
+      "version": ">= 4.11.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -293,7 +293,7 @@
       "@type": "SoftwareApplication",
       "identifier": "purrr",
       "name": "purrr",
-      "version": ">= 1.0.4",
+      "version": ">= 1.1.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -332,7 +332,7 @@
       "@type": "SoftwareApplication",
       "identifier": "tibble",
       "name": "tibble",
-      "version": ">= 3.2.1",
+      "version": ">= 3.3.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -382,7 +382,7 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteAnnotation", "chargedAerosolDetector", "semiQuantitative", "naturalProducts", "computationalMetabolomics", "specializedMetabolome"],
-  "fileSize": "166318.047KB",
+  "fileSize": "166348.736KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
@@ -433,7 +433,7 @@
       }
     }
   ],
-  "releaseNotes": "https://github.com/adafede/cascade/blob/master/NEWS.md",
+  "releaseNotes": "https://github.com/adafede/cascade/blob/main/NEWS.md",
   "readme": "https://github.com/Adafede/cascade/blob/main/README.md",
   "contIntegration": ["https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/adafede/cascade"],
   "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html#experimental"
