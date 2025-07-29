@@ -344,7 +344,7 @@ prepare_hierarchy <-
         )
 
       table_1 <- table |>
-        tidytable::group_by(labels, sample) |>
+        tidytable::group_by(parents, ids, labels, sample) |>
         tidytable::add_count(name = "values") |>
         tidytable::select(
           chemical_pathway,
@@ -360,12 +360,12 @@ prepare_hierarchy <-
         tidytable::distinct()
 
       table_1_1 <- table_1 |>
-        tidytable::group_by(chemical_pathway, parents, sample) |>
+        tidytable::group_by(chemical_pathway, parents, ids, sample) |>
         tidytable::mutate(values_2 = sum(values)) |>
         tidytable::ungroup()
     } else {
       table_1 <- table |>
-        tidytable::group_by(labels, organism) |>
+        tidytable::group_by(parents, ids, labels, organism) |>
         tidytable::add_count(name = "values") |>
         tidytable::ungroup() |>
         tidytable::select(
@@ -381,7 +381,7 @@ prepare_hierarchy <-
         tidytable::distinct()
 
       table_1_1 <- table_1 |>
-        tidytable::group_by(chemical_pathway, parents, organism) |>
+        tidytable::group_by(chemical_pathway, parents, ids, organism) |>
         tidytable::mutate(values_2 = sum(values)) |>
         tidytable::ungroup()
     }
@@ -702,7 +702,8 @@ prepare_hierarchy <-
           tidytable::mutate(chemical_pathway = as.character(chemical_pathway)),
         missing_children
       ) |>
-      tidytable::distinct(chemical_pathway, parents, ids, labels, new_labels)
+      tidytable::distinct(chemical_pathway, parents, ids, labels, new_labels) |>
+      tidytable::mutate(link = ids |> gsub(pattern = "-.*", replacement = ""))
 
     table_new <- dataframe2 |>
       tidytable::filter(!is.na(species)) |>
@@ -713,6 +714,7 @@ prepare_hierarchy <-
       tidytable::full_join(
         genealogy_new_med_4,
         by = c(
+          "best_candidate_2" = "link",
           "best_candidate_3" = "labels",
           "chemical_pathway" = "chemical_pathway"
         )
