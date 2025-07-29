@@ -1,12 +1,12 @@
 ---
 title: General comments about the use of CASCADE
-author: 
+author:
   name: Adriano Rutz
   orcid: 0000-0003-0443-9902
 citation:
   url: https://adafede.github.io/cascade/vignettes/cascade.html
 comments:
-  giscus: 
+  giscus:
     repo: adafede/cascade
   hypothesis:
     showHighlights: always
@@ -19,12 +19,13 @@ google-scholar: true
 knitr:
   opts_chunk:
     collapse: true
-    comment: '#>'
+    comment: "#>"
 lang: en
 opengraph:
-    image:
-      src: https://github.com/adafede/cascade/blob/main/man/figures/logo.svg
-      alt: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts
+  image:
+    src: https://github.com/adafede/cascade/blob/main/man/figures/logo.svg
+    alt: Contextualizing untargeted Annotation with Semi-quantitative Charged
+      Aerosol Detection for pertinent characterization of natural Extracts
 vignette: >
   %\VignetteIndexEntry{General comments about the use of CASCADE}
   %\VignetteEngine{quarto::html}

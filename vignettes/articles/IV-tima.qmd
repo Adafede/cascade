@@ -1,12 +1,12 @@
 ---
 title: 4 Visualizing raw TIMA results
-author: 
+author:
   name: Adriano Rutz
   orcid: 0000-0003-0443-9902
 citation:
   url: https://adafede.github.io/cascade/vignettes/articles/IV-tima.html
 comments:
-  giscus: 
+  giscus:
     repo: adafede/cascade
   hypothesis:
     showHighlights: always
@@ -19,12 +19,13 @@ google-scholar: true
 knitr:
   opts_chunk:
     collapse: true
-    comment: '#>'
+    comment: "#>"
 lang: en
 opengraph:
-    image:
-      src: https://github.com/adafede/cascade/blob/main/man/figures/logo.svg
-      alt: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts
+  image:
+    src: https://github.com/adafede/cascade/blob/main/man/figures/logo.svg
+    alt: Contextualizing untargeted Annotation with Semi-quantitative Charged
+      Aerosol Detection for pertinent characterization of natural Extracts
 vignette: >
   %\VignetteIndexEntry{4 TIMA}
   %\VignetteEngine{quarto::html}
@@ -44,14 +45,14 @@ To check the full results:
 ```{r tima-plots, message = FALSE, warning=FALSE}
 plots <- cascade::prepare_tima_annotations(
   show_example = TRUE
-) |> 
+) |>
   cascade::plot_tima()
 # cascade::prepare_tima_annotations(
 #   annotations = list(
 #     "yourExperiment1"="PathToYourTimaOutput1",
 #     "yourExperiment2"="PathToYourTimaOutput2"
 #     )
-# ) |> 
+# ) |>
 #   cascade::plot_tima()
 ```
 
@@ -81,12 +82,12 @@ To compare annotated and predicted classes:
 list(
   cascade::prepare_tima_annotations(
     show_example = TRUE
-    ),
+  ),
   cascade::prepare_tima_annotations(
     show_example = TRUE,
     predicted_classes = TRUE
-    )
-  ) |>
+  )
+) |>
   tidytable::bind_rows() |>
   list() |>
   cascade::plot_tima() |>
@@ -101,7 +102,7 @@ To compare different filtering thresholds:
 list(
   cascade::prepare_tima_annotations(
     show_example = TRUE
-  ), 
+  ),
   cascade::prepare_tima_annotations(
     show_example = TRUE,
     min_score_biological = 0.2,
@@ -116,10 +117,10 @@ list(
     min_matched_peaks_absolute = 6L,
     min_matched_peaks_percentage = 0.5,
     min_peaks = 10L
-    )
-  ) |>
+  )
+) |>
   tidytable::bind_rows() |>
-  list() |> 
+  list() |>
   cascade::plot_tima() |>
   purrr::pluck("histogram")
 ```
