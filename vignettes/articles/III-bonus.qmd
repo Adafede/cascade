@@ -17,6 +17,7 @@ format:
     smooth-scroll: true
 google-scholar: true
 lang: en
+license: CC BY
 knitr:
   opts_chunk:
     collapse: true
