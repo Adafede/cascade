@@ -1,5 +1,8 @@
 ---
-output: github_document
+format: 
+  gfm: default
+  html: default
+bibliography: grateful-refs.bib
 ---
 
 <!-- README.md is generated from README.qmd. Please edit that file -->
@@ -94,6 +97,22 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
 
 ### Others
 
-- The *RforMassSpectrometry* packages suite for MS2 matching: <https://doi.org/10.3390/metabo12020173>
-- chromatographR: <https://doi.org/10.5281/zenodo.6944334>
 - NPClassifier: <https://doi.org/10.1021/acs.jnatprod.1c00399>
+
+## Additional software credits
+
+```{r, echo = FALSE, message = FALSE}
+# Check if DESCRIPTION is in current dir
+# Else `altdoc` will not find the dependencies
+desc_path <- if (file.exists("DESCRIPTION")) {
+  "."
+} else {
+  ".."
+}
+grateful::cite_packages(
+  output = "table",
+  out.dir = getwd(),
+  path = desc_path
+) |> 
+  knitr::kable()
+```
