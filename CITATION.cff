@@ -43,6 +43,13 @@ keywords:
 - naturalProducts
 - computationalMetabolomics
 - specializedMetabolome
+- charged-aerosol-detector
+- chemical-composition
+- lc-msms
+- metabolite-annotation
+- metabolomics
+- natural-extracts
+- natural-products
 references:
 - type: article
   title: 'Automated Composition Assessment of Natural Extracts: Untargeted Mass Spectrometry-Based
@@ -511,6 +518,18 @@ references:
   year: '2025'
   doi: 10.32614/CRAN.package.BiocManager
   version: '>= 1.30.25'
+- type: software
+  title: BiocVersion
+  abstract: 'BiocVersion: Set the appropriate version of Bioconductor packages'
+  notes: Suggests
+  repository: https://bioconductor.org/
+  authors:
+  - family-names: Morgan
+    given-names: Martin
+    email: martin.morgan@roswellpark.org
+  year: '2025'
+  doi: 10.18129/B9.bioc.BiocVersion
+  version: '>= 3.20.0'
 - type: software
   title: knitr
   abstract: 'knitr: A General-Purpose Package for Dynamic Report Generation in R'
