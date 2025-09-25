@@ -11,7 +11,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 [![No Maintenance
 Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 [![CRAN
-status](https://www.r-pkg.org/badges/version/tima.png)](https://CRAN.R-project.org/package=tima)
+status](https://www.r-pkg.org/badges/version/tima.png)](https://CRAN.R-project.org/package=cascade)
 [![R-CMD-check](https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/adafede/cascade/graph/badge.svg)](https://app.codecov.io/gh/adafede/cascade)
@@ -133,12 +133,12 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
 | cascade | 0.0.0.9001 | Rutz and Wolfender (2023); Rutz (2025) |
 | caTools | 1.18.3 | Tuszynski (2024) |
 | data.table | 1.17.8 | Barrett et al. (2025) |
-| gt | 1.0.0 | Iannone et al. (2025) |
+| gt | 1.1.0 | Iannone et al. (2025) |
 | htmltools | 0.5.8.1 | Cheng et al. (2024) |
 | knitr | 1.50 | Xie (2014); Xie (2015); Xie (2025) |
 | MSnbase | 2.35.0 | Gatto and Lilley (2012); Gatto, Gibb, and Rainer (2020) |
 | mzR | 2.43.1 | Pedrioli et al. (2004); Keller et al. (2005); Kessner et al. (2008); Martens et al. (2010); Chambers et al. (2012) |
-| pkgload | 1.4.0 | Wickham et al. (2024) |
+| pkgload | 1.4.1 | Wickham et al. (2025) |
 | plotly | 4.11.0 | Sievert (2020) |
 | R.utils | 2.13.0 | Bengtsson (2025) |
 | rmarkdown | 2.29 | Xie, Allaire, and Grolemund (2018); Xie, Dervieux, and Riederer (2020); Allaire et al. (2024) |
@@ -400,7 +400,7 @@ Source Software* 4 (43): 1686. <https://doi.org/10.21105/joss.01686>.
 
 <div id="ref-pkgload" class="csl-entry">
 
-Wickham, Hadley, Winston Chang, Jim Hester, and Lionel Henry. 2024.
+Wickham, Hadley, Winston Chang, Jim Hester, and Lionel Henry. 2025.
 *<span class="nocase">pkgload</span>: Simulate Package Installation and
 Attach*. <https://doi.org/10.32614/CRAN.package.pkgload>.
 
