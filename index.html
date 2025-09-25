@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.24">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -88,18 +88,19 @@ div.csl-indent {
 <link href="./man/figures/logo.svg" rel="icon" type="image/svg+xml">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-befe23ebd2f54d8af2c8a89d1a1611f1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b651517ce65839d647a86e2780455cfb.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-03565cf19a25b6a56101e0a2948c6e82.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-c293246242c065b74d8780c63ef72ce5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-03565cf19a25b6a56101e0a2948c6e82.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-c56c8b360dac9905fa004422789ab249.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-8a31036c803348cb054eb59479076bd4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-c56c8b360dac9905fa004422789ab249.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -310,7 +311,8 @@ div.csl-indent {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./man/figures/logo.svg" alt="cascade logo" class="navbar-logo">
+    <img src="./man/figures/logo.svg" alt="cascade logo" class="navbar-logo light-content">
+    <img src="./man/figures/logo.svg" alt="cascade logo" class="navbar-logo dark-content">
     </a>
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">CASCADE</span>
@@ -390,6 +392,10 @@ div.csl-indent {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
+      </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
@@ -501,7 +507,7 @@ div.csl-indent {
 <section id="cascade" class="level1">
 <h1>CASCADE <img src="https://raw.githubusercontent.com/adafede/cascade/main/man/figures/logo.svg" align="right" height="139"></h1>
 <!-- badges: start -->
-<p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" class="img-fluid" alt="Lifecycle: experimental"></a> <a href="http://unmaintained.tech/"><img src="http://unmaintained.tech/badge.svg" class="img-fluid" alt="No Maintenance Intended"></a> <a href="https://CRAN.R-project.org/package=tima"><img src="https://www.r-pkg.org/badges/version/tima.png" class="img-fluid" alt="CRAN status"></a> <a href="https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml"><img src="https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml/badge.svg" class="img-fluid" alt="R-CMD-check"></a> <a href="https://app.codecov.io/gh/adafede/cascade"><img src="https://codecov.io/gh/adafede/cascade/graph/badge.svg" class="img-fluid" alt="Codecov test coverage"></a> <a href="https://adafede.r-universe.dev/cascade"><img src="https://adafede.r-universe.dev/cascade/badges/version?&amp;color=blue&amp;style=classic.png" class="img-fluid" alt="r-universe badge"></a> <!-- [![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://hub.docker.com/r/adafede/cascade/) --> <a href="https://doi.org/10.5281/zenodo.14515158"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.14515158.svg" class="img-fluid" alt="DOI"></a> <!-- badges: end --></p>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" class="img-fluid" alt="Lifecycle: experimental"></a> <a href="http://unmaintained.tech/"><img src="http://unmaintained.tech/badge.svg" class="img-fluid" alt="No Maintenance Intended"></a> <a href="https://CRAN.R-project.org/package=cascade"><img src="https://www.r-pkg.org/badges/version/tima.png" class="img-fluid" alt="CRAN status"></a> <a href="https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml"><img src="https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml/badge.svg" class="img-fluid" alt="R-CMD-check"></a> <a href="https://app.codecov.io/gh/adafede/cascade"><img src="https://codecov.io/gh/adafede/cascade/graph/badge.svg" class="img-fluid" alt="Codecov test coverage"></a> <a href="https://adafede.r-universe.dev/cascade"><img src="https://adafede.r-universe.dev/cascade/badges/version?&amp;color=blue&amp;style=classic.png" class="img-fluid" alt="r-universe badge"></a> <!-- [![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://hub.docker.com/r/adafede/cascade/) --> <a href="https://doi.org/10.5281/zenodo.14515158"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.14515158.svg" class="img-fluid" alt="DOI"></a> <!-- badges: end --></p>
 <p><strong>C</strong>ontextualizing untargeted <strong>A</strong>nnotation with <strong>S</strong>emi-quantitative <strong>C</strong>harged <strong>A</strong>erosol <strong>D</strong>etection for pertinent characterization of natural <strong>E</strong>xtracts.</p>
 <p>⚠️ This repository is not maintained and will not be except for extreme interest. It has just been opened for the sake of transparency.</p>
 <p>The initial work is available at https://doi.org/10.1021/acs.jafc.3c03099, with some improvements made since then. The workflow is illustrated below.</p>
@@ -522,14 +528,14 @@ div.csl-indent {
 <section id="installation" class="level2">
 <h2 class="anchored" data-anchor-id="installation">Installation</h2>
 <p>As the package is not (yet) available on CRAN, you will need to install with:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"cascade"</span>,</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">repos =</span> <span class="fu">c</span>(</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://adafede.r-universe.dev"</span>,</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://bioc.r-universe.dev"</span>,</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://cloud.r-project.org"</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Once installed, you are ready to go through our <a href="https://adafede.github.io/cascade/articles">documentation</a>, with the major steps detailed.</p>
 </section>
 <section id="main-citations" class="level2">
@@ -635,7 +641,7 @@ div.csl-indent {
 </tr>
 <tr class="odd">
 <td style="text-align: left;">gt</td>
-<td style="text-align: left;">1.0.0</td>
+<td style="text-align: left;">1.1.0</td>
 <td style="text-align: left;"><span class="citation" data-cites="gt">Iannone et al. (<a href="#ref-gt" role="doc-biblioref">2025</a>)</span></td>
 </tr>
 <tr class="even">
@@ -660,8 +666,8 @@ div.csl-indent {
 </tr>
 <tr class="even">
 <td style="text-align: left;">pkgload</td>
-<td style="text-align: left;">1.4.0</td>
-<td style="text-align: left;"><span class="citation" data-cites="pkgload">Wickham et al. (<a href="#ref-pkgload" role="doc-biblioref">2024</a>)</span></td>
+<td style="text-align: left;">1.4.1</td>
+<td style="text-align: left;"><span class="citation" data-cites="pkgload">Wickham et al. (<a href="#ref-pkgload" role="doc-biblioref">2025</a>)</span></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">plotly</td>
@@ -807,7 +813,7 @@ Wickham, Hadley. 2011. <span>“<span class="nocase">testthat</span>: Get Starte
 Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino McGowan, Romain François, Garrett Grolemund, et al. 2019. <span>“Welcome to the <span class="nocase">tidyverse</span>.”</span> <em>Journal of Open Source Software</em> 4 (43): 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.
 </div>
 <div id="ref-pkgload" class="csl-entry" role="listitem">
-Wickham, Hadley, Winston Chang, Jim Hester, and Lionel Henry. 2024. <em><span class="nocase">pkgload</span>: Simulate Package Installation and Attach</em>. <a href="https://github.com/r-lib/pkgload">https://github.com/r-lib/pkgload</a>.
+Wickham, Hadley, Winston Chang, Jim Hester, and Lionel Henry. 2025. <em><span class="nocase">pkgload</span>: Simulate Package Installation and Attach</em>. <a href="https://github.com/r-lib/pkgload">https://github.com/r-lib/pkgload</a>.
 </div>
 <div id="ref-knitr2014" class="csl-entry" role="listitem">
 Xie, Yihui. 2014. <span>“<span class="nocase">knitr</span>: A Comprehensive Tool for Reproducible Research in <span>R</span>.”</span> In <em>Implementing Reproducible Computational Research</em>, edited by Victoria Stodden, Friedrich Leisch, and Roger D. Peng. Chapman; Hall/CRC.
@@ -889,13 +895,14 @@ Xie, Yihui, Christophe Dervieux, and Emily Riederer. 2020. <em>R Markdown Cookbo
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
