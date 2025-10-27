@@ -128,7 +128,7 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
 | base | 4.5.1 | R Core Team (2025) |
 | baseline | 1.3.7 | Liland, Almøy, and Mevik (2010); Liland and Mevik (2025) |
 | BiocManager | 1.30.26 | Morgan and Ramos (2025) |
-| BiocParallel | 1.42.1 | Morgan et al. (2025) |
+| BiocParallel | 1.42.2 | Morgan et al. (2025) |
 | BiocVersion | 3.21.1 | Morgan (2024) |
 | cascade | 0.0.0.9001 | Rutz and Wolfender (2023); Rutz (2025) |
 | caTools | 1.18.3 | Tuszynski (2024) |
@@ -141,7 +141,7 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
 | pkgload | 1.4.1 | Wickham et al. (2025) |
 | plotly | 4.11.0 | Sievert (2020) |
 | R.utils | 2.13.0 | Bengtsson (2025) |
-| rmarkdown | 2.29 | Xie, Allaire, and Grolemund (2018); Xie, Dervieux, and Riederer (2020); Allaire et al. (2024) |
+| rmarkdown | 2.30 | Xie, Allaire, and Grolemund (2018); Xie, Dervieux, and Riederer (2020); Allaire et al. (2025) |
 | stringi | 1.8.7 | Gagolewski (2022) |
 | testthat | 3.2.3 | Wickham (2011) |
 | tidytable | 0.11.2 | Fairbanks (2024) |
@@ -152,10 +152,10 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
 <div id="refs" class="references csl-bib-body hanging-indent"
 entry-spacing="0">
 
-<div id="ref-rmarkdown2024" class="csl-entry">
+<div id="ref-rmarkdown2025" class="csl-entry">
 
 Allaire, JJ, Yihui Xie, Christophe Dervieux, Jonathan McPherson, Javier
-Luraschi, Kevin Ushey, Aron Atkins, et al. 2024.
+Luraschi, Kevin Ushey, Aron Atkins, et al. 2025.
 *<span class="nocase">rmarkdown</span>: Dynamic Documents for r*.
 <https://github.com/rstudio/rmarkdown>.
 
