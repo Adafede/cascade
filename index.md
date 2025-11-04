@@ -125,19 +125,19 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
 
 | Package | Version | Citation |
 |:---|:---|:---|
-| base | 4.5.1 | R Core Team (2025) |
+| base | 4.5.2 | R Core Team (2025) |
 | baseline | 1.3.7 | Liland, Almøy, and Mevik (2010); Liland and Mevik (2025) |
 | BiocManager | 1.30.26 | Morgan and Ramos (2025) |
-| BiocParallel | 1.42.2 | Morgan et al. (2025) |
-| BiocVersion | 3.21.1 | Morgan (2024) |
+| BiocParallel | 1.44.0 | Wang et al. (2025) |
+| BiocVersion | 3.22.0 | Morgan (2025) |
 | cascade | 0.0.0.9001 | Rutz and Wolfender (2023); Rutz (2025) |
 | caTools | 1.18.3 | Tuszynski (2024) |
 | data.table | 1.17.8 | Barrett et al. (2025) |
 | gt | 1.1.0 | Iannone et al. (2025) |
 | htmltools | 0.5.8.1 | Cheng et al. (2024) |
 | knitr | 1.50 | Xie (2014); Xie (2015); Xie (2025) |
-| MSnbase | 2.34.1 | Gatto and Lilley (2012); Gatto, Gibb, and Rainer (2020) |
-| mzR | 2.42.0 | Pedrioli et al. (2004); Keller et al. (2005); Kessner et al. (2008); Martens et al. (2010); Chambers et al. (2012) |
+| MSnbase | 2.36.0 | Gatto and Lilley (2012); Gatto, Gibb, and Rainer (2020) |
+| mzR | 2.44.0 | Pedrioli et al. (2004); Keller et al. (2005); Kessner et al. (2008); Martens et al. (2010); Chambers et al. (2012) |
 | pkgload | 1.4.1 | Wickham et al. (2025) |
 | plotly | 4.11.0 | Sievert (2020) |
 | R.utils | 2.13.0 | Bengtsson (2025) |
@@ -280,7 +280,7 @@ Community Standard for Mass Spectrometry Data.” *Mol Cell Proteomics*.
 
 <div id="ref-BiocVersion" class="csl-entry">
 
-Morgan, Martin. 2024. *BiocVersion: Set the Appropriate Version of
+Morgan, Martin. 2025. *BiocVersion: Set the Appropriate Version of
 Bioconductor Packages*. <https://doi.org/10.18129/B9.bioc.BiocVersion>.
 
 </div>
@@ -290,15 +290,6 @@ Bioconductor Packages*. <https://doi.org/10.18129/B9.bioc.BiocVersion>.
 Morgan, Martin, and Marcel Ramos. 2025. *BiocManager: Access the
 Bioconductor Project Package Repository*.
 <https://bioconductor.github.io/BiocManager/>.
-
-</div>
-
-<div id="ref-BiocParallel" class="csl-entry">
-
-Morgan, Martin, Jiefei Wang, Valerie Obenchain, Michel Lang, Ryan
-Thompson, and Nitesh Turaga. 2025. *BiocParallel: Bioconductor
-Facilities for Parallel Evaluation*.
-<https://doi.org/10.18129/B9.bioc.BiocParallel>.
 
 </div>
 
@@ -376,6 +367,15 @@ Plotly, and Shiny*. Chapman; Hall/CRC. <https://plotly-r.com>.
 
 Tuszynski, Jarek. 2024. *<span class="nocase">caTools</span>: Tools:
 Moving Window Statistics, GIF, Base64, ROC AUC, Etc*.
+
+</div>
+
+<div id="ref-BiocParallel" class="csl-entry">
+
+Wang, Jiefei, Martin Morgan, Valerie Obenchain, Michel Lang, Ryan
+Thompson, and Nitesh Turaga. 2025. *BiocParallel: Bioconductor
+Facilities for Parallel Evaluation*.
+<https://doi.org/10.18129/B9.bioc.BiocParallel>.
 
 </div>
 
