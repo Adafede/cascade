@@ -110,11 +110,12 @@ references:
   url: https://github.com/Bioconductor/BiocParallel
   repository: https://bioconductor.org/
   authors:
+  - family-names: Wang
+    given-names: Jiefei
+    email: jiefei0804@gmail.com
   - family-names: Morgan
     given-names: Martin
     email: mtmorgan.bioc@gmail.com
-  - family-names: Wang
-    given-names: Jiefei
   - family-names: Obenchain
     given-names: Valerie
   - family-names: Lang
@@ -127,7 +128,7 @@ references:
     given-names: Nitesh
   year: '2025'
   doi: 10.18129/B9.bioc.BiocParallel
-  version: '>= 1.40.2'
+  version: '>= 1.42.2'
 - type: software
   title: caTools
   abstract: 'caTools: Tools: Moving Window Statistics, GIF, Base64, ROC AUC, etc'
@@ -184,7 +185,7 @@ references:
   authors:
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
+    email: hadley@posit.co
   year: '2025'
   doi: 10.32614/CRAN.package.forcats
   version: '>= 1.0.0'
@@ -319,7 +320,7 @@ references:
     orcid: https://orcid.org/0000-0001-7406-4443
   year: '2025'
   doi: 10.18129/B9.bioc.MSnbase
-  version: '>= 2.32.0'
+  version: '>= 2.34.1'
 - type: software
   title: mzR
   abstract: 'mzR: parser for netCDF, mzXML and mzML and mzIdentML files (mass spectrometry
@@ -339,7 +340,7 @@ references:
     email: qkou@umail.iu.edu
   year: '2025'
   doi: 10.18129/B9.bioc.mzR
-  version: '>= 2.40.0'
+  version: '>= 2.42.0'
 - type: software
   title: plotly
   abstract: 'plotly: Create Interactive Web Graphics via ''plotly.js'''
@@ -530,7 +531,7 @@ references:
     email: martin.morgan@roswellpark.org
   year: '2025'
   doi: 10.18129/B9.bioc.BiocVersion
-  version: '>= 3.20.0'
+  version: '>= 3.21.1'
 - type: software
   title: grateful
   abstract: 'grateful: Facilitate Citation of R Packages'
