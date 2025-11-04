@@ -5,7 +5,6 @@
 * Adapt to `tima` updates
 * Added helper functions to visualize [TIMA](https://taxonomicallyinformedannotation.github.io/tima/) results
 * Switched documentation from `pkgdown` to `altdoc`
-* Updated minimal BioConductor version to `3.21` (and related Bioconductor dependencies)
 * Updated minimal R version to `4.4.0` (and related Bioconductor dependencies)
 
 # cascade 0.0.9000

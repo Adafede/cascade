@@ -189,7 +189,7 @@
       "@type": "SoftwareApplication",
       "identifier": "BiocParallel",
       "name": "BiocParallel",
-      "version": ">= 1.42.2",
+      "version": ">= 1.40.2",
       "provider": {
         "@id": "https://www.bioconductor.org",
         "@type": "Organization",
@@ -280,7 +280,7 @@
       "@type": "SoftwareApplication",
       "identifier": "MSnbase",
       "name": "MSnbase",
-      "version": ">= 2.34.1",
+      "version": ">= 2.32.0",
       "provider": {
         "@id": "https://www.bioconductor.org",
         "@type": "Organization",
@@ -293,7 +293,7 @@
       "@type": "SoftwareApplication",
       "identifier": "mzR",
       "name": "mzR",
-      "version": ">= 2.42.0",
+      "version": ">= 2.40.0",
       "provider": {
         "@id": "https://www.bioconductor.org",
         "@type": "Organization",

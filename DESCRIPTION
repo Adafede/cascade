@@ -18,15 +18,15 @@ Depends:
     R (>= 4.4.0)
 Imports:
     baseline (>= 1.3.7),
-    BiocParallel (>= 1.42.2),
+    BiocParallel (>= 1.40.2),
     caTools (>= 1.18.3),
     data.table (>= 1.17.8),
     forcats (>= 1.0.0),
     ggplot2 (>= 3.5.2),
     gt (>= 1.0.0),
     htmltools (>= 0.5.8.1),
-    MSnbase (>= 2.34.1),
-    mzR (>= 2.42.0),
+    MSnbase (>= 2.32.0),
+    mzR (>= 2.40.0),
     plotly (>= 4.11.0),
     purrr (>= 1.1.0),
     R.utils (>= 2.13.0),
@@ -41,7 +41,7 @@ Remotes:
 Suggests:
     altdoc (>= 0.5.0),
     BiocManager (>= 1.30.25),
-    BiocVersion (>= 3.21.1),
+    BiocVersion (>= 3.20.0),
     grateful (>= 0.2.12),
     knitr (>= 1.50),
     quarto (>= 1.4.4),
