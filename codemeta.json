@@ -14,7 +14,7 @@
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.5.1 (2025-06-13)",
+  "runtimePlatform": "R version 4.5.2 (2025-10-31)",
   "author": [
     {
       "@type": "Person",
@@ -64,7 +64,7 @@
       "@type": "SoftwareApplication",
       "identifier": "BiocVersion",
       "name": "BiocVersion",
-      "version": ">= 3.20.0",
+      "version": ">= 3.21.1",
       "provider": {
         "@id": "https://www.bioconductor.org",
         "@type": "Organization",
@@ -189,7 +189,7 @@
       "@type": "SoftwareApplication",
       "identifier": "BiocParallel",
       "name": "BiocParallel",
-      "version": ">= 1.40.2",
+      "version": ">= 1.42.2",
       "provider": {
         "@id": "https://www.bioconductor.org",
         "@type": "Organization",
@@ -280,7 +280,7 @@
       "@type": "SoftwareApplication",
       "identifier": "MSnbase",
       "name": "MSnbase",
-      "version": ">= 2.32.0",
+      "version": ">= 2.34.1",
       "provider": {
         "@id": "https://www.bioconductor.org",
         "@type": "Organization",
@@ -293,7 +293,7 @@
       "@type": "SoftwareApplication",
       "identifier": "mzR",
       "name": "mzR",
-      "version": ">= 2.40.0",
+      "version": ">= 2.42.0",
       "provider": {
         "@id": "https://www.bioconductor.org",
         "@type": "Organization",
@@ -408,7 +408,7 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteAnnotation", "chargedAerosolDetector", "semiQuantitative", "naturalProducts", "computationalMetabolomics", "specializedMetabolome", "chemical-composition", "lc-msms", "metabolite-annotation", "metabolomics", "natural-extracts", "natural-products", "charged-aerosol-detector", "r"],
-  "fileSize": "166725.29KB",
+  "fileSize": "166725.625KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
