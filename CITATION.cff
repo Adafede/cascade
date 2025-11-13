@@ -268,7 +268,7 @@ references:
     given-names: Olivier
   year: '2025'
   doi: 10.32614/CRAN.package.gt
-  version: '>= 1.0.0'
+  version: '>= 1.1.0'
 - type: software
   title: htmltools
   abstract: 'htmltools: Tools for HTML'
@@ -390,7 +390,7 @@ references:
     email: lionel@posit.co
   year: '2025'
   doi: 10.32614/CRAN.package.purrr
-  version: '>= 1.1.0'
+  version: '>= 1.2.0'
 - type: software
   title: R.utils
   abstract: 'R.utils: Various Programming Utilities'
@@ -501,7 +501,7 @@ references:
     orcid: https://orcid.org/0000-0003-2042-7063
   year: '2025'
   doi: 10.32614/CRAN.package.altdoc
-  version: '>= 0.5.0'
+  version: '>= 0.7.0'
 - type: software
   title: BiocManager
   abstract: 'BiocManager: Access the Bioconductor Project Package Repository'
@@ -549,7 +549,7 @@ references:
     orcid: https://orcid.org/0000-0002-4220-5210
   year: '2025'
   doi: 10.32614/CRAN.package.grateful
-  version: '>= 0.2.12'
+  version: '>= 0.3.0'
 - type: software
   title: knitr
   abstract: 'knitr: A General-Purpose Package for Dynamic Report Generation in R'
@@ -581,7 +581,7 @@ references:
     orcid: https://orcid.org/0000-0003-4474-2498
   year: '2025'
   doi: 10.32614/CRAN.package.quarto
-  version: '>= 1.4.4'
+  version: '>= 1.5.1'
 - type: software
   title: lifecycle
   abstract: 'lifecycle: Manage the Life Cycle of your Package Functions'
@@ -615,7 +615,7 @@ references:
     email: james.hester@rstudio.com
   year: '2025'
   doi: 10.32614/CRAN.package.spelling
-  version: '>= 2.3.1'
+  version: '>= 2.3.2'
 - type: software
   title: svglite
   abstract: 'svglite: An ''SVG'' Graphics Device'
