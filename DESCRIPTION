@@ -23,12 +23,12 @@ Imports:
     data.table (>= 1.17.8),
     forcats (>= 1.0.0),
     ggplot2 (>= 3.5.2),
-    gt (>= 1.0.0),
+    gt (>= 1.1.0),
     htmltools (>= 0.5.8.1),
     MSnbase (>= 2.32.0),
     mzR (>= 2.40.0),
     plotly (>= 4.11.0),
-    purrr (>= 1.1.0),
+    purrr (>= 1.2.0),
     R.utils (>= 2.13.0),
     stringi (>= 1.8.7),
     tibble (>= 3.3.0),
@@ -39,14 +39,14 @@ Imports:
 Remotes:
     taxonomicallyinformedannotation/tima
 Suggests:
-    altdoc (>= 0.5.0),
+    altdoc (>= 0.7.0),
     BiocManager (>= 1.30.25),
     BiocVersion (>= 3.20.0),
-    grateful (>= 0.2.12),
+    grateful (>= 0.3.0),
     knitr (>= 1.50),
-    quarto (>= 1.4.4),
+    quarto (>= 1.5.1),
     lifecycle (>= 1.0.4),
-    spelling (>= 2.3.1),
+    spelling (>= 2.3.2),
     svglite (>= 2.2.1),
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
