@@ -143,7 +143,7 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
 | R.utils | 2.13.0 | Bengtsson (2025) |
 | rmarkdown | 2.30 | Xie, Allaire, and Grolemund (2018); Xie, Dervieux, and Riederer (2020); Allaire et al. (2025) |
 | stringi | 1.8.7 | Gagolewski (2022) |
-| testthat | 3.2.3 | Wickham (2011) |
+| testthat | 3.3.0 | Wickham (2011) |
 | tidytable | 0.11.2 | Fairbanks (2024) |
 | tidyverse | 2.0.0 | Wickham et al. (2019) |
 | tima | 2.12.0 | Rutz et al. (2019); Rutz and Allard (2025) |
@@ -383,7 +383,7 @@ Facilities for Parallel Evaluation*.
 
 Wickham, Hadley. 2011. “<span class="nocase">testthat</span>: Get
 Started with Testing.” *The R Journal* 3: 5–10.
-<https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf>.
+<https://journal.r-project.org/articles/RJ-2011-002/>.
 
 </div>
 
