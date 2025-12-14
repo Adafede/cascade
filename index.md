@@ -134,7 +134,7 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
 | caTools | 1.18.3 | Tuszynski (2024) |
 | data.table | 1.17.8 | Barrett et al. (2025) |
 | gt | 1.1.0 | Iannone et al. (2025) |
-| htmltools | 0.5.8.1 | Cheng et al. (2024) |
+| htmltools | 0.5.9 | Cheng et al. (2025) |
 | knitr | 1.50 | Xie (2014); Xie (2015); Xie (2025) |
 | MSnbase | 2.36.0 | Gatto and Lilley (2012); Gatto, Gibb, and Rainer (2020) |
 | mzR | 2.44.0 | Pedrioli et al. (2004); Keller et al. (2005); Kessner et al. (2008); Martens et al. (2010); Chambers et al. (2012) |
@@ -189,8 +189,8 @@ spectrometry and proteomics</span>.” *Nat Biotech* 30 (10): 918–20.
 <div id="ref-htmltools" class="csl-entry">
 
 Cheng, Joe, Carson Sievert, Barret Schloerke, Winston Chang, Yihui Xie,
-and Jeff Allen. 2024. *<span class="nocase">htmltools</span>: Tools for
-HTML*. <https://github.com/rstudio/htmltools>.
+and Jeff Allen. 2025. *<span class="nocase">htmltools</span>: Tools for
+HTML*. <https://doi.org/10.32614/CRAN.package.htmltools>.
 
 </div>
 
