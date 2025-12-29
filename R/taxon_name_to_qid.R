@@ -11,24 +11,21 @@
 #' taxon_name_to_qid(taxon_name = "Gentiana lutea")
 #' }
 taxon_name_to_qid <- function(taxon_name) {
-  WikidataQueryServiceR::query_wikidata(
-    sparql_query = paste0(
-      "SELECT ?search ?item WHERE {
-    SERVICE wikibase:mwapi {
-      bd:serviceParam wikibase:endpoint \"www.wikidata.org\";
-                      wikibase:api \"EntitySearch\";
-                      mwapi:search \"",
-      taxon_name,
-      "                 \";
-                      mwapi:language \"mul\".
-    ?item wikibase:apiOutputItem mwapi:item.
-    ?num wikibase:apiOrdinal true.
-    }
-    ?item (wdt:P225) ?search.
-    FILTER (?num = 0)
-    }"
-    )
-  ) |>
-    tidytable::pull(item) |>
+  # Fetch the SPARQL query template from remote repository
+  query_template <- "https://adafede.github.io/sparql-examples/examples/Taxa/wd_taxa_name_to_qid.rq" |>
+    readLines() |>
+    paste0(collapse = "\n")
+
+  # Substitute the taxon name parameter
+  query <- gsub(
+    pattern = "Gentiana lutea",
+    replacement = taxon_name,
+    x = query_template,
+    fixed = FALSE
+  )
+
+  # Execute query and extract QID
+  WikidataQueryServiceR::query_wikidata(sparql_query = query) |>
+    tidytable::pull(taxon) |>
     gsub(pattern = "http://www.wikidata.org/entity/", replacement = "")
 }
