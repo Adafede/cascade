@@ -132,10 +132,10 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
 | BiocVersion | 3.22.0 | Morgan (2025) |
 | cascade | 0.0.0.9001 | Rutz and Wolfender (2023); Rutz (2025) |
 | caTools | 1.18.3 | Tuszynski (2024) |
-| data.table | 1.17.8 | Barrett et al. (2025) |
-| gt | 1.1.0 | Iannone et al. (2025) |
+| data.table | 1.18.0 | Barrett et al. (2025) |
+| gt | 1.2.0 | Iannone et al. (2025) |
 | htmltools | 0.5.9 | Cheng et al. (2025) |
-| knitr | 1.50 | Xie (2014); Xie (2015); Xie (2025) |
+| knitr | 1.51 | Xie (2014); Xie (2015); Xie (2025) |
 | MSnbase | 2.36.0 | Gatto and Lilley (2012); Gatto, Gibb, and Rainer (2020) |
 | mzR | 2.44.0 | Pedrioli et al. (2004); Keller et al. (2005); Kessner et al. (2008); Martens et al. (2010); Chambers et al. (2012) |
 | pkgload | 1.4.1 | Wickham et al. (2025) |
@@ -166,7 +166,8 @@ Luraschi, Kevin Ushey, Aron Atkins, et al. 2025.
 Barrett, Tyson, Matt Dowle, Arun Srinivasan, Jan Gorecki, Michael
 Chirico, Toby Hocking, Benjamin Schwendinger, and Ivan Krylov. 2025.
 *<span class="nocase">data.table</span>: Extension of
-“<span class="nocase">data.frame</span>”*. <https://r-datatable.com>.
+“<span class="nocase">data.frame</span>”*.
+<https://doi.org/10.32614/CRAN.package.data.table>.
 
 </div>
 
@@ -228,10 +229,11 @@ Processing and Quantitation.” *Bioinformatics* 28: 288–89.
 
 <div id="ref-gt" class="csl-entry">
 
-Iannone, Richard, Joe Cheng, Barret Schloerke, Ellis Hughes, Alexandra
-Lauer, JooYoung Seo, Ken Brevoort, and Olivier Roy. 2025.
-*<span class="nocase">gt</span>: Easily Create Presentation-Ready
-Display Tables*. <https://gt.rstudio.com>.
+Iannone, Richard, Joe Cheng, Barret Schloerke, Shannon Haughton, Ellis
+Hughes, Alexandra Lauer, Romain François, JooYoung Seo, Ken Brevoort,
+and Olivier Roy. 2025. *<span class="nocase">gt</span>: Easily Create
+Presentation-Ready Display Tables*.
+<https://doi.org/10.32614/CRAN.package.gt>.
 
 </div>
 

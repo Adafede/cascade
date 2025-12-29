@@ -45,13 +45,13 @@
 <polyline points='125.71,329.12 125.71,5.48 ' style='stroke-width: 1.07; stroke: #EBEBEB; stroke-linecap: butt;' />
 <rect x='55.96' y='45.93' width='22.79' height='242.73' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #4E7705;' />
 <rect x='78.74' y='45.93' width='5.12' height='242.73' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #6D9F06;' />
-<rect x='83.86' y='45.93' width='3.26' height='242.73' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #97CE2F;' />
-<rect x='87.11' y='45.93' width='1.40' height='242.73' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #BDEC6F;' />
-<rect x='88.51' y='45.93' width='18.14' height='242.73' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #9D654C;' />
-<rect x='106.64' y='45.93' width='6.51' height='242.73' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #C17754;' />
-<rect x='113.15' y='45.93' width='1.86' height='242.73' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #F09163;' />
-<rect x='115.01' y='45.93' width='1.40' height='242.73' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FCB076;' />
-<rect x='116.41' y='45.93' width='0.93' height='242.73' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFD5AF;' />
+<rect x='83.86' y='45.93' width='2.79' height='242.73' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #97CE2F;' />
+<rect x='86.65' y='45.93' width='1.40' height='242.73' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #BDEC6F;' />
+<rect x='88.04' y='45.93' width='18.14' height='242.73' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #9D654C;' />
+<rect x='106.18' y='45.93' width='6.51' height='242.73' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #C17754;' />
+<rect x='112.69' y='45.93' width='2.33' height='242.73' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #F09163;' />
+<rect x='115.01' y='45.93' width='1.86' height='242.73' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FCB076;' />
+<rect x='116.87' y='45.93' width='0.47' height='242.73' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFD5AF;' />
 <rect x='117.34' y='45.93' width='1.86' height='242.73' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #098BD9;' />
 <rect x='119.20' y='45.93' width='1.86' height='242.73' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #56B4E9;' />
 <rect x='121.06' y='45.93' width='1.40' height='242.73' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #7DCCFF;' />
@@ -113,9 +113,9 @@
 <text x='171.32' y='100.23' style='font-size: 8.80px; font-family: "Liberation Sans";' textLength='293.34px' lengthAdjust='spacingAndGlyphs'>Shikimates and Phenylpropanoids-Shikimates and Phenylpropanoids Other</text>
 <text x='171.32' y='117.51' style='font-size: 8.80px; font-family: "Liberation Sans";' textLength='109.02px' lengthAdjust='spacingAndGlyphs'>Terpenoids-Monoterpenoids</text>
 <text x='171.32' y='134.79' style='font-size: 8.80px; font-family: "Liberation Sans";' textLength='113.92px' lengthAdjust='spacingAndGlyphs'>Terpenoids-Sesquiterpenoids</text>
-<text x='171.32' y='152.07' style='font-size: 8.80px; font-family: "Liberation Sans";' textLength='107.08px' lengthAdjust='spacingAndGlyphs'>Terpenoids-Apocarotenoids</text>
+<text x='171.32' y='152.07' style='font-size: 8.80px; font-family: "Liberation Sans";' textLength='113.41px' lengthAdjust='spacingAndGlyphs'>Terpenoids-Terpenoids Other</text>
 <text x='171.32' y='169.35' style='font-size: 8.80px; font-family: "Liberation Sans";' textLength='141.78px' lengthAdjust='spacingAndGlyphs'>Terpenoids-Terpenoids notClassified</text>
-<text x='171.32' y='186.63' style='font-size: 8.80px; font-family: "Liberation Sans";' textLength='113.41px' lengthAdjust='spacingAndGlyphs'>Terpenoids-Terpenoids Other</text>
+<text x='171.32' y='186.63' style='font-size: 8.80px; font-family: "Liberation Sans";' textLength='110.03px' lengthAdjust='spacingAndGlyphs'>Terpenoids-Pseudoalkaloids</text>
 <text x='171.32' y='203.91' style='font-size: 8.80px; font-family: "Liberation Sans";' textLength='117.86px' lengthAdjust='spacingAndGlyphs'>Polyketides-Cyclic polyketides</text>
 <text x='171.32' y='221.19' style='font-size: 8.80px; font-family: "Liberation Sans";' textLength='117.34px' lengthAdjust='spacingAndGlyphs'>Polyketides-Polyketides Other</text>
 <text x='171.32' y='238.47' style='font-size: 8.80px; font-family: "Liberation Sans";' textLength='89.98px' lengthAdjust='spacingAndGlyphs'>Polyketides-Xanthones</text>
