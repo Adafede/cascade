@@ -9,35 +9,42 @@ queries_progress(
   start = "0",
   end = "9999",
   limit = "1000000",
-  query_part_1,
-  query_part_2,
-  query_part_3,
-  query_part_4
+  query_url = NULL,
+  query_part_1 = NULL,
+  query_part_2 = NULL,
+  query_part_3 = NULL,
+  query_part_4 = NULL
 )
 }
 \arguments{
-\item{xs}{XS}
+\item{xs}{Named list of taxon QIDs}
 
-\item{start}{Start}
+\item{start}{Start year for publication date filter (character)}
 
-\item{end}{End}
+\item{end}{End year for publication date filter (character)}
 
-\item{limit}{Limit}
+\item{limit}{Maximum number of results per query (character)}
 
-\item{query_part_1}{query_part_1}
+\item{query_url}{URL to the remote SPARQL query template. If NULL, uses default.}
 
-\item{query_part_2}{query_part_2}
+\item{query_part_1}{Deprecated. Kept for backward compatibility.}
 
-\item{query_part_3}{query_part_3}
+\item{query_part_2}{Deprecated. Kept for backward compatibility.}
 
-\item{query_part_4}{query_part_4}
+\item{query_part_3}{Deprecated. Kept for backward compatibility.}
+
+\item{query_part_4}{Deprecated. Kept for backward compatibility.}
 }
 \value{
-A list of queries
+A named list of parameterized SPARQL queries
 }
 \description{
-Queries progress
+Generates SPARQL queries for multiple taxa by fetching a query template
+from a remote repository and parameterizing it with taxon QIDs and filters.
 }
 \examples{
-NULL
+\dontrun{
+qids <- list(Swertia = "Q1234", Kopsia = "Q5678")
+queries <- queries_progress(xs = qids, start = "2000", end = "2024")
+}
 }
