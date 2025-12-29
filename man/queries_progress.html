@@ -475,7 +475,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="unnumbered anchored" data-anchor-id="queries-progress">Queries progress</h2>
 <section id="description" class="level3">
 <h3 class="anchored" data-anchor-id="description">Description</h3>
-<p>Queries progress</p>
+<p>Generates SPARQL queries for multiple taxa by fetching a query template from a remote repository and parameterizing it with taxon QIDs and filters.</p>
 </section>
 <section id="usage" class="level3">
 <h3 class="anchored" data-anchor-id="usage">Usage</h3>
@@ -484,10 +484,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   start = "0",
   end = "9999",
   limit = "1000000",
-  query_part_1,
-  query_part_2,
-  query_part_3,
-  query_part_4
+  query_url = NULL,
+  query_part_1 = NULL,
+  query_part_2 = NULL,
+  query_part_3 = NULL,
+  query_part_4 = NULL
 )
 </code></pre>
 </section>
@@ -499,7 +500,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <code id="xs">xs</code>
 </td>
 <td>
-XS
+Named list of taxon QIDs
 </td>
 </tr>
 <tr>
@@ -507,7 +508,7 @@ XS
 <code id="start">start</code>
 </td>
 <td>
-Start
+Start year for publication date filter (character)
 </td>
 </tr>
 <tr>
@@ -515,7 +516,7 @@ Start
 <code id="end">end</code>
 </td>
 <td>
-End
+End year for publication date filter (character)
 </td>
 </tr>
 <tr>
@@ -523,7 +524,15 @@ End
 <code id="limit">limit</code>
 </td>
 <td>
-Limit
+Maximum number of results per query (character)
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="query_url">query_url</code>
+</td>
+<td>
+URL to the remote SPARQL query template. If NULL, uses default.
 </td>
 </tr>
 <tr>
@@ -531,7 +540,7 @@ Limit
 <code id="query_part_1">query_part_1</code>
 </td>
 <td>
-query_part_1
+Deprecated. Kept for backward compatibility.
 </td>
 </tr>
 <tr>
@@ -539,7 +548,7 @@ query_part_1
 <code id="query_part_2">query_part_2</code>
 </td>
 <td>
-query_part_2
+Deprecated. Kept for backward compatibility.
 </td>
 </tr>
 <tr>
@@ -547,7 +556,7 @@ query_part_2
 <code id="query_part_3">query_part_3</code>
 </td>
 <td>
-query_part_3
+Deprecated. Kept for backward compatibility.
 </td>
 </tr>
 <tr>
@@ -555,24 +564,22 @@ query_part_3
 <code id="query_part_4">query_part_4</code>
 </td>
 <td>
-query_part_4
+Deprecated. Kept for backward compatibility.
 </td>
 </tr>
 </tbody></table>
 </section>
 <section id="value" class="level3">
 <h3 class="anchored" data-anchor-id="value">Value</h3>
-<p>A list of queries</p>
+<p>A named list of parameterized SPARQL queries</p>
 </section>
 <section id="examples" class="level3">
 <h3 class="anchored" data-anchor-id="examples">Examples</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"cascade"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cn">NULL</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>NULL</code></pre>
-</div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>qids <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">Swertia =</span> <span class="st">"Q1234"</span>, <span class="at">Kopsia =</span> <span class="st">"Q5678"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>queries <span class="ot">&lt;-</span> <span class="fu">queries_progress</span>(<span class="at">xs =</span> qids, <span class="at">start =</span> <span class="st">"2000"</span>, <span class="at">end =</span> <span class="st">"2024"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 
