@@ -1,4 +1,4 @@
-' Queries progress
+#' Queries progress
 #'
 #' @description
 #' Generates SPARQL queries for multiple taxa by fetching a query template

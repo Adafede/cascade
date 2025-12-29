@@ -154,6 +154,7 @@ utils::globalVariables(
     "taxaLabels",
     "taxo",
     "taxo_2",
+    "taxon",
     "time",
     "time_2",
     "tot",
