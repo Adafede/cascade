@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Adriano Rutz">
-<meta name="dcterms.date" content="2025-12-29">
+<meta name="dcterms.date" content="2026-01-04">
 
 <title>2 Processing – cascade</title>
 <style>
@@ -22,6 +22,7 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
 /* CSS for syntax highlighting */
 html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
@@ -60,56 +61,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
 <link href="../../man/figures/logo.svg" rel="icon" type="image/svg+xml">
-<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c56c8b360dac9905fa004422789ab249.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-8a31036c803348cb054eb59479076bd4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-c56c8b360dac9905fa004422789ab249.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
-  "location": "navbar",
-  "copy-button": false,
-  "collapse-after": 3,
-  "panel-placement": "end",
-  "type": "overlay",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
-  "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
-    "search-text-placeholder": "",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
-  }
-}</script>
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-html-734cb40618f438257b19a1e532635a32.min.css" rel="stylesheet" append-hash="true" data-mode="light">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <style>html{ scroll-behavior: smooth; }</style>
 <script type="application/json" class="js-hypothesis-config">
 {
@@ -141,408 +102,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <meta name="citation_title" content="2 Processing">
 <meta name="citation_author" content="Adriano Rutz">
-<meta name="citation_publication_date" content="2025-12-29">
-<meta name="citation_cover_date" content="2025-12-29">
-<meta name="citation_year" content="2025">
-<meta name="citation_online_date" content="2025-12-29">
+<meta name="citation_publication_date" content="2026-01-04">
+<meta name="citation_cover_date" content="2026-01-04">
+<meta name="citation_year" content="2026">
+<meta name="citation_online_date" content="2026-01-04">
 <meta name="citation_fulltext_html_url" content="https://adafede.github.io/cascade/articles/vignettes/II-processing.html">
 <meta name="citation_language" content="en">
 </head>
 
-<body class="nav-sidebar floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
-    const toggleBodyColorMode = (bsSheetEl) => {
-      const mode = bsSheetEl.getAttribute("data-mode");
-      const bodyEl = window.document.querySelector("body");
-      if (mode === "dark") {
-        bodyEl.classList.add("quarto-dark");
-        bodyEl.classList.remove("quarto-light");
-      } else {
-        bodyEl.classList.add("quarto-light");
-        bodyEl.classList.remove("quarto-dark");
-      }
-    }
-    const toggleBodyColorPrimary = () => {
-      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
-      if (bsSheetEl) {
-        toggleBodyColorMode(bsSheetEl);
-      }
-    }
-    const setColorSchemeToggle = (alternate) => {
-      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
-      for (let i=0; i < toggles.length; i++) {
-        const toggle = toggles[i];
-        if (toggle) {
-          if (alternate) {
-            toggle.classList.add("alternate");
-          } else {
-            toggle.classList.remove("alternate");
-          }
-        }
-      }
-    };
-    const toggleColorMode = (alternate) => {
-      // Switch the stylesheets
-      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
-      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
-      manageTransitions('#quarto-margin-sidebar .nav-link', false);
-      if (alternate) {
-        // note: dark is layered on light, we don't disable primary!
-        enableStylesheet(alternateStylesheets);
-        for (const sheetNode of alternateStylesheets) {
-          if (sheetNode.id === "quarto-bootstrap") {
-            toggleBodyColorMode(sheetNode);
-          }
-        }
-      } else {
-        disableStylesheet(alternateStylesheets);
-        enableStylesheet(primaryStylesheets)
-        toggleBodyColorPrimary();
-      }
-      manageTransitions('#quarto-margin-sidebar .nav-link', true);
-      // Switch the toggles
-      setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
-      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
-        manageTransitions("body", false);
-        window.scrollTo(0, 1);
-        setTimeout(() => {
-          window.scrollTo(0, 0);
-          manageTransitions("body", true);
-        }, 40);
-      }
-    }
-    const disableStylesheet = (stylesheets) => {
-      for (let i=0; i < stylesheets.length; i++) {
-        const stylesheet = stylesheets[i];
-        stylesheet.rel = 'disabled-stylesheet';
-      }
-    }
-    const enableStylesheet = (stylesheets) => {
-      for (let i=0; i < stylesheets.length; i++) {
-        const stylesheet = stylesheets[i];
-        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
-          stylesheet.rel = 'stylesheet';
-        }
-      }
-    }
-    const manageTransitions = (selector, allowTransitions) => {
-      const els = window.document.querySelectorAll(selector);
-      for (let i=0; i < els.length; i++) {
-        const el = els[i];
-        if (allowTransitions) {
-          el.classList.remove('notransition');
-        } else {
-          el.classList.add('notransition');
-        }
-      }
-    }
-    const isFileUrl = () => {
-      return window.location.protocol === 'file:';
-    }
-    const hasAlternateSentinel = () => {
-      let styleSentinel = getColorSchemeSentinel();
-      if (styleSentinel !== null) {
-        return styleSentinel === "alternate";
-      } else {
-        return false;
-      }
-    }
-    const setStyleSentinel = (alternate) => {
-      const value = alternate ? "alternate" : "default";
-      if (!isFileUrl()) {
-        window.localStorage.setItem("quarto-color-scheme", value);
-      } else {
-        localAlternateSentinel = value;
-      }
-    }
-    const getColorSchemeSentinel = () => {
-      if (!isFileUrl()) {
-        const storageValue = window.localStorage.getItem("quarto-color-scheme");
-        return storageValue != null ? storageValue : localAlternateSentinel;
-      } else {
-        return localAlternateSentinel;
-      }
-    }
-    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
-      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
-      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
-      let newTheme = '';
-      if(authorPrefersDark) {
-        newTheme = isAlternate ? baseTheme : alternateTheme;
-      } else {
-        newTheme = isAlternate ? alternateTheme : baseTheme;
-      }
-      const changeGiscusTheme = () => {
-        // From: https://github.com/giscus/giscus/issues/336
-        const sendMessage = (message) => {
-          const iframe = document.querySelector('iframe.giscus-frame');
-          if (!iframe) return;
-          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
-        }
-        sendMessage({
-          setConfig: {
-            theme: newTheme
-          }
-        });
-      }
-      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
-      if (isGiscussLoaded) {
-        changeGiscusTheme();
-      }
-    };
-    const authorPrefersDark = false;
-    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-    const darkModeDefault = queryPrefersDark.matches;
-      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
-      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
-    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
-    // Dark / light mode switch
-    window.quartoToggleColorScheme = () => {
-      // Read the current dark / light value
-      let toAlternate = !hasAlternateSentinel();
-      toggleColorMode(toAlternate);
-      setStyleSentinel(toAlternate);
-      toggleGiscusIfUsed(toAlternate, darkModeDefault);
-      window.dispatchEvent(new Event('resize'));
-    };
-    queryPrefersDark.addEventListener("change", e => {
-      if(window.localStorage.getItem("quarto-color-scheme") !== null)
-        return;
-      const alternate = e.matches
-      toggleColorMode(alternate);
-      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
-      toggleGiscusIfUsed(alternate, darkModeDefault);
-    });
-    // Switch to dark mode if need be
-    if (hasAlternateSentinel()) {
-      toggleColorMode(true);
-    } else {
-      toggleColorMode(false);
-    }
-  </script>
+<body>
 
-<div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container mx-auto">
-    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../man/figures/logo.svg" alt="cascade logo" class="navbar-logo light-content">
-    <img src="../../man/figures/logo.svg" alt="cascade logo" class="navbar-logo dark-content">
-    </a>
-    <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">CASCADE</span>
-    </a>
-  </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-  <span class="navbar-toggler-icon"></span>
-</button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="../../vignettes/cascade.html"> 
-<span class="menu-text">Get started</span></a>
-  </li>  
-  <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-articles" role="link" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Articles</span>
-    </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">    
-        <li>
-    <a class="dropdown-item" href="../../vignettes/articles/I-basics.html">
- <span class="dropdown-text">1 Basics</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../vignettes/articles/II-processing.html">
- <span class="dropdown-text">2 Processing</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../vignettes/articles/III-bonus.html">
- <span class="dropdown-text">3 Bonus</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../../vignettes/articles/IV-tima.html">
- <span class="dropdown-text">4 TIMA</span></a>
-  </li>  
-    </ul>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="../../NEWS.html"> 
-<span class="menu-text">News</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../../LICENSE.html"> 
-<span class="menu-text">License</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../../CITATION.html"> 
-<span class="menu-text">Citation</span></a>
-  </li>  
-</ul>
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/adafede/cascade"> <i class="bi bi-github" role="img" aria-label="cascade GitHub">
-</i> 
-<span class="menu-text"></span></a>
-  </li>  
-</ul>
-          </div> <!-- /navcollapse -->
-            <div class="quarto-navbar-tools">
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
-</div>
-      </div> <!-- /container-fluid -->
-    </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">2 Processing</li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-    </div>
-  </nav>
+
+<header id="title-block-header">
+<h1 class="title">2 Processing</h1>
+<p class="author">Adriano Rutz</p>
+
+<p class="date">2026-01-04</p>
 </header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
-<!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">Functions</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
- <span class="menu-text">Check</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../man/check_chromatograms_alignment.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">check_chromatograms_alignment</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../man/check_peaks_integration.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">check_peaks_integration</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-          <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
- <span class="menu-text">Generate</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../man/generate_ids.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">generate_ids</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../man/generate_pseudochromatograms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">generate_pseudochromatograms</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../man/generate_tables.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">generate_tables</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../man/taxon_name_to_qid.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">taxon_name_to_qid</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-    </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+
+<nav id="TOC" role="doc-toc">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#compare-peaks-to-features" id="toc-compare-peaks-to-features" class="nav-link active" data-scroll-target="#compare-peaks-to-features">Compare peaks to features</a></li>
-  <li><a href="#pseudo-chromatograms" id="toc-pseudo-chromatograms" class="nav-link" data-scroll-target="#pseudo-chromatograms">Pseudo chromatograms</a>
-  <ul class="collapse">
-  <li><a href="#taxo-major-peaks" id="toc-taxo-major-peaks" class="nav-link" data-scroll-target="#taxo-major-peaks">Taxo (major peaks)</a></li>
-  <li><a href="#taxo-minor-peaks" id="toc-taxo-minor-peaks" class="nav-link" data-scroll-target="#taxo-minor-peaks">Taxo (minor peaks)</a></li>
-  <li><a href="#confident-unique-annotations-major" id="toc-confident-unique-annotations-major" class="nav-link" data-scroll-target="#confident-unique-annotations-major">Confident unique annotations (major)</a></li>
-  <li><a href="#confident-unique-annotations-minor" id="toc-confident-unique-annotations-minor" class="nav-link" data-scroll-target="#confident-unique-annotations-minor">Confident unique annotations (minor)</a></li>
-  <li><a href="#treemap-semi-quantitative-major" id="toc-treemap-semi-quantitative-major" class="nav-link" data-scroll-target="#treemap-semi-quantitative-major">Treemap semi-quantitative (major)</a></li>
-  <li><a href="#treemap-semi-quantitative-minor" id="toc-treemap-semi-quantitative-minor" class="nav-link" data-scroll-target="#treemap-semi-quantitative-minor">Treemap semi-quantitative (minor)</a></li>
-  <li><a href="#treemap-both" id="toc-treemap-both" class="nav-link" data-scroll-target="#treemap-both">Treemap both</a></li>
+  <li><a href="#compare-peaks-to-features" id="toc-compare-peaks-to-features">Compare peaks to features</a></li>
+  <li><a href="#pseudo-chromatograms" id="toc-pseudo-chromatograms">Pseudo chromatograms</a>
+  <ul>
+  <li><a href="#taxo-major-peaks" id="toc-taxo-major-peaks">Taxo (major peaks)</a></li>
+  <li><a href="#taxo-minor-peaks" id="toc-taxo-minor-peaks">Taxo (minor peaks)</a></li>
+  <li><a href="#confident-unique-annotations-major" id="toc-confident-unique-annotations-major">Confident unique annotations (major)</a></li>
+  <li><a href="#confident-unique-annotations-minor" id="toc-confident-unique-annotations-minor">Confident unique annotations (minor)</a></li>
+  <li><a href="#treemap-semi-quantitative-major" id="toc-treemap-semi-quantitative-major">Treemap semi-quantitative (major)</a></li>
+  <li><a href="#treemap-semi-quantitative-minor" id="toc-treemap-semi-quantitative-minor">Treemap semi-quantitative (minor)</a></li>
+  <li><a href="#treemap-both" id="toc-treemap-both">Treemap both</a></li>
   </ul></li>
-  <li><a href="#tabular-reports" id="toc-tabular-reports" class="nav-link" data-scroll-target="#tabular-reports">Tabular reports</a></li>
+  <li><a href="#tabular-reports" id="toc-tabular-reports">Tabular reports</a></li>
   </ul>
 </nav>
-    </div>
-<!-- main -->
-<main class="content" id="quarto-document-content">
-
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">2 Processing</h1>
-</div>
-
-
-
-<div class="quarto-title-meta">
-
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Adriano Rutz <a href="https://orcid.org/0000-0003-0443-9902" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
-          </div>
-  </div>
-    
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">December 29, 2025</p>
-    </div>
-  </div>
-  
-    
-  </div>
-  
-
-
-</header>
-
-<script async="" src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
 <p>This vignette describes the main processing function. It assumes you already checked the <a href="https://adafede.github.io/cascade/articles/I-basics.html">previous basic steps</a>.</p>
-<section id="compare-peaks-to-features" class="level2">
-<h2 class="anchored" data-anchor-id="compare-peaks-to-features">Compare peaks to features</h2>
+<h2 id="compare-peaks-to-features" class="anchored">Compare peaks to features</h2>
 <p>To do so, you will need:</p>
 <ul>
 <li>A previously generated mzmine features’ table</li>
@@ -586,19 +183,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; CAD Peak: 3</span></span>
 <span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  ■■■■■■■■■                         27% |  ETA:  1m</span></span>
 <span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; CAD Peak: 4</span></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  ■■■■■■■■■■■■                      36% |  ETA: 47s</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  ■■■■■■■■■■■■                      36% |  ETA:  1m</span></span>
 <span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; CAD Peak: 5</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  ■■■■■■■■■■■■■■■                   45% |  ETA: 39s</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  ■■■■■■■■■■■■■■■                   45% |  ETA: 44s</span></span>
 <span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; CAD Peak: 6</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  ■■■■■■■■■■■■■■■■■                 55% |  ETA: 33s</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  ■■■■■■■■■■■■■■■■■                 55% |  ETA: 37s</span></span>
 <span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; CAD Peak: 7</span></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  ■■■■■■■■■■■■■■■■■■■■              64% |  ETA: 26s</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  ■■■■■■■■■■■■■■■■■■■■              64% |  ETA: 29s</span></span>
 <span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; CAD Peak: 8</span></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  ■■■■■■■■■■■■■■■■■■■■■■■           73% |  ETA: 19s</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  ■■■■■■■■■■■■■■■■■■■■■■■           73% |  ETA: 22s</span></span>
 <span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; CAD Peak: 9</span></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  ■■■■■■■■■■■■■■■■■■■■■■■■■■        82% |  ETA: 13s</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  ■■■■■■■■■■■■■■■■■■■■■■■■■■        82% |  ETA: 15s</span></span>
 <span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; CAD Peak: 10</span></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■      91% |  ETA:  6s</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■      91% |  ETA:  7s</span></span>
 <span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; CAD Peak: 11</span></span>
 <span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; extracting ms peaks</span></span>
 <span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; comparing peaks</span></span>
@@ -610,101 +207,83 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; exporting</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>And this basically it! 🚀</p>
-</section>
-<section id="pseudo-chromatograms" class="level2">
-<h2 class="anchored" data-anchor-id="pseudo-chromatograms">Pseudo chromatograms</h2>
+<h2 id="pseudo-chromatograms" class="anchored">Pseudo chromatograms</h2>
 <p>If you know want to add some cosmetics, and you already have a <a href="https://taxonomicallyinformedannotation.github.io/tima">TIMA</a> annotation table, you can then run:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>plots_list <span class="ot">&lt;-</span> <span class="fu">generate_pseudochromatograms</span>(<span class="at">show_example =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The different plots offer the following views:</p>
-<section id="taxo-major-peaks" class="level3">
-<h3 class="anchored" data-anchor-id="taxo-major-peaks">Taxo (major peaks)</h3>
+<h3 id="taxo-major-peaks" class="anchored">Taxo (major peaks)</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>plots_list<span class="sc">$</span>plots_1<span class="sc">$</span>histograms_taxo_maj</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure">
-<p><img src="II-processing_files/figure-html/taxo-major-1.svg" class="img-fluid figure-img" width="672"></p>
+<figure>
+<p><img src="II-processing_files/figure-html/taxo-major-1.svg" class="img-fluid" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-</section>
-<section id="taxo-minor-peaks" class="level3">
-<h3 class="anchored" data-anchor-id="taxo-minor-peaks">Taxo (minor peaks)</h3>
+<h3 id="taxo-minor-peaks" class="anchored">Taxo (minor peaks)</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plots_list<span class="sc">$</span>plots_1<span class="sc">$</span>histograms_taxo_min</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure">
-<p><img src="II-processing_files/figure-html/taxo-minor-1.svg" class="img-fluid figure-img" width="672"></p>
+<figure>
+<p><img src="II-processing_files/figure-html/taxo-minor-1.svg" class="img-fluid" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-</section>
-<section id="confident-unique-annotations-major" class="level3">
-<h3 class="anchored" data-anchor-id="confident-unique-annotations-major">Confident unique annotations (major)</h3>
+<h3 id="confident-unique-annotations-major" class="anchored">Confident unique annotations (major)</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>plots_list<span class="sc">$</span>plots_1<span class="sc">$</span>histograms_unique_conf_maj</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure">
-<p><img src="II-processing_files/figure-html/confident-major-1.svg" class="img-fluid figure-img" width="672"></p>
+<figure>
+<p><img src="II-processing_files/figure-html/confident-major-1.svg" class="img-fluid" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-</section>
-<section id="confident-unique-annotations-minor" class="level3">
-<h3 class="anchored" data-anchor-id="confident-unique-annotations-minor">Confident unique annotations (minor)</h3>
+<h3 id="confident-unique-annotations-minor" class="anchored">Confident unique annotations (minor)</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>plots_list<span class="sc">$</span>plots_1<span class="sc">$</span>histograms_unique_conf_min</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure">
-<p><img src="II-processing_files/figure-html/unique-minor-1.svg" class="img-fluid figure-img" width="672"></p>
+<figure>
+<p><img src="II-processing_files/figure-html/unique-minor-1.svg" class="img-fluid" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Or getting rid of the chromatogram:</p>
-</section>
-<section id="treemap-semi-quantitative-major" class="level3">
-<h3 class="anchored" data-anchor-id="treemap-semi-quantitative-major">Treemap semi-quantitative (major)</h3>
+<h3 id="treemap-semi-quantitative-major" class="anchored">Treemap semi-quantitative (major)</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>plots_list<span class="sc">$</span>treemaps<span class="sc">$</span>peaks_maj</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="plotly html-widget html-fill-item" id="htmlwidget-17466358a46d1399716e" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-17466358a46d1399716e">{"x":{"visdat":{"205550a785d8":["function () ","plotlyVisDat"]},"cur_data":"205550a785d8","attrs":{"205550a785d8":{"ids":{},"labels":{},"parents":{},"values":{},"maxdepth":3,"branchvalues":"total","textinfo":"label+percent value+percent parent+percent root","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"treemap"}},"layout":{"margin":{"b":40,"l":60,"t":40,"r":10},"colorway":["#4E7705","#9D654C","#098BD9","#148F77","#7D3560","#6a51a3","#ff7f00","#4292c6","#238b45","#7D3200"],"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"ids":["Alkaloids","Fatty acids","Polyketides","Shikimates and Phenylpropanoids","Terpenoids","Alkaloids-Pseudoalkaloids","Fatty acids-Fatty acids Other","Fatty acids-Fatty esters","Fatty acids-Glycerolipids","Fatty acids-Other","Polyketides-Other","Polyketides-Xanthones","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Xanthones","Terpenoids-Monoterpenoids","Terpenoids-Other","Pseudoalkaloids-Steroidal alkaloids","Fatty acids Other-Sphingolipids","Fatty esters-Wax monoesters","Glycerolipids-Monoacylglycerols","Other-Branched fatty acids","Other-Fatty alcohols","Other-4-pyrone derivatives","Xanthones-Methyl xanthones","Other-Flavan-3-ols","Other-Flavones","Other-Neolignans","Other-Rotenoids","Xanthones-Plant xanthones","Monoterpenoids-Secoiridoid monoterpenoids","Other-Apocarotenoids(ε-)","Other-Cardenolides","Other-Cholestane steroids","Other-Cucurbitane triterpenoids","Other-Hopane and Moretane triterpenoids","Other-Labdane diterpenoids","Other-Lanostane, Tirucallane and Euphane triterpenoids","Other-Lupane triterpenoids","Other-Merosesquiterpenoids","Other-Multiflorane triterpenoids","Other-Oleanane triterpenoids","Other-Other notClassified","Other-Stigmastane steroids","Other-Tetracyclic diterpenoids","Other-Ursane and Taraxastane triterpenoids","Sphingolipids-Neutral glycosphingolipids"],"labels":["Alkaloids","Fatty acids","Polyketides","Shikimates and Phenylpropanoids","Terpenoids","Pseudoalkaloids","Fatty acids Other","Fatty esters","Glycerolipids","Other","Other","Xanthones","Other","Xanthones","Monoterpenoids","Other","Steroidal alkaloids","Sphingolipids","Wax monoesters","Monoacylglycerols","Branched fatty acids","Fatty alcohols","4-pyrone derivatives","Methyl xanthones","Flavan-3-ols","Flavones","Neolignans","Rotenoids","Plant xanthones","Secoiridoid monoterpenoids","Apocarotenoids(ε-)","Cardenolides","Cholestane steroids","Cucurbitane triterpenoids","Hopane and Moretane triterpenoids","Labdane diterpenoids","Lanostane, Tirucallane and Euphane triterpenoids","Lupane triterpenoids","Merosesquiterpenoids","Multiflorane triterpenoids","Oleanane triterpenoids","Other notClassified","Stigmastane steroids","Tetracyclic diterpenoids","Ursane and Taraxastane triterpenoids","Neutral glycosphingolipids"],"parents":["","","","","","Alkaloids","Fatty acids","Fatty acids","Fatty acids","Fatty acids","Polyketides","Polyketides","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","Terpenoids","Terpenoids","Alkaloids-Pseudoalkaloids","Fatty acids-Fatty acids Other","Fatty acids-Fatty esters","Fatty acids-Glycerolipids","Fatty acids-Other","Fatty acids-Other","Polyketides-Other","Polyketides-Xanthones","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Xanthones","Terpenoids-Monoterpenoids","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Fatty acids Other-Sphingolipids"],"values":[0.34471461768602668,3.1114675412347701,9.608399744592063,14.738514933816091,36.662807837354997,0.34471461768602668,0.67403911287346341,1.4032845753032266,0.34471461768602668,0.68942923537205336,0.81060309470926661,8.7977966498827964,2.6268785487471065,12.111636385068984,14.846269637644257,21.816538199710745,0.34471461768602668,0.67403911287346341,1.4032845753032266,0.34471461768602668,0.34471461768602668,0.34471461768602668,0.81060309470926661,8.7977966498827964,0.46618332051251671,0.36555523860206335,0.87570106210415,0.91943892752837664,12.111636385068984,14.846269637644257,1.7590664346383067,0.89239515728261665,1.4032845753032266,0.56126092039659337,2.1382468069546134,1.7590664346383067,2.6514615919209237,1.4032845753032266,0.34471461768602668,0.75713355531580007,3.49931360812954,0.46618332051251671,0.93896417126907006,0.91943892752837664,2.3227235028316033,0.67403911287346341],"maxdepth":3,"branchvalues":"total","textinfo":"label+percent value+percent parent+percent root","type":"treemap","marker":{"color":"rgba(78,119,5,1)","line":{"color":"rgba(255,255,255,1)"}},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-17466358a46d1399716e">{"x":{"visdat":{"200e4337d20f":["function () ","plotlyVisDat"]},"cur_data":"200e4337d20f","attrs":{"200e4337d20f":{"ids":{},"labels":{},"parents":{},"values":{},"maxdepth":3,"branchvalues":"total","textinfo":"label+percent value+percent parent+percent root","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"treemap"}},"layout":{"margin":{"b":40,"l":60,"t":40,"r":10},"colorway":["#4E7705","#9D654C","#098BD9","#148F77","#7D3560","#6a51a3","#ff7f00","#4292c6","#238b45","#7D3200"],"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"ids":["Alkaloids","Fatty acids","Polyketides","Shikimates and Phenylpropanoids","Terpenoids","Alkaloids-Pseudoalkaloids","Fatty acids-Fatty acids Other","Fatty acids-Fatty esters","Fatty acids-Glycerolipids","Fatty acids-Other","Polyketides-Other","Polyketides-Xanthones","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Xanthones","Terpenoids-Monoterpenoids","Terpenoids-Other","Pseudoalkaloids-Steroidal alkaloids","Fatty acids Other-Sphingolipids","Fatty esters-Wax monoesters","Glycerolipids-Monoacylglycerols","Other-Branched fatty acids","Other-Fatty alcohols","Other-4-pyrone derivatives","Xanthones-Methyl xanthones","Other-Flavan-3-ols","Other-Flavones","Other-Neolignans","Other-Rotenoids","Xanthones-Plant xanthones","Monoterpenoids-Secoiridoid monoterpenoids","Other-Apocarotenoids(ε-)","Other-Cardenolides","Other-Cholestane steroids","Other-Cucurbitane triterpenoids","Other-Hopane and Moretane triterpenoids","Other-Labdane diterpenoids","Other-Lanostane, Tirucallane and Euphane triterpenoids","Other-Lupane triterpenoids","Other-Merosesquiterpenoids","Other-Multiflorane triterpenoids","Other-Oleanane triterpenoids","Other-Other notClassified","Other-Stigmastane steroids","Other-Tetracyclic diterpenoids","Other-Ursane and Taraxastane triterpenoids","Sphingolipids-Neutral glycosphingolipids"],"labels":["Alkaloids","Fatty acids","Polyketides","Shikimates and Phenylpropanoids","Terpenoids","Pseudoalkaloids","Fatty acids Other","Fatty esters","Glycerolipids","Other","Other","Xanthones","Other","Xanthones","Monoterpenoids","Other","Steroidal alkaloids","Sphingolipids","Wax monoesters","Monoacylglycerols","Branched fatty acids","Fatty alcohols","4-pyrone derivatives","Methyl xanthones","Flavan-3-ols","Flavones","Neolignans","Rotenoids","Plant xanthones","Secoiridoid monoterpenoids","Apocarotenoids(ε-)","Cardenolides","Cholestane steroids","Cucurbitane triterpenoids","Hopane and Moretane triterpenoids","Labdane diterpenoids","Lanostane, Tirucallane and Euphane triterpenoids","Lupane triterpenoids","Merosesquiterpenoids","Multiflorane triterpenoids","Oleanane triterpenoids","Other notClassified","Stigmastane steroids","Tetracyclic diterpenoids","Ursane and Taraxastane triterpenoids","Neutral glycosphingolipids"],"parents":["","","","","","Alkaloids","Fatty acids","Fatty acids","Fatty acids","Fatty acids","Polyketides","Polyketides","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","Terpenoids","Terpenoids","Alkaloids-Pseudoalkaloids","Fatty acids-Fatty acids Other","Fatty acids-Fatty esters","Fatty acids-Glycerolipids","Fatty acids-Other","Fatty acids-Other","Polyketides-Other","Polyketides-Xanthones","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Xanthones","Terpenoids-Monoterpenoids","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Fatty acids Other-Sphingolipids"],"values":[0.34471461768602668,3.1114675412347701,9.608399744592063,14.738514933816091,36.662807837354997,0.34471461768602668,0.67403911287346341,1.4032845753032266,0.34471461768602668,0.68942923537205336,0.81060309470926661,8.7977966498827964,2.6268785487471065,12.111636385068984,14.846269637644257,21.816538199710745,0.34471461768602668,0.67403911287346341,1.4032845753032266,0.34471461768602668,0.34471461768602668,0.34471461768602668,0.81060309470926661,8.7977966498827964,0.46618332051251671,0.36555523860206335,0.87570106210415,0.91943892752837664,12.111636385068984,14.846269637644257,1.7590664346383067,0.89239515728261665,1.4032845753032266,0.56126092039659337,2.1382468069546134,1.7590664346383067,2.6514615919209237,1.4032845753032266,0.34471461768602668,0.75713355531580007,3.49931360812954,0.46618332051251671,0.93896417126907006,0.91943892752837664,2.3227235028316033,0.67403911287346341],"maxdepth":3,"branchvalues":"total","textinfo":"label+percent value+percent parent+percent root","type":"treemap","marker":{"color":"rgba(78,119,5,1)","line":{"color":"rgba(255,255,255,1)"}},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
-</section>
-<section id="treemap-semi-quantitative-minor" class="level3">
-<h3 class="anchored" data-anchor-id="treemap-semi-quantitative-minor">Treemap semi-quantitative (minor)</h3>
+<h3 id="treemap-semi-quantitative-minor" class="anchored">Treemap semi-quantitative (minor)</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>plots_list<span class="sc">$</span>treemaps<span class="sc">$</span>peaks_min</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="plotly html-widget html-fill-item" id="htmlwidget-8228581aa3e4de6c04d3" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-8228581aa3e4de6c04d3">{"x":{"visdat":{"20554d4b7977":["function () ","plotlyVisDat"]},"cur_data":"20554d4b7977","attrs":{"20554d4b7977":{"ids":{},"labels":{},"parents":{},"values":{},"maxdepth":3,"branchvalues":"total","textinfo":"label+percent value+percent parent+percent root","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"treemap"}},"layout":{"margin":{"b":40,"l":60,"t":40,"r":10},"colorway":["#4E7705","#9D654C","#098BD9","#148F77","#7D3560","#6a51a3","#ff7f00","#4292c6","#238b45","#7D3200"],"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"ids":["Alkaloids","Amino acids and Peptides","Carbohydrates","Fatty acids","Polyketides","Shikimates and Phenylpropanoids","Terpenoids","Alkaloids-Other","Alkaloids-Tryptophan alkaloids","Amino acids and Peptides-Other","Amino acids and Peptides-Small peptides","Carbohydrates-Nucleosides","Carbohydrates-Other","Fatty acids-Fatty Acids and Conjugates","Fatty acids-Other","Polyketides-Other","Polyketides-Xanthones","Shikimates and Phenylpropanoids-Lignans","Shikimates and Phenylpropanoids-Other","Terpenoids-Monoterpenoids","Terpenoids-Other","Other-Amarylidaceae alkaloids","Other-Indolizidine alkaloids","Other-Isoquinoline alkaloids","Other-Other notClassified","Other-Piperidine alkaloids","Other-Purine alkaloids","Other-Pyridine alkaloids","Other-Quinazoline alkaloids","Other-Simple amide alkaloids","Other-Steroidal alkaloids","Other-Tropane alkaloids","Tryptophan alkaloids-Carboline alkaloids","Other-Cyclic peptides","Small peptides-Aminoacids","Small peptides-Dipeptides","Nucleosides-Purine nucleos(t)ides","Nucleosides-Pyrimidine nucleos(t)ides","Other-Monosaccharides","Fatty Acids and Conjugates-Dicarboxylic acids","Fatty Acids and Conjugates-Hydroxy fatty acids","Other-Fatty alcohols","Other-Fatty aldehydes","Other-Fatty ethers","Other-Glycerophosphocholines","Other-Glycerophosphoglycerols","Other-Hydroxy-hydroperoxyeicosatetraenoic acids","Other-Hydroxy-hydroperoxyeicosatrienoic acids","Other-Lactones","Other-Monoacylglycerols","Other-N-acyl amines","Other-Neutral glycosphingolipids","Other-Other Octadecanoids","Other-Other notClassified","Other-Phytoprostanes","Other-Primary amides","Other-Sphingoid bases","Other-Wax diesters","Other-Wax monoesters","Other-4-pyrone derivatives","Other-Acyl phloroglucinols","Other-Anthraquinones and anthrones","Other-Bisnaphthalenes","Other-Catechols with side chains","Other-Chromones","Other-Naphthalenes and derivatives","Other-Naphthalenones","Other-Naphthoquinones","Other-Other notClassified","Other-Phthalide derivatives","Other-Polyprenylated cyclic polyketides (Hop meroterpenoids)","Other-Spirodioxynaphthalenes","Other-Tetraketide meroterpenoids","Xanthones-Methyl xanthones","Lignans-Dibenzylbutyrolactone lignans","Lignans-Furanoid lignans","Lignans-Furofuranoid lignans","Lignans-Minor lignans","Other-Chalcones","Other-Cinnamic acids and derivatives","Other-Coumarinolignans","Other-Coumestan","Other-Dihydroflavonols","Other-Flavan-3-ols","Other-Flavones","Other-Flavonols","Other-Isocoumarins","Other-Isoflavones","Other-Kavalactones and derivatives","Other-Linear diarylheptanoids","Other-Open-chained neoflavonoids","Other-Other notClassified","Other-Phenylethanoids","Other-Plant xanthones","Other-Proanthocyanins","Other-Shikimic acids and derivatives","Other-Simple coumarins","Other-Simple phenolic acids","Other-Stilbenolignans","Monoterpenoids-Iridoids monoterpenoids","Monoterpenoids-Secoiridoid monoterpenoids","Other-Abeolupane triterpenoids","Other-Abietane diterpenoids","Other-Acyclic triterpenoids","Other-Apocarotenoids (β-)","Other-Apocarotenoids(ε-)","Other-Apotirucallane triterpenoids","Other-Bisabolane sesquiterpenoids","Other-Cadinane sesquiterpenoids","Other-Cardenolides","Other-Cedrane and Isocedrane sesquiterpenoids","Other-Cembrane diterpenoids","Other-Cholestane steroids","Other-Colensane and Clerodane diterpenoids","Other-Coloratane sesquiterpenoids","Other-Cucurbitane triterpenoids","Other-Cycloartane triterpenoids","Other-Dammarane and Protostane triterpenoids","Other-Dolabellane diterpenoids","Other-Drimane sesquiterpenoids","Other-Elemane sesquiterpenoids","Other-Eremophilane sesquiterpenoids","Other-Ergostane steroids","Other-Estrane steroids","Other-Eudesmane sesquiterpenoids","Other-Farnesane sesquiterpenoids","Other-Fernane and Arborinane triterpenoids","Other-Friedelane triterpenoids","Other-Fusicoccane diterpenoids","Other-Gammacerane triterpenoids","Other-Germacrane sesquiterpenoids","Other-Gibberellins","Other-Guaiane sesquiterpenoids","Other-Halimane diterpenoids","Other-Hopane and Moretane triterpenoids","Other-Kaurane and Phyllocladane diterpenoids","Other-Labdane diterpenoids","Other-Lanostane, Tirucallane and Euphane triterpenoids","Other-Lupane triterpenoids","Other-Megastigmanes","Other-Merosesquiterpenoids","Other-Multiflorane triterpenoids","Other-Norkaurane diterpenoids","Other-Norlabdane diterpenoids","Other-Norpimarane and Norisopimarane diterpenoids","Other-Oleanane triterpenoids","Other-Other notClassified","Other-Phytane diterpenoids","Other-Pimarane and Isopimarane diterpenoids","Other-Podocarpane diterpenoids","Other-Polypodane triterpenoids","Other-Pregnane steroids","Other-Prenyl quinone meroterpenoids","Other-Pseudoguaiane sesquiterpenoids","Other-Secoeudesmane sesquiterpenoids","Other-Serratane triterpenoids","Other-Stigmastane steroids","Other-Tetracyclic diterpenoids","Other-Ursane and Taraxastane triterpenoids"],"labels":["Alkaloids","Amino acids and Peptides","Carbohydrates","Fatty acids","Polyketides","Shikimates and Phenylpropanoids","Terpenoids","Other","Tryptophan alkaloids","Other","Small peptides","Nucleosides","Other","Fatty Acids and Conjugates","Other","Other","Xanthones","Lignans","Other","Monoterpenoids","Other","Amarylidaceae alkaloids","Indolizidine alkaloids","Isoquinoline alkaloids","Other notClassified","Piperidine alkaloids","Purine alkaloids","Pyridine alkaloids","Quinazoline alkaloids","Simple amide alkaloids","Steroidal alkaloids","Tropane alkaloids","Carboline alkaloids","Cyclic peptides","Aminoacids","Dipeptides","Purine nucleos(t)ides","Pyrimidine nucleos(t)ides","Monosaccharides","Dicarboxylic acids","Hydroxy fatty acids","Fatty alcohols","Fatty aldehydes","Fatty ethers","Glycerophosphocholines","Glycerophosphoglycerols","Hydroxy-hydroperoxyeicosatetraenoic acids","Hydroxy-hydroperoxyeicosatrienoic acids","Lactones","Monoacylglycerols","N-acyl amines","Neutral glycosphingolipids","Other Octadecanoids","Other notClassified","Phytoprostanes","Primary amides","Sphingoid bases","Wax diesters","Wax monoesters","4-pyrone derivatives","Acyl phloroglucinols","Anthraquinones and anthrones","Bisnaphthalenes","Catechols with side chains","Chromones","Naphthalenes and derivatives","Naphthalenones","Naphthoquinones","Other notClassified","Phthalide derivatives","Polyprenylated cyclic polyketides (Hop meroterpenoids)","Spirodioxynaphthalenes","Tetraketide meroterpenoids","Methyl xanthones","Dibenzylbutyrolactone lignans","Furanoid lignans","Furofuranoid lignans","Minor lignans","Chalcones","Cinnamic acids and derivatives","Coumarinolignans","Coumestan","Dihydroflavonols","Flavan-3-ols","Flavones","Flavonols","Isocoumarins","Isoflavones","Kavalactones and derivatives","Linear diarylheptanoids","Open-chained neoflavonoids","Other notClassified","Phenylethanoids","Plant xanthones","Proanthocyanins","Shikimic acids and derivatives","Simple coumarins","Simple phenolic acids","Stilbenolignans","Iridoids monoterpenoids","Secoiridoid monoterpenoids","Abeolupane triterpenoids","Abietane diterpenoids","Acyclic triterpenoids","Apocarotenoids (β-)","Apocarotenoids(ε-)","Apotirucallane triterpenoids","Bisabolane sesquiterpenoids","Cadinane sesquiterpenoids","Cardenolides","Cedrane and Isocedrane sesquiterpenoids","Cembrane diterpenoids","Cholestane steroids","Colensane and Clerodane diterpenoids","Coloratane sesquiterpenoids","Cucurbitane triterpenoids","Cycloartane triterpenoids","Dammarane and Protostane triterpenoids","Dolabellane diterpenoids","Drimane sesquiterpenoids","Elemane sesquiterpenoids","Eremophilane sesquiterpenoids","Ergostane steroids","Estrane steroids","Eudesmane sesquiterpenoids","Farnesane sesquiterpenoids","Fernane and Arborinane triterpenoids","Friedelane triterpenoids","Fusicoccane diterpenoids","Gammacerane triterpenoids","Germacrane sesquiterpenoids","Gibberellins","Guaiane sesquiterpenoids","Halimane diterpenoids","Hopane and Moretane triterpenoids","Kaurane and Phyllocladane diterpenoids","Labdane diterpenoids","Lanostane, Tirucallane and Euphane triterpenoids","Lupane triterpenoids","Megastigmanes","Merosesquiterpenoids","Multiflorane triterpenoids","Norkaurane diterpenoids","Norlabdane diterpenoids","Norpimarane and Norisopimarane diterpenoids","Oleanane triterpenoids","Other notClassified","Phytane diterpenoids","Pimarane and Isopimarane diterpenoids","Podocarpane diterpenoids","Polypodane triterpenoids","Pregnane steroids","Prenyl quinone meroterpenoids","Pseudoguaiane sesquiterpenoids","Secoeudesmane sesquiterpenoids","Serratane triterpenoids","Stigmastane steroids","Tetracyclic diterpenoids","Ursane and Taraxastane triterpenoids"],"parents":["","","","","","","","Alkaloids","Alkaloids","Amino acids and Peptides","Amino acids and Peptides","Carbohydrates","Carbohydrates","Fatty acids","Fatty acids","Polyketides","Polyketides","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","Terpenoids","Terpenoids","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Tryptophan alkaloids","Amino acids and Peptides-Other","Amino acids and Peptides-Small peptides","Amino acids and Peptides-Small peptides","Carbohydrates-Nucleosides","Carbohydrates-Nucleosides","Carbohydrates-Other","Fatty acids-Fatty Acids and Conjugates","Fatty acids-Fatty Acids and Conjugates","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Xanthones","Shikimates and Phenylpropanoids-Lignans","Shikimates and Phenylpropanoids-Lignans","Shikimates and Phenylpropanoids-Lignans","Shikimates and Phenylpropanoids-Lignans","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Terpenoids-Monoterpenoids","Terpenoids-Monoterpenoids","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other"],"values":[4,1,1,6.666666666666667,5,8.3333333333333339,20,3.6666666666666665,0.33333333333333331,0.33333333333333331,0.66666666666666663,0.66666666666666663,0.33333333333333331,0.66666666666666663,6,4.666666666666667,0.33333333333333331,1.3333333333333333,7,0.66666666666666663,19.333333333333332,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331],"maxdepth":3,"branchvalues":"total","textinfo":"label+percent value+percent parent+percent root","type":"treemap","marker":{"color":"rgba(78,119,5,1)","line":{"color":"rgba(255,255,255,1)"}},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-8228581aa3e4de6c04d3">{"x":{"visdat":{"200e6435555":["function () ","plotlyVisDat"]},"cur_data":"200e6435555","attrs":{"200e6435555":{"ids":{},"labels":{},"parents":{},"values":{},"maxdepth":3,"branchvalues":"total","textinfo":"label+percent value+percent parent+percent root","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"treemap"}},"layout":{"margin":{"b":40,"l":60,"t":40,"r":10},"colorway":["#4E7705","#9D654C","#098BD9","#148F77","#7D3560","#6a51a3","#ff7f00","#4292c6","#238b45","#7D3200"],"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"ids":["Alkaloids","Amino acids and Peptides","Carbohydrates","Fatty acids","Polyketides","Shikimates and Phenylpropanoids","Terpenoids","Alkaloids-Other","Alkaloids-Tryptophan alkaloids","Amino acids and Peptides-Other","Amino acids and Peptides-Small peptides","Carbohydrates-Nucleosides","Carbohydrates-Other","Fatty acids-Fatty Acids and Conjugates","Fatty acids-Other","Polyketides-Other","Polyketides-Xanthones","Shikimates and Phenylpropanoids-Lignans","Shikimates and Phenylpropanoids-Other","Terpenoids-Monoterpenoids","Terpenoids-Other","Other-Amarylidaceae alkaloids","Other-Indolizidine alkaloids","Other-Isoquinoline alkaloids","Other-Other notClassified","Other-Piperidine alkaloids","Other-Purine alkaloids","Other-Pyridine alkaloids","Other-Quinazoline alkaloids","Other-Simple amide alkaloids","Other-Steroidal alkaloids","Other-Tropane alkaloids","Tryptophan alkaloids-Carboline alkaloids","Other-Cyclic peptides","Small peptides-Aminoacids","Small peptides-Dipeptides","Nucleosides-Purine nucleos(t)ides","Nucleosides-Pyrimidine nucleos(t)ides","Other-Monosaccharides","Fatty Acids and Conjugates-Dicarboxylic acids","Fatty Acids and Conjugates-Hydroxy fatty acids","Other-Fatty alcohols","Other-Fatty aldehydes","Other-Fatty ethers","Other-Glycerophosphocholines","Other-Glycerophosphoglycerols","Other-Hydroxy-hydroperoxyeicosatetraenoic acids","Other-Hydroxy-hydroperoxyeicosatrienoic acids","Other-Lactones","Other-Monoacylglycerols","Other-N-acyl amines","Other-Neutral glycosphingolipids","Other-Other Octadecanoids","Other-Other notClassified","Other-Phytoprostanes","Other-Primary amides","Other-Sphingoid bases","Other-Wax diesters","Other-Wax monoesters","Other-4-pyrone derivatives","Other-Acyl phloroglucinols","Other-Anthraquinones and anthrones","Other-Bisnaphthalenes","Other-Catechols with side chains","Other-Chromones","Other-Naphthalenes and derivatives","Other-Naphthalenones","Other-Naphthoquinones","Other-Other notClassified","Other-Phthalide derivatives","Other-Polyprenylated cyclic polyketides (Hop meroterpenoids)","Other-Spirodioxynaphthalenes","Other-Tetraketide meroterpenoids","Xanthones-Methyl xanthones","Lignans-Dibenzylbutyrolactone lignans","Lignans-Furanoid lignans","Lignans-Furofuranoid lignans","Lignans-Minor lignans","Other-Chalcones","Other-Cinnamic acids and derivatives","Other-Coumarinolignans","Other-Coumestan","Other-Dihydroflavonols","Other-Flavan-3-ols","Other-Flavones","Other-Flavonols","Other-Isocoumarins","Other-Isoflavones","Other-Kavalactones and derivatives","Other-Linear diarylheptanoids","Other-Open-chained neoflavonoids","Other-Other notClassified","Other-Phenylethanoids","Other-Plant xanthones","Other-Proanthocyanins","Other-Shikimic acids and derivatives","Other-Simple coumarins","Other-Simple phenolic acids","Other-Stilbenolignans","Monoterpenoids-Iridoids monoterpenoids","Monoterpenoids-Secoiridoid monoterpenoids","Other-Abeolupane triterpenoids","Other-Abietane diterpenoids","Other-Acyclic triterpenoids","Other-Apocarotenoids (β-)","Other-Apocarotenoids(ε-)","Other-Apotirucallane triterpenoids","Other-Bisabolane sesquiterpenoids","Other-Cadinane sesquiterpenoids","Other-Cardenolides","Other-Cedrane and Isocedrane sesquiterpenoids","Other-Cembrane diterpenoids","Other-Cholestane steroids","Other-Colensane and Clerodane diterpenoids","Other-Coloratane sesquiterpenoids","Other-Cucurbitane triterpenoids","Other-Cycloartane triterpenoids","Other-Dammarane and Protostane triterpenoids","Other-Dolabellane diterpenoids","Other-Drimane sesquiterpenoids","Other-Elemane sesquiterpenoids","Other-Eremophilane sesquiterpenoids","Other-Ergostane steroids","Other-Estrane steroids","Other-Eudesmane sesquiterpenoids","Other-Farnesane sesquiterpenoids","Other-Fernane and Arborinane triterpenoids","Other-Friedelane triterpenoids","Other-Fusicoccane diterpenoids","Other-Gammacerane triterpenoids","Other-Germacrane sesquiterpenoids","Other-Gibberellins","Other-Guaiane sesquiterpenoids","Other-Halimane diterpenoids","Other-Hopane and Moretane triterpenoids","Other-Kaurane and Phyllocladane diterpenoids","Other-Labdane diterpenoids","Other-Lanostane, Tirucallane and Euphane triterpenoids","Other-Lupane triterpenoids","Other-Megastigmanes","Other-Merosesquiterpenoids","Other-Multiflorane triterpenoids","Other-Norkaurane diterpenoids","Other-Norlabdane diterpenoids","Other-Norpimarane and Norisopimarane diterpenoids","Other-Oleanane triterpenoids","Other-Other notClassified","Other-Phytane diterpenoids","Other-Pimarane and Isopimarane diterpenoids","Other-Podocarpane diterpenoids","Other-Polypodane triterpenoids","Other-Pregnane steroids","Other-Prenyl quinone meroterpenoids","Other-Pseudoguaiane sesquiterpenoids","Other-Secoeudesmane sesquiterpenoids","Other-Serratane triterpenoids","Other-Stigmastane steroids","Other-Tetracyclic diterpenoids","Other-Ursane and Taraxastane triterpenoids"],"labels":["Alkaloids","Amino acids and Peptides","Carbohydrates","Fatty acids","Polyketides","Shikimates and Phenylpropanoids","Terpenoids","Other","Tryptophan alkaloids","Other","Small peptides","Nucleosides","Other","Fatty Acids and Conjugates","Other","Other","Xanthones","Lignans","Other","Monoterpenoids","Other","Amarylidaceae alkaloids","Indolizidine alkaloids","Isoquinoline alkaloids","Other notClassified","Piperidine alkaloids","Purine alkaloids","Pyridine alkaloids","Quinazoline alkaloids","Simple amide alkaloids","Steroidal alkaloids","Tropane alkaloids","Carboline alkaloids","Cyclic peptides","Aminoacids","Dipeptides","Purine nucleos(t)ides","Pyrimidine nucleos(t)ides","Monosaccharides","Dicarboxylic acids","Hydroxy fatty acids","Fatty alcohols","Fatty aldehydes","Fatty ethers","Glycerophosphocholines","Glycerophosphoglycerols","Hydroxy-hydroperoxyeicosatetraenoic acids","Hydroxy-hydroperoxyeicosatrienoic acids","Lactones","Monoacylglycerols","N-acyl amines","Neutral glycosphingolipids","Other Octadecanoids","Other notClassified","Phytoprostanes","Primary amides","Sphingoid bases","Wax diesters","Wax monoesters","4-pyrone derivatives","Acyl phloroglucinols","Anthraquinones and anthrones","Bisnaphthalenes","Catechols with side chains","Chromones","Naphthalenes and derivatives","Naphthalenones","Naphthoquinones","Other notClassified","Phthalide derivatives","Polyprenylated cyclic polyketides (Hop meroterpenoids)","Spirodioxynaphthalenes","Tetraketide meroterpenoids","Methyl xanthones","Dibenzylbutyrolactone lignans","Furanoid lignans","Furofuranoid lignans","Minor lignans","Chalcones","Cinnamic acids and derivatives","Coumarinolignans","Coumestan","Dihydroflavonols","Flavan-3-ols","Flavones","Flavonols","Isocoumarins","Isoflavones","Kavalactones and derivatives","Linear diarylheptanoids","Open-chained neoflavonoids","Other notClassified","Phenylethanoids","Plant xanthones","Proanthocyanins","Shikimic acids and derivatives","Simple coumarins","Simple phenolic acids","Stilbenolignans","Iridoids monoterpenoids","Secoiridoid monoterpenoids","Abeolupane triterpenoids","Abietane diterpenoids","Acyclic triterpenoids","Apocarotenoids (β-)","Apocarotenoids(ε-)","Apotirucallane triterpenoids","Bisabolane sesquiterpenoids","Cadinane sesquiterpenoids","Cardenolides","Cedrane and Isocedrane sesquiterpenoids","Cembrane diterpenoids","Cholestane steroids","Colensane and Clerodane diterpenoids","Coloratane sesquiterpenoids","Cucurbitane triterpenoids","Cycloartane triterpenoids","Dammarane and Protostane triterpenoids","Dolabellane diterpenoids","Drimane sesquiterpenoids","Elemane sesquiterpenoids","Eremophilane sesquiterpenoids","Ergostane steroids","Estrane steroids","Eudesmane sesquiterpenoids","Farnesane sesquiterpenoids","Fernane and Arborinane triterpenoids","Friedelane triterpenoids","Fusicoccane diterpenoids","Gammacerane triterpenoids","Germacrane sesquiterpenoids","Gibberellins","Guaiane sesquiterpenoids","Halimane diterpenoids","Hopane and Moretane triterpenoids","Kaurane and Phyllocladane diterpenoids","Labdane diterpenoids","Lanostane, Tirucallane and Euphane triterpenoids","Lupane triterpenoids","Megastigmanes","Merosesquiterpenoids","Multiflorane triterpenoids","Norkaurane diterpenoids","Norlabdane diterpenoids","Norpimarane and Norisopimarane diterpenoids","Oleanane triterpenoids","Other notClassified","Phytane diterpenoids","Pimarane and Isopimarane diterpenoids","Podocarpane diterpenoids","Polypodane triterpenoids","Pregnane steroids","Prenyl quinone meroterpenoids","Pseudoguaiane sesquiterpenoids","Secoeudesmane sesquiterpenoids","Serratane triterpenoids","Stigmastane steroids","Tetracyclic diterpenoids","Ursane and Taraxastane triterpenoids"],"parents":["","","","","","","","Alkaloids","Alkaloids","Amino acids and Peptides","Amino acids and Peptides","Carbohydrates","Carbohydrates","Fatty acids","Fatty acids","Polyketides","Polyketides","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","Terpenoids","Terpenoids","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Tryptophan alkaloids","Amino acids and Peptides-Other","Amino acids and Peptides-Small peptides","Amino acids and Peptides-Small peptides","Carbohydrates-Nucleosides","Carbohydrates-Nucleosides","Carbohydrates-Other","Fatty acids-Fatty Acids and Conjugates","Fatty acids-Fatty Acids and Conjugates","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Xanthones","Shikimates and Phenylpropanoids-Lignans","Shikimates and Phenylpropanoids-Lignans","Shikimates and Phenylpropanoids-Lignans","Shikimates and Phenylpropanoids-Lignans","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Terpenoids-Monoterpenoids","Terpenoids-Monoterpenoids","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other"],"values":[4,1,1,6.666666666666667,5,8.3333333333333339,20,3.6666666666666665,0.33333333333333331,0.33333333333333331,0.66666666666666663,0.66666666666666663,0.33333333333333331,0.66666666666666663,6,4.666666666666667,0.33333333333333331,1.3333333333333333,7,0.66666666666666663,19.333333333333332,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331],"maxdepth":3,"branchvalues":"total","textinfo":"label+percent value+percent parent+percent root","type":"treemap","marker":{"color":"rgba(78,119,5,1)","line":{"color":"rgba(255,255,255,1)"}},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>Or both together for comparison:</p>
-</section>
-<section id="treemap-both" class="level3">
-<h3 class="anchored" data-anchor-id="treemap-both">Treemap both</h3>
+<h3 id="treemap-both" class="anchored">Treemap both</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>plots_list<span class="sc">$</span>treemaps<span class="sc">$</span>special</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="plotly html-widget html-fill-item" id="htmlwidget-a15b670239e029179d2a" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-a15b670239e029179d2a">{"x":{"visdat":{"205512d4ebbc":["function () ","plotlyVisDat"],"2055796c9f40":["function () ","data"],"2055761645ce":["function () ","data"]},"cur_data":"2055761645ce","attrs":{"2055796c9f40":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"ids":{},"labels":{},"parents":{},"values":{},"maxdepth":3,"type":"treemap","textinfo":"label+percent value+percent parent+percent root","domain":{"row":0,"column":0},"inherit":true},"2055761645ce":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"ids":{},"labels":{},"parents":{},"values":{},"maxdepth":3,"type":"treemap","textinfo":"label+percent value+percent parent+percent root","domain":{"row":0,"column":1},"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":40,"r":10},"grid":{"rows":1,"columns":2},"colorway":["#4E7705","#9D654C","#098BD9","#148F77","#7D3560","#6a51a3","#ff7f00","#4292c6","#238b45","#7D3200"],"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"ids":["Alkaloids","Fatty acids","Polyketides","Shikimates and Phenylpropanoids","Terpenoids","Alkaloids-Pseudoalkaloids","Fatty acids-Fatty acids Other","Fatty acids-Fatty esters","Fatty acids-Glycerolipids","Fatty acids-Other","Polyketides-Other","Polyketides-Xanthones","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Xanthones","Terpenoids-Monoterpenoids","Terpenoids-Other","Pseudoalkaloids-Steroidal alkaloids","Fatty acids Other-Sphingolipids","Fatty esters-Wax monoesters","Glycerolipids-Monoacylglycerols","Other-Branched fatty acids","Other-Fatty alcohols","Other-4-pyrone derivatives","Xanthones-Methyl xanthones","Other-Flavan-3-ols","Other-Flavones","Other-Neolignans","Other-Rotenoids","Xanthones-Plant xanthones","Monoterpenoids-Secoiridoid monoterpenoids","Other-Apocarotenoids(ε-)","Other-Cardenolides","Other-Cholestane steroids","Other-Cucurbitane triterpenoids","Other-Hopane and Moretane triterpenoids","Other-Labdane diterpenoids","Other-Lanostane, Tirucallane and Euphane triterpenoids","Other-Lupane triterpenoids","Other-Merosesquiterpenoids","Other-Multiflorane triterpenoids","Other-Oleanane triterpenoids","Other-Other notClassified","Other-Stigmastane steroids","Other-Tetracyclic diterpenoids","Other-Ursane and Taraxastane triterpenoids","Sphingolipids-Neutral glycosphingolipids"],"labels":["Alkaloids","Fatty acids","Polyketides","Shikimates and Phenylpropanoids","Terpenoids","Pseudoalkaloids","Fatty acids Other","Fatty esters","Glycerolipids","Other","Other","Xanthones","Other","Xanthones","Monoterpenoids","Other","Steroidal alkaloids","Sphingolipids","Wax monoesters","Monoacylglycerols","Branched fatty acids","Fatty alcohols","4-pyrone derivatives","Methyl xanthones","Flavan-3-ols","Flavones","Neolignans","Rotenoids","Plant xanthones","Secoiridoid monoterpenoids","Apocarotenoids(ε-)","Cardenolides","Cholestane steroids","Cucurbitane triterpenoids","Hopane and Moretane triterpenoids","Labdane diterpenoids","Lanostane, Tirucallane and Euphane triterpenoids","Lupane triterpenoids","Merosesquiterpenoids","Multiflorane triterpenoids","Oleanane triterpenoids","Other notClassified","Stigmastane steroids","Tetracyclic diterpenoids","Ursane and Taraxastane triterpenoids","Neutral glycosphingolipids"],"parents":["","","","","","Alkaloids","Fatty acids","Fatty acids","Fatty acids","Fatty acids","Polyketides","Polyketides","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","Terpenoids","Terpenoids","Alkaloids-Pseudoalkaloids","Fatty acids-Fatty acids Other","Fatty acids-Fatty esters","Fatty acids-Glycerolipids","Fatty acids-Other","Fatty acids-Other","Polyketides-Other","Polyketides-Xanthones","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Xanthones","Terpenoids-Monoterpenoids","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Fatty acids Other-Sphingolipids"],"values":[0.34471461768602668,3.1114675412347701,9.608399744592063,14.738514933816091,36.662807837354997,0.34471461768602668,0.67403911287346341,1.4032845753032266,0.34471461768602668,0.68942923537205336,0.81060309470926661,8.7977966498827964,2.6268785487471065,12.111636385068984,14.846269637644257,21.816538199710745,0.34471461768602668,0.67403911287346341,1.4032845753032266,0.34471461768602668,0.34471461768602668,0.34471461768602668,0.81060309470926661,8.7977966498827964,0.46618332051251671,0.36555523860206335,0.87570106210415,0.91943892752837664,12.111636385068984,14.846269637644257,1.7590664346383067,0.89239515728261665,1.4032845753032266,0.56126092039659337,2.1382468069546134,1.7590664346383067,2.6514615919209237,1.4032845753032266,0.34471461768602668,0.75713355531580007,3.49931360812954,0.46618332051251671,0.93896417126907006,0.91943892752837664,2.3227235028316033,0.67403911287346341],"maxdepth":3,"type":"treemap","textinfo":"label+percent value+percent parent+percent root","domain":{"row":0,"column":0},"marker":{"color":"rgba(78,119,5,1)","line":{"color":"rgba(255,255,255,1)"}},"frame":null},{"ids":["Alkaloids","Amino acids and Peptides","Carbohydrates","Fatty acids","Polyketides","Shikimates and Phenylpropanoids","Terpenoids","Alkaloids-Other","Alkaloids-Tryptophan alkaloids","Amino acids and Peptides-Other","Amino acids and Peptides-Small peptides","Carbohydrates-Nucleosides","Carbohydrates-Other","Fatty acids-Fatty Acids and Conjugates","Fatty acids-Other","Polyketides-Other","Polyketides-Xanthones","Shikimates and Phenylpropanoids-Lignans","Shikimates and Phenylpropanoids-Other","Terpenoids-Monoterpenoids","Terpenoids-Other","Other-Amarylidaceae alkaloids","Other-Indolizidine alkaloids","Other-Isoquinoline alkaloids","Other-Other notClassified","Other-Piperidine alkaloids","Other-Purine alkaloids","Other-Pyridine alkaloids","Other-Quinazoline alkaloids","Other-Simple amide alkaloids","Other-Steroidal alkaloids","Other-Tropane alkaloids","Tryptophan alkaloids-Carboline alkaloids","Other-Cyclic peptides","Small peptides-Aminoacids","Small peptides-Dipeptides","Nucleosides-Purine nucleos(t)ides","Nucleosides-Pyrimidine nucleos(t)ides","Other-Monosaccharides","Fatty Acids and Conjugates-Dicarboxylic acids","Fatty Acids and Conjugates-Hydroxy fatty acids","Other-Fatty alcohols","Other-Fatty aldehydes","Other-Fatty ethers","Other-Glycerophosphocholines","Other-Glycerophosphoglycerols","Other-Hydroxy-hydroperoxyeicosatetraenoic acids","Other-Hydroxy-hydroperoxyeicosatrienoic acids","Other-Lactones","Other-Monoacylglycerols","Other-N-acyl amines","Other-Neutral glycosphingolipids","Other-Other Octadecanoids","Other-Other notClassified","Other-Phytoprostanes","Other-Primary amides","Other-Sphingoid bases","Other-Wax diesters","Other-Wax monoesters","Other-4-pyrone derivatives","Other-Acyl phloroglucinols","Other-Anthraquinones and anthrones","Other-Bisnaphthalenes","Other-Catechols with side chains","Other-Chromones","Other-Naphthalenes and derivatives","Other-Naphthalenones","Other-Naphthoquinones","Other-Other notClassified","Other-Phthalide derivatives","Other-Polyprenylated cyclic polyketides (Hop meroterpenoids)","Other-Spirodioxynaphthalenes","Other-Tetraketide meroterpenoids","Xanthones-Methyl xanthones","Lignans-Dibenzylbutyrolactone lignans","Lignans-Furanoid lignans","Lignans-Furofuranoid lignans","Lignans-Minor lignans","Other-Chalcones","Other-Cinnamic acids and derivatives","Other-Coumarinolignans","Other-Coumestan","Other-Dihydroflavonols","Other-Flavan-3-ols","Other-Flavones","Other-Flavonols","Other-Isocoumarins","Other-Isoflavones","Other-Kavalactones and derivatives","Other-Linear diarylheptanoids","Other-Open-chained neoflavonoids","Other-Other notClassified","Other-Phenylethanoids","Other-Plant xanthones","Other-Proanthocyanins","Other-Shikimic acids and derivatives","Other-Simple coumarins","Other-Simple phenolic acids","Other-Stilbenolignans","Monoterpenoids-Iridoids monoterpenoids","Monoterpenoids-Secoiridoid monoterpenoids","Other-Abeolupane triterpenoids","Other-Abietane diterpenoids","Other-Acyclic triterpenoids","Other-Apocarotenoids (β-)","Other-Apocarotenoids(ε-)","Other-Apotirucallane triterpenoids","Other-Bisabolane sesquiterpenoids","Other-Cadinane sesquiterpenoids","Other-Cardenolides","Other-Cedrane and Isocedrane sesquiterpenoids","Other-Cembrane diterpenoids","Other-Cholestane steroids","Other-Colensane and Clerodane diterpenoids","Other-Coloratane sesquiterpenoids","Other-Cucurbitane triterpenoids","Other-Cycloartane triterpenoids","Other-Dammarane and Protostane triterpenoids","Other-Dolabellane diterpenoids","Other-Drimane sesquiterpenoids","Other-Elemane sesquiterpenoids","Other-Eremophilane sesquiterpenoids","Other-Ergostane steroids","Other-Estrane steroids","Other-Eudesmane sesquiterpenoids","Other-Farnesane sesquiterpenoids","Other-Fernane and Arborinane triterpenoids","Other-Friedelane triterpenoids","Other-Fusicoccane diterpenoids","Other-Gammacerane triterpenoids","Other-Germacrane sesquiterpenoids","Other-Gibberellins","Other-Guaiane sesquiterpenoids","Other-Halimane diterpenoids","Other-Hopane and Moretane triterpenoids","Other-Kaurane and Phyllocladane diterpenoids","Other-Labdane diterpenoids","Other-Lanostane, Tirucallane and Euphane triterpenoids","Other-Lupane triterpenoids","Other-Megastigmanes","Other-Merosesquiterpenoids","Other-Multiflorane triterpenoids","Other-Norkaurane diterpenoids","Other-Norlabdane diterpenoids","Other-Norpimarane and Norisopimarane diterpenoids","Other-Oleanane triterpenoids","Other-Other notClassified","Other-Phytane diterpenoids","Other-Pimarane and Isopimarane diterpenoids","Other-Podocarpane diterpenoids","Other-Polypodane triterpenoids","Other-Pregnane steroids","Other-Prenyl quinone meroterpenoids","Other-Pseudoguaiane sesquiterpenoids","Other-Secoeudesmane sesquiterpenoids","Other-Serratane triterpenoids","Other-Stigmastane steroids","Other-Tetracyclic diterpenoids","Other-Ursane and Taraxastane triterpenoids"],"labels":["Alkaloids","Amino acids and Peptides","Carbohydrates","Fatty acids","Polyketides","Shikimates and Phenylpropanoids","Terpenoids","Other","Tryptophan alkaloids","Other","Small peptides","Nucleosides","Other","Fatty Acids and Conjugates","Other","Other","Xanthones","Lignans","Other","Monoterpenoids","Other","Amarylidaceae alkaloids","Indolizidine alkaloids","Isoquinoline alkaloids","Other notClassified","Piperidine alkaloids","Purine alkaloids","Pyridine alkaloids","Quinazoline alkaloids","Simple amide alkaloids","Steroidal alkaloids","Tropane alkaloids","Carboline alkaloids","Cyclic peptides","Aminoacids","Dipeptides","Purine nucleos(t)ides","Pyrimidine nucleos(t)ides","Monosaccharides","Dicarboxylic acids","Hydroxy fatty acids","Fatty alcohols","Fatty aldehydes","Fatty ethers","Glycerophosphocholines","Glycerophosphoglycerols","Hydroxy-hydroperoxyeicosatetraenoic acids","Hydroxy-hydroperoxyeicosatrienoic acids","Lactones","Monoacylglycerols","N-acyl amines","Neutral glycosphingolipids","Other Octadecanoids","Other notClassified","Phytoprostanes","Primary amides","Sphingoid bases","Wax diesters","Wax monoesters","4-pyrone derivatives","Acyl phloroglucinols","Anthraquinones and anthrones","Bisnaphthalenes","Catechols with side chains","Chromones","Naphthalenes and derivatives","Naphthalenones","Naphthoquinones","Other notClassified","Phthalide derivatives","Polyprenylated cyclic polyketides (Hop meroterpenoids)","Spirodioxynaphthalenes","Tetraketide meroterpenoids","Methyl xanthones","Dibenzylbutyrolactone lignans","Furanoid lignans","Furofuranoid lignans","Minor lignans","Chalcones","Cinnamic acids and derivatives","Coumarinolignans","Coumestan","Dihydroflavonols","Flavan-3-ols","Flavones","Flavonols","Isocoumarins","Isoflavones","Kavalactones and derivatives","Linear diarylheptanoids","Open-chained neoflavonoids","Other notClassified","Phenylethanoids","Plant xanthones","Proanthocyanins","Shikimic acids and derivatives","Simple coumarins","Simple phenolic acids","Stilbenolignans","Iridoids monoterpenoids","Secoiridoid monoterpenoids","Abeolupane triterpenoids","Abietane diterpenoids","Acyclic triterpenoids","Apocarotenoids (β-)","Apocarotenoids(ε-)","Apotirucallane triterpenoids","Bisabolane sesquiterpenoids","Cadinane sesquiterpenoids","Cardenolides","Cedrane and Isocedrane sesquiterpenoids","Cembrane diterpenoids","Cholestane steroids","Colensane and Clerodane diterpenoids","Coloratane sesquiterpenoids","Cucurbitane triterpenoids","Cycloartane triterpenoids","Dammarane and Protostane triterpenoids","Dolabellane diterpenoids","Drimane sesquiterpenoids","Elemane sesquiterpenoids","Eremophilane sesquiterpenoids","Ergostane steroids","Estrane steroids","Eudesmane sesquiterpenoids","Farnesane sesquiterpenoids","Fernane and Arborinane triterpenoids","Friedelane triterpenoids","Fusicoccane diterpenoids","Gammacerane triterpenoids","Germacrane sesquiterpenoids","Gibberellins","Guaiane sesquiterpenoids","Halimane diterpenoids","Hopane and Moretane triterpenoids","Kaurane and Phyllocladane diterpenoids","Labdane diterpenoids","Lanostane, Tirucallane and Euphane triterpenoids","Lupane triterpenoids","Megastigmanes","Merosesquiterpenoids","Multiflorane triterpenoids","Norkaurane diterpenoids","Norlabdane diterpenoids","Norpimarane and Norisopimarane diterpenoids","Oleanane triterpenoids","Other notClassified","Phytane diterpenoids","Pimarane and Isopimarane diterpenoids","Podocarpane diterpenoids","Polypodane triterpenoids","Pregnane steroids","Prenyl quinone meroterpenoids","Pseudoguaiane sesquiterpenoids","Secoeudesmane sesquiterpenoids","Serratane triterpenoids","Stigmastane steroids","Tetracyclic diterpenoids","Ursane and Taraxastane triterpenoids"],"parents":["","","","","","","","Alkaloids","Alkaloids","Amino acids and Peptides","Amino acids and Peptides","Carbohydrates","Carbohydrates","Fatty acids","Fatty acids","Polyketides","Polyketides","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","Terpenoids","Terpenoids","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Tryptophan alkaloids","Amino acids and Peptides-Other","Amino acids and Peptides-Small peptides","Amino acids and Peptides-Small peptides","Carbohydrates-Nucleosides","Carbohydrates-Nucleosides","Carbohydrates-Other","Fatty acids-Fatty Acids and Conjugates","Fatty acids-Fatty Acids and Conjugates","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Xanthones","Shikimates and Phenylpropanoids-Lignans","Shikimates and Phenylpropanoids-Lignans","Shikimates and Phenylpropanoids-Lignans","Shikimates and Phenylpropanoids-Lignans","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Terpenoids-Monoterpenoids","Terpenoids-Monoterpenoids","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other"],"values":[4,1,1,6.666666666666667,5,8.3333333333333339,20,3.6666666666666665,0.33333333333333331,0.33333333333333331,0.66666666666666663,0.66666666666666663,0.33333333333333331,0.66666666666666663,6,4.666666666666667,0.33333333333333331,1.3333333333333333,7,0.66666666666666663,19.333333333333332,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331],"maxdepth":3,"type":"treemap","textinfo":"label+percent value+percent parent+percent root","domain":{"row":0,"column":1},"marker":{"color":"rgba(157,101,76,1)","line":{"color":"rgba(255,255,255,1)"}},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-a15b670239e029179d2a">{"x":{"visdat":{"200e54daafd7":["function () ","plotlyVisDat"],"200e40fac55b":["function () ","data"],"200e44aea161":["function () ","data"]},"cur_data":"200e44aea161","attrs":{"200e40fac55b":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"ids":{},"labels":{},"parents":{},"values":{},"maxdepth":3,"type":"treemap","textinfo":"label+percent value+percent parent+percent root","domain":{"row":0,"column":0},"inherit":true},"200e44aea161":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"ids":{},"labels":{},"parents":{},"values":{},"maxdepth":3,"type":"treemap","textinfo":"label+percent value+percent parent+percent root","domain":{"row":0,"column":1},"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":40,"r":10},"grid":{"rows":1,"columns":2},"colorway":["#4E7705","#9D654C","#098BD9","#148F77","#7D3560","#6a51a3","#ff7f00","#4292c6","#238b45","#7D3200"],"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"ids":["Alkaloids","Fatty acids","Polyketides","Shikimates and Phenylpropanoids","Terpenoids","Alkaloids-Pseudoalkaloids","Fatty acids-Fatty acids Other","Fatty acids-Fatty esters","Fatty acids-Glycerolipids","Fatty acids-Other","Polyketides-Other","Polyketides-Xanthones","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Xanthones","Terpenoids-Monoterpenoids","Terpenoids-Other","Pseudoalkaloids-Steroidal alkaloids","Fatty acids Other-Sphingolipids","Fatty esters-Wax monoesters","Glycerolipids-Monoacylglycerols","Other-Branched fatty acids","Other-Fatty alcohols","Other-4-pyrone derivatives","Xanthones-Methyl xanthones","Other-Flavan-3-ols","Other-Flavones","Other-Neolignans","Other-Rotenoids","Xanthones-Plant xanthones","Monoterpenoids-Secoiridoid monoterpenoids","Other-Apocarotenoids(ε-)","Other-Cardenolides","Other-Cholestane steroids","Other-Cucurbitane triterpenoids","Other-Hopane and Moretane triterpenoids","Other-Labdane diterpenoids","Other-Lanostane, Tirucallane and Euphane triterpenoids","Other-Lupane triterpenoids","Other-Merosesquiterpenoids","Other-Multiflorane triterpenoids","Other-Oleanane triterpenoids","Other-Other notClassified","Other-Stigmastane steroids","Other-Tetracyclic diterpenoids","Other-Ursane and Taraxastane triterpenoids","Sphingolipids-Neutral glycosphingolipids"],"labels":["Alkaloids","Fatty acids","Polyketides","Shikimates and Phenylpropanoids","Terpenoids","Pseudoalkaloids","Fatty acids Other","Fatty esters","Glycerolipids","Other","Other","Xanthones","Other","Xanthones","Monoterpenoids","Other","Steroidal alkaloids","Sphingolipids","Wax monoesters","Monoacylglycerols","Branched fatty acids","Fatty alcohols","4-pyrone derivatives","Methyl xanthones","Flavan-3-ols","Flavones","Neolignans","Rotenoids","Plant xanthones","Secoiridoid monoterpenoids","Apocarotenoids(ε-)","Cardenolides","Cholestane steroids","Cucurbitane triterpenoids","Hopane and Moretane triterpenoids","Labdane diterpenoids","Lanostane, Tirucallane and Euphane triterpenoids","Lupane triterpenoids","Merosesquiterpenoids","Multiflorane triterpenoids","Oleanane triterpenoids","Other notClassified","Stigmastane steroids","Tetracyclic diterpenoids","Ursane and Taraxastane triterpenoids","Neutral glycosphingolipids"],"parents":["","","","","","Alkaloids","Fatty acids","Fatty acids","Fatty acids","Fatty acids","Polyketides","Polyketides","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","Terpenoids","Terpenoids","Alkaloids-Pseudoalkaloids","Fatty acids-Fatty acids Other","Fatty acids-Fatty esters","Fatty acids-Glycerolipids","Fatty acids-Other","Fatty acids-Other","Polyketides-Other","Polyketides-Xanthones","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Xanthones","Terpenoids-Monoterpenoids","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Fatty acids Other-Sphingolipids"],"values":[0.34471461768602668,3.1114675412347701,9.608399744592063,14.738514933816091,36.662807837354997,0.34471461768602668,0.67403911287346341,1.4032845753032266,0.34471461768602668,0.68942923537205336,0.81060309470926661,8.7977966498827964,2.6268785487471065,12.111636385068984,14.846269637644257,21.816538199710745,0.34471461768602668,0.67403911287346341,1.4032845753032266,0.34471461768602668,0.34471461768602668,0.34471461768602668,0.81060309470926661,8.7977966498827964,0.46618332051251671,0.36555523860206335,0.87570106210415,0.91943892752837664,12.111636385068984,14.846269637644257,1.7590664346383067,0.89239515728261665,1.4032845753032266,0.56126092039659337,2.1382468069546134,1.7590664346383067,2.6514615919209237,1.4032845753032266,0.34471461768602668,0.75713355531580007,3.49931360812954,0.46618332051251671,0.93896417126907006,0.91943892752837664,2.3227235028316033,0.67403911287346341],"maxdepth":3,"type":"treemap","textinfo":"label+percent value+percent parent+percent root","domain":{"row":0,"column":0},"marker":{"color":"rgba(78,119,5,1)","line":{"color":"rgba(255,255,255,1)"}},"frame":null},{"ids":["Alkaloids","Amino acids and Peptides","Carbohydrates","Fatty acids","Polyketides","Shikimates and Phenylpropanoids","Terpenoids","Alkaloids-Other","Alkaloids-Tryptophan alkaloids","Amino acids and Peptides-Other","Amino acids and Peptides-Small peptides","Carbohydrates-Nucleosides","Carbohydrates-Other","Fatty acids-Fatty Acids and Conjugates","Fatty acids-Other","Polyketides-Other","Polyketides-Xanthones","Shikimates and Phenylpropanoids-Lignans","Shikimates and Phenylpropanoids-Other","Terpenoids-Monoterpenoids","Terpenoids-Other","Other-Amarylidaceae alkaloids","Other-Indolizidine alkaloids","Other-Isoquinoline alkaloids","Other-Other notClassified","Other-Piperidine alkaloids","Other-Purine alkaloids","Other-Pyridine alkaloids","Other-Quinazoline alkaloids","Other-Simple amide alkaloids","Other-Steroidal alkaloids","Other-Tropane alkaloids","Tryptophan alkaloids-Carboline alkaloids","Other-Cyclic peptides","Small peptides-Aminoacids","Small peptides-Dipeptides","Nucleosides-Purine nucleos(t)ides","Nucleosides-Pyrimidine nucleos(t)ides","Other-Monosaccharides","Fatty Acids and Conjugates-Dicarboxylic acids","Fatty Acids and Conjugates-Hydroxy fatty acids","Other-Fatty alcohols","Other-Fatty aldehydes","Other-Fatty ethers","Other-Glycerophosphocholines","Other-Glycerophosphoglycerols","Other-Hydroxy-hydroperoxyeicosatetraenoic acids","Other-Hydroxy-hydroperoxyeicosatrienoic acids","Other-Lactones","Other-Monoacylglycerols","Other-N-acyl amines","Other-Neutral glycosphingolipids","Other-Other Octadecanoids","Other-Other notClassified","Other-Phytoprostanes","Other-Primary amides","Other-Sphingoid bases","Other-Wax diesters","Other-Wax monoesters","Other-4-pyrone derivatives","Other-Acyl phloroglucinols","Other-Anthraquinones and anthrones","Other-Bisnaphthalenes","Other-Catechols with side chains","Other-Chromones","Other-Naphthalenes and derivatives","Other-Naphthalenones","Other-Naphthoquinones","Other-Other notClassified","Other-Phthalide derivatives","Other-Polyprenylated cyclic polyketides (Hop meroterpenoids)","Other-Spirodioxynaphthalenes","Other-Tetraketide meroterpenoids","Xanthones-Methyl xanthones","Lignans-Dibenzylbutyrolactone lignans","Lignans-Furanoid lignans","Lignans-Furofuranoid lignans","Lignans-Minor lignans","Other-Chalcones","Other-Cinnamic acids and derivatives","Other-Coumarinolignans","Other-Coumestan","Other-Dihydroflavonols","Other-Flavan-3-ols","Other-Flavones","Other-Flavonols","Other-Isocoumarins","Other-Isoflavones","Other-Kavalactones and derivatives","Other-Linear diarylheptanoids","Other-Open-chained neoflavonoids","Other-Other notClassified","Other-Phenylethanoids","Other-Plant xanthones","Other-Proanthocyanins","Other-Shikimic acids and derivatives","Other-Simple coumarins","Other-Simple phenolic acids","Other-Stilbenolignans","Monoterpenoids-Iridoids monoterpenoids","Monoterpenoids-Secoiridoid monoterpenoids","Other-Abeolupane triterpenoids","Other-Abietane diterpenoids","Other-Acyclic triterpenoids","Other-Apocarotenoids (β-)","Other-Apocarotenoids(ε-)","Other-Apotirucallane triterpenoids","Other-Bisabolane sesquiterpenoids","Other-Cadinane sesquiterpenoids","Other-Cardenolides","Other-Cedrane and Isocedrane sesquiterpenoids","Other-Cembrane diterpenoids","Other-Cholestane steroids","Other-Colensane and Clerodane diterpenoids","Other-Coloratane sesquiterpenoids","Other-Cucurbitane triterpenoids","Other-Cycloartane triterpenoids","Other-Dammarane and Protostane triterpenoids","Other-Dolabellane diterpenoids","Other-Drimane sesquiterpenoids","Other-Elemane sesquiterpenoids","Other-Eremophilane sesquiterpenoids","Other-Ergostane steroids","Other-Estrane steroids","Other-Eudesmane sesquiterpenoids","Other-Farnesane sesquiterpenoids","Other-Fernane and Arborinane triterpenoids","Other-Friedelane triterpenoids","Other-Fusicoccane diterpenoids","Other-Gammacerane triterpenoids","Other-Germacrane sesquiterpenoids","Other-Gibberellins","Other-Guaiane sesquiterpenoids","Other-Halimane diterpenoids","Other-Hopane and Moretane triterpenoids","Other-Kaurane and Phyllocladane diterpenoids","Other-Labdane diterpenoids","Other-Lanostane, Tirucallane and Euphane triterpenoids","Other-Lupane triterpenoids","Other-Megastigmanes","Other-Merosesquiterpenoids","Other-Multiflorane triterpenoids","Other-Norkaurane diterpenoids","Other-Norlabdane diterpenoids","Other-Norpimarane and Norisopimarane diterpenoids","Other-Oleanane triterpenoids","Other-Other notClassified","Other-Phytane diterpenoids","Other-Pimarane and Isopimarane diterpenoids","Other-Podocarpane diterpenoids","Other-Polypodane triterpenoids","Other-Pregnane steroids","Other-Prenyl quinone meroterpenoids","Other-Pseudoguaiane sesquiterpenoids","Other-Secoeudesmane sesquiterpenoids","Other-Serratane triterpenoids","Other-Stigmastane steroids","Other-Tetracyclic diterpenoids","Other-Ursane and Taraxastane triterpenoids"],"labels":["Alkaloids","Amino acids and Peptides","Carbohydrates","Fatty acids","Polyketides","Shikimates and Phenylpropanoids","Terpenoids","Other","Tryptophan alkaloids","Other","Small peptides","Nucleosides","Other","Fatty Acids and Conjugates","Other","Other","Xanthones","Lignans","Other","Monoterpenoids","Other","Amarylidaceae alkaloids","Indolizidine alkaloids","Isoquinoline alkaloids","Other notClassified","Piperidine alkaloids","Purine alkaloids","Pyridine alkaloids","Quinazoline alkaloids","Simple amide alkaloids","Steroidal alkaloids","Tropane alkaloids","Carboline alkaloids","Cyclic peptides","Aminoacids","Dipeptides","Purine nucleos(t)ides","Pyrimidine nucleos(t)ides","Monosaccharides","Dicarboxylic acids","Hydroxy fatty acids","Fatty alcohols","Fatty aldehydes","Fatty ethers","Glycerophosphocholines","Glycerophosphoglycerols","Hydroxy-hydroperoxyeicosatetraenoic acids","Hydroxy-hydroperoxyeicosatrienoic acids","Lactones","Monoacylglycerols","N-acyl amines","Neutral glycosphingolipids","Other Octadecanoids","Other notClassified","Phytoprostanes","Primary amides","Sphingoid bases","Wax diesters","Wax monoesters","4-pyrone derivatives","Acyl phloroglucinols","Anthraquinones and anthrones","Bisnaphthalenes","Catechols with side chains","Chromones","Naphthalenes and derivatives","Naphthalenones","Naphthoquinones","Other notClassified","Phthalide derivatives","Polyprenylated cyclic polyketides (Hop meroterpenoids)","Spirodioxynaphthalenes","Tetraketide meroterpenoids","Methyl xanthones","Dibenzylbutyrolactone lignans","Furanoid lignans","Furofuranoid lignans","Minor lignans","Chalcones","Cinnamic acids and derivatives","Coumarinolignans","Coumestan","Dihydroflavonols","Flavan-3-ols","Flavones","Flavonols","Isocoumarins","Isoflavones","Kavalactones and derivatives","Linear diarylheptanoids","Open-chained neoflavonoids","Other notClassified","Phenylethanoids","Plant xanthones","Proanthocyanins","Shikimic acids and derivatives","Simple coumarins","Simple phenolic acids","Stilbenolignans","Iridoids monoterpenoids","Secoiridoid monoterpenoids","Abeolupane triterpenoids","Abietane diterpenoids","Acyclic triterpenoids","Apocarotenoids (β-)","Apocarotenoids(ε-)","Apotirucallane triterpenoids","Bisabolane sesquiterpenoids","Cadinane sesquiterpenoids","Cardenolides","Cedrane and Isocedrane sesquiterpenoids","Cembrane diterpenoids","Cholestane steroids","Colensane and Clerodane diterpenoids","Coloratane sesquiterpenoids","Cucurbitane triterpenoids","Cycloartane triterpenoids","Dammarane and Protostane triterpenoids","Dolabellane diterpenoids","Drimane sesquiterpenoids","Elemane sesquiterpenoids","Eremophilane sesquiterpenoids","Ergostane steroids","Estrane steroids","Eudesmane sesquiterpenoids","Farnesane sesquiterpenoids","Fernane and Arborinane triterpenoids","Friedelane triterpenoids","Fusicoccane diterpenoids","Gammacerane triterpenoids","Germacrane sesquiterpenoids","Gibberellins","Guaiane sesquiterpenoids","Halimane diterpenoids","Hopane and Moretane triterpenoids","Kaurane and Phyllocladane diterpenoids","Labdane diterpenoids","Lanostane, Tirucallane and Euphane triterpenoids","Lupane triterpenoids","Megastigmanes","Merosesquiterpenoids","Multiflorane triterpenoids","Norkaurane diterpenoids","Norlabdane diterpenoids","Norpimarane and Norisopimarane diterpenoids","Oleanane triterpenoids","Other notClassified","Phytane diterpenoids","Pimarane and Isopimarane diterpenoids","Podocarpane diterpenoids","Polypodane triterpenoids","Pregnane steroids","Prenyl quinone meroterpenoids","Pseudoguaiane sesquiterpenoids","Secoeudesmane sesquiterpenoids","Serratane triterpenoids","Stigmastane steroids","Tetracyclic diterpenoids","Ursane and Taraxastane triterpenoids"],"parents":["","","","","","","","Alkaloids","Alkaloids","Amino acids and Peptides","Amino acids and Peptides","Carbohydrates","Carbohydrates","Fatty acids","Fatty acids","Polyketides","Polyketides","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","Terpenoids","Terpenoids","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Other","Alkaloids-Tryptophan alkaloids","Amino acids and Peptides-Other","Amino acids and Peptides-Small peptides","Amino acids and Peptides-Small peptides","Carbohydrates-Nucleosides","Carbohydrates-Nucleosides","Carbohydrates-Other","Fatty acids-Fatty Acids and Conjugates","Fatty acids-Fatty Acids and Conjugates","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Fatty acids-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Other","Polyketides-Xanthones","Shikimates and Phenylpropanoids-Lignans","Shikimates and Phenylpropanoids-Lignans","Shikimates and Phenylpropanoids-Lignans","Shikimates and Phenylpropanoids-Lignans","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Shikimates and Phenylpropanoids-Other","Terpenoids-Monoterpenoids","Terpenoids-Monoterpenoids","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other","Terpenoids-Other"],"values":[4,1,1,6.666666666666667,5,8.3333333333333339,20,3.6666666666666665,0.33333333333333331,0.33333333333333331,0.66666666666666663,0.66666666666666663,0.33333333333333331,0.66666666666666663,6,4.666666666666667,0.33333333333333331,1.3333333333333333,7,0.66666666666666663,19.333333333333332,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331,0.33333333333333331],"maxdepth":3,"type":"treemap","textinfo":"label+percent value+percent parent+percent root","domain":{"row":0,"column":1},"marker":{"color":"rgba(157,101,76,1)","line":{"color":"rgba(255,255,255,1)"}},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
-</section>
-</section>
-<section id="tabular-reports" class="level2">
-<h2 class="anchored" data-anchor-id="tabular-reports">Tabular reports</h2>
+<h2 id="tabular-reports" class="anchored">Tabular reports</h2>
 <p>If you prefer tables rather than figures, you can also:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>tables_list <span class="ot">&lt;-</span> <span class="fu">generate_tables</span>(<span class="at">show_example =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1170,33 +749,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>For some other available helper functions, we now recommend you to read the <a href="https://adafede.github.io/cascade/vignettes/articles/III-bonus.html">next vignette</a>.</p>
 
 
-</section>
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{rutz2025,
-  author = {Rutz, Adriano},
-  title = {2 {Processing}},
-  date = {2025-12-29},
-  url = {https://adafede.github.io/cascade/articles/vignettes/II-processing.html},
-  langid = {en}
-}
-</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-rutz2025" class="csl-entry quarto-appendix-citeas" role="listitem">
-Rutz, Adriano. 2025. <span>“2 Processing.”</span> December 29, 2025. <a href="https://adafede.github.io/cascade/articles/vignettes/II-processing.html">https://adafede.github.io/cascade/articles/vignettes/II-processing.html</a>.
-</div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
-    // Ensure there is a toggle, if there isn't float one in the top right
-    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
-      const i = window.document.createElement("i");
-      i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
-    }
-    setColorSchemeToggle(hasAlternateSentinel())
+    const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+    tabsets.forEach(function(tabset) {
+      const tabby = new Tabby('#' + tabset.id);
+    });
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
@@ -1295,7 +853,7 @@ Rutz, Adriano. 2025. <span>“2 Processing.”</span> December 29, 2025. <a href
         },
         interactive: true,
         interactiveBorder: 10,
-        theme: 'quarto',
+        theme: 'light-border',
         placement: 'bottom-start',
       };
       if (contentFn) {
@@ -1603,9 +1161,6 @@ Rutz, Adriano. 2025. <span>“2 Processing.”</span> December 29, 2025. <a href
     const getTheme = () => {
       let baseTheme = document.getElementById('giscus-base-theme').value;
       let altTheme = document.getElementById('giscus-alt-theme').value;
-      if (authorPrefersDark) {
-          [baseTheme, altTheme] = [altTheme, baseTheme];
-      }
       return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
     };
     const script = document.createElement("script");
@@ -1627,7 +1182,6 @@ Rutz, Adriano. 2025. <span>“2 Processing.”</span> December 29, 2025. <a href
   }
   loadGiscus();
 </script>
-</div> <!-- /content -->
 
 
 
