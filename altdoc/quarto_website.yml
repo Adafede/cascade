@@ -68,5 +68,3 @@ format:
     linkcolor: "#3377c4"
     respect-user-color-scheme: true
     toc: true
-    theme: 
-      - none
