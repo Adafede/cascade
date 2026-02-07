@@ -48,16 +48,26 @@ jobs:
       - name: Install (Linux)
         if: matrix.os == 'ubuntu-latest'
         run: >
-          install.packages("cascade", repos = c("https://adafede.r-universe.dev",
-          "https://bioc.r-universe.dev", "https://cloud.r-project.org"), type =
-          "source")
+          install.packages(
+          "cascade",
+          repos = c(
+          "https://adafede.r-universe.dev",
+          "https://taxonomicallyinformedannotation.r-universe.dev",
+          "https://bioc.r-universe.dev",
+          "https://cloud.r-project.org"),
+          type ="source")
         shell: Rscript {0}
       - name: Install (MacOS and Windows)
         if: matrix.os != 'ubuntu-latest'
         run: >
-          install.packages("cascade", repos = c("https://adafede.r-universe.dev",
-          "https://bioc.r-universe.dev", "https://cloud.r-project.org"), type =
-          "binary")
+          install.packages(
+          "cascade",
+          repos = c(
+          "https://adafede.r-universe.dev",
+          "https://taxonomicallyinformedannotation.r-universe.dev",
+          "https://bioc.r-universe.dev",
+          "https://cloud.r-project.org"),
+          type ="binary")
         shell: Rscript {0}
       - name: Run pipeline
         run: |
