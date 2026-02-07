@@ -23,57 +23,57 @@ generate_pseudochromatograms(
   shift = 0.05,
   time_min = 0.5,
   time_max = 32.5,
-  intensity_offset = 100,
   intensity_floor = 0.001,
   k2 = 250,
   k4 = 1250000,
   sigma = 0.05,
   smoothing_width = 8,
-  baseline_method = "peakDetection"
+  baseline_method = "peakDetection",
+  improve_signal = TRUE
 )
 }
 \arguments{
-\item{annotations}{Annotations}
+\item{annotations}{Annotations file path}
 
-\item{features_informed}{Features informed}
+\item{features_informed}{Features informed file path}
 
-\item{features_not_informed}{Features not informed}
+\item{features_not_informed}{Features not informed file path}
 
-\item{file}{File}
+\item{file}{mzML file path}
 
-\item{headers}{Headers}
+\item{headers}{Named vector mapping detector types to header names.}
 
-\item{detector}{Detector}
+\item{detector}{Detector type (e.g., "cad", "bpi", "pda")}
 
-\item{show_example}{Show example? Default to FALSE}
+\item{show_example}{Show example data? Default is FALSE.}
 
-\item{min_confidence}{Min confidence}
+\item{min_confidence}{Minimum confidence score. Default is 0.4.}
 
-\item{min_similarity_prefilter}{Min similarity pre filter}
+\item{min_similarity_prefilter}{Minimum similarity for pre-filtering.
+Default is 0.6.}
 
-\item{min_similarity_filter}{Min similarity filter}
+\item{min_similarity_filter}{Minimum similarity for final filtering. Default
+is 0.8.}
 
-\item{mode}{Mode}
+\item{mode}{Ionization mode. Either "pos" or "neg". Default is "pos".}
 
-\item{organism}{Organism}
+\item{organism}{Organism name for taxonomic filtering.}
 
-\item{fourier_components}{Fourier components}
+\item{fourier_components}{Fraction of Fourier components to keep. Default is
+0.01.}
 
-\item{frequency}{Frequency}
+\item{frequency}{Acquisition frequency in Hz. Default is 1.}
 
-\item{resample}{Resample}
+\item{resample}{Resampling factor. Default is 1.}
 
-\item{shift}{Shift}
+\item{shift}{Time shift in minutes. Default is 0.05.}
 
-\item{time_min}{Time min}
+\item{time_min}{Time min in minutes. Default is 0.5.}
 
-\item{time_max}{Time max}
+\item{time_max}{Time max in minutes. Default is 32.5.}
 
-\item{intensity_offset}{Offset to add to intensity values to handle negative
-intensities. Default is 100.}
-
-\item{intensity_floor}{Small value subtracted from minimum intensity.
-Default is 0.001.}
+\item{intensity_floor}{Small positive value for intensity floor. Default is
+0.001.}
 
 \item{k2}{K2 parameter for signal sharpening. Default is 250.}
 
@@ -85,6 +85,9 @@ Default is 0.001.}
 
 \item{baseline_method}{Method for baseline correction. Default is
 "peakDetection".}
+
+\item{improve_signal}{Logical. Whether to apply signal improvement. Default
+is TRUE.}
 }
 \value{
 A list of plots

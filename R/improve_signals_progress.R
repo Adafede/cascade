@@ -2,16 +2,15 @@
 #'
 #' @include improve_signal.R
 #'
-#' @param xs XS
-#' @param fourier_components Fourier components
-#' @param frequency Frequency
-#' @param resample Resample
-#' @param time_min Time min
-#' @param time_max Time max
-#' @param intensity_offset Offset to add to intensity values to handle negative
-#'   intensities. Default is 100.
-#' @param intensity_floor Small value subtracted from minimum intensity.
-#'   Default is 0.001.
+#' @param xs List of dataframes with 'rtime' and 'intensity' columns
+#' @param fourier_components Fraction of Fourier components to keep. Default is
+#'   0.01.
+#' @param frequency Acquisition frequency in Hz. Default is 2.
+#' @param resample Resampling factor. Default is 1.
+#' @param time_min Time min in minutes. Default is 0.
+#' @param time_max Time max in minutes. Default is Inf.
+#' @param intensity_floor Small positive value for intensity floor. Default is
+#'   0.001.
 #' @param k2 K2 parameter for signal sharpening. Default is 250.
 #' @param k4 K4 parameter for signal sharpening. Default is 1250000.
 #' @param sigma Sigma parameter for signal sharpening. Default is 0.05.
@@ -27,7 +26,6 @@ improve_signals_progress <- function(
   resample = 1,
   time_min = 0,
   time_max = Inf,
-  intensity_offset = 100,
   intensity_floor = 0.001,
   k2 = 250,
   k4 = 1250000,
@@ -44,7 +42,6 @@ improve_signals_progress <- function(
         resample,
         time_min,
         time_max,
-        intensity_offset,
         intensity_floor,
         k2,
         k4,
@@ -59,7 +56,6 @@ improve_signals_progress <- function(
           resample = resample,
           time_min = time_min,
           time_max = time_max,
-          intensity_offset = intensity_offset,
           intensity_floor = intensity_floor,
           k2 = k2,
           k4 = k4,
@@ -72,7 +68,6 @@ improve_signals_progress <- function(
       resample = resample,
       time_min = time_min,
       time_max = time_max,
-      intensity_offset = intensity_offset,
       intensity_floor = intensity_floor,
       k2 = k2,
       k4 = k4,

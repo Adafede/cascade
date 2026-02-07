@@ -11,7 +11,6 @@ improve_signal(
   resample = 1,
   time_min = 0,
   time_max = Inf,
-  intensity_offset = 100,
   intensity_floor = 0.001,
   k2 = 250,
   k4 = 1250000,
@@ -20,24 +19,21 @@ improve_signal(
 )
 }
 \arguments{
-\item{df}{Dataframe}
+\item{df}{Dataframe with columns 'rtime' and 'intensity'}
 
-\item{fourier_components}{Fourier components}
+\item{fourier_components}{Fraction of Fourier components to keep for
+filtering. Default is 0.01 (1\%). Lower values provide more smoothing.}
 
-\item{frequency}{Frequency}
+\item{frequency}{Acquisition frequency in Hz. Default is 2.}
 
-\item{resample}{Resample}
+\item{resample}{Resampling factor. Default is 1.}
 
-\item{time_min}{Time min}
+\item{time_min}{Time min in minutes. Default is 0.}
 
-\item{time_max}{Time max}
+\item{time_max}{Time max in minutes. Default is Inf.}
 
-\item{intensity_offset}{Offset to add to intensity values to handle negative
-intensities. Default is 100. Set to a value larger than the absolute value
-of the most negative intensity expected.}
-
-\item{intensity_floor}{Small value subtracted from minimum intensity to
-ensure all values are positive. Default is 0.001.}
+\item{intensity_floor}{Small positive value to ensure all intensities are
+strictly positive after shifting. Default is 0.001.}
 
 \item{k2}{K2 parameter for signal sharpening. Default is 250.}
 

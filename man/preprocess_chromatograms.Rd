@@ -14,39 +14,37 @@ preprocess_chromatograms(
   shift = 0,
   time_min = 0,
   time_max = Inf,
-  intensity_offset = 100,
   intensity_floor = 0.001,
   k2 = 250,
   k4 = 1250000,
   sigma = 0.05,
   smoothing_width = 8,
-  baseline_method = "peakDetection"
+  baseline_method = "peakDetection",
+  improve_signal = TRUE
 )
 }
 \arguments{
-\item{detector}{Detector}
+\item{detector}{Detector type (e.g., "cad", "bpi", "pda")}
 
-\item{fourier_components}{Fourier components}
+\item{fourier_components}{Fraction of Fourier components to keep. Default is
+0.01.}
 
-\item{frequency}{Frequency}
+\item{frequency}{Acquisition frequency in Hz. Default is 2.}
 
-\item{list}{List}
+\item{list}{List of chromatograms}
 
-\item{name}{Name}
+\item{name}{Sample name(s)}
 
-\item{resample}{Resample}
+\item{resample}{Resampling factor. Default is 1.}
 
-\item{shift}{Shift}
+\item{shift}{Time shift in minutes. Default is 0.}
 
-\item{time_min}{Time min}
+\item{time_min}{Time min in minutes. Default is 0.}
 
-\item{time_max}{Time max}
+\item{time_max}{Time max in minutes. Default is Inf.}
 
-\item{intensity_offset}{Offset to add to intensity values to handle negative
-intensities. Default is 100.}
-
-\item{intensity_floor}{Small value subtracted from minimum intensity.
-Default is 0.001.}
+\item{intensity_floor}{Small positive value for intensity floor. Default is
+0.001.}
 
 \item{k2}{K2 parameter for signal sharpening. Default is 250.}
 
@@ -59,6 +57,10 @@ Default is 0.001.}
 \item{baseline_method}{Method for baseline correction. Default is
 "peakDetection". See \code{\link[baseline]{baseline}} for available
 methods.}
+
+\item{improve_signal}{Logical. Whether to apply signal improvement (Fourier
+filtering and sharpening). Default is TRUE. Set to FALSE to skip signal
+improvement and use original chromatograms.}
 }
 \value{
 A list of preprocessed chromatograms

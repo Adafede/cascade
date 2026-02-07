@@ -20,13 +20,13 @@ check_chromatograms_alignment(
   normalize_intensity = TRUE,
   normalize_time = FALSE,
   show_example = FALSE,
-  intensity_offset = 100,
   intensity_floor = 0.001,
   k2 = 250,
   k4 = 1250000,
   sigma = 0.05,
   smoothing_width = 8,
-  baseline_method = "peakDetection"
+  baseline_method = "peakDetection",
+  improve_signal = TRUE
 )
 }
 \arguments{
@@ -34,37 +34,38 @@ check_chromatograms_alignment(
 
 \item{file_positive}{Positive file path}
 
-\item{time_min}{Minimum time}
+\item{time_min}{Minimum time in minutes. Default is 0.5.}
 
-\item{time_max}{Maximum time}
+\item{time_max}{Maximum time in minutes. Default is 32.5.}
 
-\item{cad_shift}{CAD shift}
+\item{cad_shift}{CAD time shift in minutes. Default is 0.05.}
 
-\item{pda_shift}{PDA shift}
+\item{pda_shift}{PDA time shift in minutes. Default is 0.1.}
 
-\item{fourier_components}{Fourier components}
+\item{fourier_components}{Fraction of Fourier components to keep. Default is
+0.01.}
 
-\item{frequency}{Frequency}
+\item{frequency}{Acquisition frequency in Hz. Default is 1.}
 
-\item{resample}{Resample}
+\item{resample}{Resampling factor. Default is 1.}
 
-\item{chromatograms}{Chromatograms to plot}
+\item{chromatograms}{Chromatograms to plot. Default is c("bpi_pos",
+"cad_pos", "pda_pos").}
 
-\item{headers}{Headers}
+\item{headers}{Named vector mapping detector types to header names in the
+mzML file.}
 
-\item{type}{Type. "baselined" or "improved"}
+\item{type}{Type of chromatogram to display. Either "baselined" or
+"improved". Default is "baselined".}
 
-\item{normalize_intensity}{Normalize intensity? Default to TRUE}
+\item{normalize_intensity}{Normalize intensity? Default is TRUE.}
 
-\item{normalize_time}{Normalize time? Default to FALSE}
+\item{normalize_time}{Normalize time? Default is FALSE.}
 
-\item{show_example}{Show example? Default to FALSE}
+\item{show_example}{Show example data? Default is FALSE.}
 
-\item{intensity_offset}{Offset to add to intensity values to handle negative
-intensities. Default is 100.}
-
-\item{intensity_floor}{Small value subtracted from minimum intensity.
-Default is 0.001.}
+\item{intensity_floor}{Small positive value for intensity floor. Default is
+0.001.}
 
 \item{k2}{K2 parameter for signal sharpening. Default is 250.}
 
@@ -76,6 +77,9 @@ Default is 0.001.}
 
 \item{baseline_method}{Method for baseline correction. Default is
 "peakDetection".}
+
+\item{improve_signal}{Logical. Whether to apply signal improvement (Fourier
+filtering and sharpening). Default is TRUE.}
 }
 \value{
 A plot with (non-)aligned chromatograms
