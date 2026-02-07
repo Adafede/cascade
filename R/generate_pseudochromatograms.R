@@ -10,34 +10,37 @@
 #' @include preprocess_chromatograms.R
 #' @include treemaps_progress.R
 #'
-#' @param annotations Annotations
-#' @param features_informed Features informed
-#' @param features_not_informed Features not informed
-#' @param file File
-#' @param headers Headers
-#' @param detector Detector
-#' @param show_example Show example? Default to FALSE
-#' @param min_confidence Min confidence
-#' @param min_similarity_prefilter Min similarity pre filter
-#' @param min_similarity_filter Min similarity filter
-#' @param mode Mode
-#' @param organism Organism
-#' @param fourier_components Fourier components
-#' @param frequency Frequency
-#' @param resample Resample
-#' @param shift Shift
-#' @param time_min Time min
-#' @param time_max Time max
-#' @param intensity_offset Offset to add to intensity values to handle negative
-#'   intensities. Default is 100.
-#' @param intensity_floor Small value subtracted from minimum intensity.
-#'   Default is 0.001.
+#' @param annotations Annotations file path
+#' @param features_informed Features informed file path
+#' @param features_not_informed Features not informed file path
+#' @param file mzML file path
+#' @param headers Named vector mapping detector types to header names.
+#' @param detector Detector type (e.g., "cad", "bpi", "pda")
+#' @param show_example Show example data? Default is FALSE.
+#' @param min_confidence Minimum confidence score. Default is 0.4.
+#' @param min_similarity_prefilter Minimum similarity for pre-filtering.
+#'   Default is 0.6.
+#' @param min_similarity_filter Minimum similarity for final filtering. Default
+#'   is 0.8.
+#' @param mode Ionization mode. Either "pos" or "neg". Default is "pos".
+#' @param organism Organism name for taxonomic filtering.
+#' @param fourier_components Fraction of Fourier components to keep. Default is
+#'   0.01.
+#' @param frequency Acquisition frequency in Hz. Default is 1.
+#' @param resample Resampling factor. Default is 1.
+#' @param shift Time shift in minutes. Default is 0.05.
+#' @param time_min Time min in minutes. Default is 0.5.
+#' @param time_max Time max in minutes. Default is 32.5.
+#' @param intensity_floor Small positive value for intensity floor. Default is
+#'   0.001.
 #' @param k2 K2 parameter for signal sharpening. Default is 250.
 #' @param k4 K4 parameter for signal sharpening. Default is 1250000.
 #' @param sigma Sigma parameter for signal sharpening. Default is 0.05.
 #' @param smoothing_width Smoothing width for signal sharpening. Default is 8.
 #' @param baseline_method Method for baseline correction. Default is
 #'   "peakDetection".
+#' @param improve_signal Logical. Whether to apply signal improvement. Default
+#'   is TRUE.
 #'
 #' @return A list of plots
 #'
@@ -68,13 +71,13 @@ generate_pseudochromatograms <- function(
   shift = 0.05,
   time_min = 0.5,
   time_max = 32.5,
-  intensity_offset = 100,
   intensity_floor = 0.001,
   k2 = 250,
   k4 = 1250000,
   sigma = 0.05,
   smoothing_width = 8,
-  baseline_method = "peakDetection"
+  baseline_method = "peakDetection",
+  improve_signal = TRUE
 ) {
   message("loading annotations")
   annotation_table <- annotations |>
@@ -100,20 +103,19 @@ generate_pseudochromatograms <- function(
     detector = detector,
     name = name,
     list = list,
-    # signal_name = signal_name,
     shift = shift,
     fourier_components = fourier_components,
     time_min = time_min,
     time_max = time_max,
     frequency = frequency,
     resample = resample,
-    intensity_offset = intensity_offset,
     intensity_floor = intensity_floor,
     k2 = k2,
     k4 = k4,
     sigma = sigma,
     smoothing_width = smoothing_width,
-    baseline_method = baseline_method
+    baseline_method = baseline_method,
+    improve_signal = improve_signal
   )
 
   message("keeping only best candidates above desired threshold")

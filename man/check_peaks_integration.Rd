@@ -19,7 +19,6 @@ check_peaks_integration(
   time_max = 32.5,
   frequency = 1,
   resample = 1,
-  intensity_offset = 100,
   intensity_floor = 0.001,
   k2 = 250,
   k4 = 1250000,
@@ -30,7 +29,8 @@ check_peaks_integration(
   max_iter = 1000,
   noise_threshold = 0.001,
   fit = "egh",
-  intensity_threshold = 0.1
+  intensity_threshold = 0.1,
+  improve_signal = TRUE
 )
 }
 \arguments{
@@ -38,35 +38,35 @@ check_peaks_integration(
 
 \item{features}{Features path}
 
-\item{detector}{Detector}
+\item{detector}{Detector type (e.g., "cad", "bpi", "pda")}
 
-\item{chromatogram}{Chromatogram}
+\item{chromatogram}{Chromatogram type. One of "original", "improved", or
+"baselined". Default is "baselined".}
 
-\item{headers}{Headers}
+\item{headers}{Named vector mapping detector types to header names.}
 
-\item{min_area}{Minimum area}
+\item{min_area}{Minimum area fraction for peak filtering. Default is 0.005.}
 
-\item{min_intensity}{Minimum intensity}
+\item{min_intensity}{Minimum intensity for feature filtering. Default is
+1E4.}
 
-\item{shift}{shift}
+\item{shift}{Time shift in minutes. Default is 0.05.}
 
-\item{show_example}{Show example? Default to FALSE}
+\item{show_example}{Show example data? Default is FALSE.}
 
-\item{fourier_components}{Fourier components}
+\item{fourier_components}{Fraction of Fourier components to keep. Default is
+0.01.}
 
-\item{time_min}{Time min}
+\item{time_min}{Time min in minutes. Default is 0.5.}
 
-\item{time_max}{Time max}
+\item{time_max}{Time max in minutes. Default is 32.5.}
 
-\item{frequency}{Frequency}
+\item{frequency}{Acquisition frequency in Hz. Default is 1.}
 
-\item{resample}{Resample}
+\item{resample}{Resampling factor. Default is 1.}
 
-\item{intensity_offset}{Offset to add to intensity values to handle negative
-intensities. Default is 100.}
-
-\item{intensity_floor}{Small value subtracted from minimum intensity.
-Default is 0.001.}
+\item{intensity_floor}{Small positive value for intensity floor. Default is
+0.001.}
 
 \item{k2}{K2 parameter for signal sharpening. Default is 250.}
 
@@ -90,6 +90,9 @@ is "egh".}
 
 \item{intensity_threshold}{Minimum normalized intensity threshold for
 filtering. Default is 0.1.}
+
+\item{improve_signal}{Logical. Whether to apply signal improvement. Default
+is TRUE.}
 }
 \value{
 A plot with (non-)aligned chromatograms

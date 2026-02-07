@@ -12,22 +12,23 @@
 #'
 #' @param file File path
 #' @param features Features path
-#' @param detector Detector
-#' @param chromatogram Chromatogram
-#' @param headers Headers
-#' @param min_area Minimum area
-#' @param min_intensity Minimum intensity
-#' @param shift shift
-#' @param show_example Show example? Default to FALSE
-#' @param fourier_components Fourier components
-#' @param time_min Time min
-#' @param time_max Time max
-#' @param frequency Frequency
-#' @param resample Resample
-#' @param intensity_offset Offset to add to intensity values to handle negative
-#'   intensities. Default is 100.
-#' @param intensity_floor Small value subtracted from minimum intensity.
-#'   Default is 0.001.
+#' @param detector Detector type (e.g., "cad", "bpi", "pda")
+#' @param chromatogram Chromatogram type. One of "original", "improved", or
+#'   "baselined". Default is "baselined".
+#' @param headers Named vector mapping detector types to header names.
+#' @param min_area Minimum area fraction for peak filtering. Default is 0.005.
+#' @param min_intensity Minimum intensity for feature filtering. Default is
+#'   1E4.
+#' @param shift Time shift in minutes. Default is 0.05.
+#' @param show_example Show example data? Default is FALSE.
+#' @param fourier_components Fraction of Fourier components to keep. Default is
+#'   0.01.
+#' @param time_min Time min in minutes. Default is 0.5.
+#' @param time_max Time max in minutes. Default is 32.5.
+#' @param frequency Acquisition frequency in Hz. Default is 1.
+#' @param resample Resampling factor. Default is 1.
+#' @param intensity_floor Small positive value for intensity floor. Default is
+#'   0.001.
 #' @param k2 K2 parameter for signal sharpening. Default is 250.
 #' @param k4 K4 parameter for signal sharpening. Default is 1250000.
 #' @param sigma Sigma parameter for signal sharpening. Default is 0.05.
@@ -41,6 +42,8 @@
 #'   is "egh".
 #' @param intensity_threshold Minimum normalized intensity threshold for
 #'   filtering. Default is 0.1.
+#' @param improve_signal Logical. Whether to apply signal improvement. Default
+#'   is TRUE.
 #'
 #' @return A plot with (non-)aligned chromatograms
 #'
@@ -67,7 +70,6 @@ check_peaks_integration <- function(
   time_max = 32.5,
   frequency = 1,
   resample = 1,
-  intensity_offset = 100,
   intensity_floor = 0.001,
   k2 = 250,
   k4 = 1250000,
@@ -78,7 +80,8 @@ check_peaks_integration <- function(
   max_iter = 1000,
   noise_threshold = 0.001,
   fit = "egh",
-  intensity_threshold = 0.1
+  intensity_threshold = 0.1,
+  improve_signal = TRUE
 ) {
   message("loading chromatograms")
   chromatograms_all <- file |>
@@ -108,20 +111,19 @@ check_peaks_integration <- function(
     detector = detector,
     name = name,
     list = list,
-    # signal_name = signal_name,
     shift = shift,
     fourier_components = fourier_components,
     time_min = time_min,
     time_max = time_max,
     frequency = frequency,
     resample = resample,
-    intensity_offset = intensity_offset,
     intensity_floor = intensity_floor,
     k2 = k2,
     k4 = k4,
     sigma = sigma,
     smoothing_width = smoothing_width,
-    baseline_method = baseline_method
+    baseline_method = baseline_method,
+    improve_signal = improve_signal
   )
 
   peaks <-

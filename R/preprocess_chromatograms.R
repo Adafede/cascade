@@ -4,19 +4,18 @@
 #' @include change_intensity_name.R
 #' @include improve_signals_progress.R
 #'
-#' @param detector Detector
-#' @param fourier_components Fourier components
-#' @param frequency Frequency
-#' @param list List
-#' @param name Name
-#' @param resample Resample
-#' @param shift Shift
-#' @param time_min Time min
-#' @param time_max Time max
-#' @param intensity_offset Offset to add to intensity values to handle negative
-#'   intensities. Default is 100.
-#' @param intensity_floor Small value subtracted from minimum intensity.
-#'   Default is 0.001.
+#' @param detector Detector type (e.g., "cad", "bpi", "pda")
+#' @param fourier_components Fraction of Fourier components to keep. Default is
+#'   0.01.
+#' @param frequency Acquisition frequency in Hz. Default is 2.
+#' @param list List of chromatograms
+#' @param name Sample name(s)
+#' @param resample Resampling factor. Default is 1.
+#' @param shift Time shift in minutes. Default is 0.
+#' @param time_min Time min in minutes. Default is 0.
+#' @param time_max Time max in minutes. Default is Inf.
+#' @param intensity_floor Small positive value for intensity floor. Default is
+#'   0.001.
 #' @param k2 K2 parameter for signal sharpening. Default is 250.
 #' @param k4 K4 parameter for signal sharpening. Default is 1250000.
 #' @param sigma Sigma parameter for signal sharpening. Default is 0.05.
@@ -24,6 +23,9 @@
 #' @param baseline_method Method for baseline correction. Default is
 #'   "peakDetection". See \code{\link[baseline]{baseline}} for available
 #'   methods.
+#' @param improve_signal Logical. Whether to apply signal improvement (Fourier
+#'   filtering and sharpening). Default is TRUE. Set to FALSE to skip signal
+#'   improvement and use original chromatograms.
 #'
 #' @return A list of preprocessed chromatograms
 #'
@@ -36,39 +38,45 @@ preprocess_chromatograms <- function(
   name,
   resample = 1,
   shift = 0,
-  # signal_name = "UV.1_CAD_1_0",
   time_min = 0,
   time_max = Inf,
-  intensity_offset = 100,
   intensity_floor = 0.001,
   k2 = 250,
   k4 = 1250000,
   sigma = 0.05,
   smoothing_width = 8,
-  baseline_method = "peakDetection"
+  baseline_method = "peakDetection",
+  improve_signal = TRUE
 ) {
   message("preprocessing ", detector, " chromatograms")
-  # message("harmonizing names")
-  # chromatograms_original <-
-  #   purrr::map(.x = list, .f = change_intensity_name, name_intensity = signal_name)
   chromatograms_original <- list
 
-  message("improving chromatograms")
-  chromatograms_improved <-
-    improve_signals_progress(
-      xs = chromatograms_original,
-      fourier_components = fourier_components,
-      frequency = frequency,
-      resample = resample,
-      time_min = time_min,
-      time_max = time_max,
-      intensity_offset = intensity_offset,
-      intensity_floor = intensity_floor,
-      k2 = k2,
-      k4 = k4,
-      sigma = sigma,
-      smoothing_width = smoothing_width
-    )
+  if (improve_signal) {
+    message("improving chromatograms")
+    chromatograms_improved <-
+      improve_signals_progress(
+        xs = chromatograms_original,
+        fourier_components = fourier_components,
+        frequency = frequency,
+        resample = resample,
+        time_min = time_min,
+        time_max = time_max,
+        intensity_floor = intensity_floor,
+        k2 = k2,
+        k4 = k4,
+        sigma = sigma,
+        smoothing_width = smoothing_width
+      )
+  } else {
+    message("skipping signal improvement (using original chromatograms)")
+    chromatograms_improved <- chromatograms_original |>
+      purrr::map(.f = function(x) {
+        x |>
+          tidytable::select(rtime, intensity) |>
+          tidytable::filter(rtime >= time_min & rtime <= time_max) |>
+          data.frame()
+      })
+  }
 
   names(chromatograms_original) <- name
   names(chromatograms_improved) <- name
