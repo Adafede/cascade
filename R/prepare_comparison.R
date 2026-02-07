@@ -7,6 +7,8 @@
 #' @param min_similarity_filter Min similarity filter
 #' @param mode Mode
 #' @param show_example Show example? Default to FALSE
+#' @param default_peak_area Default peak area for features without peak
+#'   information. Default is 0.001.
 #'
 #' @return A list of peaks
 #'
@@ -14,11 +16,13 @@
 prepare_comparison <- function(
   features_informed = NULL,
   features_not_informed = NULL,
+
   candidates_confident,
   min_similarity_prefilter = 0.6,
   min_similarity_filter = 0.8,
   mode = "pos",
-  show_example = FALSE
+  show_example = FALSE,
+  default_peak_area = 0.001
 ) {
   peaks_compared <- features_informed |>
     load_features_informed(show_example = show_example) |>
@@ -65,9 +69,9 @@ prepare_comparison <- function(
       )
   }
 
-  temp_fix_3 <- function(df) {
+  temp_fix_3 <- function(df, default_peak_area) {
     df |>
-      tidytable::mutate(peak_rt_apex = rt, peak_area = 0.001)
+      tidytable::mutate(peak_rt_apex = rt, peak_area = default_peak_area)
   }
 
   temp_fix_4 <- function(df) {
@@ -110,7 +114,7 @@ prepare_comparison <- function(
   peaks_min <- peaks_outside |>
     temp_fix() |>
     temp_fix_2() |>
-    temp_fix_3() |>
+    temp_fix_3(default_peak_area = default_peak_area) |>
     temp_fix_4()
 
   message("keeping peaks similarities above desired (pre-)threshold only")

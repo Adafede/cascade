@@ -18,7 +18,19 @@ check_peaks_integration(
   time_min = 0.5,
   time_max = 32.5,
   frequency = 1,
-  resample = 1
+  resample = 1,
+  intensity_offset = 100,
+  intensity_floor = 0.001,
+  k2 = 250,
+  k4 = 1250000,
+  sigma = 0.05,
+  smoothing_width = 8,
+  baseline_method = "peakDetection",
+  sd_max = 50,
+  max_iter = 1000,
+  noise_threshold = 0.001,
+  fit = "egh",
+  intensity_threshold = 0.1
 )
 }
 \arguments{
@@ -49,6 +61,35 @@ check_peaks_integration(
 \item{frequency}{Frequency}
 
 \item{resample}{Resample}
+
+\item{intensity_offset}{Offset to add to intensity values to handle negative
+intensities. Default is 100.}
+
+\item{intensity_floor}{Small value subtracted from minimum intensity.
+Default is 0.001.}
+
+\item{k2}{K2 parameter for signal sharpening. Default is 250.}
+
+\item{k4}{K4 parameter for signal sharpening. Default is 1250000.}
+
+\item{sigma}{Sigma parameter for signal sharpening. Default is 0.05.}
+
+\item{smoothing_width}{Smoothing width for signal sharpening. Default is 8.}
+
+\item{baseline_method}{Method for baseline correction. Default is
+"peakDetection".}
+
+\item{sd_max}{Maximum standard deviation for peak filtering. Default is 50.}
+
+\item{max_iter}{Maximum iterations for peak fitting. Default is 1000.}
+
+\item{noise_threshold}{Noise threshold for peak detection. Default is 0.001.}
+
+\item{fit}{Peak fitting method. One of "egh", "gaussian", or "raw". Default
+is "egh".}
+
+\item{intensity_threshold}{Minimum normalized intensity threshold for
+filtering. Default is 0.1.}
 }
 \value{
 A plot with (non-)aligned chromatograms

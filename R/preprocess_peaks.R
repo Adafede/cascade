@@ -14,6 +14,13 @@
 #' @param name Name
 #' @param shift shift
 #' @param min_area Minimum area
+#' @param sd_max Maximum standard deviation for peak filtering. Default is 50.
+#' @param max_iter Maximum iterations for peak fitting. Default is 1000.
+#' @param noise_threshold Noise threshold for peak detection. Default is 0.001.
+#' @param fit Peak fitting method. One of "egh", "gaussian", or "raw". Default
+#'   is "egh".
+#' @param intensity_threshold Minimum normalized intensity threshold for
+#'   filtering in normalize_chromato. Default is 0.1.
 #'
 #' @return A list of lists and dataframe with preprocessed peaks
 #'
@@ -25,11 +32,22 @@ preprocess_peaks <- function(
   df_xy,
   name,
   shift = 0,
-  min_area = 0
+  min_area = 0,
+  sd_max = 50,
+  max_iter = 1000,
+  noise_threshold = 0.001,
+  fit = "egh",
+  intensity_threshold = 0.1
 ) {
   message("preprocessing ", detector, " peaks")
   ## data.table call outside of future because buggy else
-  peaks <- peaks_progress(df_xy = df_xy)
+  peaks <- peaks_progress(
+    df_xy = df_xy,
+    sd_max = sd_max,
+    max_iter = max_iter,
+    noise_threshold = noise_threshold,
+    fit = fit
+  )
 
   ## data.table call outside of future because buggy else
   peaks_long <- tidytable::bind_rows(peaks, .id = "id") |>
@@ -84,7 +102,8 @@ preprocess_peaks <- function(
   list_chromato_with_peak <- list_df_features_with_peaks_long |>
     purrr::map(
       .f = normalize_chromato,
-      df_xy = df_xy
+      df_xy = df_xy,
+      intensity_threshold = intensity_threshold
     )
 
   message("preparing peaks chromato")

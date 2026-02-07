@@ -4,10 +4,25 @@
 \alias{peaks_progress}
 \title{Peaks progress}
 \usage{
-peaks_progress(df_xy)
+peaks_progress(
+  df_xy,
+  sd_max = 50,
+  max_iter = 1000,
+  noise_threshold = 0.001,
+  fit = "egh"
+)
 }
 \arguments{
 \item{df_xy}{Df X Y}
+
+\item{sd_max}{Maximum standard deviation for peak filtering. Default is 50.}
+
+\item{max_iter}{Maximum iterations for peak fitting. Default is 1000.}
+
+\item{noise_threshold}{Noise threshold for peak detection. Default is 0.001.}
+
+\item{fit}{Peak fitting method. One of "egh", "gaussian", or "raw". Default
+is "egh".}
 }
 \value{
 A list of peaks

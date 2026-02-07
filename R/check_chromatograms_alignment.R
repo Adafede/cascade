@@ -24,6 +24,16 @@
 #' @param normalize_intensity Normalize intensity? Default to TRUE
 #' @param normalize_time Normalize time? Default to FALSE
 #' @param show_example Show example? Default to FALSE
+#' @param intensity_offset Offset to add to intensity values to handle negative
+#'   intensities. Default is 100.
+#' @param intensity_floor Small value subtracted from minimum intensity.
+#'   Default is 0.001.
+#' @param k2 K2 parameter for signal sharpening. Default is 250.
+#' @param k4 K4 parameter for signal sharpening. Default is 1250000.
+#' @param sigma Sigma parameter for signal sharpening. Default is 0.05.
+#' @param smoothing_width Smoothing width for signal sharpening. Default is 8.
+#' @param baseline_method Method for baseline correction. Default is
+#'   "peakDetection".
 #'
 #' @return A plot with (non-)aligned chromatograms
 #'
@@ -50,7 +60,14 @@ check_chromatograms_alignment <- function(
   type = "baselined",
   normalize_intensity = TRUE,
   normalize_time = FALSE,
-  show_example = FALSE
+  show_example = FALSE,
+  intensity_offset = 100,
+  intensity_floor = 0.001,
+  k2 = 250,
+  k4 = 1250000,
+  sigma = 0.05,
+  smoothing_width = 8,
+  baseline_method = "peakDetection"
 ) {
   chromatograms_list <- list()
   if (!is.null(file_positive) || show_example) {
@@ -78,14 +95,20 @@ check_chromatograms_alignment <- function(
           time_max = time_max,
           fourier_components = fourier_components,
           frequency = frequency,
-          resample = resample
+          resample = resample,
+          intensity_offset = intensity_offset,
+          intensity_floor = intensity_floor,
+          k2 = k2,
+          k4 = k4,
+          sigma = sigma,
+          smoothing_width = smoothing_width
         ) |>
         normalize_chromatograms_list(
           normalize_intensity = normalize_intensity,
           normalize_time = normalize_time
         )
       chromatograms_list$chromatogram_bpi_pos_baselined <- chromatograms_list$chromatogram_bpi_pos_improved |>
-        baseline_chromatogram() |>
+        baseline_chromatogram(method = baseline_method) |>
         normalize_chromatograms_list(
           normalize_intensity = normalize_intensity,
           normalize_time = normalize_time
@@ -104,14 +127,20 @@ check_chromatograms_alignment <- function(
           time_max = time_max,
           fourier_components = fourier_components,
           frequency = frequency,
-          resample = resample
+          resample = resample,
+          intensity_offset = intensity_offset,
+          intensity_floor = intensity_floor,
+          k2 = k2,
+          k4 = k4,
+          sigma = sigma,
+          smoothing_width = smoothing_width
         ) |>
         normalize_chromatograms_list(
           normalize_intensity = normalize_intensity,
           normalize_time = normalize_time
         )
       chromatograms_list$chromatogram_cad_pos_baselined <- chromatograms_list$chromatogram_cad_pos_improved |>
-        baseline_chromatogram() |>
+        baseline_chromatogram(method = baseline_method) |>
         normalize_chromatograms_list(
           normalize_intensity = normalize_intensity,
           normalize_time = normalize_time
@@ -130,14 +159,20 @@ check_chromatograms_alignment <- function(
           time_max = time_max,
           fourier_components = fourier_components,
           frequency = frequency,
-          resample = resample
+          resample = resample,
+          intensity_offset = intensity_offset,
+          intensity_floor = intensity_floor,
+          k2 = k2,
+          k4 = k4,
+          sigma = sigma,
+          smoothing_width = smoothing_width
         ) |>
         normalize_chromatograms_list(
           normalize_intensity = normalize_intensity,
           normalize_time = normalize_time
         )
       chromatograms_list$chromatogram_pda_pos_baselined <- chromatograms_list$chromatogram_pda_pos_improved |>
-        baseline_chromatogram() |>
+        baseline_chromatogram(method = baseline_method) |>
         normalize_chromatograms_list(
           normalize_intensity = normalize_intensity,
           normalize_time = normalize_time
@@ -170,14 +205,20 @@ check_chromatograms_alignment <- function(
           time_max = time_max,
           fourier_components = fourier_components,
           frequency = frequency,
-          resample = resample
+          resample = resample,
+          intensity_offset = intensity_offset,
+          intensity_floor = intensity_floor,
+          k2 = k2,
+          k4 = k4,
+          sigma = sigma,
+          smoothing_width = smoothing_width
         ) |>
         normalize_chromatograms_list(
           normalize_intensity = normalize_intensity,
           normalize_time = normalize_time
         )
       chromatograms_list$chromatogram_bpi_neg_baselined <- chromatograms_list$chromatogram_bpi_neg_improved |>
-        baseline_chromatogram() |>
+        baseline_chromatogram(method = baseline_method) |>
         normalize_chromatograms_list(
           normalize_intensity = normalize_intensity,
           normalize_time = normalize_time
@@ -196,14 +237,20 @@ check_chromatograms_alignment <- function(
           time_max = time_max,
           fourier_components = fourier_components,
           frequency = frequency,
-          resample = resample
+          resample = resample,
+          intensity_offset = intensity_offset,
+          intensity_floor = intensity_floor,
+          k2 = k2,
+          k4 = k4,
+          sigma = sigma,
+          smoothing_width = smoothing_width
         ) |>
         normalize_chromatograms_list(
           normalize_intensity = normalize_intensity,
           normalize_time = normalize_time
         )
       chromatograms_list$chromatogram_cad_neg_baselined <- chromatograms_list$chromatogram_cad_neg_improved |>
-        baseline_chromatogram() |>
+        baseline_chromatogram(method = baseline_method) |>
         normalize_chromatograms_list(
           normalize_intensity = normalize_intensity,
           normalize_time = normalize_time
@@ -222,14 +269,20 @@ check_chromatograms_alignment <- function(
           time_max = time_max,
           fourier_components = fourier_components,
           frequency = frequency,
-          resample = resample
+          resample = resample,
+          intensity_offset = intensity_offset,
+          intensity_floor = intensity_floor,
+          k2 = k2,
+          k4 = k4,
+          sigma = sigma,
+          smoothing_width = smoothing_width
         ) |>
         normalize_chromatograms_list(
           normalize_intensity = normalize_intensity,
           normalize_time = normalize_time
         )
       chromatograms_list$chromatogram_pda_neg_baselined <- chromatograms_list$chromatogram_pda_neg_improved |>
-        baseline_chromatogram() |>
+        baseline_chromatogram(method = baseline_method) |>
         normalize_chromatograms_list(
           normalize_intensity = normalize_intensity,
           normalize_time = normalize_time

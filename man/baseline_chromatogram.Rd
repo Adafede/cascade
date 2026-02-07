@@ -4,10 +4,17 @@
 \alias{baseline_chromatogram}
 \title{Baseline chromatogram}
 \usage{
-baseline_chromatogram(df)
+baseline_chromatogram(df, method = "peakDetection", ...)
 }
 \arguments{
 \item{df}{Dataframe}
+
+\item{method}{Baseline correction method. Default is "peakDetection". See
+\code{\link[baseline]{baseline}} for available methods including: "als",
+"fillPeaks", "irls", "lowpass", "medianWindow", "modpolyfit", "peakDetection",
+"rfbaseline", "rollingBall", "shirley", "TAP".}
+
+\item{...}{Additional arguments passed to \code{\link[baseline]{baseline}}.}
 }
 \value{
 A dataframe with baselined chromatogram

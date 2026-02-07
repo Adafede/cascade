@@ -11,7 +11,12 @@ preprocess_peaks(
   df_xy,
   name,
   shift = 0,
-  min_area = 0
+  min_area = 0,
+  sd_max = 50,
+  max_iter = 1000,
+  noise_threshold = 0.001,
+  fit = "egh",
+  intensity_threshold = 0.1
 )
 }
 \arguments{
@@ -28,6 +33,18 @@ preprocess_peaks(
 \item{shift}{shift}
 
 \item{min_area}{Minimum area}
+
+\item{sd_max}{Maximum standard deviation for peak filtering. Default is 50.}
+
+\item{max_iter}{Maximum iterations for peak fitting. Default is 1000.}
+
+\item{noise_threshold}{Noise threshold for peak detection. Default is 0.001.}
+
+\item{fit}{Peak fitting method. One of "egh", "gaussian", or "raw". Default
+is "egh".}
+
+\item{intensity_threshold}{Minimum normalized intensity threshold for
+filtering in normalize_chromato. Default is 0.1.}
 }
 \value{
 A list of lists and dataframe with preprocessed peaks

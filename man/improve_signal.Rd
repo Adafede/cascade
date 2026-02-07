@@ -10,7 +10,13 @@ improve_signal(
   frequency = 2,
   resample = 1,
   time_min = 0,
-  time_max = Inf
+  time_max = Inf,
+  intensity_offset = 100,
+  intensity_floor = 0.001,
+  k2 = 250,
+  k4 = 1250000,
+  sigma = 0.05,
+  smoothing_width = 8
 )
 }
 \arguments{
@@ -25,6 +31,21 @@ improve_signal(
 \item{time_min}{Time min}
 
 \item{time_max}{Time max}
+
+\item{intensity_offset}{Offset to add to intensity values to handle negative
+intensities. Default is 100. Set to a value larger than the absolute value
+of the most negative intensity expected.}
+
+\item{intensity_floor}{Small value subtracted from minimum intensity to
+ensure all values are positive. Default is 0.001.}
+
+\item{k2}{K2 parameter for signal sharpening. Default is 250.}
+
+\item{k4}{K4 parameter for signal sharpening. Default is 1250000.}
+
+\item{sigma}{Sigma parameter for signal sharpening. Default is 0.05.}
+
+\item{smoothing_width}{Smoothing width for signal sharpening. Default is 8.}
 }
 \value{
 A dataframe with improved signal
