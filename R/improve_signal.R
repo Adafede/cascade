@@ -3,17 +3,15 @@
 #' @include filter_fft.R
 #' @include signal_sharpening.R
 #'
-#' @param df Dataframe
-#' @param fourier_components Fourier components
-#' @param frequency Frequency
-#' @param resample Resample
-#' @param time_min Time min
-#' @param time_max Time max
-#' @param intensity_offset Offset to add to intensity values to handle negative
-#'   intensities. Default is 100. Set to a value larger than the absolute value
-#'   of the most negative intensity expected.
-#' @param intensity_floor Small value subtracted from minimum intensity to
-#'   ensure all values are positive. Default is 0.001.
+#' @param df Dataframe with columns 'rtime' and 'intensity'
+#' @param fourier_components Fraction of Fourier components to keep for
+#'   filtering. Default is 0.01 (1%). Lower values provide more smoothing.
+#' @param frequency Acquisition frequency in Hz. Default is 2.
+#' @param resample Resampling factor. Default is 1.
+#' @param time_min Time min in minutes. Default is 0.
+#' @param time_max Time max in minutes. Default is Inf.
+#' @param intensity_floor Small positive value to ensure all intensities are
+#'   strictly positive after shifting. Default is 0.001.
 #' @param k2 K2 parameter for signal sharpening. Default is 250.
 #' @param k4 K4 parameter for signal sharpening. Default is 1250000.
 #' @param sigma Sigma parameter for signal sharpening. Default is 0.05.
@@ -30,18 +28,23 @@ improve_signal <-
     resample = 1,
     time_min = 0,
     time_max = Inf,
-    intensity_offset = 100,
     intensity_floor = 0.001,
     k2 = 250,
     k4 = 1250000,
     sigma = 0.05,
     smoothing_width = 8
   ) {
+    ## Ensure intensity values are strictly positive
+    ## Shift by the absolute minimum value plus a small floor
+    min_intensity <- min(df$intensity, na.rm = TRUE)
+    shift_amount <- if (min_intensity <= 0) {
+      abs(min_intensity) + intensity_floor
+    } else {
+      0
+    }
+
     df_fourier <- df |>
-      ## in case we have negative intensity
-      ## intensity_offset to be on the safe side
-      tidytable::mutate(intensity = intensity + intensity_offset) |>
-      tidytable::mutate(intensity = intensity - (min(intensity) - intensity_floor)) |>
+      tidytable::mutate(intensity = intensity + shift_amount) |>
       tidytable::mutate(
         intensity_fourier = filter_fft(
           x = intensity,

@@ -11,7 +11,6 @@ improve_signals_progress(
   resample = 1,
   time_min = 0,
   time_max = Inf,
-  intensity_offset = 100,
   intensity_floor = 0.001,
   k2 = 250,
   k4 = 1250000,
@@ -20,23 +19,21 @@ improve_signals_progress(
 )
 }
 \arguments{
-\item{xs}{XS}
+\item{xs}{List of dataframes with 'rtime' and 'intensity' columns}
 
-\item{fourier_components}{Fourier components}
+\item{fourier_components}{Fraction of Fourier components to keep. Default is
+0.01.}
 
-\item{frequency}{Frequency}
+\item{frequency}{Acquisition frequency in Hz. Default is 2.}
 
-\item{resample}{Resample}
+\item{resample}{Resampling factor. Default is 1.}
 
-\item{time_min}{Time min}
+\item{time_min}{Time min in minutes. Default is 0.}
 
-\item{time_max}{Time max}
+\item{time_max}{Time max in minutes. Default is Inf.}
 
-\item{intensity_offset}{Offset to add to intensity values to handle negative
-intensities. Default is 100.}
-
-\item{intensity_floor}{Small value subtracted from minimum intensity.
-Default is 0.001.}
+\item{intensity_floor}{Small positive value for intensity floor. Default is
+0.001.}
 
 \item{k2}{K2 parameter for signal sharpening. Default is 250.}
 
