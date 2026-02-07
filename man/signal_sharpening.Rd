@@ -19,15 +19,21 @@ signal_sharpening(
 
 \item{intensity}{intensity}
 
-\item{k2}{K2}
+\item{k2}{K2 parameter controlling the weight of the second derivative in
+signal sharpening. Default is 250. Lower values increase the sharpening
+effect from the second derivative.}
 
-\item{k4}{K4}
+\item{k4}{K4 parameter controlling the weight of the fourth derivative in
+signal sharpening. Default is 1250000. Lower values increase the
+sharpening effect from the fourth derivative.}
 
-\item{sigma}{Sigma}
+\item{sigma}{Sigma parameter for derivative weighting. Default is 0.05.
+Higher values increase the overall sharpening effect.}
 
-\item{Smoothing_width}{Smoothing width}
+\item{Smoothing_width}{Smoothing width for the running mean filter. Default
+is 8. Higher values provide more smoothing but reduce resolution.}
 
-\item{Baseline_adjust}{Baseline adjust}
+\item{Baseline_adjust}{Baseline adjustment value. Default is 0.}
 }
 \value{
 A sharpened signal

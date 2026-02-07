@@ -3,11 +3,22 @@
 #' @include get_peaks.R
 #'
 #' @param df_xy Df X Y
+#' @param sd_max Maximum standard deviation for peak filtering. Default is 50.
+#' @param max_iter Maximum iterations for peak fitting. Default is 1000.
+#' @param noise_threshold Noise threshold for peak detection. Default is 0.001.
+#' @param fit Peak fitting method. One of "egh", "gaussian", or "raw". Default
+#'   is "egh".
 #'
 #' @return A list of peaks
 #'
 #' @examples NULL
-peaks_progress <- function(df_xy) {
+peaks_progress <- function(
+  df_xy,
+  sd_max = 50,
+  max_iter = 1000,
+  noise_threshold = 0.001,
+  fit = "egh"
+) {
   list(
     "666" = df_xy |>
       tidytable::filter(rtime >= 0) |>
@@ -18,13 +29,10 @@ peaks_progress <- function(df_xy) {
   ) |>
     get_peaks(
       lambdas = c("666"),
-      # fit = c("egh", "gaussian", "raw"),
-      # fit = c("egh"),
-      # fit = c("gaussian"),
-      # fit = c("raw"),
-      sd.max = 50,
-      max.iter = 1000,
-      noise_threshold = 0.001
+      fit = fit,
+      sd.max = sd_max,
+      max.iter = max_iter,
+      noise_threshold = noise_threshold
     ) |>
     purrr::pluck("666") |>
     purrr::pluck("666") |>

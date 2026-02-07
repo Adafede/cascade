@@ -11,7 +11,8 @@ prepare_comparison(
   min_similarity_prefilter = 0.6,
   min_similarity_filter = 0.8,
   mode = "pos",
-  show_example = FALSE
+  show_example = FALSE,
+  default_peak_area = 0.001
 )
 }
 \arguments{
@@ -28,6 +29,9 @@ prepare_comparison(
 \item{mode}{Mode}
 
 \item{show_example}{Show example? Default to FALSE}
+
+\item{default_peak_area}{Default peak area for features without peak
+information. Default is 0.001.}
 }
 \value{
 A list of peaks

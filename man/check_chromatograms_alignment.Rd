@@ -19,7 +19,14 @@ check_chromatograms_alignment(
   type = "baselined",
   normalize_intensity = TRUE,
   normalize_time = FALSE,
-  show_example = FALSE
+  show_example = FALSE,
+  intensity_offset = 100,
+  intensity_floor = 0.001,
+  k2 = 250,
+  k4 = 1250000,
+  sigma = 0.05,
+  smoothing_width = 8,
+  baseline_method = "peakDetection"
 )
 }
 \arguments{
@@ -52,6 +59,23 @@ check_chromatograms_alignment(
 \item{normalize_time}{Normalize time? Default to FALSE}
 
 \item{show_example}{Show example? Default to FALSE}
+
+\item{intensity_offset}{Offset to add to intensity values to handle negative
+intensities. Default is 100.}
+
+\item{intensity_floor}{Small value subtracted from minimum intensity.
+Default is 0.001.}
+
+\item{k2}{K2 parameter for signal sharpening. Default is 250.}
+
+\item{k4}{K4 parameter for signal sharpening. Default is 1250000.}
+
+\item{sigma}{Sigma parameter for signal sharpening. Default is 0.05.}
+
+\item{smoothing_width}{Smoothing width for signal sharpening. Default is 8.}
+
+\item{baseline_method}{Method for baseline correction. Default is
+"peakDetection".}
 }
 \value{
 A plot with (non-)aligned chromatograms

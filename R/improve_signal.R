@@ -9,6 +9,15 @@
 #' @param resample Resample
 #' @param time_min Time min
 #' @param time_max Time max
+#' @param intensity_offset Offset to add to intensity values to handle negative
+#'   intensities. Default is 100. Set to a value larger than the absolute value
+#'   of the most negative intensity expected.
+#' @param intensity_floor Small value subtracted from minimum intensity to
+#'   ensure all values are positive. Default is 0.001.
+#' @param k2 K2 parameter for signal sharpening. Default is 250.
+#' @param k4 K4 parameter for signal sharpening. Default is 1250000.
+#' @param sigma Sigma parameter for signal sharpening. Default is 0.05.
+#' @param smoothing_width Smoothing width for signal sharpening. Default is 8.
 #'
 #' @return A dataframe with improved signal
 #'
@@ -20,13 +29,19 @@ improve_signal <-
     frequency = 2,
     resample = 1,
     time_min = 0,
-    time_max = Inf
+    time_max = Inf,
+    intensity_offset = 100,
+    intensity_floor = 0.001,
+    k2 = 250,
+    k4 = 1250000,
+    sigma = 0.05,
+    smoothing_width = 8
   ) {
     df_fourier <- df |>
       ## in case we have negative intensity
-      ## 100 to be on the safe side
-      tidytable::mutate(intensity = intensity + 100) |>
-      tidytable::mutate(intensity = intensity - (min(intensity) - 0.001)) |>
+      ## intensity_offset to be on the safe side
+      tidytable::mutate(intensity = intensity + intensity_offset) |>
+      tidytable::mutate(intensity = intensity - (min(intensity) - intensity_floor)) |>
       tidytable::mutate(
         intensity_fourier = filter_fft(
           x = intensity,
@@ -51,10 +66,20 @@ improve_signal <-
       by = 1 / (frequency * 60 * resample)
     ))
 
-    intensity_sharpened <- signal_sharpening(time = time, intensity = intensity)
+    intensity_sharpened <- signal_sharpening(
+      time = time,
+      intensity = intensity,
+      k2 = k2,
+      k4 = k4,
+      sigma = sigma,
+      Smoothing_width = smoothing_width
+    )
 
+    ## The signal sharpening function removes the first 4 points due to
+    ## derivative calculations and smoothing operations
+    trim_start <- 5
     return(data.frame(
-      "rtime" = time[5:length(time)],
+      "rtime" = time[trim_start:length(time)],
       "intensity" = intensity_sharpened
     ))
   }

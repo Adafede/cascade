@@ -4,10 +4,13 @@
 \alias{transform_ms}
 \title{Transform MS}
 \usage{
-transform_ms(x)
+transform_ms(x, min_intensity = 0.1)
 }
 \arguments{
 \item{x}{X}
+
+\item{min_intensity}{Minimum normalized intensity threshold for filtering.
+Default is 0.1. Set to 0 to keep all points.}
 }
 \value{
 A list with transformed MS

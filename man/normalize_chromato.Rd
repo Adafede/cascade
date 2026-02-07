@@ -4,12 +4,15 @@
 \alias{normalize_chromato}
 \title{Normalize chromato}
 \usage{
-normalize_chromato(x, df_xy)
+normalize_chromato(x, df_xy, intensity_threshold = 0.1)
 }
 \arguments{
 \item{x}{X}
 
 \item{df_xy}{Df X Y}
+
+\item{intensity_threshold}{Minimum normalized intensity threshold for
+filtering. Default is 0.1. Set to 0 to keep all points.}
 }
 \value{
 A normalized chromato
