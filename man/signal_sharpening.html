@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.8.27">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -73,7 +73,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-c2cc733cf12bdbc468fe7c5ee555446a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -337,7 +337,7 @@ intensity
 <code id="k2">k2</code>
 </td>
 <td>
-K2
+K2 parameter controlling the weight of the second derivative in signal sharpening. Default is 250. Lower values increase the sharpening effect from the second derivative.
 </td>
 </tr>
 <tr>
@@ -345,7 +345,7 @@ K2
 <code id="k4">k4</code>
 </td>
 <td>
-K4
+K4 parameter controlling the weight of the fourth derivative in signal sharpening. Default is 1250000. Lower values increase the sharpening effect from the fourth derivative.
 </td>
 </tr>
 <tr>
@@ -353,7 +353,7 @@ K4
 <code id="sigma">sigma</code>
 </td>
 <td>
-Sigma
+Sigma parameter for derivative weighting. Default is 0.05. Higher values increase the overall sharpening effect.
 </td>
 </tr>
 <tr>
@@ -361,7 +361,7 @@ Sigma
 <code id="Smoothing_width">Smoothing_width</code>
 </td>
 <td>
-Smoothing width
+Smoothing width for the running mean filter. Default is 8. Higher values provide more smoothing but reduce resolution.
 </td>
 </tr>
 <tr>
@@ -369,7 +369,7 @@ Smoothing width
 <code id="Baseline_adjust">Baseline_adjust</code>
 </td>
 <td>
-Baseline adjust
+Baseline adjustment value. Default is 0.
 </td>
 </tr>
 </tbody></table>

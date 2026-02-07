@@ -132,18 +132,18 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
 | BiocVersion | 3.22.0 | Morgan (2025) |
 | cascade | 0.0.0.9001 | Rutz and Wolfender (2023); Rutz (2025) |
 | caTools | 1.18.3 | Tuszynski (2024) |
-| data.table | 1.18.0 | Barrett et al. (2025) |
-| gt | 1.2.0 | Iannone et al. (2025) |
+| data.table | 1.18.2.1 | Barrett et al. (2026) |
+| gt | 1.3.0 | Iannone et al. (2026) |
 | htmltools | 0.5.9 | Cheng et al. (2025) |
 | knitr | 1.51 | Xie (2014); Xie (2015); Xie (2025) |
 | MSnbase | 2.36.0 | Gatto and Lilley (2012); Gatto, Gibb, and Rainer (2020) |
 | mzR | 2.44.0 | Pedrioli et al. (2004); Keller et al. (2005); Kessner et al. (2008); Martens et al. (2010); Chambers et al. (2012) |
-| pkgload | 1.4.1 | Wickham et al. (2025) |
-| plotly | 4.11.0 | Sievert (2020) |
+| pkgload | 1.5.0 | Wickham et al. (2026) |
+| plotly | 4.12.0 | Sievert (2020) |
 | R.utils | 2.13.0 | Bengtsson (2025) |
 | rmarkdown | 2.30 | Xie, Allaire, and Grolemund (2018); Xie, Dervieux, and Riederer (2020); Allaire et al. (2025) |
 | stringi | 1.8.7 | Gagolewski (2022) |
-| testthat | 3.3.1 | Wickham (2011) |
+| testthat | 3.3.2 | Wickham (2011) |
 | tidytable | 0.11.2 | Fairbanks (2024) |
 | tidyverse | 2.0.0 | Wickham et al. (2019) |
 | tima | 2.12.0 | Rutz et al. (2019); Rutz and Allard (2025) |
@@ -164,7 +164,7 @@ Luraschi, Kevin Ushey, Aron Atkins, et al. 2025.
 <div id="ref-datatable" class="csl-entry">
 
 Barrett, Tyson, Matt Dowle, Arun Srinivasan, Jan Gorecki, Michael
-Chirico, Toby Hocking, Benjamin Schwendinger, and Ivan Krylov. 2025.
+Chirico, Toby Hocking, Benjamin Schwendinger, and Ivan Krylov. 2026.
 *<span class="nocase">data.table</span>: Extension of
 “<span class="nocase">data.frame</span>”*.
 <https://doi.org/10.32614/CRAN.package.data.table>.
@@ -231,7 +231,7 @@ Processing and Quantitation.” *Bioinformatics* 28: 288–89.
 
 Iannone, Richard, Joe Cheng, Barret Schloerke, Shannon Haughton, Ellis
 Hughes, Alexandra Lauer, Romain François, JooYoung Seo, Ken Brevoort,
-and Olivier Roy. 2025. *<span class="nocase">gt</span>: Easily Create
+and Olivier Roy. 2026. *<span class="nocase">gt</span>: Easily Create
 Presentation-Ready Display Tables*.
 <https://doi.org/10.32614/CRAN.package.gt>.
 
@@ -400,9 +400,9 @@ Source Software* 4 (43): 1686. <https://doi.org/10.21105/joss.01686>.
 
 <div id="ref-pkgload" class="csl-entry">
 
-Wickham, Hadley, Winston Chang, Jim Hester, and Lionel Henry. 2025.
+Wickham, Hadley, Winston Chang, Jim Hester, and Lionel Henry. 2026.
 *<span class="nocase">pkgload</span>: Simulate Package Installation and
-Attach*. <https://github.com/r-lib/pkgload>.
+Attach*. <https://doi.org/10.32614/CRAN.package.pkgload>.
 
 </div>
 

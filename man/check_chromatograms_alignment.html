@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.8.27">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-c2cc733cf12bdbc468fe7c5ee555446a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -318,7 +318,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   type = "baselined",
   normalize_intensity = TRUE,
   normalize_time = FALSE,
-  show_example = FALSE
+  show_example = FALSE,
+  intensity_floor = 0.001,
+  k2 = 250,
+  k4 = 1250000,
+  sigma = 0.05,
+  smoothing_width = 8,
+  baseline_method = "peakDetection",
+  improve_signal = TRUE
 )
 </code></pre>
 </section>
@@ -346,7 +353,7 @@ Positive file path
 <code id="time_min">time_min</code>
 </td>
 <td>
-Minimum time
+Minimum time in minutes. Default is 0.5.
 </td>
 </tr>
 <tr>
@@ -354,7 +361,7 @@ Minimum time
 <code id="time_max">time_max</code>
 </td>
 <td>
-Maximum time
+Maximum time in minutes. Default is 32.5.
 </td>
 </tr>
 <tr>
@@ -362,7 +369,7 @@ Maximum time
 <code id="cad_shift">cad_shift</code>
 </td>
 <td>
-CAD shift
+CAD time shift in minutes. Default is 0.05.
 </td>
 </tr>
 <tr>
@@ -370,7 +377,7 @@ CAD shift
 <code id="pda_shift">pda_shift</code>
 </td>
 <td>
-PDA shift
+PDA time shift in minutes. Default is 0.1.
 </td>
 </tr>
 <tr>
@@ -378,7 +385,7 @@ PDA shift
 <code id="fourier_components">fourier_components</code>
 </td>
 <td>
-Fourier components
+Fraction of Fourier components to keep. Default is 0.01.
 </td>
 </tr>
 <tr>
@@ -386,7 +393,7 @@ Fourier components
 <code id="frequency">frequency</code>
 </td>
 <td>
-Frequency
+Acquisition frequency in Hz. Default is 1.
 </td>
 </tr>
 <tr>
@@ -394,7 +401,7 @@ Frequency
 <code id="resample">resample</code>
 </td>
 <td>
-Resample
+Resampling factor. Default is 1.
 </td>
 </tr>
 <tr>
@@ -402,7 +409,7 @@ Resample
 <code id="chromatograms">chromatograms</code>
 </td>
 <td>
-Chromatograms to plot
+Chromatograms to plot. Default is c("bpi_pos", "cad_pos", "pda_pos").
 </td>
 </tr>
 <tr>
@@ -410,7 +417,7 @@ Chromatograms to plot
 <code id="headers">headers</code>
 </td>
 <td>
-Headers
+Named vector mapping detector types to header names in the mzML file.
 </td>
 </tr>
 <tr>
@@ -418,7 +425,7 @@ Headers
 <code id="type">type</code>
 </td>
 <td>
-Type. "baselined" or "improved"
+Type of chromatogram to display. Either "baselined" or "improved". Default is "baselined".
 </td>
 </tr>
 <tr>
@@ -426,7 +433,7 @@ Type. "baselined" or "improved"
 <code id="normalize_intensity">normalize_intensity</code>
 </td>
 <td>
-Normalize intensity? Default to TRUE
+Normalize intensity? Default is TRUE.
 </td>
 </tr>
 <tr>
@@ -434,7 +441,7 @@ Normalize intensity? Default to TRUE
 <code id="normalize_time">normalize_time</code>
 </td>
 <td>
-Normalize time? Default to FALSE
+Normalize time? Default is FALSE.
 </td>
 </tr>
 <tr>
@@ -442,7 +449,63 @@ Normalize time? Default to FALSE
 <code id="show_example">show_example</code>
 </td>
 <td>
-Show example? Default to FALSE
+Show example data? Default is FALSE.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="intensity_floor">intensity_floor</code>
+</td>
+<td>
+Small positive value for intensity floor. Default is 0.001.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="k2">k2</code>
+</td>
+<td>
+K2 parameter for signal sharpening. Default is 250.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="k4">k4</code>
+</td>
+<td>
+K4 parameter for signal sharpening. Default is 1250000.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="sigma">sigma</code>
+</td>
+<td>
+Sigma parameter for signal sharpening. Default is 0.05.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="smoothing_width">smoothing_width</code>
+</td>
+<td>
+Smoothing width for signal sharpening. Default is 8.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="baseline_method">baseline_method</code>
+</td>
+<td>
+Method for baseline correction. Default is "peakDetection".
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="improve_signal">improve_signal</code>
+</td>
+<td>
+Logical. Whether to apply signal improvement (Fourier filtering and sharpening). Default is TRUE.
 </td>
 </tr>
 </tbody></table>

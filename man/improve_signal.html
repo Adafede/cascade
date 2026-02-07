@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.8.27">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -73,7 +73,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-c2cc733cf12bdbc468fe7c5ee555446a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -308,7 +308,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   frequency = 2,
   resample = 1,
   time_min = 0,
-  time_max = Inf
+  time_max = Inf,
+  intensity_floor = 0.001,
+  k2 = 250,
+  k4 = 1250000,
+  sigma = 0.05,
+  smoothing_width = 8
 )
 </code></pre>
 </section>
@@ -320,7 +325,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <code id="df">df</code>
 </td>
 <td>
-Dataframe
+Dataframe with columns ‘rtime’ and ‘intensity’
 </td>
 </tr>
 <tr>
@@ -328,7 +333,7 @@ Dataframe
 <code id="fourier_components">fourier_components</code>
 </td>
 <td>
-Fourier components
+Fraction of Fourier components to keep for filtering. Default is 0.01 (1%). Lower values provide more smoothing.
 </td>
 </tr>
 <tr>
@@ -336,7 +341,7 @@ Fourier components
 <code id="frequency">frequency</code>
 </td>
 <td>
-Frequency
+Acquisition frequency in Hz. Default is 2.
 </td>
 </tr>
 <tr>
@@ -344,7 +349,7 @@ Frequency
 <code id="resample">resample</code>
 </td>
 <td>
-Resample
+Resampling factor. Default is 1.
 </td>
 </tr>
 <tr>
@@ -352,7 +357,7 @@ Resample
 <code id="time_min">time_min</code>
 </td>
 <td>
-Time min
+Time min in minutes. Default is 0.
 </td>
 </tr>
 <tr>
@@ -360,7 +365,47 @@ Time min
 <code id="time_max">time_max</code>
 </td>
 <td>
-Time max
+Time max in minutes. Default is Inf.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="intensity_floor">intensity_floor</code>
+</td>
+<td>
+Small positive value to ensure all intensities are strictly positive after shifting. Default is 0.001.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="k2">k2</code>
+</td>
+<td>
+K2 parameter for signal sharpening. Default is 250.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="k4">k4</code>
+</td>
+<td>
+K4 parameter for signal sharpening. Default is 1250000.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="sigma">sigma</code>
+</td>
+<td>
+Sigma parameter for signal sharpening. Default is 0.05.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="smoothing_width">smoothing_width</code>
+</td>
+<td>
+Smoothing width for signal sharpening. Default is 8.
 </td>
 </tr>
 </tbody></table>
