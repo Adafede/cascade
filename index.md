@@ -64,6 +64,7 @@ install.packages(
   "cascade",
   repos = c(
     "https://adafede.r-universe.dev",
+    "https://taxonomicallyinformedannotation.r-universe.dev",
     "https://bioc.r-universe.dev",
     "https://cloud.r-project.org"
   )
