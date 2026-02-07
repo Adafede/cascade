@@ -28,6 +28,16 @@
 #' @param shift Shift
 #' @param time_min Time min
 #' @param time_max Time max
+#' @param intensity_offset Offset to add to intensity values to handle negative
+#'   intensities. Default is 100.
+#' @param intensity_floor Small value subtracted from minimum intensity.
+#'   Default is 0.001.
+#' @param k2 K2 parameter for signal sharpening. Default is 250.
+#' @param k4 K4 parameter for signal sharpening. Default is 1250000.
+#' @param sigma Sigma parameter for signal sharpening. Default is 0.05.
+#' @param smoothing_width Smoothing width for signal sharpening. Default is 8.
+#' @param baseline_method Method for baseline correction. Default is
+#'   "peakDetection".
 #'
 #' @return A list of plots
 #'
@@ -57,7 +67,14 @@ generate_pseudochromatograms <- function(
   resample = 1,
   shift = 0.05,
   time_min = 0.5,
-  time_max = 32.5
+  time_max = 32.5,
+  intensity_offset = 100,
+  intensity_floor = 0.001,
+  k2 = 250,
+  k4 = 1250000,
+  sigma = 0.05,
+  smoothing_width = 8,
+  baseline_method = "peakDetection"
 ) {
   message("loading annotations")
   annotation_table <- annotations |>
@@ -89,7 +106,14 @@ generate_pseudochromatograms <- function(
     time_min = time_min,
     time_max = time_max,
     frequency = frequency,
-    resample = resample
+    resample = resample,
+    intensity_offset = intensity_offset,
+    intensity_floor = intensity_floor,
+    k2 = k2,
+    k4 = k4,
+    sigma = sigma,
+    smoothing_width = smoothing_width,
+    baseline_method = baseline_method
   )
 
   message("keeping only best candidates above desired threshold")

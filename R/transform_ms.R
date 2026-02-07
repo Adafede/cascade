@@ -1,11 +1,13 @@
 #' Transform MS
 #'
 #' @param x X
+#' @param min_intensity Minimum normalized intensity threshold for filtering.
+#'   Default is 0.1. Set to 0 to keep all points.
 #'
 #' @return A list with transformed MS
 #'
 #' @examples NULL
-transform_ms <- function(x) {
+transform_ms <- function(x, min_intensity = 0.1) {
   custom_min <- function(x) {
     if (length(x) > 0) {
       min(x)
@@ -20,7 +22,7 @@ transform_ms <- function(x) {
       Inf
     }
   }
-  purrr::map(.x = seq_along(x), .f = function(z, min_int = 0.1) {
+  purrr::map(.x = seq_along(x), .f = function(z, min_int = min_intensity) {
     data.frame(
       intensity = x[z, 1]@intensity,
       rtime = x[z, 1]@rtime

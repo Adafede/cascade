@@ -4,11 +4,17 @@
 #'
 #' @param time time
 #' @param intensity intensity
-#' @param k2 K2
-#' @param k4 K4
-#' @param sigma Sigma
-#' @param Smoothing_width Smoothing width
-#' @param Baseline_adjust Baseline adjust
+#' @param k2 K2 parameter controlling the weight of the second derivative in
+#'   signal sharpening. Default is 250. Lower values increase the sharpening
+#'   effect from the second derivative.
+#' @param k4 K4 parameter controlling the weight of the fourth derivative in
+#'   signal sharpening. Default is 1250000. Lower values increase the
+#'   sharpening effect from the fourth derivative.
+#' @param sigma Sigma parameter for derivative weighting. Default is 0.05.
+#'   Higher values increase the overall sharpening effect.
+#' @param Smoothing_width Smoothing width for the running mean filter. Default
+#'   is 8. Higher values provide more smoothing but reduce resolution.
+#' @param Baseline_adjust Baseline adjustment value. Default is 0.
 #'
 #' @return A sharpened signal
 #'
@@ -53,7 +59,7 @@ signal_sharpening <- function(
 
   smooth_4 <- caTools::runmean(
     x = deriv_4,
-    k = 8,
+    k = Smoothing_width,
     align = "center"
   )
 
