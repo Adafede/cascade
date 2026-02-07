@@ -64,6 +64,7 @@ install.packages(
   "cascade",
   repos = c(
     "https://adafede.r-universe.dev",
+    "https://taxonomicallyinformedannotation.r-universe.dev",
     "https://bioc.r-universe.dev",
     "https://cloud.r-project.org"
   )
@@ -125,25 +126,25 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
 
 | Package | Version | Citation |
 |:---|:---|:---|
-| base | 4.5.1 | R Core Team (2025) |
+| base | 4.5.2 | R Core Team (2025) |
 | baseline | 1.3.7 | Liland, Almøy, and Mevik (2010); Liland and Mevik (2025) |
-| BiocManager | 1.30.26 | Morgan and Ramos (2025) |
-| BiocParallel | 1.43.4 | Wang et al. (2025) |
+| BiocManager | 1.30.27 | Morgan and Ramos (2025) |
+| BiocParallel | 1.44.0 | Wang et al. (2025) |
 | BiocVersion | 3.22.0 | Morgan (2025) |
 | cascade | 0.0.0.9001 | Rutz and Wolfender (2023); Rutz (2025) |
 | caTools | 1.18.3 | Tuszynski (2024) |
-| data.table | 1.17.8 | Barrett et al. (2025) |
-| gt | 1.1.0 | Iannone et al. (2025) |
-| htmltools | 0.5.8.1 | Cheng et al. (2024) |
-| knitr | 1.50 | Xie (2014); Xie (2015); Xie (2025) |
-| MSnbase | 2.35.0 | Gatto and Lilley (2012); Gatto, Gibb, and Rainer (2020) |
-| mzR | 2.43.1 | Pedrioli et al. (2004); Keller et al. (2005); Kessner et al. (2008); Martens et al. (2010); Chambers et al. (2012) |
-| pkgload | 1.4.1 | Wickham et al. (2025) |
-| plotly | 4.11.0 | Sievert (2020) |
+| data.table | 1.18.2.1 | Barrett et al. (2026) |
+| gt | 1.3.0 | Iannone et al. (2026) |
+| htmltools | 0.5.9 | Cheng et al. (2025) |
+| knitr | 1.51 | Xie (2014); Xie (2015); Xie (2025) |
+| MSnbase | 2.36.0 | Gatto and Lilley (2012); Gatto, Gibb, and Rainer (2020) |
+| mzR | 2.44.0 | Pedrioli et al. (2004); Keller et al. (2005); Kessner et al. (2008); Martens et al. (2010); Chambers et al. (2012) |
+| pkgload | 1.5.0 | Wickham et al. (2026) |
+| plotly | 4.12.0 | Sievert (2020) |
 | R.utils | 2.13.0 | Bengtsson (2025) |
-| rmarkdown | 2.29 | Xie, Allaire, and Grolemund (2018); Xie, Dervieux, and Riederer (2020); Allaire et al. (2024) |
+| rmarkdown | 2.30 | Xie, Allaire, and Grolemund (2018); Xie, Dervieux, and Riederer (2020); Allaire et al. (2025) |
 | stringi | 1.8.7 | Gagolewski (2022) |
-| testthat | 3.2.3 | Wickham (2011) |
+| testthat | 3.3.2 | Wickham (2011) |
 | tidytable | 0.11.2 | Fairbanks (2024) |
 | tidyverse | 2.0.0 | Wickham et al. (2019) |
 | tima | 2.12.0 | Rutz et al. (2019); Rutz and Allard (2025) |
@@ -152,10 +153,10 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
 <div id="refs" class="references csl-bib-body hanging-indent"
 entry-spacing="0">
 
-<div id="ref-rmarkdown2024" class="csl-entry">
+<div id="ref-rmarkdown2025" class="csl-entry">
 
 Allaire, JJ, Yihui Xie, Christophe Dervieux, Jonathan McPherson, Javier
-Luraschi, Kevin Ushey, Aron Atkins, et al. 2024.
+Luraschi, Kevin Ushey, Aron Atkins, et al. 2025.
 *<span class="nocase">rmarkdown</span>: Dynamic Documents for r*.
 <https://github.com/rstudio/rmarkdown>.
 
@@ -164,7 +165,7 @@ Luraschi, Kevin Ushey, Aron Atkins, et al. 2024.
 <div id="ref-datatable" class="csl-entry">
 
 Barrett, Tyson, Matt Dowle, Arun Srinivasan, Jan Gorecki, Michael
-Chirico, Toby Hocking, Benjamin Schwendinger, and Ivan Krylov. 2025.
+Chirico, Toby Hocking, Benjamin Schwendinger, and Ivan Krylov. 2026.
 *<span class="nocase">data.table</span>: Extension of
 “<span class="nocase">data.frame</span>”*.
 <https://doi.org/10.32614/CRAN.package.data.table>.
@@ -190,7 +191,7 @@ spectrometry and proteomics</span>.” *Nat Biotech* 30 (10): 918–20.
 <div id="ref-htmltools" class="csl-entry">
 
 Cheng, Joe, Carson Sievert, Barret Schloerke, Winston Chang, Yihui Xie,
-and Jeff Allen. 2024. *<span class="nocase">htmltools</span>: Tools for
+and Jeff Allen. 2025. *<span class="nocase">htmltools</span>: Tools for
 HTML*. <https://doi.org/10.32614/CRAN.package.htmltools>.
 
 </div>
@@ -229,10 +230,11 @@ Processing and Quantitation.” *Bioinformatics* 28: 288–89.
 
 <div id="ref-gt" class="csl-entry">
 
-Iannone, Richard, Joe Cheng, Barret Schloerke, Ellis Hughes, Alexandra
-Lauer, JooYoung Seo, Ken Brevoort, and Olivier Roy. 2025.
-*<span class="nocase">gt</span>: Easily Create Presentation-Ready
-Display Tables*. <https://doi.org/10.32614/CRAN.package.gt>.
+Iannone, Richard, Joe Cheng, Barret Schloerke, Shannon Haughton, Ellis
+Hughes, Alexandra Lauer, Romain François, JooYoung Seo, Ken Brevoort,
+and Olivier Roy. 2026. *<span class="nocase">gt</span>: Easily Create
+Presentation-Ready Display Tables*.
+<https://doi.org/10.32614/CRAN.package.gt>.
 
 </div>
 
@@ -385,7 +387,7 @@ Facilities for Parallel Evaluation*.
 
 Wickham, Hadley. 2011. “<span class="nocase">testthat</span>: Get
 Started with Testing.” *The R Journal* 3: 5–10.
-<https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf>.
+<https://journal.r-project.org/articles/RJ-2011-002/>.
 
 </div>
 
@@ -400,7 +402,7 @@ Source Software* 4 (43): 1686. <https://doi.org/10.21105/joss.01686>.
 
 <div id="ref-pkgload" class="csl-entry">
 
-Wickham, Hadley, Winston Chang, Jim Hester, and Lionel Henry. 2025.
+Wickham, Hadley, Winston Chang, Jim Hester, and Lionel Henry. 2026.
 *<span class="nocase">pkgload</span>: Simulate Package Installation and
 Attach*. <https://doi.org/10.32614/CRAN.package.pkgload>.
 
