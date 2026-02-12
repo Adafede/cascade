@@ -25,7 +25,7 @@ taxon_name_to_qid <- function(taxon_name) {
   )
 
   # Execute query and extract QID
-  WikidataQueryServiceR::query_wikidata(sparql_query = query) |>
+  query_wikidata(sparql_query = query) |>
     tidytable::pull(taxon) |>
     gsub(pattern = "http://www.wikidata.org/entity/", replacement = "")
 }
