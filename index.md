@@ -136,6 +136,7 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
 | data.table | 1.18.2.1 | Barrett et al. (2026) |
 | gt | 1.3.0 | Iannone et al. (2026) |
 | htmltools | 0.5.9 | Cheng et al. (2025) |
+| httr2 | 1.2.2 | Wickham (2025) |
 | knitr | 1.51 | Xie (2014); Xie (2015); Xie (2025) |
 | MSnbase | 2.36.0 | Gatto and Lilley (2012); Gatto, Gibb, and Rainer (2020) |
 | mzR | 2.44.0 | Pedrioli et al. (2004); Keller et al. (2005); Kessner et al. (2008); Martens et al. (2010); Chambers et al. (2012) |
@@ -148,7 +149,6 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
 | tidytable | 0.11.2 | Fairbanks (2024) |
 | tidyverse | 2.0.0 | Wickham et al. (2019) |
 | tima | 2.12.0 | Rutz et al. (2019); Rutz and Allard (2025) |
-| WikidataQueryServiceR | 1.0.0 | Popov (2020) |
 
 <div id="refs" class="references csl-bib-body hanging-indent"
 entry-spacing="0">
@@ -306,14 +306,6 @@ Proteomics Research.” *Nat Biotechnol* 22 (11): 1459–66.
 
 </div>
 
-<div id="ref-WikidataQueryServiceR" class="csl-entry">
-
-Popov, Mikhail. 2020. *WikidataQueryServiceR: API Client Library for
-“Wikidata Query Service”*.
-<https://github.com/bearloga/WikidataQueryServiceR>.
-
-</div>
-
 <div id="ref-base" class="csl-entry">
 
 R Core Team. 2025. *R: A Language and Environment for Statistical
@@ -387,6 +379,13 @@ Facilities for Parallel Evaluation*.
 Wickham, Hadley. 2011. “<span class="nocase">testthat</span>: Get
 Started with Testing.” *The R Journal* 3: 5–10.
 <https://journal.r-project.org/articles/RJ-2011-002/>.
+
+</div>
+
+<div id="ref-httr2" class="csl-entry">
+
+———. 2025. *Httr2: Perform HTTP Requests and Process the Responses*.
+<https://doi.org/10.32614/CRAN.package.httr2>.
 
 </div>
 
