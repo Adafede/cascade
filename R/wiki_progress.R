@@ -9,7 +9,7 @@ wiki_progress <- function(xs) {
   xs |>
     purrr::map(
       .f = function(x) {
-        WikidataQueryServiceR::query_wikidata(x)
+        query_wikidata(x)
       }
     )
 }

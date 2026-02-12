@@ -25,6 +25,7 @@ Imports:
     ggplot2 (>= 3.5.2),
     gt (>= 1.1.0),
     htmltools (>= 0.5.8.1),
+    httr2 (>= 1.2.1),
     MSnbase (>= 2.32.0),
     mzR (>= 2.40.0),
     plotly (>= 4.11.0),
@@ -34,8 +35,7 @@ Imports:
     tibble (>= 3.3.0),
     tidytable (>= 0.11.2),
     tima (>= 2.12.0),
-    utils,
-    WikidataQueryServiceR (>= 1.0.0)
+    utils
 Remotes:
     taxonomicallyinformedannotation/tima
 Suggests:
@@ -128,6 +128,7 @@ Collate:
     'prepare_tima_annotations.R'
     'transform_ms.R'
     'process_compare_peaks.R'
+    'query_wikidata.R'
     'save_histograms_progress.R'
     'save_treemaps_progress.R'
 VignetteBuilder: 
