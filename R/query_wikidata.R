@@ -11,7 +11,7 @@ if (!requireNamespace("tidytable", quietly = TRUE)) {
 #' Performs a SPARQL query against the Wikidata Query Service (WDQS) or another compatible endpoint, returning results as a tidytable. Handles datetime conversion and optional URL prefix removal.
 #'
 #' @export
-#' 
+#'
 #' @param sparql_query Character. SPARQL query string.
 #' @param remove_url Logical. If TRUE, removes 'http://www.wikidata.org/entity/' prefix from character columns.
 #' @param endpoint Character. SPARQL endpoint URL.
@@ -24,12 +24,12 @@ if (!requireNamespace("tidytable", quietly = TRUE)) {
 #' @examples
 #' NULL
 query_wikidata <- function(
-    sparql_query,
-    remove_url = TRUE,
-    endpoint = "https://query.wikidata.org/sparql",
-    agent = "https://github.com/bearloga/WikidataQueryServiceR",
-    headers = "application/sparql-results+json",
-    fallback = TRUE
+  sparql_query,
+  remove_url = TRUE,
+  endpoint = "https://query.wikidata.org/sparql",
+  agent = "https://github.com/bearloga/WikidataQueryServiceR",
+  headers = "application/sparql-results+json",
+  fallback = TRUE
 ) {
   # Input validation
   if (!is.character(sparql_query) || length(sparql_query) != 1) {
@@ -50,7 +50,7 @@ query_wikidata <- function(
   if (!is.logical(fallback) || length(fallback) != 1) {
     stop("fallback must be a single logical value")
   }
-  
+
   # Internal function to execute the query
   execute_query <- function(ep) {
     temp <- httr2::request(ep) |>
@@ -59,7 +59,7 @@ query_wikidata <- function(
       httr2::req_headers(Accept = headers) |>
       httr2::req_perform() |>
       httr2::resp_body_json()
-    
+
     # Handle empty result set
     if (length(temp$results$bindings) == 0) {
       return(tidytable::tidytable(matrix(
@@ -69,7 +69,7 @@ query_wikidata <- function(
         dimnames = list(c(), unlist(temp$head$vars))
       )))
     }
-    
+
     # Parse bindings into a character matrix
     bindings <- temp$results$bindings
     n_rows <- length(bindings)
@@ -92,7 +92,7 @@ query_wikidata <- function(
     }
     df <- result_matrix |>
       tidytable::as_tidytable()
-    
+
     # Convert datetime columns if present
     if (n_rows > 0) {
       first_binding <- bindings[[1]]
@@ -101,8 +101,8 @@ query_wikidata <- function(
         binding <- first_binding[[col_name]]
         if (
           !is.null(binding) &&
-          !is.null(binding$datatype) &&
-          binding$datatype == "http://www.w3.org/2001/XMLSchema#dateTime"
+            !is.null(binding$datatype) &&
+            binding$datatype == "http://www.w3.org/2001/XMLSchema#dateTime"
         ) {
           datetime_cols <- c(datetime_cols, col_name)
         }
@@ -119,7 +119,7 @@ query_wikidata <- function(
           )
       }
     }
-    
+
     # Optionally remove Wikidata entity URL prefix
     if (remove_url) {
       char_cols <- sapply(df, is.character)
@@ -135,10 +135,10 @@ query_wikidata <- function(
           )
       }
     }
-    
+
     return(df)
   }
-  
+
   # Try primary endpoint, with fallback if enabled
   result <- tryCatch(
     {
@@ -173,6 +173,6 @@ query_wikidata <- function(
       }
     }
   )
-  
+
   return(result)
 }
