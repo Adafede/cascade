@@ -944,7 +944,7 @@ prepare_hierarchy <-
       tidytable::filter(!is.na(sample))
 
     if (type == "analysis") {
-      if (rescale == TRUE) {
+      if (rescale) {
         final_table <- final_table |>
           tidytable::group_by(sample, species) |>
           tidytable::mutate(values = values / (sum(values) / 3)) |> ## because 3 levels

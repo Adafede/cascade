@@ -30,7 +30,7 @@ get_peaks <- function(
   max.iter = 100,
   time.units = c("min", "s", "ms"),
   estimate_purity = FALSE,
-  noise_threshold = .001,
+  noise_threshold = 0.001,
   collapse = FALSE,
   ...
 ) {
@@ -40,8 +40,8 @@ get_peaks <- function(
         apply(pks, 1, function(x) {
           !all(is.na(x))
         }) &
-          length(pks[, "rt"] > pks[, "start"]) &
-          length(pks[, "rt"] < pks[, "end"])
+          length(pks[, "rt"]) > pks[, "start"] &
+          length(pks[, "rt"]) < pks[, "end"]
       ),
       ,
       drop = FALSE
@@ -173,7 +173,7 @@ get_peaks <- function(
           fit = c("egh", "gaussian", "raw"),
           max.iter = 1000,
           estimate_purity = TRUE,
-          noise_threshold = .001,
+          noise_threshold = 0.001,
           ...
         ) {
           get_lambda_idx <- function(lambda, lambdas, y, allow_max = TRUE) {
@@ -212,7 +212,7 @@ get_peaks <- function(
                 "tmva",
                 "none"
               ),
-              smooth_window = .001,
+              smooth_window = 0.001,
               slope_thresh = 0,
               amp_thresh = 0,
               bounds = TRUE
@@ -377,7 +377,7 @@ get_peaks <- function(
             lambda,
             max.iter,
             estimate_purity = TRUE,
-            noise_threshold = .001,
+            noise_threshold = 0.001,
             ...
           ) {
             fit_gaussian <- function(
@@ -540,7 +540,7 @@ get_peaks <- function(
             lambda,
             max.iter,
             estimate_purity = TRUE,
-            noise_threshold = .001
+            noise_threshold = 0.001
           ) {
             fit_egh <- function(
               x1,
@@ -704,7 +704,7 @@ get_peaks <- function(
             lambda,
             max.iter,
             estimate_purity = TRUE,
-            noise_threshold = .001
+            noise_threshold = 0.001
           ) {
             y <- x[, lambda]
             xloc <- pos[1]

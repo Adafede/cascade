@@ -31,7 +31,7 @@ plot_histograms <-
         guide = ggplot2::guide_legend()
       ) +
       {
-        if (xlab == TRUE) {
+        if (xlab) {
           ggplot2::scale_x_discrete(labels = levels(dataframe$sample))
         }
       } +
@@ -261,7 +261,7 @@ plot_histograms_litt <-
         guide = ggplot2::guide_legend(ncol = 1)
       ) +
       {
-        if (xlab == TRUE) {
+        if (xlab) {
           ggplot2::scale_x_discrete(labels = levels(dataframe$sample))
         }
       } +
