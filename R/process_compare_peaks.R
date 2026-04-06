@@ -170,8 +170,14 @@ process_compare_peaks <- function(
     comparison_scores
   )
 
-  df_features_with_peaks <- list_df_features_with_scores |>
-    tidytable::bind_rows()
+  if (length(list_df_features_with_scores) == 0) {
+    # Keep expected columns for downstream select/export when no peak match exists.
+    df_features_with_peaks <- peaks_prelist$df_features_without_peaks[0, ]
+    df_features_with_peaks$comparison_score <- numeric(0)
+  } else {
+    df_features_with_peaks <- list_df_features_with_scores |>
+      tidytable::bind_rows()
+  }
 
   message("final aesthetics")
   df_features_with_peaks_scored <- df_features_with_peaks |>
