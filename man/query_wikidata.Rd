@@ -31,8 +31,9 @@ from character columns (default TRUE).}
 
 \item{headers}{Character or NULL. Optional \code{Accept} header used for
 backward compatibility with older versions. If set,
-this value is used as preferred response format.
-@param post         Logical. If TRUE, send the SPARQL query as an HTTP POST
+this value is used as preferred response format.}
+
+\item{post}{Logical. If TRUE, send the SPARQL query as an HTTP POST
 request body (application/x-www-form-urlencoded) rather
 than as a GET query parameter. Required for endpoints
 such as QLever that do not accept GET requests.}

@@ -1,8 +1,8 @@
 if (!requireNamespace("curl", quietly = TRUE)) {
-  install.packages("curl")
+  utils::install.packages("curl")
 }
 if (!requireNamespace("data.table", quietly = TRUE)) {
-  install.packages("data.table")
+  utils::install.packages("data.table")
 }
 
 #' @title Query a SPARQL endpoint efficiently
@@ -29,7 +29,7 @@ if (!requireNamespace("data.table", quietly = TRUE)) {
 #' @param headers       Character or NULL. Optional `Accept` header used for
 #'                      backward compatibility with older versions. If set,
 #'                      this value is used as preferred response format.
-#'  @param post         Logical. If TRUE, send the SPARQL query as an HTTP POST
+#' @param post          Logical. If TRUE, send the SPARQL query as an HTTP POST
 #'                      request body (application/x-www-form-urlencoded) rather
 #'                      than as a GET query parameter. Required for endpoints
 #'                      such as QLever that do not accept GET requests.
@@ -216,7 +216,7 @@ query_wikidata <- function(
     use_post = post
   ) {
     if (!requireNamespace("httr2", quietly = TRUE)) {
-      install.packages("httr2")
+      utils::install.packages("httr2")
     }
 
     req <- httr2::request(ep) |>
