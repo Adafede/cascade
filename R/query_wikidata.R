@@ -29,6 +29,10 @@ if (!requireNamespace("data.table", quietly = TRUE)) {
 #' @param headers       Character or NULL. Optional `Accept` header used for
 #'                      backward compatibility with older versions. If set,
 #'                      this value is used as preferred response format.
+#'  @param post         Logical. If TRUE, send the SPARQL query as an HTTP POST
+#'                      request body (application/x-www-form-urlencoded) rather
+#'                      than as a GET query parameter. Required for endpoints
+#'                      such as QLever that do not accept GET requests.
 #'
 #' @return A `data.table`.
 #' @export
@@ -40,7 +44,8 @@ query_wikidata <- function(
   agent = "https://github.com/bearloga/WikidataQueryServiceR",
   timeout = 3600L,
   fallback = TRUE,
-  headers = NULL
+  headers = NULL,
+  post = FALSE
 ) {
   # Support legacy signature where `headers` was argument #5.
   if (is.character(timeout) && length(timeout) == 1L && is.null(headers)) {
@@ -117,6 +122,12 @@ query_wikidata <- function(
       call. = FALSE
     )
   }
+  if (!is.logical(post) || length(post) != 1L || is.na(post)) {
+    stop(
+      "`post` must be a single non-missing logical value.",
+      call. = FALSE
+    )
+  }
 
   # ── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -140,7 +151,7 @@ query_wikidata <- function(
   }
 
   # ── Primary path: CSV + gzip via curl ───────────────────────────────────────
-  execute_csv <- function(ep, accept = "text/csv") {
+  execute_csv <- function(ep, accept = "text/csv", use_post = post) {
     tmp <- tempfile(fileext = ".csv")
     on.exit(unlink(tmp), add = TRUE)
 
@@ -153,8 +164,23 @@ query_wikidata <- function(
     )
     curl::handle_setopt(h, timeout = as.integer(timeout), followlocation = 1L)
 
-    # Stream to disk — curl decompresses gzip transparently
-    curl::curl_download(build_url(ep), destfile = tmp, handle = h, quiet = TRUE)
+    if (use_post) {
+      curl::handle_setopt(
+        h,
+        post = 1L,
+        postfields = paste0("query=", curl::curl_escape(sparql_query))
+      )
+      curl::handle_setheaders(
+        h,
+        "Content-Type" = "application/x-www-form-urlencoded"
+      )
+      url <- ep
+    } else {
+      # Stream to disk — curl decompresses gzip transparently
+      url <- build_url(ep)
+    }
+
+    curl::curl_download(url, destfile = tmp, handle = h, quiet = TRUE)
 
     # Detect if the server returned an error document instead of CSV
     # (some endpoints return 200 + HTML error page)
@@ -184,21 +210,30 @@ query_wikidata <- function(
   }
 
   # ── JSON fallback (endpoints without CSV support) ───────────────────────────
-  execute_json <- function(ep, accept = "application/sparql-results+json") {
+  execute_json <- function(
+    ep,
+    accept = "application/sparql-results+json",
+    use_post = post
+  ) {
     if (!requireNamespace("httr2", quietly = TRUE)) {
       install.packages("httr2")
     }
 
-    resp <- httr2::request(ep) |>
-      httr2::req_url_query(query = sparql_query) |>
+    req <- httr2::request(ep) |>
       httr2::req_user_agent(agent) |>
       httr2::req_headers(
         Accept = accept,
         `Accept-Encoding` = "gzip, deflate"
       ) |>
-      httr2::req_timeout(timeout) |>
-      httr2::req_perform()
+      httr2::req_timeout(timeout)
 
+    req <- if (use_post) {
+      req |> httr2::req_body_form(query = sparql_query)
+    } else {
+      req |> httr2::req_url_query(query = sparql_query)
+    }
+
+    resp <- httr2::req_perform(req)
     body <- httr2::resp_body_json(resp)
     col_names <- unlist(body$head$vars)
     bindings <- body$results$bindings
@@ -220,7 +255,7 @@ query_wikidata <- function(
             bindings,
             \(row) {
               v <- row[[col]]$value
-              if (is.null(v)) NA_character_ else v
+              v %||% NA_character_
             },
             character(1L)
           )
@@ -260,7 +295,7 @@ query_wikidata <- function(
   }
 
   # ── Execute with optional fallback ──────────────────────────────────────────
-  execute <- function(ep) {
+  execute <- function(ep, use_post = post) {
     prefer_json <- !is.null(headers) &&
       grepl("json", headers, ignore.case = TRUE)
     preferred <- if (prefer_json) execute_json else execute_csv
@@ -270,7 +305,8 @@ query_wikidata <- function(
       execute_csv
     }
 
-    preferred_accept <- headers %||% if (identical(preferred, execute_csv)) {
+    preferred_accept <- headers %||%
+      if (identical(preferred, execute_csv)) {
         "text/csv"
       } else {
         "application/sparql-results+json"
@@ -282,7 +318,7 @@ query_wikidata <- function(
     }
 
     tryCatch(
-      preferred(ep, accept = preferred_accept),
+      preferred(ep, accept = preferred_accept, use_post = use_post),
       error = function(e) {
         message(
           "Preferred format attempt failed on ",
@@ -291,7 +327,7 @@ query_wikidata <- function(
           conditionMessage(e),
           ") - retrying with alternate format."
         )
-        alternate(ep, accept = alternate_accept)
+        alternate(ep, accept = alternate_accept, use_post = use_post)
       }
     )
   }
@@ -310,7 +346,7 @@ query_wikidata <- function(
           call. = FALSE
         )
         tryCatch(
-          execute(fallback_ep),
+          execute(fallback_ep, use_post = TRUE),
           error = function(e2) {
             stop(
               "Both endpoints failed.\n",
