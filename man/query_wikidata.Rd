@@ -2,35 +2,51 @@
 % Please edit documentation in R/query_wikidata.R
 \name{query_wikidata}
 \alias{query_wikidata}
-\title{Query WDQS (Wikidata Query Service)}
+\title{Query a SPARQL endpoint efficiently}
 \usage{
 query_wikidata(
   sparql_query,
   remove_url = TRUE,
   endpoint = "https://query.wikidata.org/sparql",
   agent = "https://github.com/bearloga/WikidataQueryServiceR",
-  headers = "application/sparql-results+json",
-  fallback = TRUE
+  timeout = 3600L,
+  fallback = TRUE,
+  headers = NULL
 )
 }
 \arguments{
 \item{sparql_query}{Character. SPARQL query string.}
 
-\item{remove_url}{Logical. If TRUE, removes 'http://www.wikidata.org/entity/' prefix from character columns.}
+\item{remove_url}{Logical. Strip \verb{http://www.wikidata.org/entity/} prefix
+from character columns (default TRUE).}
 
 \item{endpoint}{Character. SPARQL endpoint URL.}
 
-\item{agent}{Character. User agent string for polite querying.}
+\item{agent}{Character. User-Agent header string.}
 
-\item{headers}{Character. HTTP Accept header for the request.}
+\item{timeout}{Integer. Total request timeout in seconds (default 3600).}
 
-\item{fallback}{Logical. If TRUE, retries with qlever.dev endpoint on failure.}
+\item{fallback}{Logical. Retry with QLever Wikidata endpoint on failure.}
+
+\item{headers}{Character or NULL. Optional \code{Accept} header used for
+backward compatibility with older versions. If set,
+this value is used as preferred response format.}
 }
 \value{
-A tidytable::tidytable data frame containing the results of the query.
+A \code{data.table}.
 }
 \description{
-Performs a SPARQL query against the Wikidata Query Service (WDQS) or another compatible endpoint, returning results as a tidytable. Handles datetime conversion and optional URL prefix removal.
+Performs a SPARQL query and returns a data.table. Optimised for very large
+result sets (millions of rows):
+\itemize{
+\item Requests \strong{CSV} (no IRI angle-bracket decoration, smallest text format)
+\item Requests \strong{gzip} transfer encoding (3-5x less data over the wire)
+\item Streams the response \strong{directly to disk} via curl (zero R memory use
+during download)
+\item Parses with \strong{data.table::fread} (C-level, multi-threaded)
+}
+
+Falls back to JSON for endpoints that do not support CSV.
 }
 \examples{
 NULL
