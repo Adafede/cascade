@@ -40,7 +40,7 @@ jobs:
         run: >
           sudo apt-get update && sudo apt-get install -y --no-install-recommends
           libarchive-dev libcurl4-openssl-dev libfribidi-dev libharfbuzz-dev
-          libnetcdf-dev \
+          libnetcdf-dev  libuv1-dev \
 
           && sudo apt-get clean \
 
