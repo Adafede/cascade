@@ -50,12 +50,7 @@ Suggests:
     spelling (>= 2.3.2),
     svglite (>= 2.2.2),
     testthat (>= 3.3.2)
-Config/testthat/edition: 3
-Encoding: UTF-8
-LazyData: true
-ByteCompile: true
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
+ByteCompile: TRUE
 Collate:
     'normalize_chromatograms_list.R'
     'add_chromato_line.R'
@@ -132,8 +127,13 @@ Collate:
     'query_wikidata.R'
     'save_histograms_progress.R'
     'save_treemaps_progress.R'
-VignetteBuilder: 
+Config/roxygen2/markdown: TRUE
+Config/roxygen2/version: 8.0.0
+Config/testthat/edition: 3
+Encoding: UTF-8
+Language: en-US
+LazyData: TRUE
+VignetteBuilder:
     quarto
 biocViews: metaboliteAnnotation, chargedAerosolDetector, semiQuantitative, naturalProducts, computationalMetabolomics, specializedMetabolome
 X-schema.org-keywords: metaboliteAnnotation, chargedAerosolDetector, semiQuantitative, naturalProducts, computationalMetabolomics, specializedMetabolome
-Language: en-US
