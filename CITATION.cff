@@ -9,7 +9,7 @@ type: software
 license: AGPL-3.0-or-later
 title: 'cascade: Contextualizing untargeted Annotation with Semi-quantitative Charged
   Aerosol Detection for pertinent characterization of natural Extracts'
-version: 0.0.0.9001
+version: 0.0.0.9002
 abstract: This package provides the infrastructure to perform Automated Composition
   Assessment of Natural Extracts.
 authors:
@@ -83,10 +83,11 @@ references:
   authors:
   - name: R Core Team
   institution:
-    name: R Foundation for Statistical Computing
+    name: 'R Foundation for Statistical Computing (ROR: <https://ror.org/05qewa988>)'
     address: Vienna, Austria
   year: '2026'
-  version: '>= 4.4.0'
+  doi: 10.32614/R.manuals
+  version: '>= 4.5.0'
 - type: software
   title: baseline
   abstract: 'baseline: Baseline Correction of Spectra'
@@ -128,7 +129,7 @@ references:
     given-names: Nitesh
   year: '2026'
   doi: 10.18129/B9.bioc.BiocParallel
-  version: '>= 1.40.2'
+  version: '>= 1.44.0'
 - type: software
   title: caTools
   abstract: 'caTools: Tools: Moving Window Statistics, GIF, Base64, ROC AUC, etc'
@@ -141,6 +142,20 @@ references:
   year: '2026'
   doi: 10.32614/CRAN.package.caTools
   version: '>= 1.18.3'
+- type: software
+  title: curl
+  abstract: 'curl: A Modern and Flexible Web Client for R'
+  notes: Imports
+  url: https://jeroen.r-universe.dev/curl
+  repository: https://CRAN.R-project.org/package=curl
+  authors:
+  - family-names: Ooms
+    given-names: Jeroen
+    email: jeroenooms@gmail.com
+    orcid: https://orcid.org/0000-0002-4035-0289
+  year: '2026'
+  doi: 10.32614/CRAN.package.curl
+  version: '>= 7.1.0'
 - type: software
   title: data.table
   abstract: 'data.table: Extension of `data.frame`'
@@ -178,7 +193,7 @@ references:
     orcid: https://orcid.org/0000-0002-0172-3812
   year: '2026'
   doi: 10.32614/CRAN.package.data.table
-  version: '>= 1.17.8'
+  version: '>= 1.18.2.1'
 - type: software
   title: forcats
   abstract: 'forcats: Tools for Working with Categorical Variables (Factors)'
@@ -191,7 +206,7 @@ references:
     email: hadley@posit.co
   year: '2026'
   doi: 10.32614/CRAN.package.forcats
-  version: '>= 1.0.0'
+  version: '>= 1.0.1'
 - type: software
   title: ggplot2
   abstract: 'ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics'
@@ -232,7 +247,7 @@ references:
     orcid: https://orcid.org/0000-0002-9335-7468
   year: '2026'
   doi: 10.32614/CRAN.package.ggplot2
-  version: '>= 3.5.2'
+  version: '>= 4.0.3'
 - type: software
   title: gt
   abstract: 'gt: Easily Create Presentation-Ready Display Tables'
@@ -277,7 +292,7 @@ references:
     given-names: Olivier
   year: '2026'
   doi: 10.32614/CRAN.package.gt
-  version: '>= 1.1.0'
+  version: '>= 1.3.0'
 - type: software
   title: htmltools
   abstract: 'htmltools: Tools for HTML'
@@ -307,7 +322,7 @@ references:
     given-names: Jeff
   year: '2026'
   doi: 10.32614/CRAN.package.htmltools
-  version: '>= 0.5.8.1'
+  version: '>= 0.5.9'
 - type: software
   title: httr2
   abstract: 'httr2: Perform HTTP Requests and Process the Responses'
@@ -320,7 +335,7 @@ references:
     email: hadley@posit.co
   year: '2026'
   doi: 10.32614/CRAN.package.httr2
-  version: '>= 1.2.1'
+  version: '>= 1.2.2'
 - type: software
   title: MSnbase
   abstract: 'MSnbase: Base Functions and Classes for Mass Spectrometry and Proteomics'
@@ -342,14 +357,14 @@ references:
     orcid: https://orcid.org/0000-0001-7406-4443
   year: '2026'
   doi: 10.18129/B9.bioc.MSnbase
-  version: '>= 2.32.0'
+  version: '>= 2.36.0'
 - type: software
   title: mzR
   abstract: 'mzR: parser for netCDF, mzXML and mzML and mzIdentML files (mass spectrometry
     data)'
   notes: Imports
   url: https://github.com/sneumann/mzR/
-  repository: https://bioc-release.r-universe.dev
+  repository: https://bioconductor.org/
   authors:
   - family-names: Neumann
     given-names: Steffen
@@ -360,8 +375,13 @@ references:
   - family-names: Kou
     given-names: Qiakng
     email: qkou@umail.iu.edu
+  - family-names: Rainer
+    given-names: Johannes
+    email: Johannes.Rainer@eurac.edu
+    orcid: https://orcid.org/0000-0002-6977-7147
   year: '2026'
-  version: '>= 2.40.0'
+  doi: 10.18129/B9.bioc.mzR
+  version: '>= 2.44.0'
 - type: software
   title: plotly
   abstract: 'plotly: Create Interactive Web Graphics via ''plotly.js'''
@@ -394,7 +414,7 @@ references:
     email: pedro@plot.ly
   year: '2026'
   doi: 10.32614/CRAN.package.plotly
-  version: '>= 4.11.0'
+  version: '>= 4.12.0'
 - type: software
   title: purrr
   abstract: 'purrr: Functional Programming Tools'
@@ -411,7 +431,7 @@ references:
     email: lionel@posit.co
   year: '2026'
   doi: 10.32614/CRAN.package.purrr
-  version: '>= 1.2.0'
+  version: '>= 1.2.2'
 - type: software
   title: R.utils
   abstract: 'R.utils: Various Programming Utilities'
@@ -455,7 +475,7 @@ references:
     email: hadley@rstudio.com
   year: '2026'
   doi: 10.32614/CRAN.package.tibble
-  version: '>= 3.3.0'
+  version: '>= 3.3.1'
 - type: software
   title: tidytable
   abstract: 'tidytable: Tidy Interface to ''data.table'''
@@ -489,9 +509,10 @@ references:
   authors:
   - name: R Core Team
   institution:
-    name: R Foundation for Statistical Computing
+    name: 'R Foundation for Statistical Computing (ROR: <https://ror.org/05qewa988>)'
     address: Vienna, Austria
   year: '2026'
+  doi: 10.32614/R.manuals
 - type: software
   title: altdoc
   abstract: 'altdoc: Package Documentation Websites with ''Quarto'', ''Docsify'',
@@ -509,7 +530,7 @@ references:
     orcid: https://orcid.org/0000-0003-2042-7063
   year: '2026'
   doi: 10.32614/CRAN.package.altdoc
-  version: '>= 0.7.0'
+  version: '>= 0.7.2'
 - type: software
   title: BiocManager
   abstract: 'BiocManager: Access the Bioconductor Project Package Repository'
@@ -527,18 +548,18 @@ references:
     orcid: https://orcid.org/0000-0002-3242-0582
   year: '2026'
   doi: 10.32614/CRAN.package.BiocManager
-  version: '>= 1.30.26'
+  version: '>= 1.30.27'
 - type: software
   title: BiocVersion
   abstract: 'BiocVersion: Set the appropriate version of Bioconductor packages'
   notes: Suggests
-  repository: https://bioc-release.r-universe.dev
+  repository: https://bioc.r-universe.dev
   authors:
   - family-names: Morgan
     given-names: Martin
     email: martin.morgan@roswellpark.org
   year: '2026'
-  version: '>= 3.20.0'
+  version: '>= 3.22.0'
 - type: software
   title: grateful
   abstract: 'grateful: Facilitate Citation of R Packages'
@@ -570,7 +591,7 @@ references:
     orcid: https://orcid.org/0000-0003-0645-5666
   year: '2026'
   doi: 10.32614/CRAN.package.knitr
-  version: '>= 1.50'
+  version: '>= 1.51'
 - type: software
   title: quarto
   abstract: 'quarto: R Interface to ''Quarto'' Markdown Publishing System'
@@ -605,7 +626,7 @@ references:
     orcid: https://orcid.org/0000-0003-4757-117X
   year: '2026'
   doi: 10.32614/CRAN.package.lifecycle
-  version: '>= 1.0.4'
+  version: '>= 1.0.5'
 - type: software
   title: spelling
   abstract: 'spelling: Tools for Spell Checking in R'
@@ -651,7 +672,7 @@ references:
     email: lise.vaudor@ens-lyon.fr
   year: '2026'
   doi: 10.32614/CRAN.package.svglite
-  version: '>= 2.2.1'
+  version: '>= 2.2.2'
 - type: software
   title: testthat
   abstract: 'testthat: Unit Testing for R'
@@ -664,5 +685,5 @@ references:
     email: hadley@posit.co
   year: '2026'
   doi: 10.32614/CRAN.package.testthat
-  version: '>= 3.0.0'
+  version: '>= 3.3.2'
 
