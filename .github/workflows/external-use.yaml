@@ -55,8 +55,9 @@ jobs:
           "https://adafede.r-universe.dev",
           "https://taxonomicallyinformedannotation.r-universe.dev",
           "https://bioc.r-universe.dev",
-          "https://cloud.r-project.org"),
-          type ="binary")
+          "https://cloud.r-project.org"
+          )
+          )
         shell: Rscript {0}
       - name: Run pipeline
         run: |
