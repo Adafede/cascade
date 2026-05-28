@@ -9,7 +9,7 @@ type: software
 license: AGPL-3.0-or-later
 title: 'cascade: Contextualizing untargeted Annotation with Semi-quantitative Charged
   Aerosol Detection for pertinent characterization of natural Extracts'
-version: 0.0.0.9001
+version: 0.0.0.9002
 abstract: This package provides the infrastructure to perform Automated Composition
   Assessment of Natural Extracts.
 authors:
@@ -26,8 +26,8 @@ preferred-citation:
     given-names: Adriano
     email: adafede@gmail.com
     orcid: https://orcid.org/0000-0003-0443-9902
-  year: '2025'
-  notes: R package, version 0.0.9001
+  year: '2026'
+  notes: R package, version 0.0.9002
 repository: https://bioconductor.org/
 repository-code: https://github.com/adafede/cascade
 url: https://adafede.github.io/cascade
