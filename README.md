@@ -126,37 +126,37 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
 
 | Package | Version | Citation |
 |:---|:---|:---|
-| base | 4.5.2 | R Core Team (2025) |
-| baseline | 1.3.7 | Liland, Almøy, and Mevik (2010); Liland and Mevik (2025) |
+| base | 4.6.0 | R Core Team (2026) |
+| baseline | 1.3.7 | Liland et al. (2010); Liland and Mevik (2025) |
 | BiocManager | 1.30.27 | Morgan and Ramos (2025) |
-| BiocParallel | 1.44.0 | Wang et al. (2025) |
-| BiocVersion | 3.22.0 | Morgan (2025) |
-| cascade | 0.0.0.9001 | Rutz and Wolfender (2023); Rutz (2025) |
+| BiocParallel | 1.46.0 | Wang et al. (2026) |
+| BiocVersion | 3.23.1 | Morgan (2025) |
+| cascade | 0.0.0.9002 | Rutz and Wolfender (2023); Rutz (2025) |
 | caTools | 1.18.3 | Tuszynski (2024) |
-| data.table | 1.18.2.1 | Barrett et al. (2026) |
+| curl | 7.1.0 | Ooms (2026) |
+| data.table | 1.18.4 | Barrett et al. (2026) |
 | gt | 1.3.0 | Iannone et al. (2026) |
 | htmltools | 0.5.9 | Cheng et al. (2025) |
 | httr2 | 1.2.2 | Wickham (2025) |
 | knitr | 1.51 | Xie (2014); Xie (2015); Xie (2025) |
-| MSnbase | 2.36.0 | Gatto and Lilley (2012); Gatto, Gibb, and Rainer (2020) |
-| mzR | 2.44.0 | Pedrioli et al. (2004); Keller et al. (2005); Kessner et al. (2008); Martens et al. (2010); Chambers et al. (2012) |
-| pkgload | 1.5.0 | Wickham et al. (2026) |
+| MSnbase | 2.38.0 | Gatto and Lilley (2012); Gatto et al. (2020) |
+| mzR | 2.46.0 | Pedrioli et al. (2004); Keller et al. (2005); Kessner et al. (2008); Martens et al. (2010); Chambers et al. (2012) |
+| pkgload | 1.5.2 | Wickham et al. (2026) |
 | plotly | 4.12.0 | Sievert (2020) |
 | R.utils | 2.13.0 | Bengtsson (2025) |
-| rmarkdown | 2.30 | Xie, Allaire, and Grolemund (2018); Xie, Dervieux, and Riederer (2020); Allaire et al. (2025) |
+| rmarkdown | 2.31 | Xie et al. (2018); Xie et al. (2020); Allaire et al. (2026) |
+| spelling | 2.3.2 | Ooms and Hester (2025) |
 | stringi | 1.8.7 | Gagolewski (2022) |
 | testthat | 3.3.2 | Wickham (2011) |
 | tidytable | 0.11.2 | Fairbanks (2024) |
 | tidyverse | 2.0.0 | Wickham et al. (2019) |
-| tima | 2.12.0 | Rutz et al. (2019); Rutz and Allard (2025) |
+| tima | 2.13.0.9000 | Rutz et al. (2019); Rutz and Allard (2026) |
 
-<div id="refs" class="references csl-bib-body hanging-indent"
-entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 
-<div id="ref-rmarkdown2025" class="csl-entry">
+<div id="ref-rmarkdown2026" class="csl-entry">
 
-Allaire, JJ, Yihui Xie, Christophe Dervieux, Jonathan McPherson, Javier
-Luraschi, Kevin Ushey, Aron Atkins, et al. 2025.
+Allaire, JJ, Yihui Xie, Christophe Dervieux, et al. 2026.
 *<span class="nocase">rmarkdown</span>: Dynamic Documents for r*.
 <https://github.com/rstudio/rmarkdown>.
 
@@ -164,8 +164,7 @@ Luraschi, Kevin Ushey, Aron Atkins, et al. 2025.
 
 <div id="ref-datatable" class="csl-entry">
 
-Barrett, Tyson, Matt Dowle, Arun Srinivasan, Jan Gorecki, Michael
-Chirico, Toby Hocking, Benjamin Schwendinger, and Ivan Krylov. 2026.
+Barrett, Tyson, Matt Dowle, Arun Srinivasan, et al. 2026.
 *<span class="nocase">data.table</span>: Extension of
 “<span class="nocase">data.frame</span>”*.
 <https://doi.org/10.32614/CRAN.package.data.table>.
@@ -181,10 +180,9 @@ Programming Utilities*. <https://doi.org/10.32614/CRAN.package.R.utils>.
 
 <div id="ref-mzR2012" class="csl-entry">
 
-Chambers, Matthew C., Maclean, Brendan, Burke, Robert, Amodei, et al.
-2012. “<span class="nocase">A cross-platform toolkit for mass
-spectrometry and proteomics</span>.” *Nat Biotech* 30 (10): 918–20.
-<https://doi.org/10.1038/nbt.2377>.
+Chambers, Matthew C., Maclean, et al. 2012. “<span class="nocase">A
+cross-platform toolkit for mass spectrometry and proteomics</span>.”
+*Nat Biotech* 30 (10): 918–20. <https://doi.org/10.1038/nbt.2377>.
 
 </div>
 
@@ -230,11 +228,9 @@ Processing and Quantitation.” *Bioinformatics* 28: 288–89.
 
 <div id="ref-gt" class="csl-entry">
 
-Iannone, Richard, Joe Cheng, Barret Schloerke, Shannon Haughton, Ellis
-Hughes, Alexandra Lauer, Romain François, JooYoung Seo, Ken Brevoort,
-and Olivier Roy. 2026. *<span class="nocase">gt</span>: Easily Create
-Presentation-Ready Display Tables*.
-<https://doi.org/10.32614/CRAN.package.gt>.
+Iannone, Richard, Joe Cheng, Barret Schloerke, et al. 2026.
+*<span class="nocase">gt</span>: Easily Create Presentation-Ready
+Display Tables*. <https://doi.org/10.32614/CRAN.package.gt>.
 
 </div>
 
@@ -274,17 +270,16 @@ Liland, Kristian Hovde, and Bjørn-Helge Mevik. 2025.
 
 <div id="ref-mzR2010" class="csl-entry">
 
-Martens, Lennart, Matthew Chambers, Marc Sturm, Darren Kessner, Fredrik
-Levander, Jim Shofstahl, Wilfred H Tang, et al. 2010. “MzML - a
-Community Standard for Mass Spectrometry Data.” *Mol Cell Proteomics*.
-<https://doi.org/10.1074/mcp.R110.000133>.
+Martens, Lennart, Matthew Chambers, Marc Sturm, et al. 2010. “MzML - a
+Community Standard for Mass Spectrometry Data.” *Mol Cell Proteomics*,
+ahead of print. <https://doi.org/10.1074/mcp.R110.000133>.
 
 </div>
 
 <div id="ref-BiocVersion" class="csl-entry">
 
 Morgan, Martin. 2025. *BiocVersion: Set the Appropriate Version of
-Bioconductor Packages*. <https://doi.org/10.18129/B9.bioc.BiocVersion>.
+Bioconductor Packages*.
 
 </div>
 
@@ -296,21 +291,36 @@ Bioconductor Project Package Repository*.
 
 </div>
 
+<div id="ref-curl" class="csl-entry">
+
+Ooms, Jeroen. 2026. *<span class="nocase">curl</span>: A Modern and
+Flexible Web Client for r*.
+<https://doi.org/10.32614/CRAN.package.curl>.
+
+</div>
+
+<div id="ref-spelling" class="csl-entry">
+
+Ooms, Jeroen, and Jim Hester. 2025.
+*<span class="nocase">spelling</span>: Tools for Spell Checking in r*.
+<https://doi.org/10.32614/CRAN.package.spelling>.
+
+</div>
+
 <div id="ref-mzR2004" class="csl-entry">
 
-Pedrioli, Patrick G A, Jimmy K Eng, Robert Hubley, Mathijs Vogelzang,
-Eric W Deutsch, Brian Raught, Brian Pratt, et al. 2004. “A Common Open
-Representation of Mass Spectrometry Data and Its Application to
-Proteomics Research.” *Nat Biotechnol* 22 (11): 1459–66.
+Pedrioli, Patrick G A, Jimmy K Eng, Robert Hubley, et al. 2004. “A
+Common Open Representation of Mass Spectrometry Data and Its Application
+to Proteomics Research.” *Nat Biotechnol* 22 (11): 1459–66.
 <https://doi.org/10.1038/nbt1031>.
 
 </div>
 
 <div id="ref-base" class="csl-entry">
 
-R Core Team. 2025. *R: A Language and Environment for Statistical
-Computing*. Vienna, Austria: R Foundation for Statistical Computing.
-<https://www.R-project.org/>.
+R Core Team. 2026. *R: A Language and Environment for Statistical
+Computing*. R Foundation for Statistical Computing.
+<https://doi.org/10.32614/R.manuals>.
 
 </div>
 
@@ -322,9 +332,9 @@ Aerosol Detection for Pertinent Characterization of Natural Extracts*.
 
 </div>
 
-<div id="ref-tima2025" class="csl-entry">
+<div id="ref-tima2026" class="csl-entry">
 
-Rutz, Adriano, and Pierre-Marie Allard. 2025.
+Rutz, Adriano, and Pierre-Marie Allard. 2026.
 *<span class="nocase">tima</span>: Taxonomically Informed Metabolite
 Annotation*. <https://doi.org/10.5281/zenodo.5797920>.
 
@@ -332,9 +342,7 @@ Annotation*. <https://doi.org/10.5281/zenodo.5797920>.
 
 <div id="ref-tima2019" class="csl-entry">
 
-Rutz, Adriano, Miwa Dounoue-Kubo, Simon Ollivier, Jonathan Bisson,
-Mohsen Bagheri, Tongchai Saesong, Samad Nejad Ebrahimi, Kornkanok
-Ingkaninan, Jean-Luc Wolfender, and Pierre-Marie Allard. 2019.
+Rutz, Adriano, Miwa Dounoue-Kubo, Simon Ollivier, et al. 2019.
 “Taxonomically Informed Scoring Enhances Confidence in Natural Products
 Annotation.” *Frontiers in Plant Science* 10.
 <https://doi.org/10.3389/FPLS.2019.01329>.
@@ -369,7 +377,7 @@ Moving Window Statistics, GIF, Base64, ROC AUC, Etc*.
 <div id="ref-BiocParallel" class="csl-entry">
 
 Wang, Jiefei, Martin Morgan, Valerie Obenchain, Michel Lang, Ryan
-Thompson, and Nitesh Turaga. 2025. *BiocParallel: Bioconductor
+Thompson, and Nitesh Turaga. 2026. *BiocParallel: Bioconductor
 Facilities for Parallel Evaluation*.
 <https://doi.org/10.18129/B9.bioc.BiocParallel>.
 
@@ -385,17 +393,16 @@ Started with Testing.” *The R Journal* 3: 5–10.
 
 <div id="ref-httr2" class="csl-entry">
 
-———. 2025. *Httr2: Perform HTTP Requests and Process the Responses*.
-<https://doi.org/10.32614/CRAN.package.httr2>.
+Wickham, Hadley. 2025. *Httr2: Perform HTTP Requests and Process the
+Responses*. <https://doi.org/10.32614/CRAN.package.httr2>.
 
 </div>
 
 <div id="ref-tidyverse" class="csl-entry">
 
-Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy
-D’Agostino McGowan, Romain François, Garrett Grolemund, et al. 2019.
-“Welcome to the <span class="nocase">tidyverse</span>.” *Journal of Open
-Source Software* 4 (43): 1686. <https://doi.org/10.21105/joss.01686>.
+Wickham, Hadley, Mara Averick, Jennifer Bryan, et al. 2019. “Welcome to
+the <span class="nocase">tidyverse</span>.” *Journal of Open Source
+Software* 4 (43): 1686. <https://doi.org/10.21105/joss.01686>.
 
 </div>
 
@@ -418,31 +425,29 @@ and Roger D. Peng. Chapman; Hall/CRC.
 
 <div id="ref-knitr2015" class="csl-entry">
 
-———. 2015. *Dynamic Documents with R and Knitr*. 2nd ed. Boca Raton,
-Florida: Chapman; Hall/CRC. <https://yihui.org/knitr/>.
+Xie, Yihui. 2015. *Dynamic Documents with R and Knitr*. 2nd ed. Chapman;
+Hall/CRC. <https://yihui.org/knitr/>.
 
 </div>
 
 <div id="ref-knitr2025" class="csl-entry">
 
-———. 2025. *<span class="nocase">knitr</span>: A General-Purpose Package
-for Dynamic Report Generation in R*. <https://yihui.org/knitr/>.
+Xie, Yihui. 2025. *<span class="nocase">knitr</span>: A General-Purpose
+Package for Dynamic Report Generation in R*. <https://yihui.org/knitr/>.
 
 </div>
 
 <div id="ref-rmarkdown2018" class="csl-entry">
 
 Xie, Yihui, J. J. Allaire, and Garrett Grolemund. 2018. *R Markdown: The
-Definitive Guide*. Boca Raton, Florida: Chapman; Hall/CRC.
-<https://bookdown.org/yihui/rmarkdown>.
+Definitive Guide*. Chapman; Hall/CRC. <https://yihui.org/rmarkdown/>.
 
 </div>
 
 <div id="ref-rmarkdown2020" class="csl-entry">
 
 Xie, Yihui, Christophe Dervieux, and Emily Riederer. 2020. *R Markdown
-Cookbook*. Boca Raton, Florida: Chapman; Hall/CRC.
-<https://bookdown.org/yihui/rmarkdown-cookbook>.
+Cookbook*. Chapman; Hall/CRC. <https://yihui.org/rmarkdown-cookbook>.
 
 </div>
 

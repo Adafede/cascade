@@ -1,5 +1,7 @@
 #' Temp GT function
 #'
+#' @noRd
+#'
 #' @param table Table
 #' @param title Title
 #' @param subtitle Subtitle
@@ -7,6 +9,7 @@
 #' @return A formatted GT table
 #'
 #' @examples NULL
+# jarl-ignore unused_function: <reason>
 format_gt <- function(table, title = "", subtitle = "") {
   pretty_table <- table |>
     tidytable::mutate(

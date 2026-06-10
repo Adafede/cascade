@@ -45,6 +45,7 @@ Suggests:
     BiocVersion (>= 3.22.0),
     grateful (>= 0.3.0),
     knitr (>= 1.51),
+    pkgload (>= 1.4.0),
     quarto (>= 1.5.1),
     lifecycle (>= 1.0.5),
     spelling,

@@ -53,7 +53,7 @@ get_peaks <- function(
       if (inherits(x, "peak_table")) {
         x <- get_chrom_list(x)
       }
-      if (inherits(x, "chrom_list") | inherits(x, "list")) {
+      if (inherits(x, "chrom_list") || inherits(x, "list")) {
         as.numeric(rownames(x[[idx]]))
       } else if (inherits(x, "matrix")) {
         as.numeric(rownames(x))
@@ -192,7 +192,7 @@ get_peaks <- function(
                 which(lambdas == as.numeric(lambda))
               )
             }
-            if (is.na(lambda.idx) | length(lambda.idx) == 0) {
+            if (is.na(lambda.idx) || length(lambda.idx) == 0) {
               stop("The specified wavelength (`lambda`) could not be found!")
             }
             lambda.idx
@@ -232,26 +232,37 @@ get_peaks <- function(
                 if ((smooth_window %% 2) == 0) {
                   smooth_window <- smooth_window + 1
                 }
-                savgol <- function(T, fl, forder = 4, dorder = 0) {
-                  stopifnot(is.numeric(T), is.numeric(fl))
-                  if (fl <= 1 || fl %% 2 == 0) {
-                    stop("Argument 'fl' must be an odd integer greater than 1.")
+                savgol <- function(
+                  time_series,
+                  filter_length,
+                  forder = 4,
+                  dorder = 0
+                ) {
+                  stopifnot(is.numeric(time_series), is.numeric(filter_length))
+                  if (filter_length <= 1 || filter_length %% 2 == 0) {
+                    stop(
+                      "Argument 'filter_length' must be an odd integer greater than 1."
+                    )
                   }
-                  n <- length(T)
+                  n <- length(time_series)
 
                   # -- calculate filter coefficients --
-                  fc <- (fl - 1) / 2 # index: window left and right
+                  fc <- (filter_length - 1) / 2 # index: window left and right
                   X <- outer(-fc:fc, 0:forder, FUN = "^") # polynomial terms and coeffs
                   Y <- pinv(X) # pseudoinverse
 
                   # -- filter via convolution and take care of the end points --
-                  T2 <- stats::convolve(T, rev(Y[(dorder + 1), ]), type = "o") # convolve(...)
-                  T2 <- T2[(fc + 1):(length(T2) - fc)]
+                  smoothed <- stats::convolve(
+                    time_series,
+                    rev(Y[(dorder + 1), ]),
+                    type = "o"
+                  ) # convolve(...)
+                  smoothed <- smoothed[(fc + 1):(length(smoothed) - fc)]
 
-                  Tsg <- (-1)^dorder * T2
-                  return(Tsg)
+                  result <- (-1)^dorder * smoothed
+                  return(result)
                 }
-                d <- savgol(diff(y), fl = smooth_window)
+                d <- savgol(diff(y), filter_length = smooth_window)
               } else if (smooth_type == "mva") {
                 d <- caTools::runmean(diff(y), k = smooth_window)
               } else if (smooth_type == "gaussian") {

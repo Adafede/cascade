@@ -1,5 +1,7 @@
 #' Treemaps progress
 #'
+#' @noRd
+#'
 #' @param xs XS
 #' @param type Type
 #' @param hierarchies Hierarchies
@@ -7,6 +9,7 @@
 #' @return A list of treemaps
 #'
 #' @examples NULL
+# jarl-ignore unused_function: <reason>
 treemaps_progress <- function(xs, type = "treemap", hierarchies) {
   stats::setNames(object = xs, nm = xs) |>
     purrr::map(

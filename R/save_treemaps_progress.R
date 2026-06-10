@@ -1,11 +1,14 @@
 #' Save treemaps progress
 #'
+#' @noRd
+#'
 #' @param xs XS
 #' @param type Type
 #'
 #' @return Saved treemaps
 #'
 #' @examples NULL
+# jarl-ignore unused_function: <reason>
 save_treemaps_progress <- function(xs, type = "treemap") {
   stats::setNames(
     object = xs,

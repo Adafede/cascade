@@ -17,6 +17,8 @@ p_acn_i <- function(acn_eluent, q1, q2, q3) {
 
 #' Predict response
 #'
+#' @noRd
+#'
 #' @param acn ACN
 #' @param peak_area Peak area
 #' @param p1q1 P1Q1
@@ -32,6 +34,7 @@ p_acn_i <- function(acn_eluent, q1, q2, q3) {
 #' @return The concentration
 #'
 #' @examples NULL
+# jarl-ignore unused_function: <reason>
 predict_response <- function(
   acn = 100,
   peak_area,

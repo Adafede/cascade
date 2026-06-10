@@ -1,10 +1,13 @@
 #' Save histograms progress
 #'
+#' @noRd
+#'
 #' @param xs XS
 #'
 #' @return Saved histograms
 #'
 #' @examples NULL
+# jarl-ignore unused_function: <reason>
 save_histograms_progress <- function(xs) {
   stats::setNames(
     object = xs,

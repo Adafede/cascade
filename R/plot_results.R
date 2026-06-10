@@ -132,6 +132,8 @@ plot_results_1 <- function(
 
 #' Plot results 2
 #'
+#' @noRd
+#'
 #' @include prepare_hierarchy.R
 #' @include no_other.R
 #'
@@ -140,6 +142,7 @@ plot_results_1 <- function(
 #' @return A list of plots
 #'
 #' @examples NULL
+# jarl-ignore unused_function: <reason>
 plot_results_2 <- function(list) {
   temp_fix_duplicates <- function(df, colname = "peak_rt_apex") {
     df |>

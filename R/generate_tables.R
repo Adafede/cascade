@@ -37,7 +37,7 @@ generate_tables <- function(
   export_name = "cascade_table"
 ) {
   message("loading informed features")
-  if (!is.null(file_positive) | show_example) {
+  if (!is.null(file_positive) || show_example) {
     message("... positive mode")
     if (show_example) {
       tables_peaks_pos <- load_features_informed(show_example = show_example)
@@ -233,7 +233,7 @@ generate_tables <- function(
     ) |>
     gt::opt_interactive(use_filters = TRUE)
 
-  if (export_csv | export_html) {
+  if (export_csv || export_html) {
     message("checking export directory")
     check_export_dir(export_dir)
     message("exporting")

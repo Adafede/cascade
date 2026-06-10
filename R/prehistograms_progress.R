@@ -1,5 +1,7 @@
 #' Prehistograms progress
 #'
+#' @noRd
+#'
 #' @include prepare_plot.R
 #'
 #' @param xs XS
@@ -7,6 +9,7 @@
 #' @return A list of prehistograms
 #'
 #' @examples NULL
+# jarl-ignore unused_function: <reason>
 prehistograms_progress <- function(xs) {
   xs |>
     purrr::map(
