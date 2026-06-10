@@ -32,7 +32,7 @@ The initial work is available at
 https://doi.org/10.1021/acs.jafc.3c03099, with some improvements made
 since then. The workflow is illustrated below.
 
-![Workflow](https://raw.githubusercontent.com/adafede/cascade/main/man/figures/cascade-workflow.svg)  
+![Workflow](https://raw.githubusercontent.com/adafede/cascade/main/man/figures/cascade-workflow.svg)
 
 ## Requirements
 

@@ -55,7 +55,7 @@ bonus_plots_list <- generate_ids(
 )
 ```
 
-### Compounds found in Swertia 
+### Compounds found in Swertia
 
 ```{r wikidata-swertia-1, warning=FALSE}
 #| dev: svglite

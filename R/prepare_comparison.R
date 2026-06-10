@@ -16,7 +16,6 @@
 prepare_comparison <- function(
   features_informed = NULL,
   features_not_informed = NULL,
-
   candidates_confident,
   min_similarity_prefilter = 0.6,
   min_similarity_filter = 0.8,
