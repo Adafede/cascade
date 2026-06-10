@@ -18,8 +18,6 @@ repos:
 # Keep useful R package checks
 - repo: https://github.com/lorenzwalthert/precommit
   rev: v0.4.3.9025
-  additional_dependencies:
-    - taxonomicallyinformedannotation/tima
   hooks:
     - id: use-tidy-description
     - id: parsable-R
@@ -27,6 +25,8 @@ repos:
     - id: no-print-statement
     - id: no-debug-statement
     - id: deps-in-desc
+      additional_dependencies:
+      - taxonomicallyinformedannotation/tima
     - id: readme-rmd-rendered
 
 # Generic repository hygiene
