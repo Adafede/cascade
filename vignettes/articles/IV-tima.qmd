@@ -33,17 +33,25 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r cascade, include = FALSE}
+```{r}
+#| label: cascade
+#| include: false
+
 library("cascade")
 ```
 
-This vignette describes additional helper functions to visualize [TIMA](https://taxonomicallyinformedannotation.github.io/tima/) results.
+This vignette describes additional helper functions to visualize
+[TIMA](https://taxonomicallyinformedannotation.github.io/tima/) results.
 
 ## Visualization
 
 To check the full results:
 
-```{r tima-plots, message = FALSE, warning=FALSE}
+```{r}
+#| label: tima-plots
+#| message: false
+#| warning: false
+
 plots <- cascade::prepare_tima_annotations(
   show_example = TRUE
 ) |>
@@ -57,19 +65,29 @@ plots <- cascade::prepare_tima_annotations(
 #   cascade::plot_tima()
 ```
 
-```{r tima-plots-h, message = FALSE, warning=FALSE, fig.height=9}
+```{r}
+#| label: tima-plots-h
+#| message: false
+#| warning: false
+#| fig-height: 9
 #| dev: svglite
 
 plots$histogram
 ```
 
-```{r tima-plots-t, message = FALSE, warning=FALSE}
+```{r}
+#| label: tima-plots-t
+#| message: false
+#| warning: false
 #| dev: svglite
 
 plots$treemap
 ```
 
-```{r tima-plots-s, message = FALSE, warning=FALSE}
+```{r}
+#| label: tima-plots-s
+#| message: false
+#| warning: false
 #| dev: svglite
 
 plots$sunburst
@@ -77,7 +95,10 @@ plots$sunburst
 
 To compare annotated and predicted classes:
 
-```{r tima-plots-1, warning=FALSE, fig.height=12}
+```{r}
+#| label: tima-plots-1
+#| warning: false
+#| fig-height: 12
 #| dev: svglite
 
 list(
@@ -97,7 +118,10 @@ list(
 
 To compare different filtering thresholds:
 
-```{r tima-plots-2, warning=FALSE, fig.height=10}
+```{r}
+#| label: tima-plots-2
+#| warning: false
+#| fig-height: 10
 #| dev: svglite
 
 list(
@@ -128,4 +152,6 @@ list(
 
 We hope you enjoyed using **CASCADE** and are pleased to hear from you!
 
-For any remark or suggestion, please  [fill an issue](https://github.com/adafede/cascade/issues) or feel free to contact us directly.
+For any remark or suggestion, please [fill an
+issue](https://github.com/adafede/cascade/issues) or feel free to contact us
+directly.

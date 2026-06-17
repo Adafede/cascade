@@ -33,7 +33,10 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r cascade, include = FALSE}
+```{r}
+#| label: cascade
+#| include: false
+
 library("cascade")
 ```
 
@@ -43,13 +46,21 @@ This vignette describes some basic functions.
 
 First, check if the raw data can be aligned to your expectations:
 
-```{r check-alignment-default, message=FALSE, warning=FALSE}
+```{r}
+#| label: check-alignment-default
+#| message: false
+#| warning: false
+
 check_chromatograms_alignment(show_example = TRUE)
 ```
 
 Or, with more details:
 
-```{r check-alignment-2, message=FALSE, warning=FALSE}
+```{r}
+#| label: check-alignment-2
+#| message: false
+#| warning: false
+
 check_chromatograms_alignment(
   show_example = TRUE,
   time_min = 0.5,
@@ -68,7 +79,11 @@ check_chromatograms_alignment(
 
 How it should not look like (CAD and PDA shifts incorrectly set):
 
-```{r check-alignment-3, message=FALSE, warning=FALSE}
+```{r}
+#| label: check-alignment-3
+#| message: false
+#| warning: false
+
 check_chromatograms_alignment(
   show_example = TRUE,
   time_min = 0.5,
@@ -86,10 +101,14 @@ check_chromatograms_alignment(
 
 ## Check the peak integration
 
-Another critical parameter is the peak integration.
-Below are some illustrations:
+Another critical parameter is the peak integration. Below are some
+illustrations:
 
-```{r check-integration-1, message=FALSE, warning=FALSE}
+```{r}
+#| label: check-integration-1
+#| message: false
+#| warning: false
+
 check_peaks_integration(
   show_example = TRUE,
   chromatogram = "improved"
@@ -100,10 +119,15 @@ Some peaks are still missed but it looks overall correct.
 
 Depending on the runs, this can get slightly better with baseline correction:
 
-```{r check-integration-2, message=FALSE, warning=FALSE}
+```{r}
+#| label: check-integration-2
+#| message: false
+#| warning: false
+
 check_peaks_integration(
   show_example = TRUE
 )
 ```
 
-We now recommend you to read the [next vignette](https://adafede.github.io/cascade/vignettes/articles/II-processing.html).
+We now recommend you to read the [next
+vignette](https://adafede.github.io/cascade/vignettes/articles/II-processing.html).

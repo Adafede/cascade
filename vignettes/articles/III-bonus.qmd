@@ -33,18 +33,27 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r cascade, include = FALSE}
+```{r}
+#| label: cascade
+#| include: false
+
 library("cascade")
 ```
 
-This vignette describes some additional bonus helper functions.
-A lot of it is based on previous work done in the frame of the [LOTUS initiative](https://doi.org/10.7554/eLife.70780).
+This vignette describes some additional bonus helper functions. A lot of it is
+based on previous work done in the frame of the [LOTUS
+initiative](https://doi.org/10.7554/eLife.70780).
 
 ## Quick overview of the literature
 
-To check (and eventually compare to your own results) what is known in the literature about different organisms:
+To check (and eventually compare to your own results) what is known in the
+literature about different organisms:
 
-```{r wikidata-plots, message = FALSE, warning=FALSE}
+```{r}
+#| label: wikidata-plots
+#| message: false
+#| warning: false
+
 bonus_plots_list <- generate_ids(
   taxa = c("Swertia", "Kopsia", "Ginkgo"),
   comparison = c("Swertia", "Kopsia"),
@@ -57,7 +66,9 @@ bonus_plots_list <- generate_ids(
 
 ### Compounds found in Swertia
 
-```{r wikidata-swertia-1, warning=FALSE}
+```{r}
+#| label: wikidata-swertia-1
+#| warning: false
 #| dev: svglite
 
 bonus_plots_list$plots$Swertia
@@ -65,7 +76,9 @@ bonus_plots_list$plots$Swertia
 
 ### Compounds found in Kopsia (per species)
 
-```{r wikidata-kopsia-1, warning=FALSE}
+```{r}
+#| label: wikidata-kopsia-1
+#| warning: false
 #| dev: svglite
 
 bonus_plots_list$plots$Kopsia_grouped
@@ -73,7 +86,10 @@ bonus_plots_list$plots$Kopsia_grouped
 
 ### Comparison
 
-```{r wikidata-swertia-kopsia, warning=FALSE, fig.height=6}
+```{r}
+#| label: wikidata-swertia-kopsia
+#| warning: false
+#| fig-height: 6
 #| dev: svglite
 
 bonus_plots_list$plots$special
@@ -81,4 +97,6 @@ bonus_plots_list$plots$special
 
 We hope you enjoyed using **CASCADE** and are pleased to hear from you!
 
-For any remark or suggestion, please  [fill an issue](https://github.com/adafede/cascade/issues) or feel free to contact us directly.
+For any remark or suggestion, please [fill an
+issue](https://github.com/adafede/cascade/issues) or feel free to contact us
+directly.

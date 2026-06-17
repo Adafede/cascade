@@ -1,5 +1,3 @@
-
-
 <!-- README.md is generated from README.qmd. Please edit that file -->
 
 # CASCADE <img src='https://raw.githubusercontent.com/adafede/cascade/main/man/figures/logo.svg' align="right" height="139" />
@@ -22,15 +20,14 @@ badge](https://adafede.r-universe.dev/cascade/badges/version?&color=blue&style=c
 <!-- badges: end -->
 
 **C**ontextualizing untargeted **A**nnotation with **S**emi-quantitative
-**C**harged **A**erosol **D**etection for pertinent characterization of
-natural **E**xtracts.
+**C**harged **A**erosol **D**etection for pertinent characterization of natural
+**E**xtracts.
 
 ⚠️ This repository is not maintained and will not be except for extreme
 interest. It has just been opened for the sake of transparency.
 
-The initial work is available at
-https://doi.org/10.1021/acs.jafc.3c03099, with some improvements made
-since then. The workflow is illustrated below.
+The initial work is available at https://doi.org/10.1021/acs.jafc.3c03099, with
+some improvements made since then. The workflow is illustrated below.
 
 ![Workflow](https://raw.githubusercontent.com/adafede/cascade/main/man/figures/cascade-workflow.svg)
 
@@ -46,20 +43,19 @@ Here is what you *minimally* need:
   ([PDA](https://en.wikipedia.org/wiki/UV_detectors),
   [ELSD](https://en.wikipedia.org/wiki/Evaporative_light_scattering_detector),
   [CAD](https://en.wikipedia.org/wiki/Charged_aerosol_detector))
-  - In case you don’t know how to obtain it, see:
+  - In case you don't know how to obtain it, see:
     [wiki/How-to-create-a-compliant-mzML-file](https://github.com/Adafede/cascade/wiki/How-to-create-a-compliant-mzML-file)
 - A file ([.csv](https://en.wikipedia.org/wiki/Comma-separated_values))
   containing features, as obtained by [mzmine](https://mzio.io)
-- A file ([.tsv](https://en.wikipedia.org/wiki/Tab-separated_values))
-  containing annotations, as obtained by
+- A file ([.tsv](https://en.wikipedia.org/wiki/Tab-separated_values)) containing
+  annotations, as obtained by
   [TIMA](https://taxonomicallyinformedannotation.github.io/tima)
 
 ## Installation
 
-As the package is not (yet) available on CRAN, you will need to install
-with:
+As the package is not (yet) available on CRAN, you will need to install with:
 
-``` r
+```r
 install.packages(
   "cascade",
   repos = c(
@@ -72,8 +68,8 @@ install.packages(
 ```
 
 Once installed, you are ready to go through our
-[documentation](https://adafede.github.io/cascade/articles), with the
-major steps detailed.
+[documentation](https://adafede.github.io/cascade/articles), with the major
+steps detailed.
 
 ## Main Citations
 
@@ -81,8 +77,8 @@ major steps detailed.
 
 <https://doi.org/10.1021/acs.jafc.3c03099>
 
-According to which steps you used, please give credit to the authors of
-the tools/resources used.
+According to which steps you used, please give credit to the authors of the
+tools/resources used.
 
 ### mzmine
 
@@ -124,33 +120,33 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
 
 ## Additional software credits
 
-| Package | Version | Citation |
-|:---|:---|:---|
-| base | 4.6.0 | R Core Team (2026) |
-| baseline | 1.3.7 | Liland et al. (2010); Liland and Mevik (2025) |
-| BiocManager | 1.30.27 | Morgan and Ramos (2025) |
-| BiocParallel | 1.46.0 | Wang et al. (2026) |
-| BiocVersion | 3.23.1 | Morgan (2025) |
-| cascade | 0.0.0.9002 | Rutz and Wolfender (2023); Rutz (2025) |
-| caTools | 1.18.3 | Tuszynski (2024) |
-| curl | 7.1.0 | Ooms (2026) |
-| data.table | 1.18.4 | Barrett et al. (2026) |
-| gt | 1.3.0 | Iannone et al. (2026) |
-| htmltools | 0.5.9 | Cheng et al. (2025) |
-| httr2 | 1.2.2 | Wickham (2025) |
-| knitr | 1.51 | Xie (2014); Xie (2015); Xie (2025) |
-| MSnbase | 2.38.0 | Gatto and Lilley (2012); Gatto et al. (2020) |
-| mzR | 2.46.0 | Pedrioli et al. (2004); Keller et al. (2005); Kessner et al. (2008); Martens et al. (2010); Chambers et al. (2012) |
-| pkgload | 1.5.2 | Wickham et al. (2026) |
-| plotly | 4.12.0 | Sievert (2020) |
-| R.utils | 2.13.0 | Bengtsson (2025) |
-| rmarkdown | 2.31 | Xie et al. (2018); Xie et al. (2020); Allaire et al. (2026) |
-| spelling | 2.3.2 | Ooms and Hester (2025) |
-| stringi | 1.8.7 | Gagolewski (2022) |
-| testthat | 3.3.2 | Wickham (2011) |
-| tidytable | 0.11.2 | Fairbanks (2024) |
-| tidyverse | 2.0.0 | Wickham et al. (2019) |
-| tima | 2.13.0.9000 | Rutz et al. (2019); Rutz and Allard (2026) |
+  | Package      | Version     | Citation                                                                                                           |
+  | :----------- | :---------- | :----------------------------------------------------------------------------------------------------------------- |
+  | base         | 4.6.0       | R Core Team (2026)                                                                                                 |
+  | baseline     | 1.3.7       | Liland et al. (2010); Liland and Mevik (2025)                                                                      |
+  | BiocManager  | 1.30.27     | Morgan and Ramos (2025)                                                                                            |
+  | BiocParallel | 1.46.0      | Wang et al. (2026)                                                                                                 |
+  | BiocVersion  | 3.23.1      | Morgan (2025)                                                                                                      |
+  | cascade      | 0.0.0.9002  | Rutz and Wolfender (2023); Rutz (2025)                                                                             |
+  | caTools      | 1.18.3      | Tuszynski (2024)                                                                                                   |
+  | curl         | 7.1.0       | Ooms (2026)                                                                                                        |
+  | data.table   | 1.18.4      | Barrett et al. (2026)                                                                                              |
+  | gt           | 1.3.0       | Iannone et al. (2026)                                                                                              |
+  | htmltools    | 0.5.9       | Cheng et al. (2025)                                                                                                |
+  | httr2        | 1.2.2       | Wickham (2025)                                                                                                     |
+  | knitr        | 1.51        | Xie (2014); Xie (2015); Xie (2025)                                                                                 |
+  | MSnbase      | 2.38.0      | Gatto and Lilley (2012); Gatto et al. (2020)                                                                       |
+  | mzR          | 2.46.0      | Pedrioli et al. (2004); Keller et al. (2005); Kessner et al. (2008); Martens et al. (2010); Chambers et al. (2012) |
+  | pkgload      | 1.5.2       | Wickham et al. (2026)                                                                                              |
+  | plotly       | 4.12.0      | Sievert (2020)                                                                                                     |
+  | R.utils      | 2.13.0      | Bengtsson (2025)                                                                                                   |
+  | rmarkdown    | 2.31        | Xie et al. (2018); Xie et al. (2020); Allaire et al. (2026)                                                        |
+  | spelling     | 2.3.2       | Ooms and Hester (2025)                                                                                             |
+  | stringi      | 1.8.7       | Gagolewski (2022)                                                                                                  |
+  | testthat     | 3.3.2       | Wickham (2011)                                                                                                     |
+  | tidytable    | 0.11.2      | Fairbanks (2024)                                                                                                   |
+  | tidyverse    | 2.0.0       | Wickham et al. (2019)                                                                                              |
+  | tima         | 2.13.0.9000 | Rutz et al. (2019); Rutz and Allard (2026)                                                                         |
 
 <div id="refs" class="references csl-bib-body hanging-indent">
 

@@ -33,12 +33,16 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r cascade, include = FALSE}
+```{r}
+#| label: cascade
+#| include: false
+
 library("cascade")
 ```
 
-This vignette describes the main processing function.
-It assumes you already checked the [previous basic steps](https://adafede.github.io/cascade/articles/I-basics.html).
+This vignette describes the main processing function. It assumes you already
+checked the [previous basic
+steps](https://adafede.github.io/cascade/articles/I-basics.html).
 
 ## Compare peaks to features
 
@@ -48,7 +52,10 @@ To do so, you will need:
 
 Then, you should be able to run
 
-```{r process-compare-peaks, warning=FALSE}
+```{r}
+#| label: process-compare-peaks
+#| warning: false
+
 process_compare_peaks(show_example = TRUE)
 ```
 
@@ -56,9 +63,15 @@ And this basically it! 🚀
 
 ## Pseudo chromatograms
 
-If you know want to add some cosmetics, and you already have a [TIMA](https://taxonomicallyinformedannotation.github.io/tima) annotation table, you can then run:
+If you know want to add some cosmetics, and you already have a
+[TIMA](https://taxonomicallyinformedannotation.github.io/tima) annotation table,
+you can then run:
 
-```{r generate-pseudochromatograms, message = FALSE, warning=FALSE}
+```{r}
+#| label: generate-pseudochromatograms
+#| message: false
+#| warning: false
+
 plots_list <- generate_pseudochromatograms(show_example = TRUE)
 ```
 
@@ -66,7 +79,9 @@ The different plots offer the following views:
 
 ### Taxo (major peaks)
 
-```{r taxo-major, warning=FALSE}
+```{r}
+#| label: taxo-major
+#| warning: false
 #| dev: svglite
 
 plots_list$plots_1$histograms_taxo_maj
@@ -74,7 +89,9 @@ plots_list$plots_1$histograms_taxo_maj
 
 ### Taxo (minor peaks)
 
-```{r taxo-minor, warning=FALSE}
+```{r}
+#| label: taxo-minor
+#| warning: false
 #| dev: svglite
 
 plots_list$plots_1$histograms_taxo_min
@@ -82,7 +99,9 @@ plots_list$plots_1$histograms_taxo_min
 
 ### Confident unique annotations (major)
 
-```{r confident-major, warning=FALSE}
+```{r}
+#| label: confident-major
+#| warning: false
 #| dev: svglite
 
 plots_list$plots_1$histograms_unique_conf_maj
@@ -90,7 +109,9 @@ plots_list$plots_1$histograms_unique_conf_maj
 
 ### Confident unique annotations (minor)
 
-```{r unique-minor, warning=FALSE}
+```{r}
+#| label: unique-minor
+#| warning: false
 #| dev: svglite
 
 plots_list$plots_1$histograms_unique_conf_min
@@ -100,7 +121,9 @@ Or getting rid of the chromatogram:
 
 ### Treemap semi-quantitative (major)
 
-```{r treemap-major, warning=FALSE}
+```{r}
+#| label: treemap-major
+#| warning: false
 #| dev: svglite
 
 plots_list$treemaps$peaks_maj
@@ -108,7 +131,9 @@ plots_list$treemaps$peaks_maj
 
 ### Treemap semi-quantitative (minor)
 
-```{r treemap-minor, warning=FALSE}
+```{r}
+#| label: treemap-minor
+#| warning: false
 #| dev: svglite
 
 plots_list$treemaps$peaks_min
@@ -118,7 +143,9 @@ Or both together for comparison:
 
 ### Treemap both
 
-```{r treemap-both, warning=FALSE}
+```{r}
+#| label: treemap-both
+#| warning: false
 #| dev: svglite
 
 plots_list$treemaps$special
@@ -128,17 +155,26 @@ plots_list$treemaps$special
 
 If you prefer tables rather than figures, you can also:
 
-```{r generate-tables, message = FALSE, warning=FALSE}
+```{r}
+#| label: generate-tables
+#| message: false
+#| warning: false
+
 tables_list <- generate_tables(show_example = TRUE)
 ```
 
-This will export the table as CSV and/or HTML.
-A small preview of the HTML table is presented below:
+This will export the table as CSV and/or HTML. A small preview of the HTML table
+is presented below:
 
-```{r glimpse-tables, message = FALSE, warning=FALSE}
+```{r}
+#| label: glimpse-tables
+#| message: false
+#| warning: false
 #| dev: svglite
 
 tables_list$pretty_table
 ```
 
-For some other available helper functions, we now recommend you to read the [next vignette](https://adafede.github.io/cascade/vignettes/articles/III-bonus.html).
+For some other available helper functions, we now recommend you to read the
+[next
+vignette](https://adafede.github.io/cascade/vignettes/articles/III-bonus.html).
