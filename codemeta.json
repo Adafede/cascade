@@ -14,7 +14,7 @@
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.6.0 (2026-04-24)",
+  "runtimePlatform": "R version 4.6.1 (2026-06-24)",
   "author": [
     {
       "@type": "Person",
@@ -433,7 +433,7 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteAnnotation", "chargedAerosolDetector", "semiQuantitative", "naturalProducts", "computationalMetabolomics", "specializedMetabolome", "chemical-composition", "lc-msms", "metabolite-annotation", "metabolomics", "natural-extracts", "natural-products", "charged-aerosol-detector", "r"],
-  "fileSize": "170232.125KB",
+  "fileSize": "170234.687KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
