@@ -40,8 +40,10 @@ get_peaks <- function(
         apply(pks, 1, function(x) {
           !all(is.na(x))
         }) &
-          length(pks[, "rt"]) > pks[, "start"] &
-          length(pks[, "rt"]) < pks[, "end"]
+          apply(pks[, c("rt", "start", "end")], 1, function(x) {
+            all(!is.na(x))
+          }) &
+          pks[, "rt"] >= 1
       ),
       ,
       drop = FALSE
