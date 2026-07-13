@@ -34,14 +34,14 @@ get_peaks <- function(
   collapse = FALSE,
   ...
 ) {
-  remove_bad_peaks <- function(pks) {
+  remove_bad_peaks <- function(pks, n) {
+    # keep only peaks with a fully defined position whose fitted apex index
+    # (rt) falls within the chromatogram's valid scan range [1, n]
     pks[
       which(
-        apply(pks, 1, function(x) {
-          !all(is.na(x))
-        }) &
-          length(pks[, "rt"]) > pks[, "start"] &
-          length(pks[, "rt"]) < pks[, "end"]
+        complete.cases(pks[, c("rt", "start", "end")]) &
+          pks[, "rt"] >= 1 &
+          pks[, "rt"] <= n
       ),
       ,
       drop = FALSE
@@ -786,7 +786,7 @@ get_peaks <- function(
           ...
         )
         pks <- cbind(sample = names(chrom_list)[sample], lambda, pks)
-        pks <- remove_bad_peaks(pks)
+        pks <- remove_bad_peaks(pks, n = nrow(chrom_list[[sample]]))
         pks <- convert_indices_to_times(
           pks,
           chrom_list = chrom_list,
