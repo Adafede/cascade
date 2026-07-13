@@ -35,16 +35,13 @@ get_peaks <- function(
   ...
 ) {
   remove_bad_peaks <- function(pks, n) {
+    # keep only peaks with a fully defined position whose fitted apex index
+    # (rt) falls within the chromatogram's valid scan range [1, n]
     pks[
       which(
-        apply(pks, 1, function(x) {
-          !all(is.na(x))
-        }) &
-          apply(pks[, c("rt", "start", "end")], 1, function(x) {
-            all(!is.na(x))
-          }) &
+        complete.cases(pks[, c("rt", "start", "end")]) &
           pks[, "rt"] >= 1 &
-          pkst[, "rt"] <= n
+          pks[, "rt"] <= n
       ),
       ,
       drop = FALSE
