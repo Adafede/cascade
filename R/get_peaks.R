@@ -34,7 +34,7 @@ get_peaks <- function(
   collapse = FALSE,
   ...
 ) {
-  remove_bad_peaks <- function(pks) {
+  remove_bad_peaks <- function(pks, n) {
     pks[
       which(
         apply(pks, 1, function(x) {
@@ -43,7 +43,8 @@ get_peaks <- function(
           apply(pks[, c("rt", "start", "end")], 1, function(x) {
             all(!is.na(x))
           }) &
-          pks[, "rt"] >= 1
+          pks[, "rt"] >= 1 &
+          pkst[, "rt"] <= n
       ),
       ,
       drop = FALSE
@@ -788,7 +789,7 @@ get_peaks <- function(
           ...
         )
         pks <- cbind(sample = names(chrom_list)[sample], lambda, pks)
-        pks <- remove_bad_peaks(pks)
+        pks <- remove_bad_peaks(pks, n=nrow(chrom_list[[sample]]))
         pks <- convert_indices_to_times(
           pks,
           chrom_list = chrom_list,
