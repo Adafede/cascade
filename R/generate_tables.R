@@ -192,7 +192,7 @@ generate_tables <- function(
         true = "",
         false = Structure
       ),
-      score_final = tidytable::if_else(
+      annotation_score = tidytable::if_else(
         condition = score_final > 1,
         true = as.character(">1.00"),
         false = as.character(score_final)
@@ -209,7 +209,7 @@ generate_tables <- function(
       `Feature m/z` = feature_mz,
       Structure,
       `InChIKey no stereo` = inchikey_connectivity_layer,
-      `Annotation Score` = score_final,
+      `Annotation Score` = annotation_score,
       `Chemical Pathway` = best_candidate_1,
       `Chemical Superclass` = best_candidate_2,
       `Chemical Class` = best_candidate_3,

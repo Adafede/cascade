@@ -433,7 +433,7 @@
     "SystemRequirements": null
   },
   "keywords": ["metaboliteAnnotation", "chargedAerosolDetector", "semiQuantitative", "naturalProducts", "computationalMetabolomics", "specializedMetabolome", "chemical-composition", "lc-msms", "metabolite-annotation", "metabolomics", "natural-extracts", "natural-products", "charged-aerosol-detector", "r"],
-  "fileSize": "170234.687KB",
+  "fileSize": "170231.874KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",

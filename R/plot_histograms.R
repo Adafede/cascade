@@ -16,7 +16,7 @@ plot_histograms <-
         data = chromatogram,
         mapping = ggplot2::aes(x = rtime, y = intensity / max(intensity)),
         col = "black",
-        size = 0.1
+        linewidth = 0.1
       ) +
       ggplot2::geom_bar(
         data = dataframe,
@@ -75,7 +75,7 @@ plot_histograms_confident <-
         data = chromatogram,
         mapping = ggplot2::aes(x = rtime, y = intensity / max(intensity)),
         col = "black",
-        size = 0.1
+        linewidth = 0.1
       ) +
       {
         if (level == "max") {
@@ -175,7 +175,7 @@ plot_histograms_taxo <-
         data = chromatogram,
         mapping = ggplot2::aes(x = rtime, y = intensity / max(abs(intensity))),
         col = "black",
-        size = 0.1
+        linewidth = 0.1
       ) +
       {
         if (level == "max") {

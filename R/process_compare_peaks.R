@@ -155,19 +155,18 @@ process_compare_peaks <- function(
     )
 
   message("summarizing comparison scores")
-  comparison_scores <- list_comparison_score |>
-    purrr::flatten()
+  n_scores <- sum(lengths(list_comparison_score))
 
-  message("there are ", length(comparison_scores), " scores calculated")
+  message("there are ", n_scores, " scores calculated")
 
   message("selecting features with peaks")
   list_df_features_with_scores <- Map(
     function(df, score) {
-      df$comparison_score <- score
+      df$comparison_score <- unlist(score, use.names = FALSE)
       df
     },
     peaks_prelist$list_df_features_with_peaks_long,
-    comparison_scores
+    list_comparison_score
   )
 
   if (length(list_df_features_with_scores) == 0) {

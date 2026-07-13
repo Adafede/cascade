@@ -122,22 +122,22 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
 
   | Package      | Version     | Citation                                                                                                           |
   | :----------- | :---------- | :----------------------------------------------------------------------------------------------------------------- |
-  | base         | 4.6.0       | R Core Team (2026)                                                                                                 |
+  | base         | 4.6.1       | R Core Team (2026)                                                                                                 |
   | baseline     | 1.3.7       | Liland et al. (2010); Liland and Mevik (2025)                                                                      |
   | BiocManager  | 1.30.27     | Morgan and Ramos (2025)                                                                                            |
   | BiocParallel | 1.46.0      | Wang et al. (2026)                                                                                                 |
   | BiocVersion  | 3.23.1      | Morgan (2025)                                                                                                      |
-  | cascade      | 0.0.0.9002  | Rutz and Wolfender (2023); Rutz (2025)                                                                             |
+  | cascade      | 0.0.0.9002  | Rutz and Wolfender (2023); Rutz (2026)                                                                             |
   | caTools      | 1.18.3      | Tuszynski (2024)                                                                                                   |
   | curl         | 7.1.0       | Ooms (2026)                                                                                                        |
   | data.table   | 1.18.4      | Barrett et al. (2026)                                                                                              |
   | gt           | 1.3.0       | Iannone et al. (2026)                                                                                              |
   | htmltools    | 0.5.9       | Cheng et al. (2025)                                                                                                |
-  | httr2        | 1.2.2       | Wickham (2025)                                                                                                     |
+  | httr2        | 1.2.3       | Wickham (2026)                                                                                                     |
   | knitr        | 1.51        | Xie (2014); Xie (2015); Xie (2025)                                                                                 |
   | MSnbase      | 2.38.0      | Gatto and Lilley (2012); Gatto et al. (2020)                                                                       |
   | mzR          | 2.46.0      | Pedrioli et al. (2004); Keller et al. (2005); Kessner et al. (2008); Martens et al. (2010); Chambers et al. (2012) |
-  | pkgload      | 1.5.2       | Wickham et al. (2026)                                                                                              |
+  | pkgload      | 1.5.3       | Wickham et al. (2026)                                                                                              |
   | plotly       | 4.12.0      | Sievert (2020)                                                                                                     |
   | R.utils      | 2.13.0      | Bengtsson (2025)                                                                                                   |
   | rmarkdown    | 2.31        | Xie et al. (2018); Xie et al. (2020); Allaire et al. (2026)                                                        |
@@ -320,9 +320,9 @@ Computing*. R Foundation for Statistical Computing.
 
 </div>
 
-<div id="ref-cascade2025" class="csl-entry">
+<div id="ref-cascade2026" class="csl-entry">
 
-Rutz, Adriano. 2025. *<span class="nocase">cascade</span>:
+Rutz, Adriano. 2026. *<span class="nocase">cascade</span>:
 Contextualizing Untargeted Annotation with Semi-Quantitative Charged
 Aerosol Detection for Pertinent Characterization of Natural Extracts*.
 
@@ -389,7 +389,7 @@ Started with Testing.” *The R Journal* 3: 5–10.
 
 <div id="ref-httr2" class="csl-entry">
 
-Wickham, Hadley. 2025. *Httr2: Perform HTTP Requests and Process the
+Wickham, Hadley. 2026. *Httr2: Perform HTTP Requests and Process the
 Responses*. <https://doi.org/10.32614/CRAN.package.httr2>.
 
 </div>
