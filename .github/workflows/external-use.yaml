@@ -42,11 +42,15 @@ jobs:
         run: >
           sudo apt-get update && sudo apt-get install -y --no-install-recommends
           libarchive-dev libcurl4-openssl-dev libfribidi-dev libharfbuzz-dev
-          libnetcdf-dev  libuv1-dev \
-
-          && sudo apt-get clean \
-
+          libnetcdf-dev libuv1-dev
+          && sudo apt-get clean
           && sudo rm -rf /var/lib/apt/lists/*
+      - name: Install dependencies (macOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          brew install gettext
+          echo "CPPFLAGS=-I$(brew --prefix gettext)/include" >> $GITHUB_ENV
+          echo "LDFLAGS=-L$(brew --prefix gettext)/lib" >> $GITHUB_ENV
       - name: Install
         run: >
           install.packages(
