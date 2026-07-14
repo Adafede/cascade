@@ -50,10 +50,11 @@ jobs:
         run: |
           brew update
           brew install netcdf gettext openssl@3
-          echo "LDFLAGS=-L$(brew --prefix gettext)/lib -L$(brew --prefix openssl@3)/lib" >> $GITHUB_ENV
-          echo "CPPFLAGS=-I$(brew --prefix gettext)/include -I$(brew --prefix openssl@3)/include" >> $GITHUB_ENV
-          echo "PKG_CONFIG_PATH=$(brew --prefix gettext)/lib/pkgconfig:$(brew --prefix openssl@3)/lib/pkgconfig" >> $GITHUB_ENV
-          echo "$(brew --prefix gettext)/bin" >> $GITHUB_PATH
+          mkdir -p ~/.R
+          cat > ~/.R/Makevars <<EOF
+          LDFLAGS=-L$(brew --prefix openssl@3)/lib
+          CPPFLAGS=-I$(brew --prefix openssl@3)/include
+          EOF
       - name: Install
         run: >
           install.packages(
