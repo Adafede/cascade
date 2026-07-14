@@ -50,6 +50,11 @@ jobs:
         run: |
           brew update
           brew install libuv netcdf
+          mkdir -p ~/.R
+          cat >> ~/.R/Makevars <<EOF
+          OPENSSL_CPPFLAGS = -I$(brew --prefix openssl@3)/include
+          OPENSSL_LDFLAGS  = -L$(brew --prefix openssl@3)/lib
+          EOF
       - name: Install
         run: >
           install.packages(
