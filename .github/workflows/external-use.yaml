@@ -49,9 +49,15 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: |
           brew update
-          brew install libuv netcdf
+          brew install netcdf
           mkdir -p ~/.R
           cat >> ~/.R/Makevars <<EOF
+          CFLAGS   = -mcpu=native -mtune=native -g -O3 -Wall -pedantic -Wconversion
+          CPPFLAGS += -I/opt/homebrew/include
+          CXXFLAGS = -mcpu=native -mtune=native -g -O3 -Wall -pedantic -Wconversion
+          LDFLAGS += -L/opt/homebrew/lib
+          NCDF_LDFLAGS  = -L/opt/homebrew/opt/netcdf/lib
+          NCDF_CPPFLAGS = -I/opt/homebrew/opt/netcdf/include
           OPENSSL_CPPFLAGS = -I$(brew --prefix openssl@3)/include
           OPENSSL_LDFLAGS  = -L$(brew --prefix openssl@3)/lib
           EOF
