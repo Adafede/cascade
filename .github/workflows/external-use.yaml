@@ -49,13 +49,7 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: |
           brew update
-          brew install netcdf gettext openssl@3
-          mkdir -p ~/.R
-          cat > ~/.R/Makevars <<EOF
-          PKG_CPPFLAGS=-I$(brew --prefix gettext)/include -I$(brew --prefix openssl@3)/include
-          PKG_LIBS=-L$(brew --prefix gettext)/lib -L$(brew --prefix openssl@3)/lib
-          EOF
-          echo "PKG_CONFIG_PATH=$(brew --prefix gettext)/lib/pkgconfig:$(brew --prefix openssl@3)/lib/pkgconfig" >> $GITHUB_ENV
+          brew install libuv netcdf
       - name: Install
         run: >
           install.packages(
