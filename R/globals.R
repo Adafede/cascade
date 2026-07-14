@@ -1,5 +1,6 @@
 utils::globalVariables(
   c(
+    "annotation_score",
     "approxfun",
     "area",
     "best_candidate_1",

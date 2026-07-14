@@ -39,7 +39,7 @@ get_peaks <- function(
     # (rt) falls within the chromatogram's valid scan range [1, n]
     pks[
       which(
-        complete.cases(pks[, c("rt", "start", "end")]) &
+        stats::complete.cases(pks[, c("rt", "start", "end")]) &
           pks[, "rt"] >= 1 &
           pks[, "rt"] <= n
       ),
