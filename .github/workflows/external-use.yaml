@@ -35,7 +35,7 @@ jobs:
         id: cpu-cores
       - uses: r-lib/actions/setup-r@d3c5be51b12e724e68f33216ca3c148b66d5f0b6
         with:
-          use-public-rspm: true
+          update-rtools: true
           Ncpus: ${{ steps.cpu-cores.outputs.count }}
       - name: Install dependencies (Linux)
         if: matrix.os == 'ubuntu-latest'
@@ -49,13 +49,14 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: |
           brew update
-          brew install netcdf
+          brew install netcdf libomp
           mkdir -p ~/.R
           cat >> ~/.R/Makevars <<EOF
-          CFLAGS   = -mcpu=native -mtune=native -g -O3 -Wall -pedantic -Wconversion
+          CFLAGS   = -mcpu=native -mtune=native -g -O3 -Wall -pedantic -Wconversion -Xpreprocessor -fopenmp -I$(brew --prefix libomp)/include
+          CXXFLAGS = -mcpu=native -mtune=native -g -O3 -Wall -pedantic -Wconversion -Xpreprocessor -fopenmp -I$(brew --prefix libomp)/include
           CPPFLAGS += -I/opt/homebrew/include
-          CXXFLAGS = -mcpu=native -mtune=native -g -O3 -Wall -pedantic -Wconversion
           LDFLAGS += -L/opt/homebrew/lib
+          LDFLAGS += -L$(brew --prefix libomp)/lib -lomp
           NCDF_LDFLAGS  = -L/opt/homebrew/opt/netcdf/lib
           NCDF_CPPFLAGS = -I/opt/homebrew/opt/netcdf/include
           OPENSSL_CPPFLAGS = -I$(brew --prefix openssl@3)/include
