@@ -90,7 +90,6 @@ jobs:
           "https://adafede.r-universe.dev",
           "https://taxonomicallyinformedannotation.r-universe.dev",
           "https://cran.r-universe.dev",
-          "https://r-lib.r-universe.dev",
           "https://bioc.r-universe.dev"
           )
           )
