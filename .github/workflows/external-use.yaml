@@ -57,10 +57,9 @@ jobs:
           brew update
           brew install netcdf libomp
           LIBOMP_PREFIX="$(brew --prefix libomp)"
-          NETCDF_PREFIX  = $(brew --prefix netcdf)
+          NETCDF_PREFIX="$(brew --prefix netcdf)"
           OPENSSL_PREFIX="$(brew --prefix openssl@3)"
           mkdir -p ~/.R
-          # Detect architecture for correct optimization flags
           if [[ $(uname -m) == "arm64" ]]; then
             ARCH_FLAGS="-mcpu=native"
           else
