@@ -30,6 +30,7 @@
 ^data$
 ^dev$
 ^docs$
+^grateful-refs\.bib$
 ^inst/_targets$
 ^pkgdown$
 ^prek[.]toml$
