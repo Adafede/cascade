@@ -43,6 +43,7 @@ Remotes:
     taxonomicallyinformedannotation/tima
 Suggests:
     knitr (>= 1.51),
+    quarto (>= 1.5.1),
     svglite (>= 2.2.2),
     testthat (>= 3.3.2)
 ByteCompile: TRUE
