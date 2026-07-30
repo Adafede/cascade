@@ -2,12 +2,14 @@ Package: cascade
 Title: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts
 Version: 0.0.0.9002
 Authors@R: c(
-    person(given = "Adriano",
-           family = "Rutz",
-           email = "adafede@gmail.com",
-           role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0003-0443-9902"))
-  )
+    person(
+        given = "Adriano",
+        family = "Rutz",
+        email = "adafede@gmail.com",
+        role = c("aut", "cre"),
+        comment = c(ORCID = "0000-0003-0443-9902")
+        )
+    )
 Maintainer: Adriano Rutz <adafede@gmail.com>
 Description: This package provides the infrastructure to perform
     Automated Composition Assessment of Natural Extracts.
@@ -40,15 +42,7 @@ Imports:
 Remotes:
     taxonomicallyinformedannotation/tima
 Suggests:
-    altdoc (>= 0.7.2),
-    BiocManager (>= 1.30.27),
-    BiocVersion (>= 3.22.0),
-    grateful (>= 0.3.0),
     knitr (>= 1.51),
-    pkgload (>= 1.4.0),
-    quarto (>= 1.5.1),
-    lifecycle (>= 1.0.5),
-    spelling,
     svglite (>= 2.2.2),
     testthat (>= 3.3.2)
 ByteCompile: TRUE

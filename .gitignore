@@ -49,7 +49,12 @@ vignettes/*_files$
 
 # Repo specific
 params/params/**
-data/**
+# Ignore research materials in data/, but keep .rda package datasets
+data/interim/
+data/paper/
+data/processed/
+data/source/
+data/trees/
 https:/**
 
 /.quarto/

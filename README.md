@@ -30,6 +30,7 @@ The initial work is available at https://doi.org/10.1021/acs.jafc.3c03099, with
 some improvements made since then. The workflow is illustrated below.
 
 ![Workflow](https://raw.githubusercontent.com/adafede/cascade/main/man/figures/cascade-workflow.svg)
+\
 
 ## Requirements
 
@@ -128,17 +129,16 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
   | BiocParallel | 1.46.0      | Wang et al. (2026)                                                                                                 |
   | BiocVersion  | 3.23.1      | Morgan (2025)                                                                                                      |
   | cascade      | 0.0.0.9002  | Rutz and Wolfender (2023); Rutz (2026)                                                                             |
-  | caTools      | 1.18.3      | Tuszynski (2024)                                                                                                   |
+  | caTools      | 1.18.4      | Tuszynski (2026)                                                                                                   |
   | curl         | 7.1.0       | Ooms (2026)                                                                                                        |
   | data.table   | 1.18.4      | Barrett et al. (2026)                                                                                              |
   | gt           | 1.3.0       | Iannone et al. (2026)                                                                                              |
   | htmltools    | 0.5.9       | Cheng et al. (2025)                                                                                                |
-  | httr2        | 1.2.3       | Wickham (2026)                                                                                                     |
+  | httr2        | 1.3.0       | Wickham (2026)                                                                                                     |
   | knitr        | 1.51        | Xie (2014); Xie (2015); Xie (2025)                                                                                 |
   | MSnbase      | 2.38.0      | Gatto and Lilley (2012); Gatto et al. (2020)                                                                       |
   | mzR          | 2.46.0      | Pedrioli et al. (2004); Keller et al. (2005); Kessner et al. (2008); Martens et al. (2010); Chambers et al. (2012) |
-  | pkgload      | 1.5.3       | Wickham et al. (2026)                                                                                              |
-  | plotly       | 4.12.0      | Sievert (2020)                                                                                                     |
+  | plotly       | 4.12.1      | Sievert (2020)                                                                                                     |
   | R.utils      | 2.13.0      | Bengtsson (2025)                                                                                                   |
   | rmarkdown    | 2.31        | Xie et al. (2018); Xie et al. (2020); Allaire et al. (2026)                                                        |
   | spelling     | 2.3.2       | Ooms and Hester (2025)                                                                                             |
@@ -147,6 +147,7 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
   | tidytable    | 0.11.2      | Fairbanks (2024)                                                                                                   |
   | tidyverse    | 2.0.0       | Wickham et al. (2019)                                                                                              |
   | tima         | 2.13.0.9000 | Rutz et al. (2019); Rutz and Allard (2026)                                                                         |
+  | usethis      | 3.2.1       | Wickham et al. (2025)                                                                                              |
 
 <div id="refs" class="references csl-bib-body hanging-indent">
 
@@ -364,7 +365,7 @@ Plotly, and Shiny*. Chapman; Hall/CRC. <https://plotly-r.com>.
 
 <div id="ref-caTools" class="csl-entry">
 
-Tuszynski, Jarek. 2024. *<span class="nocase">caTools</span>: Tools:
+Tuszynski, Jarek. 2026. *<span class="nocase">caTools</span>: Tools:
 Moving Window Statistics, GIF, Base64, ROC AUC, Etc*.
 <https://doi.org/10.32614/CRAN.package.caTools>.
 
@@ -402,11 +403,11 @@ Software* 4 (43): 1686. <https://doi.org/10.21105/joss.01686>.
 
 </div>
 
-<div id="ref-pkgload" class="csl-entry">
+<div id="ref-usethis" class="csl-entry">
 
-Wickham, Hadley, Winston Chang, Jim Hester, and Lionel Henry. 2026.
-*<span class="nocase">pkgload</span>: Simulate Package Installation and
-Attach*. <https://doi.org/10.32614/CRAN.package.pkgload>.
+Wickham, Hadley, Jennifer Bryan, Malcolm Barrett, and Andy Teucher.
+2025. *<span class="nocase">usethis</span>: Automate Package and Project
+Setup*. <https://doi.org/10.32614/CRAN.package.usethis>.
 
 </div>
 

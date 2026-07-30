@@ -128,6 +128,7 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
 ## Additional software credits
 
 ```{r}
+#| label: grateful
 #| echo: false
 #| message: false
 
