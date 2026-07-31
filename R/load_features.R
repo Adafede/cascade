@@ -8,9 +8,9 @@
 #' @examples NULL
 load_features <- function(file = NULL, show_example = FALSE) {
   if (show_example) {
-    # feature_table |>
-    #   saveRDS(file = "inst/extdata/features.rds")
-    readRDS(system.file("extdata", "features.rds", package = "cascade"))
+    utils::data("cascade_features", package = "cascade", envir = environment())
+    cascade_features |>
+      tidytable::tidytable()
   } else {
     file |>
       tidytable::fread()

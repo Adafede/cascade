@@ -9,9 +9,13 @@
 #' @examples NULL
 load_annotations <- function(file = NULL, show_example = FALSE, mode = "pos") {
   if (show_example) {
-    # annotation_table |>
-    #   saveRDS(file = "inst/extdata/annotations.rds")
-    readRDS(system.file("extdata", "annotations.rds", package = "cascade"))
+    utils::data(
+      "cascade_annotations",
+      package = "cascade",
+      envir = environment()
+    )
+    cascade_annotations |>
+      tidytable::tidytable()
   } else {
     file |>
       tidytable::fread() |>

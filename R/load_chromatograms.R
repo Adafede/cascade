@@ -19,36 +19,23 @@ load_chromatograms <- function(
   example_polarity = "pos"
 ) {
   if (show_example) {
-    # chromatograms_positive |>
-    #   saveRDS(file = "inst/extdata/chromatograms_positive.rds")
-    # chromatograms_negative |>
-    #   saveRDS(file = "inst/extdata/chromatograms_negative.rds")
-    chromatograms <- switch(
+    dataset_name <- switch(
       example_polarity,
-      "pos" = readRDS(
-        system.file(
-          "extdata",
-          "chromatograms_positive.rds",
-          package = "cascade"
-        )
-      ),
-      "neg" = readRDS(
-        system.file(
-          "extdata",
-          "chromatograms_negative.rds",
-          package = "cascade"
-        )
-      )
+      "pos" = "cascade_chromatograms_positive",
+      "neg" = "cascade_chromatograms_negative"
     )
-    names(chromatograms) <- headers |>
-      names()
-    chromatograms <- chromatograms |>
-      ## TODO dirty fix
-      purrr::map(
-        .f = function(df) {
-          df |> tidytable::rename(rtime = 1, intensity = 2)
-        }
-      )
+    utils::data(list = dataset_name, package = "cascade", envir = environment())
+    chromatograms_df <- get(dataset_name)
+    chromatograms <- lapply(
+      names(headers),
+      function(chrom_name) {
+        chromatograms_df |>
+          tidytable::filter(chromatogram == chrom_name) |>
+          tidytable::select(rtime, intensity) |>
+          data.frame()
+      }
+    )
+    names(chromatograms) <- names(headers)
     return(chromatograms)
   } else {
     file_pointer <- file |>

@@ -82,6 +82,7 @@ Collate:
     'colors.R'
     'compare_peaks.R'
     'correct_acn.R'
+    'data.R'
     'extract_ms_peak.R'
     'extract_ms_progress.R'
     'format_gt.R'

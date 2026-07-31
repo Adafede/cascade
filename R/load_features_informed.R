@@ -8,13 +8,13 @@
 #' @examples NULL
 load_features_informed <- function(file = NULL, show_example = FALSE) {
   if (show_example) {
-    # features_informed |>
-    #   saveRDS(file = "inst/extdata/features_informed.rds")
-    readRDS(system.file(
-      "extdata",
-      "features_informed.rds",
-      package = "cascade"
-    ))
+    utils::data(
+      "cascade_features_informed",
+      package = "cascade",
+      envir = environment()
+    )
+    cascade_features_informed |>
+      tidytable::tidytable()
   } else {
     file |>
       tidytable::fread()
