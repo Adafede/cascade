@@ -1,13 +1,11 @@
 start <- Sys.time()
 
-pkgload::load_all()
-
 message("This program compares chromatograms.")
 message("Authors: \n", "AR")
 message("Contributors: \n", "...")
 
-check_chromatograms_alignment(show_example = TRUE)
-# check_chromatograms_alignment(
+cascade::check_chromatograms_alignment(show_example = TRUE)
+# cascade::check_chromatograms_alignment(
 #   file_negative = NULL,
 #   file_positive = "data/source/mzml/210619_AR_06_V_03_2_01.mzML",
 #   time_min = 0.5,

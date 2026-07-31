@@ -66,11 +66,10 @@ get_peaks <- function(
 
     timepoints <- get_times(chrom_list, idx = idx)
     tdiff <- get_time_resolution(chrom_list, idx = idx)
-    x[, c("rt", "start", "end")] <- sapply(
-      c("rt", "start", "end"),
-      function(j) {
-        timepoints[x[, j]]
-      }
+    x[, c("rt", "start", "end")] <- cbind(
+      timepoints[x[, "rt"]],
+      timepoints[x[, "start"]],
+      timepoints[x[, "end"]]
     )
     x[, c("sd", "FWHM", "area")] <- x[, c("sd", "FWHM", "area")] * tdiff * tfac
     if (!is.null(x$tau)) {

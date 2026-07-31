@@ -1,13 +1,11 @@
 start <- Sys.time()
 
-pkgload::load_all()
-
 message("This program generates IDs")
 message("Authors: \n", "AR")
 message("Contributors: \n", "...")
 
-generate_ids()
-# generate_ids(
+cascade::generate_ids()
+# cascade::generate_ids(
 #   taxa = c("Swertia", "Kopsia", "Ginkgo"),
 #   comparison = c("Swertia", "Kopsia"),
 #   no_stereo = TRUE,

@@ -1,13 +1,11 @@
 start <- Sys.time()
 
-pkgload::load_all()
-
 message("This program checks peaks integration.")
 message("Authors: \n", "AR")
 message("Contributors: \n", "...")
 
-check_peaks_integration(show_example = TRUE)
-# check_peaks_integration(
+cascade::check_peaks_integration(show_example = TRUE)
+# cascade::check_peaks_integration(
 #   file = "data/source/mzml/210619_AR_06_V_03_2_01.mzML",
 #   features = "data/interim/mzmine/lists/extract.csv",
 #   detector = "cad",

@@ -1,13 +1,11 @@
 start <- Sys.time()
 
-pkgload::load_all()
-
 message("This program compares peaks")
 message("Authors: \n", "AR")
 message("Contributors: \n", "...")
 
-process_compare_peaks(show_example = TRUE)
-# process_compare_peaks(
+cascade::process_compare_peaks(show_example = TRUE)
+# cascade::process_compare_peaks(
 #   file = "data/source/mzml/210619_AR_06_V_03_2_01.mzML",
 #   features = "data/interim/mzmine/lists/extract.csv",
 #   type = "baselined",

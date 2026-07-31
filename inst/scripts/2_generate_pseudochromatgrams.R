@@ -1,13 +1,11 @@
 start <- Sys.time()
 
-pkgload::load_all()
-
 message("This program generates pseudochromatograms")
 message("Authors: \n", "AR")
 message("Contributors: \n", "...")
 
-generate_pseudochromatograms(show_example = TRUE)
-# generate_pseudochromatograms(
+cascade::generate_pseudochromatograms(show_example = TRUE)
+# cascade::generate_pseudochromatograms(
 #   annotations = "data/interim/annotations/tima/241026_103144_extract/extract_results.tsv",
 #   features_informed = "data/interim/peaks/210619_AR_06_V_03_2_01_featuresInformed_cad.tsv",
 #   features_not_informed = "data/interim/peaks/210619_AR_06_V_03_2_01_featuresNotInformed_cad.tsv",
