@@ -653,15 +653,14 @@ references:
   doi: 10.32614/CRAN.package.svglite
   version: '>= 2.2.1'
 - type: software
-  title: testthat
-  abstract: 'testthat: Unit Testing for R'
+  title: tinytest
+  abstract: 'tinytest: Lightweight Unit Testing'
   notes: Suggests
-  url: https://testthat.r-lib.org
-  repository: https://CRAN.R-project.org/package=testthat
+  url: https://cran.r-project.org/package=tinytest
+  repository: https://CRAN.R-project.org/package=tinytest
   authors:
-  - family-names: Wickham
-    given-names: Hadley
-    email: hadley@posit.co
+  - family-names: van der Loo
+    given-names: MPJ
   year: '2026'
-  doi: 10.32614/CRAN.package.testthat
-  version: '>= 3.0.0'
+  doi: 10.32614/CRAN.package.tinytest
+  version: '>= 1.4.3'

@@ -45,7 +45,7 @@ Suggests:
     knitr (>= 1.51),
     quarto (>= 1.5.1),
     svglite (>= 2.2.2),
-    testthat (>= 3.3.2)
+    tinytest (>= 1.4.3)
 ByteCompile: TRUE
 Collate:
     'normalize_chromatograms_list.R'
@@ -125,11 +125,12 @@ Collate:
     'save_treemaps_progress.R'
 Config/roxygen2/markdown: TRUE
 Config/roxygen2/version: 8.0.0
-Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
 LazyData: TRUE
 VignetteBuilder:
     quarto
-biocViews: metaboliteAnnotation, chargedAerosolDetector, semiQuantitative, naturalProducts, computationalMetabolomics, specializedMetabolome
-X-schema.org-keywords: metaboliteAnnotation, chargedAerosolDetector, semiQuantitative, naturalProducts, computationalMetabolomics, specializedMetabolome
+biocViews: metaboliteAnnotation, chargedAerosolDetector, semiQuantitative, naturalProducts, computationalMetabolomics,
+               specializedMetabolome
+X-schema.org-keywords: metaboliteAnnotation, chargedAerosolDetector, semiQuantitative, naturalProducts, computationalMetabolomics,
+               specializedMetabolome

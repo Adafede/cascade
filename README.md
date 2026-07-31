@@ -143,7 +143,7 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
   | rmarkdown    | 2.31        | Xie et al. (2018); Xie et al. (2020); Allaire et al. (2026)                                                        |
   | spelling     | 2.3.2       | Ooms and Hester (2025)                                                                                             |
   | stringi      | 1.8.7       | Gagolewski (2022)                                                                                                  |
-  | testthat     | 3.3.2       | Wickham (2011)                                                                                                     |
+  | tinytest     | 1.4.3       | van der Loo (2020)                                                                                                 |
   | tidytable    | 0.11.2      | Fairbanks (2024)                                                                                                   |
   | tidyverse    | 2.0.0       | Wickham et al. (2019)                                                                                              |
   | tima         | 2.13.0.9000 | Rutz et al. (2019); Rutz and Allard (2026)                                                                         |
@@ -380,11 +380,11 @@ Facilities for Parallel Evaluation*.
 
 </div>
 
-<div id="ref-testthat" class="csl-entry">
+<div id="ref-tinytest" class="csl-entry">
 
-Wickham, Hadley. 2011. “<span class="nocase">testthat</span>: Get
-Started with Testing.” *The R Journal* 3: 5–10.
-<https://journal.r-project.org/articles/RJ-2011-002/>.
+<span class="nocase">van der Loo, MPJ</span>. 2020. “A Method for
+Deriving Information from Running R Code.” *The R Journal* 13: 42–52.
+<https://journal.r-project.org/articles/RJ-2021-056/>.
 
 </div>
 

@@ -57,7 +57,7 @@ issue](https://code-review.tidyverse.org/issues/) for more advice.
   syntax](https://cran.r-project.org/web/packages/roxygen2/vignettes/rd-formatting.html),
   for documentation.
 
-- We use [testthat](https://cran.r-project.org/package=testthat) for unit tests.
+- We use [tinytest](https://cran.r-project.org/package=tinytest) for unit tests.
   Contributions with test cases included are easier to accept.
 
 ## Code of Conduct
