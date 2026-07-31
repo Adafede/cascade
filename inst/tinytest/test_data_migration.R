@@ -19,9 +19,22 @@ expect_true(is.data.frame(cascade_chromatograms_positive))
 expect_true(is.data.frame(cascade_chromatograms_negative))
 expect_true(inherits(cascade_ms_data, "MSnExp"))
 
-expect_equal(names(cascade_chromatograms_positive), c("chromatogram", "rtime", "intensity"))
-expect_equal(names(cascade_chromatograms_negative), c("chromatogram", "rtime", "intensity"))
 expect_equal(
-  unname(lapply(load_chromatograms(show_example = TRUE, example_polarity = "pos"), names)),
-  list(c("rtime", "intensity"), c("rtime", "intensity"), c("rtime", "intensity"))
+  names(cascade_chromatograms_positive),
+  c("chromatogram", "rtime", "intensity")
+)
+expect_equal(
+  names(cascade_chromatograms_negative),
+  c("chromatogram", "rtime", "intensity")
+)
+expect_equal(
+  unname(lapply(
+    load_chromatograms(show_example = TRUE, example_polarity = "pos"),
+    names
+  )),
+  list(
+    c("rtime", "intensity"),
+    c("rtime", "intensity"),
+    c("rtime", "intensity")
+  )
 )

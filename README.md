@@ -141,12 +141,11 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
   | plotly       | 4.12.1      | Sievert (2020)                                                                                                     |
   | R.utils      | 2.13.0      | Bengtsson (2025)                                                                                                   |
   | rmarkdown    | 2.31        | Xie et al. (2018); Xie et al. (2020); Allaire et al. (2026)                                                        |
-  | spelling     | 2.3.2       | Ooms and Hester (2025)                                                                                             |
   | stringi      | 1.8.7       | Gagolewski (2022)                                                                                                  |
-  | tinytest     | 1.4.3       | van der Loo (2020)                                                                                                 |
   | tidytable    | 0.11.2      | Fairbanks (2024)                                                                                                   |
   | tidyverse    | 2.0.0       | Wickham et al. (2019)                                                                                              |
   | tima         | 2.13.0.9000 | Rutz et al. (2019); Rutz and Allard (2026)                                                                         |
+  | tinytest     | 1.4.3       | <span class="nocase">van der Loo</span> (2020)                                                                     |
   | usethis      | 3.2.1       | Wickham et al. (2025)                                                                                              |
 
 <div id="refs" class="references csl-bib-body hanging-indent">
@@ -296,14 +295,6 @@ Flexible Web Client for r*.
 
 </div>
 
-<div id="ref-spelling" class="csl-entry">
-
-Ooms, Jeroen, and Jim Hester. 2025.
-*<span class="nocase">spelling</span>: Tools for Spell Checking in r*.
-<https://doi.org/10.32614/CRAN.package.spelling>.
-
-</div>
-
 <div id="ref-mzR2004" class="csl-entry">
 
 Pedrioli, Patrick G A, Jimmy K Eng, Robert Hubley, et al. 2004. “A
@@ -371,20 +362,20 @@ Moving Window Statistics, GIF, Base64, ROC AUC, Etc*.
 
 </div>
 
+<div id="ref-tinytest" class="csl-entry">
+
+<span class="nocase">van der Loo, MPJ</span>. 2020. “A Method for
+Deriving Information from Running r Code.” *The R Journal* 13: 42–52.
+<https://journal.r-project.org/articles/RJ-2021-056/>.
+
+</div>
+
 <div id="ref-BiocParallel" class="csl-entry">
 
 Wang, Jiefei, Martin Morgan, Valerie Obenchain, Michel Lang, Ryan
 Thompson, and Nitesh Turaga. 2026. *BiocParallel: Bioconductor
 Facilities for Parallel Evaluation*.
 <https://doi.org/10.18129/B9.bioc.BiocParallel>.
-
-</div>
-
-<div id="ref-tinytest" class="csl-entry">
-
-<span class="nocase">van der Loo, MPJ</span>. 2020. “A Method for
-Deriving Information from Running R Code.” *The R Journal* 13: 42–52.
-<https://journal.r-project.org/articles/RJ-2021-056/>.
 
 </div>
 
