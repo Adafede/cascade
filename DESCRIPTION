@@ -45,7 +45,8 @@ Suggests:
     knitr (>= 1.51),
     quarto (>= 1.5.1),
     svglite (>= 2.2.2),
-    tinytest (>= 1.4.3)
+    tinytest (>= 1.4.3),
+    withr (>= 2.5.0)
 ByteCompile: TRUE
 Collate:
     'normalize_chromatograms_list.R'
