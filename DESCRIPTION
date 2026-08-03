@@ -1,6 +1,7 @@
 Package: cascade
 Title: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts
 Version: 0.0.0.9002
+Author: Adriano Rutz
 Authors@R: c(
     person(
         given = "Adriano",
@@ -130,6 +131,7 @@ Config/roxygen2/version: 8.0.0
 Encoding: UTF-8
 Language: en-US
 LazyData: TRUE
+LazyDataCompression: bzip2
 VignetteBuilder:
     quarto
 biocViews: metaboliteAnnotation, chargedAerosolDetector, semiQuantitative, naturalProducts, computationalMetabolomics,
