@@ -25,7 +25,8 @@ load_chromatograms <- function(
       "neg" = "cascade_chromatograms_negative"
     )
     utils::data(list = dataset_name, package = "cascade", envir = environment())
-    chromatograms_df <- get(dataset_name)
+    chromatograms_df <- get(dataset_name) |>
+      tidytable::as_tidytable()
     chromatograms <- lapply(
       names(headers),
       function(chrom_name) {

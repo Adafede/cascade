@@ -1,105 +1,43 @@
 #' CASCADE Example Datasets
 #'
-#' This document describes the example datasets included with CASCADE for
-#' demonstration and testing purposes.
+#' Example datasets included with CASCADE for demonstration and testing purposes.
+#' All data is stored as [data.frame] format for efficiency, and is converted to
+#' [tidytable::tidytable] when loaded via the load_* functions.
 #'
 #' @section cascade_annotations:
-#' Metabolite annotation table from a Swertia extract analyzed with TIMA
-#' (Taxonomically Informed Microbial Annotation).
-#' Contains 3471 unique features with their chemical and taxonomic
-#' contextualizations.
+#' Metabolite annotation table from a Swertia extract analyzed with TIMA.
+#' Contains 3471 unique features with their chemical and taxonomic contextualizations.
 #'
 #' @section cascade_features:
-#' Complete mzMine feature table for the example extract.
-#' Contains 3471 features with m/z, retention time, and intensity information.
+#' Complete mzMine feature table. Contains 3471 features with m/z, retention time, and intensity.
 #'
 #' @section cascade_features_informed:
-#' Filtered feature table containing only CAD-detected peaks that matched
-#' annotation hypotheses from the TIMA table.
-#' Contains 3800 peak-feature matches with semi-quantitative CAD signal integration.
+#' CAD-detected peaks that matched annotation hypotheses. Contains 3800 peak-feature matches.
 #'
 #' @section cascade_features_not_informed:
-#' Filtered feature table containing only CAD-detected peaks that did NOT match
-#' any annotation hypothesis. Contains 910 peak-feature matches.
+#' CAD-detected peaks that did NOT match any annotation hypothesis. Contains 910 peak-feature matches.
 #'
 #' @section cascade_chromatograms_positive:
-#' Tidy long-form chromatogram traces from the positive-mode example mzML file.
-#' Stored as a data.frame with columns `chromatogram`, `rtime`, and `intensity`.
+#' Chromatogram traces from positive-mode analysis. Tidy long-form data.frame with 3 columns.
 #'
 #' @section cascade_chromatograms_negative:
-#' Tidy long-form chromatogram traces from the negative-mode example mzML file.
-#' Stored as a data.frame with columns `chromatogram`, `rtime`, and `intensity`.
+#' Chromatogram traces from negative-mode analysis. Tidy long-form data.frame with 3 columns.
 #'
 #' @section cascade_ms_data:
-#' Example MS data used for chromatogram extraction and peak workflows.
-#' Stored as an [MSnbase::MSnExp] object because the downstream workflow
-#' requires the full MS experiment structure.
+#' Example MS data as an [MSnbase::MSnExp] object. Required for full MS workflow.
 #'
 #' @format
 #'
-#' **cascade_annotations**: A [data.frame] with 3471 rows and 58 columns
-#' including feature identifiers, chemical structure information (InChI, SMILES),
-#' and taxonomic contextualizations (NCBI taxonomy ranks).
-#'
-#' **cascade_features**: A [data.frame] with 3471 rows and 101 columns
-#' including m/z, retention time, intensity, peak shape parameters, and manual
-#' annotation fields from mzMine.
-#'
-#' **cascade_features_informed**: A [data.frame] with 3800 rows and 11 columns
-#' including sample identifier, peak ID, retention time boundaries (rt_min, rt_apex, rt_max),
-#' peak apex intensity, and CAD-integrated signal (integral column).
-#'
-#' **cascade_features_not_informed**: A [data.frame] with 910 rows and 11 columns
-#' with the same schema as cascade_features_informed but for unannotated peaks.
-#'
-#' **cascade_chromatograms_positive**: A [data.frame] with 122541 rows and 3 columns
-#' (`chromatogram`, `rtime`, `intensity`) containing positive-mode example traces.
-#'
-#' **cascade_chromatograms_negative**: A [data.frame] with 122079 rows and 3 columns
-#' (`chromatogram`, `rtime`, `intensity`) containing negative-mode example traces.
-#'
-#' **cascade_ms_data**: An [MSnbase::MSnExp] object containing the example MS data
-#' used by the workflow.
-#'
-#' @source
-#' All datasets are derived from a Swertia chirayita (Roxb.) H.Karst. extract
-#' analyzed by DDA-MS with CAD detection as described in:
-#'
-#' Rutz & Wolfender (2023) "Automated Composition Assessment of Natural Extracts:
-#' Untargeted Mass Spectrometry-Based Metabolite Profiling Integrating
-#' Semiquantitative Detection" \emph{Journal of Agricultural and Food Chemistry}
-#' 71(46):18010-18023. \doi{10.1021/acs.jafc.3c03099}
-#'
-#' @usage
-#' cascade_annotations
-#' cascade_features
-#' cascade_features_informed
-#' cascade_features_not_informed
-#' cascade_chromatograms_positive
-#' cascade_chromatograms_negative
-#' cascade_ms_data
+#' **cascade_annotations**: [data.frame], 3471 rows × 58 columns
+#' **cascade_features**: [data.frame], 3471 rows × 101 columns
+#' **cascade_features_informed**: [data.frame], 3800 rows × 11 columns
+#' **cascade_features_not_informed**: [data.frame], 910 rows × 11 columns
+#' **cascade_chromatograms_positive**: [data.frame], 122541 rows × 3 columns
+#' **cascade_chromatograms_negative**: [data.frame], 122079 rows × 3 columns
+#' **cascade_ms_data**: [MSnbase::MSnExp] object
 #'
 #' @keywords datasets
-#'
-#' @examples
-#' # Load CASCADE example datasets
-#' data(cascade_annotations)
-#' data(cascade_features)
-#' data(cascade_features_informed)
-#' data(cascade_features_not_informed)
-#' data(cascade_chromatograms_positive)
-#' data(cascade_chromatograms_negative)
-#' data(cascade_ms_data)
-#'
-#' # Check dimensions
-#' dim(cascade_annotations)
-#' dim(cascade_features_informed)
-#'
-#' # Explore column names
-#' names(cascade_features)
-#'
 #' @name cascade_datasets
-#' @aliases cascade_annotations cascade_features cascade_features_informed cascade_features_not_informed cascade_chromatograms_positive cascade_chromatograms_negative cascade_ms_data
 NULL
 
 #' @rdname cascade_datasets

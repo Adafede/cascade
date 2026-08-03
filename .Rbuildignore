@@ -27,7 +27,12 @@
 ^codecov\.yml$
 ^codemeta\.json$
 ^cran-comments\.md$
-^data$
+^data-raw$
+^data/interim
+^data/paper
+^data/processed
+^data/source
+^data/trees
 ^dev$
 ^docs$
 ^grateful-refs\.bib$

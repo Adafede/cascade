@@ -12,29 +12,13 @@
 \alias{cascade_ms_data}
 \title{CASCADE Example Datasets}
 \format{
-\strong{cascade_annotations}: A \link{data.frame} with 3471 rows and 58 columns
-including feature identifiers, chemical structure information (InChI, SMILES),
-and taxonomic contextualizations (NCBI taxonomy ranks).
-
-\strong{cascade_features}: A \link{data.frame} with 3471 rows and 101 columns
-including m/z, retention time, intensity, peak shape parameters, and manual
-annotation fields from mzMine.
-
-\strong{cascade_features_informed}: A \link{data.frame} with 3800 rows and 11 columns
-including sample identifier, peak ID, retention time boundaries (rt_min, rt_apex, rt_max),
-peak apex intensity, and CAD-integrated signal (integral column).
-
-\strong{cascade_features_not_informed}: A \link{data.frame} with 910 rows and 11 columns
-with the same schema as cascade_features_informed but for unannotated peaks.
-
-\strong{cascade_chromatograms_positive}: A \link{data.frame} with 122541 rows and 3 columns
-(\code{chromatogram}, \code{rtime}, \code{intensity}) containing positive-mode example traces.
-
-\strong{cascade_chromatograms_negative}: A \link{data.frame} with 122079 rows and 3 columns
-(\code{chromatogram}, \code{rtime}, \code{intensity}) containing negative-mode example traces.
-
-\strong{cascade_ms_data}: An \link[MSnbase:MSnExp]{MSnbase::MSnExp} object containing the example MS data
-used by the workflow.
+\strong{cascade_annotations}: \link{data.frame}, 3471 rows × 58 columns
+\strong{cascade_features}: \link{data.frame}, 3471 rows × 101 columns
+\strong{cascade_features_informed}: \link{data.frame}, 3800 rows × 11 columns
+\strong{cascade_features_not_informed}: \link{data.frame}, 910 rows × 11 columns
+\strong{cascade_chromatograms_positive}: \link{data.frame}, 122541 rows × 3 columns
+\strong{cascade_chromatograms_negative}: \link{data.frame}, 122079 rows × 3 columns
+\strong{cascade_ms_data}: \link[MSnbase:MSnExp]{MSnbase::MSnExp} object
 
 An object of class \code{data.frame} with 3471 rows and 58 columns.
 
@@ -50,24 +34,7 @@ An object of class \code{data.frame} with 122079 rows and 3 columns.
 
 An object of class \code{MSnExp} with 1 rows and 1 columns.
 }
-\source{
-All datasets are derived from a Swertia chirayita (Roxb.) H.Karst. extract
-analyzed by DDA-MS with CAD detection as described in:
-
-Rutz & Wolfender (2023) "Automated Composition Assessment of Natural Extracts:
-Untargeted Mass Spectrometry-Based Metabolite Profiling Integrating
-Semiquantitative Detection" \emph{Journal of Agricultural and Food Chemistry}
-71(46):18010-18023. \doi{10.1021/acs.jafc.3c03099}
-}
 \usage{
-cascade_annotations
-cascade_features
-cascade_features_informed
-cascade_features_not_informed
-cascade_chromatograms_positive
-cascade_chromatograms_negative
-cascade_ms_data
-
 data(cascade_annotations)
 
 data(cascade_features)
@@ -83,71 +50,44 @@ data(cascade_chromatograms_negative)
 data(cascade_ms_data)
 }
 \description{
-This document describes the example datasets included with CASCADE for
-demonstration and testing purposes.
+Example datasets included with CASCADE for demonstration and testing purposes.
+All data is stored as \link{data.frame} format for efficiency, and is converted to
+\link[tidytable:tidytable]{tidytable::tidytable} when loaded via the load_* functions.
 }
 \section{cascade_annotations}{
 
-Metabolite annotation table from a Swertia extract analyzed with TIMA
-(Taxonomically Informed Microbial Annotation).
-Contains 3471 unique features with their chemical and taxonomic
-contextualizations.
+Metabolite annotation table from a Swertia extract analyzed with TIMA.
+Contains 3471 unique features with their chemical and taxonomic contextualizations.
 }
 
 \section{cascade_features}{
 
-Complete mzMine feature table for the example extract.
-Contains 3471 features with m/z, retention time, and intensity information.
+Complete mzMine feature table. Contains 3471 features with m/z, retention time, and intensity.
 }
 
 \section{cascade_features_informed}{
 
-Filtered feature table containing only CAD-detected peaks that matched
-annotation hypotheses from the TIMA table.
-Contains 3800 peak-feature matches with semi-quantitative CAD signal integration.
+CAD-detected peaks that matched annotation hypotheses. Contains 3800 peak-feature matches.
 }
 
 \section{cascade_features_not_informed}{
 
-Filtered feature table containing only CAD-detected peaks that did NOT match
-any annotation hypothesis. Contains 910 peak-feature matches.
+CAD-detected peaks that did NOT match any annotation hypothesis. Contains 910 peak-feature matches.
 }
 
 \section{cascade_chromatograms_positive}{
 
-Tidy long-form chromatogram traces from the positive-mode example mzML file.
-Stored as a data.frame with columns \code{chromatogram}, \code{rtime}, and \code{intensity}.
+Chromatogram traces from positive-mode analysis. Tidy long-form data.frame with 3 columns.
 }
 
 \section{cascade_chromatograms_negative}{
 
-Tidy long-form chromatogram traces from the negative-mode example mzML file.
-Stored as a data.frame with columns \code{chromatogram}, \code{rtime}, and \code{intensity}.
+Chromatogram traces from negative-mode analysis. Tidy long-form data.frame with 3 columns.
 }
 
 \section{cascade_ms_data}{
 
-Example MS data used for chromatogram extraction and peak workflows.
-Stored as an \link[MSnbase:MSnExp]{MSnbase::MSnExp} object because the downstream workflow
-requires the full MS experiment structure.
+Example MS data as an \link[MSnbase:MSnExp]{MSnbase::MSnExp} object. Required for full MS workflow.
 }
 
-\examples{
-# Load CASCADE example datasets
-data(cascade_annotations)
-data(cascade_features)
-data(cascade_features_informed)
-data(cascade_features_not_informed)
-data(cascade_chromatograms_positive)
-data(cascade_chromatograms_negative)
-data(cascade_ms_data)
-
-# Check dimensions
-dim(cascade_annotations)
-dim(cascade_features_informed)
-
-# Explore column names
-names(cascade_features)
-
-}
 \keyword{datasets}

@@ -46,10 +46,12 @@ Hubley
 IRI
 ISDB
 Iannone
+InChI
 JJ
 Jarek
 Jeroen
 Jiefei
+Karst
 Kessner
 Knitr
 Kopsia
@@ -61,6 +63,7 @@ Lifecycle
 Liland
 Lilley
 Luc
+MPJ
 MSnbase
 MZs
 Maclean
@@ -95,6 +98,7 @@ QLever
 RTs
 Rainer
 Riederer
+Roxb
 Ruedi
 SPARQL
 Schloerke
@@ -110,6 +114,7 @@ Syst
 TIMA
 Taxo
 Taxonomically
+Teucher
 Treemap
 Treemaps
 Trygve
@@ -131,11 +136,13 @@ baselined
 bioRxiv
 bpi
 caTools
+chirayita
 chromato
 chromatogram
 chromatograms
 chromatographR
 chromatographiable
+contextualizations
 csv
 der
 egh
@@ -165,6 +172,7 @@ mol
 mz
 mz's
 mzML
+mzMine
 mzR
 mzmine
 nd
@@ -175,7 +183,6 @@ parallelization
 parameterizing
 pda
 peakDetection
-pkgload
 plotly
 pos
 pre
@@ -197,8 +204,10 @@ tima
 tinytest
 treemaps
 tsv
+unannotated
 untargeted
 urlencoded
+usethis
 www
 xtracts
 ️
