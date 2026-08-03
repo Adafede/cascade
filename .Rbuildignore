@@ -1,6 +1,6 @@
 ^.*\.Rproj$
-^.*\.log$
 ^.*\.iml$
+^.*\.log$
 ^CITATION\.cff$
 ^CRAN-SUBMISSION$
 ^LICENSE\.md$
