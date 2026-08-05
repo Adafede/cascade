@@ -35,19 +35,19 @@ An object of class \code{data.frame} with 122079 rows and 3 columns.
 An object of class \code{MSnExp} with 1 rows and 1 columns.
 }
 \usage{
-data(cascade_annotations)
+cascade_annotations
 
-data(cascade_features)
+cascade_features
 
-data(cascade_features_informed)
+cascade_features_informed
 
-data(cascade_features_not_informed)
+cascade_features_not_informed
 
-data(cascade_chromatograms_positive)
+cascade_chromatograms_positive
 
-data(cascade_chromatograms_negative)
+cascade_chromatograms_negative
 
-data(cascade_ms_data)
+cascade_ms_data
 }
 \description{
 Example datasets included with CASCADE for demonstration and testing purposes.

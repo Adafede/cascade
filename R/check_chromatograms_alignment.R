@@ -73,6 +73,10 @@ check_chromatograms_alignment <- function(
   baseline_method = "peakDetection",
   improve_signal = TRUE
 ) {
+  chromatogram_selected <- function(pattern) {
+    any(grepl(pattern, chromatograms, fixed = TRUE))
+  }
+
   ## Helper function to process a single chromatogram
   process_chromatogram <- function(
     chromatogram_df,
@@ -142,11 +146,7 @@ check_chromatograms_alignment <- function(
         load_chromatograms(headers = headers)
     }
 
-    if (
-      chromatograms |>
-        stringi::stri_detect_fixed(pattern = "bpi") |>
-        any()
-    ) {
+    if (chromatogram_selected("bpi")) {
       chromatogram_bpi_pos <- chromatograms_positive |>
         extract_chromatogram(type = "bpi", headers = headers)
       result <- process_chromatogram(
@@ -169,11 +169,7 @@ check_chromatograms_alignment <- function(
       chromatograms_list$chromatogram_bpi_pos_improved <- result$improved
       chromatograms_list$chromatogram_bpi_pos_baselined <- result$baselined
     }
-    if (
-      chromatograms |>
-        stringi::stri_detect_fixed(pattern = "cad") |>
-        any()
-    ) {
+    if (chromatogram_selected("cad")) {
       chromatogram_cad_pos <- chromatograms_positive |>
         extract_chromatogram(type = "cad", headers = headers)
       result <- process_chromatogram(
@@ -196,11 +192,7 @@ check_chromatograms_alignment <- function(
       chromatograms_list$chromatogram_cad_pos_improved <- result$improved
       chromatograms_list$chromatogram_cad_pos_baselined <- result$baselined
     }
-    if (
-      chromatograms |>
-        stringi::stri_detect_fixed(pattern = "pda") |>
-        any()
-    ) {
+    if (chromatogram_selected("pda")) {
       chromatogram_pda_pos <- chromatograms_positive |>
         extract_chromatogram(type = "pda", headers = headers)
       result <- process_chromatogram(
@@ -237,11 +229,7 @@ check_chromatograms_alignment <- function(
         load_chromatograms(headers = headers)
     }
 
-    if (
-      chromatograms |>
-        stringi::stri_detect_fixed(pattern = "bpi") |>
-        any()
-    ) {
+    if (chromatogram_selected("bpi")) {
       chromatogram_bpi_neg <- chromatograms_negative |>
         extract_chromatogram("bpi", headers = headers)
       result <- process_chromatogram(
@@ -264,11 +252,7 @@ check_chromatograms_alignment <- function(
       chromatograms_list$chromatogram_bpi_neg_improved <- result$improved
       chromatograms_list$chromatogram_bpi_neg_baselined <- result$baselined
     }
-    if (
-      chromatograms |>
-        stringi::stri_detect_fixed(pattern = "cad") |>
-        any()
-    ) {
+    if (chromatogram_selected("cad")) {
       chromatogram_cad_neg <- chromatograms_negative |>
         extract_chromatogram("cad", headers = headers)
       result <- process_chromatogram(
@@ -291,11 +275,7 @@ check_chromatograms_alignment <- function(
       chromatograms_list$chromatogram_cad_neg_improved <- result$improved
       chromatograms_list$chromatogram_cad_neg_baselined <- result$baselined
     }
-    if (
-      chromatograms |>
-        stringi::stri_detect_fixed(pattern = "pda") |>
-        any()
-    ) {
+    if (chromatogram_selected("pda")) {
       chromatogram_pda_neg <- chromatograms_negative |>
         extract_chromatogram("pda", headers = headers)
       result <- process_chromatogram(

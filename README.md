@@ -141,12 +141,11 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
   | plotly       | 4.12.1      | Sievert (2020)                                                                                                     |
   | R.utils      | 2.13.0      | Bengtsson (2025)                                                                                                   |
   | rmarkdown    | 2.31        | Xie et al. (2018); Xie et al. (2020); Allaire et al. (2026)                                                        |
-  | stringi      | 1.8.7       | Gagolewski (2022)                                                                                                  |
   | tidytable    | 0.11.2      | Fairbanks (2024)                                                                                                   |
   | tidyverse    | 2.0.0       | Wickham et al. (2019)                                                                                              |
   | tima         | 2.13.0.9000 | Rutz et al. (2019); Rutz and Allard (2026)                                                                         |
   | tinytest     | 1.4.3       | <span class="nocase">van der Loo</span> (2020)                                                                     |
-  | usethis      | 3.2.1       | Wickham et al. (2025)                                                                                              |
+  | withr        | 3.0.3       | Hester et al. (2026)                                                                                               |
 
 <div id="refs" class="references csl-bib-body hanging-indent">
 
@@ -198,14 +197,6 @@ Interface to “<span class="nocase">data.table</span>”*.
 
 </div>
 
-<div id="ref-stringi" class="csl-entry">
-
-Gagolewski, Marek. 2022. “<span class="nocase">stringi</span>: Fast and
-Portable Character String Processing in R.” *Journal of Statistical
-Software* 103 (2): 1–59. <https://doi.org/10.18637/jss.v103.i02>.
-
-</div>
-
 <div id="ref-MSnbase2020" class="csl-entry">
 
 Gatto, Laurent, Sebastian Gibb, and Johannes Rainer. 2020. “MSnbase,
@@ -219,6 +210,15 @@ Spectrometry Data.” *bioRxiv*.
 Gatto, Laurent, and Kathryn Lilley. 2012. “MSnbase - an r/Bioconductor
 Package for Isobaric Tagged Mass Spectrometry Data Visualization,
 Processing and Quantitation.” *Bioinformatics* 28: 288–89.
+
+</div>
+
+<div id="ref-withr" class="csl-entry">
+
+Hester, Jim, Lionel Henry, Kirill Müller, Kevin Ushey, Hadley Wickham,
+and Winston Chang. 2026. *<span class="nocase">withr</span>: Run Code
+“With” Temporarily Modified Global State*.
+<https://doi.org/10.32614/CRAN.package.withr>.
 
 </div>
 
@@ -391,14 +391,6 @@ Responses*. <https://doi.org/10.32614/CRAN.package.httr2>.
 Wickham, Hadley, Mara Averick, Jennifer Bryan, et al. 2019. “Welcome to
 the <span class="nocase">tidyverse</span>.” *Journal of Open Source
 Software* 4 (43): 1686. <https://doi.org/10.21105/joss.01686>.
-
-</div>
-
-<div id="ref-usethis" class="csl-entry">
-
-Wickham, Hadley, Jennifer Bryan, Malcolm Barrett, and Andy Teucher.
-2025. *<span class="nocase">usethis</span>: Automate Package and Project
-Setup*. <https://doi.org/10.32614/CRAN.package.usethis>.
 
 </div>
 

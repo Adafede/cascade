@@ -19,13 +19,19 @@ peaks_progress <- function(
   noise_threshold = 0.001,
   fit = "egh"
 ) {
+  as_peak_matrix <- function(df) {
+    rownames(df) <- df$rtime
+    df$rtime <- NULL
+    as.matrix(df)
+  }
+
   list(
     "666" = df_xy |>
       tidytable::filter(rtime >= 0) |>
       tidytable::select(rtime, intensity) |>
       tidytable::rename(`666` = intensity) |>
-      tibble::column_to_rownames("rtime") |>
-      as.matrix()
+      data.frame() |>
+      as_peak_matrix()
   ) |>
     get_peaks(
       lambdas = c("666"),

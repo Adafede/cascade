@@ -35,8 +35,6 @@ Imports:
     plotly (>= 4.12.1),
     purrr (>= 1.2.2),
     R.utils (>= 2.13.0),
-    stringi (>= 1.8.9),
-    tibble (>= 3.3.1),
     tidytable (>= 0.11.2),
     tima (>= 2.13.0.9000),
     utils
@@ -127,7 +125,7 @@ Collate:
     'save_histograms_progress.R'
     'save_treemaps_progress.R'
 Config/roxygen2/markdown: TRUE
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0
 Encoding: UTF-8
 Language: en-US
 LazyData: TRUE
