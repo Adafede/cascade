@@ -280,9 +280,7 @@ get_peaks <- function(
             peak_loc <- seq.int(row_pos[2L], row_pos[3L])
             y_pk <- y[peak_loc]
             if (fit == "raw") {
-              area <- sum(
-                diff(peak_loc) * mean(c(y_pk[-1L], utils::tail(y_pk, -1L)))
-              )
+              area <- (length(peak_loc) - 1L) * mean(y_pk[-1L])
               return(c(
                 rt = xloc,
                 start = row_pos[2L],
@@ -308,13 +306,23 @@ get_peaks <- function(
             } else {
               egh_fn(peak_loc, start_center, start_width, start_height, 0)
             }
-            area <- sum(
-              diff(peak_loc) * mean(c(y_fit[-1L], utils::tail(y_fit, -1L)))
-            )
-            r_sq <- tryCatch(
-              summary(stats::lm(y_fit ~ y_pk))$r.squared,
-              error = function(e) NA_real_
-            )
+            area <- (length(peak_loc) - 1L) * mean(y_fit[-1L])
+            valid <- !(is.na(y_fit) | is.na(y_pk))
+            yf_v <- y_fit[valid]
+            yp_v <- y_pk[valid]
+            r_sq <- if (length(yf_v) == 0L) {
+              NA_real_
+            } else {
+              dy <- yf_v - mean(yf_v)
+              dx <- yp_v - mean(yp_v)
+              ssx <- sum(dx * dx)
+              if (ssx == 0) {
+                0
+              } else {
+                cxy <- sum(dx * dy)
+                ((cxy * cxy) / ssx) / sum(dy * dy)
+              }
+            }
             if (fit == "gaussian") {
               c(
                 rt = start_center,
@@ -343,9 +351,19 @@ get_peaks <- function(
             }
           }
 
-          huhn <- data.frame(t(apply(pos, 1L, fitpk)))
-          colnames(huhn) <- tabnames
-          huhn <- data.frame(lapply(huhn, as.numeric))
+          pos_mat <- as.matrix(pos)
+          huhn_mat <- vapply(
+            seq_len(nrow(pos_mat)),
+            function(i) fitpk(pos_mat[i, ]),
+            numeric(length(tabnames))
+          )
+          huhn <- as.data.frame(matrix(
+            huhn_mat,
+            nrow = nrow(pos_mat),
+            ncol = length(tabnames),
+            byrow = TRUE,
+            dimnames = list(NULL, tabnames)
+          ))
           if (!is.null(sd.max)) {
             huhn <- huhn[huhn$sd < sd.max, , drop = FALSE]
           }

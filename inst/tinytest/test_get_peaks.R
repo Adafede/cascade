@@ -144,3 +144,22 @@ res_sd_null <- get_peaks(
   smooth_type = "none"
 )
 expect_identical(nrow(res_sd_null$s1[["254"]]), 2L)
+
+# 9. Exact equivalence of vectorized OLS r.squared and area with stats::lm()
+pk_loc_1 <- as.integer(res_min$s1[["254"]]$start[1L]):as.integer(
+  res_min$s1[["254"]]$end[1L]
+)
+rt_idx_1 <- as.integer(res_min$s1[["254"]]$rt[1L])
+y_pk_1 <- sig_1[pk_loc_1]
+w_1 <- sum(y_pk_1 > (sig_1[rt_idx_1] / 2)) / 2
+y_fit_1 <- sig_1[rt_idx_1] * exp(-(pk_loc_1 - rt_idx_1)^2 / (2 * w_1^2))
+expect_equal(
+  res_min$s1[["254"]]$r.squared[1L],
+  summary(stats::lm(y_fit_1 ~ y_pk_1))$r.squared,
+  tolerance = 1e-14
+)
+expect_equal(
+  res_min$s1[["254"]]$area[1L],
+  sum(diff(pk_loc_1) * mean(c(y_fit_1[-1L], utils::tail(y_fit_1, -1L)))),
+  tolerance = 1e-14
+)
