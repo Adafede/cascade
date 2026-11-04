@@ -499,7 +499,7 @@ compare_peaks <- function(x, list_ms_peaks, peaks_prelist) {
     y_pk <- ms_pks[[z]]
     y_rt <- y_pk$rtime
     y_int <- y_pk$intensity
-    if (length(y_int) <= 1L) {
+    if (length(y_int) <= 1L || length(x_int) <= 1L) {
       return(0)
     }
     if (length(x_rt) != length(y_rt) || !all(x_rt == y_rt)) {

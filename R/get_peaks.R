@@ -47,6 +47,9 @@ get_peaks <- function(
   }
 
   convert_indices_to_times <- function(x, chrom_list, idx, tfac) {
+    if (nrow(x) == 0L) {
+      return(x)
+    }
     get_times <- function(obj, idx = 1) {
       if (inherits(obj, "chrom_list") || inherits(obj, "list")) {
         as.numeric(rownames(obj[[idx]]))
@@ -203,7 +206,7 @@ get_peaks <- function(
         x <- chrom_list[[sample]]
         col_nums <- as.numeric(colnames(x))
         lambda.idx <- if (lambda == "max") {
-          which.max(x)
+          which.max(apply(x, 2L, max, na.rm = TRUE))
         } else if (length(col_nums) == 1L) {
           1L
         } else {
@@ -255,11 +258,11 @@ get_peaks <- function(
             "purity"
           )
         )
-        noPeaksMat <- matrix(
+        noPeaksMat <- as.data.frame(matrix(
           rep(NA_real_, length(tabnames)),
           nrow = 1L,
           dimnames = list(NULL, tabnames)
-        )
+        ))
         ny <- length(y)
         on.edge <- pos$pos <= 1L |
           pos$pos >= ny |
@@ -345,7 +348,7 @@ get_peaks <- function(
             huhn <- huhn[huhn$sd < sd.max, , drop = FALSE]
           }
           pks <- try(huhn[huhn$rt > 0, , drop = FALSE], silent = TRUE)
-          if (inherits(pks, "try-error")) {
+          if (inherits(pks, "try-error") || nrow(pks) == 0L) {
             pks <- noPeaksMat
           }
         }
