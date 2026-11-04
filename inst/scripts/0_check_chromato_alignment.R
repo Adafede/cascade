@@ -16,7 +16,7 @@ cascade::check_chromatograms_alignment(show_example = TRUE)
 #   frequency = 1,
 #   resample = 1,
 #   chromatograms = c("bpi_pos", "cad_pos", "pda_pos"),
-#   headers = c("BasePeak_0", "PDA#1_TotalAbsorbance_0", "UV#1_CAD_1_0"),
+#   headers = c("bpi" = "BasePeak_0", "pda" = "PDA#1_TotalAbsorbance_0", "cad" = "UV#1_CAD_1_0"),
 #   type = "baselined",
 #   normalize_intensity = TRUE,
 #   normalize_time = FALSE,

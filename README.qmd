@@ -15,7 +15,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 [![No Maintenance
 Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 [![CRAN
-status](https://www.r-pkg.org/badges/version/tima)](https://CRAN.R-project.org/package=cascade)
+status](https://www.r-pkg.org/badges/version/cascade)](https://CRAN.R-project.org/package=cascade)
 [![R-CMD-check](https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/adafede/cascade/graph/badge.svg)](https://app.codecov.io/gh/adafede/cascade)
@@ -67,7 +67,6 @@ install.packages(
   "cascade",
   repos = c(
     "https://adafede.r-universe.dev",
-    "https://taxonomicallyinformedannotation.r-universe.dev",
     "https://cran.r-universe.dev",
     "https://bioc.r-universe.dev"
   )

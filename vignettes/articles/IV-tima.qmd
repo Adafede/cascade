@@ -104,16 +104,16 @@ To compare annotated and predicted classes:
 list(
   cascade::prepare_tima_annotations(
     show_example = TRUE
-  ),
+  )[[1]],
   cascade::prepare_tima_annotations(
     show_example = TRUE,
     predicted_classes = TRUE
-  )
+  )[[1]]
 ) |>
-  tidytable::bind_rows() |>
+  data.table::rbindlist() |>
   list() |>
   cascade::plot_tima() |>
-  purrr::pluck("histogram")
+  getElement("histogram")
 ```
 
 To compare different filtering thresholds:
@@ -127,12 +127,12 @@ To compare different filtering thresholds:
 list(
   cascade::prepare_tima_annotations(
     show_example = TRUE
-  ),
+  )[[1]],
   cascade::prepare_tima_annotations(
     show_example = TRUE,
     min_score_biological = 0.2,
     min_score_final = 0.4
-  ),
+  )[[1]],
   cascade::prepare_tima_annotations(
     show_example = TRUE,
     min_score_initial = 0.2,
@@ -142,12 +142,12 @@ list(
     min_matched_peaks_absolute = 6L,
     min_matched_peaks_percentage = 0.5,
     min_peaks = 10L
-  )
+  )[[1]]
 ) |>
-  tidytable::bind_rows() |>
+  data.table::rbindlist() |>
   list() |>
   cascade::plot_tima() |>
-  purrr::pluck("histogram")
+  getElement("histogram")
 ```
 
 We hope you enjoyed using **CASCADE** and are pleased to hear from you!

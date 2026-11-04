@@ -68,16 +68,30 @@ website:
                 file: man/check_chromatograms_alignment.qmd
               - text: check_peaks_integration
                 file: man/check_peaks_integration.qmd
-          - section: Generate
+          - section: Process & Generate
             contents:
-            - text: generate_ids
-              file: man/generate_ids.qmd
-            - text: generate_pseudochromatograms
-              file: man/generate_pseudochromatograms.qmd
-            - text: generate_tables
-              file: man/generate_tables.qmd
-          - text: taxon_name_to_qid
-            file: man/taxon_name_to_qid.qmd
+              - text: process_compare_peaks
+                file: man/process_compare_peaks.qmd
+              - text: generate_pseudochromatograms
+                file: man/generate_pseudochromatograms.qmd
+              - text: generate_tables
+                file: man/generate_tables.qmd
+              - text: generate_ids
+                file: man/generate_ids.qmd
+          - section: TIMA & Wikidata
+            contents:
+              - text: prepare_tima_annotations
+                file: man/prepare_tima_annotations.qmd
+              - text: plot_tima
+                file: man/plot_tima.qmd
+              - text: query_wikidata
+                file: man/query_wikidata.qmd
+              - text: taxon_name_to_qid
+                file: man/taxon_name_to_qid.qmd
+          - section: Datasets
+            contents:
+              - text: cascade_datasets
+                file: man/cascade_datasets.qmd
 format:
   html:
     grid:

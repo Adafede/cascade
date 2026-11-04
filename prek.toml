@@ -20,10 +20,7 @@ hooks = [
   { id = "no-browser-statement" },
   { id = "no-print-statement" },
   { id = "no-debug-statement" },
-  {
-    id = "deps-in-desc",
-    additional_dependencies = ["taxonomicallyinformedannotation/tima"]
-  },
+  { id = "deps-in-desc" },
   { id = "readme-rmd-rendered" }
 ]
 

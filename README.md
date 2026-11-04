@@ -9,7 +9,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 [![No Maintenance
 Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 [![CRAN
-status](https://www.r-pkg.org/badges/version/tima.png)](https://CRAN.R-project.org/package=cascade)
+status](https://www.r-pkg.org/badges/version/cascade.png)](https://CRAN.R-project.org/package=cascade)
 [![R-CMD-check](https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/adafede/cascade/graph/badge.svg)](https://app.codecov.io/gh/adafede/cascade)
@@ -61,7 +61,6 @@ install.packages(
   "cascade",
   repos = c(
     "https://adafede.r-universe.dev",
-    "https://taxonomicallyinformedannotation.r-universe.dev",
     "https://cran.r-universe.dev",
     "https://bioc.r-universe.dev"
   )
@@ -121,31 +120,24 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
 
 ## Additional software credits
 
-  | Package      | Version     | Citation                                                                                                           |
-  | :----------- | :---------- | :----------------------------------------------------------------------------------------------------------------- |
-  | base         | 4.6.1       | R Core Team (2026)                                                                                                 |
-  | baseline     | 1.3.7       | Liland et al. (2010); Liland and Mevik (2025)                                                                      |
-  | BiocManager  | 1.30.27     | Morgan and Ramos (2025)                                                                                            |
-  | BiocParallel | 1.46.0      | Wang et al. (2026)                                                                                                 |
-  | BiocVersion  | 3.23.1      | Morgan (2025)                                                                                                      |
-  | cascade      | 0.0.0.9002  | Rutz and Wolfender (2023); Rutz (2026)                                                                             |
-  | caTools      | 1.18.4      | Tuszynski (2026)                                                                                                   |
-  | curl         | 7.1.0       | Ooms (2026)                                                                                                        |
-  | data.table   | 1.18.4      | Barrett et al. (2026)                                                                                              |
-  | gt           | 1.3.0       | Iannone et al. (2026)                                                                                              |
-  | htmltools    | 0.5.9       | Cheng et al. (2025)                                                                                                |
-  | httr2        | 1.3.0       | Wickham (2026)                                                                                                     |
-  | knitr        | 1.51        | Xie (2014); Xie (2015); Xie (2025)                                                                                 |
-  | MSnbase      | 2.38.0      | Gatto and Lilley (2012); Gatto et al. (2020)                                                                       |
-  | mzR          | 2.46.0      | Pedrioli et al. (2004); Keller et al. (2005); Kessner et al. (2008); Martens et al. (2010); Chambers et al. (2012) |
-  | plotly       | 4.12.1      | Sievert (2020)                                                                                                     |
-  | R.utils      | 2.13.0      | Bengtsson (2025)                                                                                                   |
-  | rmarkdown    | 2.31        | Xie et al. (2018); Xie et al. (2020); Allaire et al. (2026)                                                        |
-  | tidytable    | 0.11.2      | Fairbanks (2024)                                                                                                   |
-  | tidyverse    | 2.0.0       | Wickham et al. (2019)                                                                                              |
-  | tima         | 2.13.0.9000 | Rutz et al. (2019); Rutz and Allard (2026)                                                                         |
-  | tinytest     | 1.4.3       | <span class="nocase">van der Loo</span> (2020)                                                                     |
-  | withr        | 3.0.3       | Hester et al. (2026)                                                                                               |
+  | Package     | Version    | Citation                                                                                                           |
+  | :---        | :---       | :---                                                                                                               |
+  | base        | 4.6.2      | R Core Team (2026a)                                                                                                |
+  | baseline    | 1.3.8      | Liland et al. (2010); Liland and Mevik (2026)                                                                      |
+  | BiocManager | 1.30.27    | Morgan and Ramos (2025)                                                                                            |
+  | BiocVersion | 3.23.1     | Morgan (2025)                                                                                                      |
+  | cascade     | 0.0.0.9002 | Rutz and Wolfender (2023); Rutz (2026)                                                                             |
+  | curl        | 8.1.0      | Ooms (2026)                                                                                                        |
+  | data.table  | 1.18.6.1   | Barrett et al. (2026)                                                                                              |
+  | gt          | 1.4.0      | Iannone et al. (2026)                                                                                              |
+  | knitr       | 1.52       | Xie (2014); Xie (2015); Xie (2026)                                                                                 |
+  | mzR         | 2.45.3     | Pedrioli et al. (2004); Keller et al. (2005); Kessner et al. (2008); Martens et al. (2010); Chambers et al. (2012) |
+  | plotly      | 4.12.1     | Sievert (2020)                                                                                                     |
+  | rmarkdown   | 2.32       | Xie et al. (2018); Xie et al. (2020); Allaire et al. (2026)                                                        |
+  | tidyverse   | 2.0.0      | Wickham et al. (2019)                                                                                              |
+  | tinytest    | 1.4.3      | <span class="nocase">van der Loo</span> (2020)                                                                     |
+  | tools       | 4.6.2      | R Core Team (2026b)                                                                                                |
+  | withr       | 3.0.3      | Hester et al. (2026)                                                                                               |
 
 <div id="refs" class="references csl-bib-body hanging-indent">
 
@@ -166,50 +158,11 @@ Barrett, Tyson, Matt Dowle, Arun Srinivasan, et al. 2026.
 
 </div>
 
-<div id="ref-Rutils" class="csl-entry">
-
-Bengtsson, Henrik. 2025. *<span class="nocase">R.utils</span>: Various
-Programming Utilities*. <https://doi.org/10.32614/CRAN.package.R.utils>.
-
-</div>
-
 <div id="ref-mzR2012" class="csl-entry">
 
 Chambers, Matthew C., Maclean, et al. 2012. “<span class="nocase">A
 cross-platform toolkit for mass spectrometry and proteomics</span>.”
 *Nat Biotech* 30 (10): 918–20. <https://doi.org/10.1038/nbt.2377>.
-
-</div>
-
-<div id="ref-htmltools" class="csl-entry">
-
-Cheng, Joe, Carson Sievert, Barret Schloerke, Winston Chang, Yihui Xie,
-and Jeff Allen. 2025. *<span class="nocase">htmltools</span>: Tools for
-HTML*. <https://doi.org/10.32614/CRAN.package.htmltools>.
-
-</div>
-
-<div id="ref-tidytable" class="csl-entry">
-
-Fairbanks, Mark. 2024. *<span class="nocase">tidytable</span>: Tidy
-Interface to “<span class="nocase">data.table</span>”*.
-<https://doi.org/10.32614/CRAN.package.tidytable>.
-
-</div>
-
-<div id="ref-MSnbase2020" class="csl-entry">
-
-Gatto, Laurent, Sebastian Gibb, and Johannes Rainer. 2020. “MSnbase,
-Efficient and Elegant r-Based Processing and Visualisation of Raw Mass
-Spectrometry Data.” *bioRxiv*.
-
-</div>
-
-<div id="ref-MSnbase2012" class="csl-entry">
-
-Gatto, Laurent, and Kathryn Lilley. 2012. “MSnbase - an r/Bioconductor
-Package for Isobaric Tagged Mass Spectrometry Data Visualization,
-Processing and Quantitation.” *Bioinformatics* 28: 288–89.
 
 </div>
 
@@ -256,9 +209,9 @@ Spectra.” *Applied Spectroscopy* 64: 1007–16.
 
 </div>
 
-<div id="ref-baseline2025" class="csl-entry">
+<div id="ref-baseline2026" class="csl-entry">
 
-Liland, Kristian Hovde, and Bjørn-Helge Mevik. 2025.
+Liland, Kristian Hovde, and Bjørn-Helge Mevik. 2026.
 *<span class="nocase">baseline</span>: Baseline Correction of Spectra*.
 <https://doi.org/10.32614/CRAN.package.baseline>.
 
@@ -306,7 +259,15 @@ to Proteomics Research.” *Nat Biotechnol* 22 (11): 1459–66.
 
 <div id="ref-base" class="csl-entry">
 
-R Core Team. 2026. *R: A Language and Environment for Statistical
+R Core Team. 2026a. *R: A Language and Environment for Statistical
+Computing*. R Foundation for Statistical Computing.
+<https://doi.org/10.32614/R.manuals>.
+
+</div>
+
+<div id="ref-tools" class="csl-entry">
+
+R Core Team. 2026b. *R: A Language and Environment for Statistical
 Computing*. R Foundation for Statistical Computing.
 <https://doi.org/10.32614/R.manuals>.
 
@@ -317,23 +278,6 @@ Computing*. R Foundation for Statistical Computing.
 Rutz, Adriano. 2026. *<span class="nocase">cascade</span>:
 Contextualizing Untargeted Annotation with Semi-Quantitative Charged
 Aerosol Detection for Pertinent Characterization of Natural Extracts*.
-
-</div>
-
-<div id="ref-tima2026" class="csl-entry">
-
-Rutz, Adriano, and Pierre-Marie Allard. 2026.
-*<span class="nocase">tima</span>: Taxonomically Informed Metabolite
-Annotation*. <https://doi.org/10.5281/zenodo.5797920>.
-
-</div>
-
-<div id="ref-tima2019" class="csl-entry">
-
-Rutz, Adriano, Miwa Dounoue-Kubo, Simon Ollivier, et al. 2019.
-“Taxonomically Informed Scoring Enhances Confidence in Natural Products
-Annotation.” *Frontiers in Plant Science* 10.
-<https://doi.org/10.3389/FPLS.2019.01329>.
 
 </div>
 
@@ -354,35 +298,11 @@ Plotly, and Shiny*. Chapman; Hall/CRC. <https://plotly-r.com>.
 
 </div>
 
-<div id="ref-caTools" class="csl-entry">
-
-Tuszynski, Jarek. 2026. *<span class="nocase">caTools</span>: Tools:
-Moving Window Statistics, GIF, Base64, ROC AUC, Etc*.
-<https://doi.org/10.32614/CRAN.package.caTools>.
-
-</div>
-
 <div id="ref-tinytest" class="csl-entry">
 
 <span class="nocase">van der Loo, MPJ</span>. 2020. “A Method for
 Deriving Information from Running r Code.” *The R Journal* 13: 42–52.
 <https://journal.r-project.org/articles/RJ-2021-056/>.
-
-</div>
-
-<div id="ref-BiocParallel" class="csl-entry">
-
-Wang, Jiefei, Martin Morgan, Valerie Obenchain, Michel Lang, Ryan
-Thompson, and Nitesh Turaga. 2026. *BiocParallel: Bioconductor
-Facilities for Parallel Evaluation*.
-<https://doi.org/10.18129/B9.bioc.BiocParallel>.
-
-</div>
-
-<div id="ref-httr2" class="csl-entry">
-
-Wickham, Hadley. 2026. *Httr2: Perform HTTP Requests and Process the
-Responses*. <https://doi.org/10.32614/CRAN.package.httr2>.
 
 </div>
 
@@ -410,9 +330,9 @@ Hall/CRC. <https://yihui.org/knitr/>.
 
 </div>
 
-<div id="ref-knitr2025" class="csl-entry">
+<div id="ref-knitr2026" class="csl-entry">
 
-Xie, Yihui. 2025. *<span class="nocase">knitr</span>: A General-Purpose
+Xie, Yihui. 2026. *<span class="nocase">knitr</span>: A General-Purpose
 Package for Dynamic Report Generation in R*. <https://yihui.org/knitr/>.
 
 </div>
@@ -420,14 +340,16 @@ Package for Dynamic Report Generation in R*. <https://yihui.org/knitr/>.
 <div id="ref-rmarkdown2018" class="csl-entry">
 
 Xie, Yihui, J. J. Allaire, and Garrett Grolemund. 2018. *R Markdown: The
-Definitive Guide*. Chapman; Hall/CRC. <https://yihui.org/rmarkdown/>.
+Definitive Guide*. Chapman; Hall/CRC.
+<https://pkg.yihui.org/rmarkdown-book/>.
 
 </div>
 
 <div id="ref-rmarkdown2020" class="csl-entry">
 
 Xie, Yihui, Christophe Dervieux, and Emily Riederer. 2020. *R Markdown
-Cookbook*. Chapman; Hall/CRC. <https://yihui.org/rmarkdown-cookbook>.
+Cookbook*. Chapman; Hall/CRC.
+<https://pkg.yihui.org/rmarkdown-cookbook/>.
 
 </div>
 

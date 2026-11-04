@@ -4,7 +4,7 @@ author:
   name: Adriano Rutz
   orcid: 0000-0003-0443-9902
 citation:
-  url: https://adafede.github.io/cascade/articles/vignettes/II-processing.html
+  url: https://adafede.github.io/cascade/vignettes/articles/II-processing.html
 comments:
   giscus:
     repo: adafede/cascade
@@ -42,7 +42,7 @@ library("cascade")
 
 This vignette describes the main processing function. It assumes you already
 checked the [previous basic
-steps](https://adafede.github.io/cascade/articles/I-basics.html).
+steps](https://adafede.github.io/cascade/vignettes/articles/I-basics.html).
 
 ## Compare peaks to features
 

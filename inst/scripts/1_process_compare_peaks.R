@@ -10,7 +10,7 @@ cascade::process_compare_peaks(show_example = TRUE)
 #   features = "data/interim/mzmine/lists/extract.csv",
 #   type = "baselined",
 #   detector = "cad",
-#   headers = c("BasePeak_0", "PDA#1_TotalAbsorbance_0", "UV#1_CAD_1_0"),
+#   headers = c("bpi" = "BasePeak_0", "pda" = "PDA#1_TotalAbsorbance_0", "cad" = "UV#1_CAD_1_0"),
 #   export_dir = "data/interim/peaks",
 #   show_example = FALSE,
 #   fourier_components = 0.01,

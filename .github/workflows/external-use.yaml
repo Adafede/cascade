@@ -64,7 +64,6 @@ jobs:
           "cascade",
           repos = c(
           "https://adafede.r-universe.dev",
-          "https://taxonomicallyinformedannotation.r-universe.dev",
           "https://cran.r-universe.dev",
           "https://bioc.r-universe.dev"
           )
@@ -78,5 +77,6 @@ jobs:
           cascade::process_compare_peaks(show_example = TRUE)
           cascade::generate_pseudochromatograms(show_example = TRUE)
           cascade::generate_tables(show_example = TRUE)
+          cascade::prepare_tima_annotations(show_example = TRUE) |> cascade::plot_tima()
           cascade::generate_ids()
         shell: Rscript {0}
