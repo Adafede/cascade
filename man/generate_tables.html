@@ -455,26 +455,27 @@ Base filename (without extension) for exported tables. Default is <code>“casca
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"cascade"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">generate_tables</span>(<span class="at">show_example =</span> <span class="cn">TRUE</span>, <span class="at">export_csv =</span> <span class="cn">FALSE</span>, <span class="at">export_html =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>old_wd <span class="ot">&lt;-</span> <span class="fu">setwd</span>(<span class="fu">tempdir</span>())</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">generate_tables</span>(<span class="at">show_example =</span> <span class="cn">TRUE</span>, <span class="at">export_csv =</span> <span class="cn">FALSE</span>, <span class="at">export_html =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$pretty_table
-&lt;div id="eqqqofktay" class=".gt_table" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
-  &lt;style&gt;#eqqqofktay table {
+&lt;div id="gigwxbdcji" class=".gt_table" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
+  &lt;style&gt;#gigwxbdcji table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#eqqqofktay thead, #eqqqofktay tbody, #eqqqofktay tfoot, #eqqqofktay tr, #eqqqofktay td, #eqqqofktay th {
+#gigwxbdcji thead, #gigwxbdcji tbody, #gigwxbdcji tfoot, #gigwxbdcji tr, #gigwxbdcji td, #gigwxbdcji th {
   border-style: none;
 }
 
-#eqqqofktay p {
+#gigwxbdcji p {
   margin: 0;
   padding: 0;
 }
 
-#eqqqofktay .gt_table {
+#gigwxbdcji .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -500,12 +501,12 @@ Base filename (without extension) for exported tables. Default is <code>“casca
   border-left-color: #D3D3D3;
 }
 
-#eqqqofktay .gt_caption {
+#gigwxbdcji .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#eqqqofktay .gt_title {
+#gigwxbdcji .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -517,7 +518,7 @@ Base filename (without extension) for exported tables. Default is <code>“casca
   border-bottom-width: 0;
 }
 
-#eqqqofktay .gt_subtitle {
+#gigwxbdcji .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -529,7 +530,7 @@ Base filename (without extension) for exported tables. Default is <code>“casca
   border-top-width: 0;
 }
 
-#eqqqofktay .gt_heading {
+#gigwxbdcji .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -541,13 +542,13 @@ Base filename (without extension) for exported tables. Default is <code>“casca
   border-right-color: #D3D3D3;
 }
 
-#eqqqofktay .gt_bottom_border {
+#gigwxbdcji .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#eqqqofktay .gt_col_headings {
+#gigwxbdcji .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -562,7 +563,7 @@ Base filename (without extension) for exported tables. Default is <code>“casca
   border-right-color: #D3D3D3;
 }
 
-#eqqqofktay .gt_col_heading {
+#gigwxbdcji .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -582,7 +583,7 @@ Base filename (without extension) for exported tables. Default is <code>“casca
   overflow-x: hidden;
 }
 
-#eqqqofktay .gt_column_spanner_outer {
+#gigwxbdcji .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -594,15 +595,15 @@ Base filename (without extension) for exported tables. Default is <code>“casca
   padding-right: 4px;
 }
 
-#eqqqofktay .gt_column_spanner_outer:first-child {
+#gigwxbdcji .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#eqqqofktay .gt_column_spanner_outer:last-child {
+#gigwxbdcji .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#eqqqofktay .gt_column_spanner {
+#gigwxbdcji .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -614,11 +615,11 @@ Base filename (without extension) for exported tables. Default is <code>“casca
   width: 100%;
 }
 
-#eqqqofktay .gt_spanner_row {
+#gigwxbdcji .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#eqqqofktay .gt_group_heading {
+#gigwxbdcji .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -644,7 +645,7 @@ Base filename (without extension) for exported tables. Default is <code>“casca
   text-align: left;
 }
 
-#eqqqofktay .gt_empty_group_heading {
+#gigwxbdcji .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -659,15 +660,15 @@ Base filename (without extension) for exported tables. Default is <code>“casca
   vertical-align: middle;
 }
 
-#eqqqofktay .gt_from_md &gt; :first-child {
+#gigwxbdcji .gt_from_md &gt; :first-child {
   margin-top: 0;
 }
 
-#eqqqofktay .gt_from_md &gt; :last-child {
+#gigwxbdcji .gt_from_md &gt; :last-child {
   margin-bottom: 0;
 }
 
-#eqqqofktay .gt_row {
+#gigwxbdcji .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -686,7 +687,7 @@ Base filename (without extension) for exported tables. Default is <code>“casca
   overflow-x: hidden;
 }
 
-#eqqqofktay .gt_stub {
+#gigwxbdcji .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -699,7 +700,7 @@ Base filename (without extension) for exported tables. Default is <code>“casca
   padding-right: 5px;
 }
 
-#eqqqofktay .gt_stub_row_group {
+#gigwxbdcji .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -713,15 +714,15 @@ Base filename (without extension) for exported tables. Default is <code>“casca
   vertical-align: top;
 }
 
-#eqqqofktay .gt_row_group_first td {
+#gigwxbdcji .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#eqqqofktay .gt_row_group_first th {
+#gigwxbdcji .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#eqqqofktay .gt_summary_row {
+#gigwxbdcji .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -731,16 +732,16 @@ Base filename (without extension) for exported tables. Default is <code>“casca
   padding-right: 5px;
 }
 
-#eqqqofktay .gt_first_summary_row {
+#gigwxbdcji .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#eqqqofktay .gt_first_summary_row.thick {
+#gigwxbdcji .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#eqqqofktay .gt_last_summary_row {
+#gigwxbdcji .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -750,7 +751,7 @@ Base filename (without extension) for exported tables. Default is <code>“casca
   border-bottom-color: #D3D3D3;
 }
 
-#eqqqofktay .gt_grand_summary_row {
+#gigwxbdcji .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -760,7 +761,7 @@ Base filename (without extension) for exported tables. Default is <code>“casca
   padding-right: 5px;
 }
 
-#eqqqofktay .gt_first_grand_summary_row {
+#gigwxbdcji .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -770,7 +771,7 @@ Base filename (without extension) for exported tables. Default is <code>“casca
   border-top-color: #D3D3D3;
 }
 
-#eqqqofktay .gt_last_grand_summary_row_top {
+#gigwxbdcji .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -780,11 +781,11 @@ Base filename (without extension) for exported tables. Default is <code>“casca
   border-bottom-color: #D3D3D3;
 }
 
-#eqqqofktay .gt_striped {
+#gigwxbdcji .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#eqqqofktay .gt_table_body {
+#gigwxbdcji .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -793,7 +794,7 @@ Base filename (without extension) for exported tables. Default is <code>“casca
   border-bottom-color: #D3D3D3;
 }
 
-#eqqqofktay .gt_footnotes {
+#gigwxbdcji .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -807,7 +808,7 @@ Base filename (without extension) for exported tables. Default is <code>“casca
   border-right-color: #D3D3D3;
 }
 
-#eqqqofktay .gt_footnote {
+#gigwxbdcji .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -816,7 +817,7 @@ Base filename (without extension) for exported tables. Default is <code>“casca
   padding-right: 5px;
 }
 
-#eqqqofktay .gt_sourcenotes {
+#gigwxbdcji .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -830,7 +831,7 @@ Base filename (without extension) for exported tables. Default is <code>“casca
   border-right-color: #D3D3D3;
 }
 
-#eqqqofktay .gt_sourcenote {
+#gigwxbdcji .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -838,77 +839,77 @@ Base filename (without extension) for exported tables. Default is <code>“casca
   padding-right: 5px;
 }
 
-#eqqqofktay .gt_left {
+#gigwxbdcji .gt_left {
   text-align: left;
 }
 
-#eqqqofktay .gt_center {
+#gigwxbdcji .gt_center {
   text-align: center;
 }
 
-#eqqqofktay .gt_right {
+#gigwxbdcji .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#eqqqofktay .gt_font_normal {
+#gigwxbdcji .gt_font_normal {
   font-weight: normal;
 }
 
-#eqqqofktay .gt_font_bold {
+#gigwxbdcji .gt_font_bold {
   font-weight: bold;
 }
 
-#eqqqofktay .gt_font_italic {
+#gigwxbdcji .gt_font_italic {
   font-style: italic;
 }
 
-#eqqqofktay .gt_super {
+#gigwxbdcji .gt_super {
   font-size: 65%;
 }
 
-#eqqqofktay .gt_footnote_marks {
+#gigwxbdcji .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#eqqqofktay .gt_asterisk {
+#gigwxbdcji .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#eqqqofktay .gt_indent_1 {
+#gigwxbdcji .gt_indent_1 {
   text-indent: 5px;
 }
 
-#eqqqofktay .gt_indent_2 {
+#gigwxbdcji .gt_indent_2 {
   text-indent: 10px;
 }
 
-#eqqqofktay .gt_indent_3 {
+#gigwxbdcji .gt_indent_3 {
   text-indent: 15px;
 }
 
-#eqqqofktay .gt_indent_4 {
+#gigwxbdcji .gt_indent_4 {
   text-indent: 20px;
 }
 
-#eqqqofktay .gt_indent_5 {
+#gigwxbdcji .gt_indent_5 {
   text-indent: 25px;
 }
 
-#eqqqofktay .katex-display {
+#gigwxbdcji .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#eqqqofktay div.Reactable &gt; div.rt-table &gt; div.rt-thead &gt; div.rt-tr.rt-tr-group-header &gt; div.rt-th-group:after {
+#gigwxbdcji div.Reactable &gt; div.rt-table &gt; div.rt-thead &gt; div.rt-tr.rt-tr-group-header &gt; div.rt-th-group:after {
   height: 0px !important;
 }
 &lt;/style&gt;
-  &lt;div id="eqqqofktay" class="reactable html-widget" style="width:auto;height:auto;"&gt;&lt;/div&gt;
-  &lt;script type="application/json" data-for="eqqqofktay"&gt;{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Peak ID":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44],"Peak RT [min]":[3.13,3.32,3.53,4.57,4.95,5.31,5.48,6.85,7.03,7.1,7.83,8.07,8.48,8.75,9.12,9.47,10.06,10.48,10.99,11.38,11.69,11.95,12.04,13,14.03,14.28,14.7,14.77,16.35,17.73,19.33,21.58,23.92,25.38,25.66,25.73,27.1,29.3,30.01,30.16,30.48,30.87,31.15,31.22],"Peak Area [%]":[1.45,1.57,1.96,6.26,4.34,3.8,1.65,0.84,0.96,1,1.61,3.01,6.74,6,4.66,2.5,3.72,4.42,3.69,2.01,1.48,1.32,1.49,1.15,1.12,1.55,1.38,1.6,1.31,1.6,1.48,0.63,3.82,1.94,1.4,1.92,1.91,1.05,1.27,2.33,1.99,1.85,1.15,1.08],"Feature ID":[90,133,212,281,281,281,381,494,609,640,743,780,780,898,898,878,1034,1136,1174,1174,1353,1353,1437,1576,1626,1785,1785,1814,1992,2168,2421,2662,2966,3124,3134,3226,3309,3567,3665,3701,3701,3729,3761,3834],"Feature RT [min]":[2.8,3.59,4.36,4.83,4.83,4.83,5.7,6.48,7.14,7.33,7.89,8.07,8.07,8.86,8.86,8.79,9.79,10.4,10.68,10.68,11.73,11.73,12.23,13.28,13.65,14.68,14.68,14.92,16.41,17.72,19.78,21.67,24.04,25.4,25.53,26.2,27.01,28.99,29.95,30.27,30.27,30.54,30.84,31.69],"Feature m/z":[397.111,285.0644,449.1057,405.0819,405.0819,405.0819,533.0601,452.0862,773.156,213.1021,587.1775,603.1705,603.1705,623.1364,623.1364,587.1752,552.15,432.3316,695.124,695.124,500.063,500.063,348.2745,305.0658,313.2372,295.0213,295.0213,333.0974,428.0652,480.3809,455.3535,455.3535,450.3738,413.3804,349.2735,427.3965,439.3593,746.5474,786.5765,802.572,802.572,610.4707,397.3855,723.5625],"Structure":["C=CC1C(OC2OC(CO)C(O)C(O)C2O)OC=C2C(=O)OCCC21O","CCOC(=O)NCCOC(=O)N(C1=CC=C(C=C1)Cl)O","O=c1cc(-c2ccc(O)cc2)oc2cc(O)c(OC3OC(CO)C(O)C(O)C3O)c(O)c12","O=c1c2cc(O)c(O)cc2oc2cc(O)c(C3OC(CO)C(O)C(O)C3O)c(O)c12","O=c1c2cc(O)c(O)cc2oc2cc(O)c(C3OC(CO)C(O)C(O)C3O)c(O)c12","O=c1c2cc(O)c(O)cc2oc2cc(O)c(C3OC(CO)C(O)C(O)C3O)c(O)c12","COC1=CC=CC2=C1OC(=O)C(=C2)C3=CC(=O)OC4=C3C=CC(=C4)OCC5=CC(=CC=C5)C(F)(F)F","COC1=C(C=C(C(=C1)C(=O)OC)NC(=O)CN2C(=O)C3=CC=CC=C3NC2=O)OC","CC(=C)C(=O)OCCOC(=O)C1=CC(=C(C=C1)C(=O)OCC(=O)OCOC(=O)COC(=O)C2=C(C=C(C=C2)C(=O)OCCOC(=O)C(=C)C)C(=O)O)C(=O)O","COc1ccc2c(c1)[nH]c1c(C)nccc12","C=CC1C(OC2OC(CO)C(O)C(O)C2OC(=O)c2c(O)cc(O)cc2-c2cccc(O)c2)OC=C2C(=O)OCCC21","C=CC1C(OC2OC(CO)C(O)C(O)C2OC(=O)c2c(O)cc(O)cc2-c2cccc(O)c2)OC=C2C(=O)OCCC21O","C=CC1C(OC2OC(CO)C(O)C(O)C2OC(=O)c2c(O)cc(O)cc2-c2cccc(O)c2)OC=C2C(=O)OCCC21O","CC(=O)OCC1C(C(C(C(O1)C2=C(C3=C(C=C2O)OC(=CC3=O)C4=CC=C(C=C4)O)O)OC(=O)C)OC(=O)C)OC(=O)C","CC(=O)OCC1C(C(C(C(O1)C2=C(C3=C(C=C2O)OC(=CC3=O)C4=CC=C(C=C4)O)O)OC(=O)C)OC(=O)C)OC(=O)C","C=CC1C(OC2OC(CO)C(O)C(O)C2OC(=O)c2c(O)cc(O)cc2-c2cccc(O)c2)OC=C2C(=O)OCCC21","C1CC(C(C1)OC(=O)C2=CC(=C(C(=C2)O)C(=O)C3=C(C=CC=C3OCC(=O)O)O)O)NC(=O)C4=CC=C(C=C4)O","CCCCCCCCOC(=O)OCCN(C)CCOC(=O)OCCCCCCCC","COc1cc(O)c2c(=O)c3c(O)c(-c4c(O)c(C5OC(CO)C(O)C(O)C5O)c(O)c5c(=O)c6cc(O)c(O)cc6oc45)cc(O)c3oc2c1","COc1cc(O)c2c(=O)c3c(O)c(-c4c(O)c(C5OC(CO)C(O)C(O)C5O)c(O)c5c(=O)c6cc(O)c(O)cc6oc45)cc(O)c3oc2c1","CC(C1=CC=C(C=C1)C2=CC(=CC=C2)S(=O)(=O)C)(C3=CC=C(C=C3)C4=CC(=O)NS4(=O)=O)S","CC(C1=CC=C(C=C1)C2=CC(=CC=C2)S(=O)(=O)C)(C3=CC=C(C=C3)C4=CC(=O)NS4(=O)=O)S","CCCCCCC(O)C(O)C=CC(O)CCCCCCC(=O)O","COc1ccc(O)c2c(=O)c3c(O)cc(O)c(OC)c3oc12","CCCCCCC(O)C(O)C=CC(O)CCCCCCC(=O)O","C1CC(C1)(CCN)C2=C(N=CC(=C2)Br)F","C1CC(C1)(CCN)C2=C(N=CC(=C2)Br)F","COc1c(OC)c(O)c2c(=O)c3cccc(OC)c3oc2c1OC","COC=C(C1=CC=CC=C1OC2=NC=NC(=C2)OC3=CC=CC=C3C#N)C(=O)O","CCCCCCCCCCOCCCCCCCCCCOP(=O)(O)OCC[N+](C)(C)C","CC(C)C1CCC2(C)C1=CCC1(C)C2CCC2C3(C)C4OC(OC4=O)C(C)(C)C3CCC21C","CC(C)C1=C2CCC3(C)C(CCC4C5(C)C6OC(OC6=O)C(C)(C)C5CCC43C)C2(C)CC1","CCCCCCCCCCCCCCCCCCCOP(=O)(O)OCC[N+](C)(C)C","CCC(CCC(C)C1CCC2C3CCC4=CC(=O)CCC4(C)C3CCC12C)C(C)C","CCNCC(CCCCCCCCCC1C(CC(C(N1)C)O)N2CC=NC2)(CC(=O)O)O","CC1(C)CCC2(C)C(=CCC3(C)C2CCC2C4(C)CCC(O)C(C)(C)C4CCC23C)C1","CC1(C)CCC2(C(=O)O)CCC3(C)C(=CCC4C5(C)CCC(O)C(C)(C)C5CCC43C)C2C1","CC1CCC2C(C3CCC4C(C3CN2C1)CC5C4CC(C6C5(CC7(CCC(C7)CCC8=CC9=CC1=CC=CC=C1C=C9C=C8CC(C)C)C(C6)O)C)O)(C)O","CCCCCC1CC(C(C=C1)CCCCC2CCC(C3CC(CC3(CCC(C2C(=O)O)O)O)CC4=CCNC(=C4)N)C5=CC6=C(N5)CC7C=CCC(C7C6C)C)O","CCC1C2CC3C(=C(C(N3)CC4C(C(C(N4)CC5C(=C(C(N5)CC(C1CCC(=O)OC)N2)CC)CCC(=O)OC)CC)CCC(=O)OC)CC)CCC(=O)OC","CCC1C2CC3C(=C(C(N3)CC4C(C(C(N4)CC5C(=C(C(N5)CC(C1CCC(=O)OC)N2)CC)CCC(=O)OC)CC)CCC(=O)OC)CC)CCC(=O)OC","CCCC1OC(=O)C(C)CC(C)CCCCCCCCC(CC)C=CC=C(COC)CCC(O)C(O)CC(O)CNC1=O","CCC(CCC(C)C1CCC2C3CC=C4CC(OC5OC(CO)C(O)C(O)C5O)CCC4(C)C3CCC12C)C(C)C","CCC(C)CCCCCCCC(C)CCC(C1C(O1)CO)OC2C3C(=CCC4C3(C(CC5C4(CCC6C5(CCCC6(C)C)C)C)OC(=O)C)C)C(=O)O2"],"InChIKey no stereo":["HEYZWPRKKUGDCR","BABYDPWBUGJCLI","OMLROHMANJRCLP","AEDDIBAIWPIIBD","AEDDIBAIWPIIBD","AEDDIBAIWPIIBD","YIPALCHWTXABGZ","PHDSMTXYYXEWOW","JUPPUGXFFHYOJL","BXNJHAXVSOCGBA","DBOVHQOUSDWAPQ","UZYZCCWBBBCDAD","UZYZCCWBBBCDAD","PALZXWCYDBWDEX","PALZXWCYDBWDEX","DBOVHQOUSDWAPQ","FSPDDRAYNYPNIF","OYCMARLODNNDHK","GNMLPEJAIRBAAO","GNMLPEJAIRBAAO","DSFGPSBSMCZEIA","DSFGPSBSMCZEIA","YFCZLXRIKFCQFU","MXKGQHAVANZONW","YFCZLXRIKFCQFU","DIUZSAQPQFOCFE","DIUZSAQPQFOCFE","ZHOIDKZROFMQSS","IKCXDZCEWZARFL","IEKDBLOLVQSGKH","VORXDCSUUZISOZ","BHCAMAKQPUBALM","ZTMHDZXMZXECAU","RUVUHIUYGJBLGI","BBAMPWIBJGNLBF","YBYPZRUPFJPZSU","MIJYXULNPSFWEK","SDJIOKQVFNJKJT","WCXYPUIQOVODCY","PCWPQPIRTOTBLK","PCWPQPIRTOTBLK","VLCIAVLHXXOWFZ","NPJICTMALKLTFW","HZMJBJSXYMHJTP"],"Annotation Score":["0.62","0","0.62","0.94","0.94","0.94","0","0","0","0.58","0.68","0.72","0.72","0","0","0.69","0","0","0.67","0.67","0","0","0.58","0.59","0.61","0","0","0.54","0","0","0.68","0.69","0","0.63","0","0.76","0.93","0","0","0","0","0","0.53","0"],"Chemical Pathway":["Terpenoids","notConfident","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","notConfident","notConfident","notConfident","Alkaloids","Terpenoids","Terpenoids","Terpenoids","notConfident","notConfident","Terpenoids","notConfident","notConfident","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","notConfident","notConfident","Fatty acids","Shikimates and Phenylpropanoids","Fatty acids","notConfident","notConfident","Shikimates and Phenylpropanoids","notConfident","notConfident","Terpenoids","Terpenoids","notConfident","Terpenoids","notConfident","Terpenoids","Terpenoids","notConfident","notConfident","notConfident","notConfident","notConfident","Terpenoids","notConfident"],"Chemical Superclass":["Monoterpenoids","notConfident notConfident","Flavonoids","Xanthones","Xanthones","Xanthones","notConfident notConfident","notConfident notConfident","notConfident notConfident","Tryptophan alkaloids","Monoterpenoids","Monoterpenoids","Monoterpenoids","notConfident notConfident","notConfident notConfident","Monoterpenoids","notConfident notConfident","notConfident notConfident","Xanthones","Xanthones","notConfident notConfident","notConfident notConfident","Octadecanoids","Xanthones","Octadecanoids","notConfident notConfident","notConfident notConfident","Xanthones","notConfident notConfident","notConfident notConfident","Triterpenoids","Triterpenoids","notConfident notConfident","Steroids","notConfident notConfident","Triterpenoids","Triterpenoids","notConfident notConfident","notConfident notConfident","notConfident notConfident","notConfident notConfident","notConfident notConfident","Steroids","notConfident notConfident"],"Chemical Class":["Secoiridoid monoterpenoids","notConfident notConfident notConfident","Flavones","Plant xanthones","Plant xanthones","Plant xanthones","notConfident notConfident notConfident","notConfident notConfident notConfident","notConfident notConfident notConfident","Carboline alkaloids","Secoiridoid monoterpenoids","Secoiridoid monoterpenoids","Secoiridoid monoterpenoids","notConfident notConfident notConfident","notConfident notConfident notConfident","Secoiridoid monoterpenoids","notConfident notConfident notConfident","notConfident notConfident notConfident","Plant xanthones","Plant xanthones","notConfident notConfident notConfident","notConfident notConfident notConfident","Other Octadecanoids","Plant xanthones","Other Octadecanoids","notConfident notConfident notConfident","notConfident notConfident notConfident","Plant xanthones","notConfident notConfident notConfident","notConfident notConfident notConfident","Hopane and Moretane triterpenoids","Hopane and Moretane triterpenoids","notConfident notConfident notConfident","Stigmastane steroids","notConfident notConfident notConfident","Gammacerane triterpenoids","Oleanane triterpenoids","notConfident notConfident notConfident","notConfident notConfident notConfident","notConfident notConfident notConfident","notConfident notConfident notConfident","notConfident notConfident notConfident","Stigmastane steroids","notConfident notConfident notConfident"],"Closest Organism with Structure Reported":["Swertia chirayita",null,"Swertia","Swertia chirayita","Swertia chirayita","Swertia chirayita",null,null,null,"Gentianales","Swertia chirayita","Swertia chirayita","Swertia chirayita",null,null,"Swertia chirayita",null,null,"Swertia","Swertia",null,null,"Magnoliopsida","Gentianeae","Magnoliopsida",null,null,"Swertia chirayita",null,null,"Swertia","Swertia",null,"Swertia chirayita",null,"Swertia chirayita","Swertia chirayita",null,null,null,null,null,"Swertia",null],"Reference(s)":["10.1002/PTR.2738",null,"10.1248/YAKUSHI1947.89.9_1276","10.1016/S0040-4039(00)95355-3","10.1016/S0040-4039(00)95355-3","10.1016/S0040-4039(00)95355-3",null,null,null,"10.1016/S0031-9422(98)00492-0; 10.1002/(SICI)1099-1573(199603)10:2&lt;161::AID-PTR803&gt;3.0.CO;2-B","10.1002/PTR.2738; 10.1002/1099-0690(200104)2001:8&lt;1459::AID-EJOC1459&gt;3.0.CO;2-0; 10.1016/S0040-4039(00)72792-4; 10.1055/S-2000-8579; 10.1021/NP960018G; 10.1002/TCM.10057","10.1021/NP960018G; 10.1002/PTR.2738","10.1021/NP960018G; 10.1002/PTR.2738",null,null,"10.1002/PTR.2738; 10.1002/1099-0690(200104)2001:8&lt;1459::AID-EJOC1459&gt;3.0.CO;2-0; 10.1016/S0040-4039(00)72792-4; 10.1055/S-2000-8579; 10.1021/NP960018G; 10.1002/TCM.10057",null,null,"10.1021/NP100008R; 10.3987/COM-11-12257; 10.1021/JO00025A032; 10.1016/0031-9422(92)80465-Q","10.1021/NP100008R; 10.3987/COM-11-12257; 10.1021/JO00025A032; 10.1016/0031-9422(92)80465-Q",null,null,"10.1021/JF025651O; 10.1248/CPB.54.676; 10.1080/14786419.2010.488230; 10.1007/S10600-011-9930-4; 10.1007/S10600-014-1163-X","10.1016/0305-1978(82)90006-0","10.1021/JF025651O; 10.1248/CPB.54.676; 10.1080/14786419.2010.488230; 10.1007/S10600-011-9930-4; 10.1007/S10600-014-1163-X",null,null,"10.1007/S10870-005-2802-7",null,null,"10.1016/S0031-9422(00)82512-1","10.1016/S0031-9422(00)82512-1",null,"10.1016/0031-9422(91)83473-X",null,"10.1016/0031-9422(91)83473-X; 10.1016/S0040-4039(00)97322-2","10.1016/0031-9422(91)83473-X; 10.1016/0031-9422(88)83137-6",null,null,null,null,null,"10.1016/J.CCLET.2009.02.006",null]},"columns":[{"id":"Peak ID","name":"Peak ID","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44"],"html":true,"align":"right"},{"id":"Peak RT [min]","name":"Peak RT [min]","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["3.13","3.32","3.53","4.57","4.95","5.31","5.48","6.85","7.03","7.10","7.83","8.07","8.48","8.75","9.12","9.47","10.06","10.48","10.99","11.38","11.69","11.95","12.04","13.00","14.03","14.28","14.70","14.77","16.35","17.73","19.33","21.58","23.92","25.38","25.66","25.73","27.10","29.30","30.01","30.16","30.48","30.87","31.15","31.22"],"html":true,"align":"right"},{"id":"Peak Area [%]","name":"Peak Area [%]","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["1.45","1.57","1.96","6.26","4.34","3.80","1.65","0.84","0.96","1.00","1.61","3.01","6.74","6.00","4.66","2.50","3.72","4.42","3.69","2.01","1.48","1.32","1.49","1.15","1.12","1.55","1.38","1.60","1.31","1.60","1.48","0.63","3.82","1.94","1.40","1.92","1.91","1.05","1.27","2.33","1.99","1.85","1.15","1.08"],"html":true,"align":"right"},{"id":"Feature ID","name":"Feature ID","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["90","133","212","281","281","281","381","494","609","640","743","780","780","898","898","878","1034","1136","1174","1174","1353","1353","1437","1576","1626","1785","1785","1814","1992","2168","2421","2662","2966","3124","3134","3226","3309","3567","3665","3701","3701","3729","3761","3834"],"html":true,"align":"right"},{"id":"Feature RT [min]","name":"Feature RT [min]","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["2.80","3.59","4.36","4.83","4.83","4.83","5.70","6.48","7.14","7.33","7.89","8.07","8.07","8.86","8.86","8.79","9.79","10.40","10.68","10.68","11.73","11.73","12.23","13.28","13.65","14.68","14.68","14.92","16.41","17.72","19.78","21.67","24.04","25.40","25.53","26.20","27.01","28.99","29.95","30.27","30.27","30.54","30.84","31.69"],"html":true,"align":"right"},{"id":"Feature m/z","name":"Feature m/z","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["397.1110","285.0644","449.1057","405.0819","405.0819","405.0819","533.0601","452.0862","773.1560","213.1021","587.1775","603.1705","603.1705","623.1364","623.1364","587.1752","552.1500","432.3316","695.1240","695.1240","500.0630","500.0630","348.2745","305.0658","313.2372","295.0213","295.0213","333.0974","428.0652","480.3809","455.3535","455.3535","450.3738","413.3804","349.2735","427.3965","439.3593","746.5474","786.5765","802.5720","802.5720","610.4707","397.3855","723.5625"],"html":true,"align":"right"},{"id":"Structure","name":"Structure","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=C=CC1C(OC2OC(CO)C(O)C(O)C2O)OC=C2C(=O)OCCC21O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCOC(=O)NCCOC(=O)N(C1=CC=C(C=C1)Cl)O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=O=c1cc(-c2ccc(O)cc2)oc2cc(O)c(OC3OC(CO)C(O)C(O)C3O)c(O)c12\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=O=c1c2cc(O)c(O)cc2oc2cc(O)c(C3OC(CO)C(O)C(O)C3O)c(O)c12\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=O=c1c2cc(O)c(O)cc2oc2cc(O)c(C3OC(CO)C(O)C(O)C3O)c(O)c12\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=O=c1c2cc(O)c(O)cc2oc2cc(O)c(C3OC(CO)C(O)C(O)C3O)c(O)c12\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=COC1=CC=CC2=C1OC(=O)C(=C2)C3=CC(=O)OC4=C3C=CC(=C4)OCC5=CC(=CC=C5)C(F)(F)F\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=COC1=C(C=C(C(=C1)C(=O)OC)NC(=O)CN2C(=O)C3=CC=CC=C3NC2=O)OC\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CC(=C)C(=O)OCCOC(=O)C1=CC(=C(C=C1)C(=O)OCC(=O)OCOC(=O)COC(=O)C2=C(C=C(C=C2)C(=O)OCCOC(=O)C(=C)C)C(=O)O)C(=O)O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=COc1ccc2c(c1)[nH]c1c(C)nccc12\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=C=CC1C(OC2OC(CO)C(O)C(O)C2OC(=O)c2c(O)cc(O)cc2-c2cccc(O)c2)OC=C2C(=O)OCCC21\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=C=CC1C(OC2OC(CO)C(O)C(O)C2OC(=O)c2c(O)cc(O)cc2-c2cccc(O)c2)OC=C2C(=O)OCCC21O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=C=CC1C(OC2OC(CO)C(O)C(O)C2OC(=O)c2c(O)cc(O)cc2-c2cccc(O)c2)OC=C2C(=O)OCCC21O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CC(=O)OCC1C(C(C(C(O1)C2=C(C3=C(C=C2O)OC(=CC3=O)C4=CC=C(C=C4)O)O)OC(=O)C)OC(=O)C)OC(=O)C\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CC(=O)OCC1C(C(C(C(O1)C2=C(C3=C(C=C2O)OC(=CC3=O)C4=CC=C(C=C4)O)O)OC(=O)C)OC(=O)C)OC(=O)C\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=C=CC1C(OC2OC(CO)C(O)C(O)C2OC(=O)c2c(O)cc(O)cc2-c2cccc(O)c2)OC=C2C(=O)OCCC21\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=C1CC(C(C1)OC(=O)C2=CC(=C(C(=C2)O)C(=O)C3=C(C=CC=C3OCC(=O)O)O)O)NC(=O)C4=CC=C(C=C4)O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCCCCCCCOC(=O)OCCN(C)CCOC(=O)OCCCCCCCC\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=COc1cc(O)c2c(=O)c3c(O)c(-c4c(O)c(C5OC(CO)C(O)C(O)C5O)c(O)c5c(=O)c6cc(O)c(O)cc6oc45)cc(O)c3oc2c1\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=COc1cc(O)c2c(=O)c3c(O)c(-c4c(O)c(C5OC(CO)C(O)C(O)C5O)c(O)c5c(=O)c6cc(O)c(O)cc6oc45)cc(O)c3oc2c1\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CC(C1=CC=C(C=C1)C2=CC(=CC=C2)S(=O)(=O)C)(C3=CC=C(C=C3)C4=CC(=O)NS4(=O)=O)S\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CC(C1=CC=C(C=C1)C2=CC(=CC=C2)S(=O)(=O)C)(C3=CC=C(C=C3)C4=CC(=O)NS4(=O)=O)S\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCCCCCC(O)C(O)C=CC(O)CCCCCCC(=O)O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=COc1ccc(O)c2c(=O)c3c(O)cc(O)c(OC)c3oc12\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCCCCCC(O)C(O)C=CC(O)CCCCCCC(=O)O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=C1CC(C1)(CCN)C2=C(N=CC(=C2)Br)F\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=C1CC(C1)(CCN)C2=C(N=CC(=C2)Br)F\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=COc1c(OC)c(O)c2c(=O)c3cccc(OC)c3oc2c1OC\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=COC=C(C1=CC=CC=C1OC2=NC=NC(=C2)OC3=CC=CC=C3C#N)C(=O)O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCCCCCCCCCOCCCCCCCCCCOP(=O)(O)OCC[N+](C)(C)C\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CC(C)C1CCC2(C)C1=CCC1(C)C2CCC2C3(C)C4OC(OC4=O)C(C)(C)C3CCC21C\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CC(C)C1=C2CCC3(C)C(CCC4C5(C)C6OC(OC6=O)C(C)(C)C5CCC43C)C2(C)CC1\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCCCCCCCCCCCCCCCCCCOP(=O)(O)OCC[N+](C)(C)C\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCC(CCC(C)C1CCC2C3CCC4=CC(=O)CCC4(C)C3CCC12C)C(C)C\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCNCC(CCCCCCCCCC1C(CC(C(N1)C)O)N2CC=NC2)(CC(=O)O)O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CC1(C)CCC2(C)C(=CCC3(C)C2CCC2C4(C)CCC(O)C(C)(C)C4CCC23C)C1\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CC1(C)CCC2(C(=O)O)CCC3(C)C(=CCC4C5(C)CCC(O)C(C)(C)C5CCC43C)C2C1\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CC1CCC2C(C3CCC4C(C3CN2C1)CC5C4CC(C6C5(CC7(CCC(C7)CCC8=CC9=CC1=CC=CC=C1C=C9C=C8CC(C)C)C(C6)O)C)O)(C)O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCCCCC1CC(C(C=C1)CCCCC2CCC(C3CC(CC3(CCC(C2C(=O)O)O)O)CC4=CCNC(=C4)N)C5=CC6=C(N5)CC7C=CCC(C7C6C)C)O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCC1C2CC3C(=C(C(N3)CC4C(C(C(N4)CC5C(=C(C(N5)CC(C1CCC(=O)OC)N2)CC)CCC(=O)OC)CC)CCC(=O)OC)CC)CCC(=O)OC\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCC1C2CC3C(=C(C(N3)CC4C(C(C(N4)CC5C(=C(C(N5)CC(C1CCC(=O)OC)N2)CC)CCC(=O)OC)CC)CCC(=O)OC)CC)CCC(=O)OC\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCCC1OC(=O)C(C)CC(C)CCCCCCCCC(CC)C=CC=C(COC)CCC(O)C(O)CC(O)CNC1=O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCC(CCC(C)C1CCC2C3CC=C4CC(OC5OC(CO)C(O)C(O)C5O)CCC4(C)C3CCC12C)C(C)C\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCC(C)CCCCCCCC(C)CCC(C1C(O1)CO)OC2C3C(=CCC4C3(C(CC5C4(CCC6C5(CCCC6(C)C)C)C)OC(=O)C)C)C(=O)O2\" style=\"height:75px;\"&gt;"],"html":true,"align":"left"},{"id":"InChIKey no stereo","name":"InChIKey no stereo","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["HEYZWPRKKUGDCR","BABYDPWBUGJCLI","OMLROHMANJRCLP","AEDDIBAIWPIIBD","AEDDIBAIWPIIBD","AEDDIBAIWPIIBD","YIPALCHWTXABGZ","PHDSMTXYYXEWOW","JUPPUGXFFHYOJL","BXNJHAXVSOCGBA","DBOVHQOUSDWAPQ","UZYZCCWBBBCDAD","UZYZCCWBBBCDAD","PALZXWCYDBWDEX","PALZXWCYDBWDEX","DBOVHQOUSDWAPQ","FSPDDRAYNYPNIF","OYCMARLODNNDHK","GNMLPEJAIRBAAO","GNMLPEJAIRBAAO","DSFGPSBSMCZEIA","DSFGPSBSMCZEIA","YFCZLXRIKFCQFU","MXKGQHAVANZONW","YFCZLXRIKFCQFU","DIUZSAQPQFOCFE","DIUZSAQPQFOCFE","ZHOIDKZROFMQSS","IKCXDZCEWZARFL","IEKDBLOLVQSGKH","VORXDCSUUZISOZ","BHCAMAKQPUBALM","ZTMHDZXMZXECAU","RUVUHIUYGJBLGI","BBAMPWIBJGNLBF","YBYPZRUPFJPZSU","MIJYXULNPSFWEK","SDJIOKQVFNJKJT","WCXYPUIQOVODCY","PCWPQPIRTOTBLK","PCWPQPIRTOTBLK","VLCIAVLHXXOWFZ","NPJICTMALKLTFW","HZMJBJSXYMHJTP"],"html":true,"align":"left"},{"id":"Annotation Score","name":"Annotation Score","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["0.62","0","0.62","0.94","0.94","0.94","0","0","0","0.58","0.68","0.72","0.72","0","0","0.69","0","0","0.67","0.67","0","0","0.58","0.59","0.61","0","0","0.54","0","0","0.68","0.69","0","0.63","0","0.76","0.93","0","0","0","0","0","0.53","0"],"html":true,"align":"right"},{"id":"Chemical Pathway","name":"Chemical Pathway","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["Terpenoids","notConfident","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","notConfident","notConfident","notConfident","Alkaloids","Terpenoids","Terpenoids","Terpenoids","notConfident","notConfident","Terpenoids","notConfident","notConfident","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","notConfident","notConfident","Fatty acids","Shikimates and Phenylpropanoids","Fatty acids","notConfident","notConfident","Shikimates and Phenylpropanoids","notConfident","notConfident","Terpenoids","Terpenoids","notConfident","Terpenoids","notConfident","Terpenoids","Terpenoids","notConfident","notConfident","notConfident","notConfident","notConfident","Terpenoids","notConfident"],"html":true,"align":"left"},{"id":"Chemical Superclass","name":"Chemical Superclass","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["Monoterpenoids","notConfident notConfident","Flavonoids","Xanthones","Xanthones","Xanthones","notConfident notConfident","notConfident notConfident","notConfident notConfident","Tryptophan alkaloids","Monoterpenoids","Monoterpenoids","Monoterpenoids","notConfident notConfident","notConfident notConfident","Monoterpenoids","notConfident notConfident","notConfident notConfident","Xanthones","Xanthones","notConfident notConfident","notConfident notConfident","Octadecanoids","Xanthones","Octadecanoids","notConfident notConfident","notConfident notConfident","Xanthones","notConfident notConfident","notConfident notConfident","Triterpenoids","Triterpenoids","notConfident notConfident","Steroids","notConfident notConfident","Triterpenoids","Triterpenoids","notConfident notConfident","notConfident notConfident","notConfident notConfident","notConfident notConfident","notConfident notConfident","Steroids","notConfident notConfident"],"html":true,"align":"left"},{"id":"Chemical Class","name":"Chemical Class","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["Secoiridoid monoterpenoids","notConfident notConfident notConfident","Flavones","Plant xanthones","Plant xanthones","Plant xanthones","notConfident notConfident notConfident","notConfident notConfident notConfident","notConfident notConfident notConfident","Carboline alkaloids","Secoiridoid monoterpenoids","Secoiridoid monoterpenoids","Secoiridoid monoterpenoids","notConfident notConfident notConfident","notConfident notConfident notConfident","Secoiridoid monoterpenoids","notConfident notConfident notConfident","notConfident notConfident notConfident","Plant xanthones","Plant xanthones","notConfident notConfident notConfident","notConfident notConfident notConfident","Other Octadecanoids","Plant xanthones","Other Octadecanoids","notConfident notConfident notConfident","notConfident notConfident notConfident","Plant xanthones","notConfident notConfident notConfident","notConfident notConfident notConfident","Hopane and Moretane triterpenoids","Hopane and Moretane triterpenoids","notConfident notConfident notConfident","Stigmastane steroids","notConfident notConfident notConfident","Gammacerane triterpenoids","Oleanane triterpenoids","notConfident notConfident notConfident","notConfident notConfident notConfident","notConfident notConfident notConfident","notConfident notConfident notConfident","notConfident notConfident notConfident","Stigmastane steroids","notConfident notConfident notConfident"],"html":true,"align":"left"},{"id":"Closest Organism with Structure Reported","name":"Closest Organism with Structure Reported","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["Swertia chirayita","&lt;br /&gt;","Swertia","Swertia chirayita","Swertia chirayita","Swertia chirayita","&lt;br /&gt;","&lt;br /&gt;","&lt;br /&gt;","Gentianales","Swertia chirayita","Swertia chirayita","Swertia chirayita","&lt;br /&gt;","&lt;br /&gt;","Swertia chirayita","&lt;br /&gt;","&lt;br /&gt;","Swertia","Swertia","&lt;br /&gt;","&lt;br /&gt;","Magnoliopsida","Gentianeae","Magnoliopsida","&lt;br /&gt;","&lt;br /&gt;","Swertia chirayita","&lt;br /&gt;","&lt;br /&gt;","Swertia","Swertia","&lt;br /&gt;","Swertia chirayita","&lt;br /&gt;","Swertia chirayita","Swertia chirayita","&lt;br /&gt;","&lt;br /&gt;","&lt;br /&gt;","&lt;br /&gt;","&lt;br /&gt;","Swertia","&lt;br /&gt;"],"html":true,"align":"left"},{"id":"Reference(s)","name":"Reference(s)","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["10.1002/PTR.2738","&lt;br /&gt;","10.1248/YAKUSHI1947.89.9_1276","10.1016/S0040-4039(00)95355-3","10.1016/S0040-4039(00)95355-3","10.1016/S0040-4039(00)95355-3","&lt;br /&gt;","&lt;br /&gt;","&lt;br /&gt;","10.1016/S0031-9422(98)00492-0; 10.1002/(SICI)1099-1573(199603)10:2&amp;lt;161::AID-PTR803&amp;gt;3.0.CO;2-B","10.1002/PTR.2738; 10.1002/1099-0690(200104)2001:8&amp;lt;1459::AID-EJOC1459&amp;gt;3.0.CO;2-0; 10.1016/S0040-4039(00)72792-4; 10.1055/S-2000-8579; 10.1021/NP960018G; 10.1002/TCM.10057","10.1021/NP960018G; 10.1002/PTR.2738","10.1021/NP960018G; 10.1002/PTR.2738","&lt;br /&gt;","&lt;br /&gt;","10.1002/PTR.2738; 10.1002/1099-0690(200104)2001:8&amp;lt;1459::AID-EJOC1459&amp;gt;3.0.CO;2-0; 10.1016/S0040-4039(00)72792-4; 10.1055/S-2000-8579; 10.1021/NP960018G; 10.1002/TCM.10057","&lt;br /&gt;","&lt;br /&gt;","10.1021/NP100008R; 10.3987/COM-11-12257; 10.1021/JO00025A032; 10.1016/0031-9422(92)80465-Q","10.1021/NP100008R; 10.3987/COM-11-12257; 10.1021/JO00025A032; 10.1016/0031-9422(92)80465-Q","&lt;br /&gt;","&lt;br /&gt;","10.1021/JF025651O; 10.1248/CPB.54.676; 10.1080/14786419.2010.488230; 10.1007/S10600-011-9930-4; 10.1007/S10600-014-1163-X","10.1016/0305-1978(82)90006-0","10.1021/JF025651O; 10.1248/CPB.54.676; 10.1080/14786419.2010.488230; 10.1007/S10600-011-9930-4; 10.1007/S10600-014-1163-X","&lt;br /&gt;","&lt;br /&gt;","10.1007/S10870-005-2802-7","&lt;br /&gt;","&lt;br /&gt;","10.1016/S0031-9422(00)82512-1","10.1016/S0031-9422(00)82512-1","&lt;br /&gt;","10.1016/0031-9422(91)83473-X","&lt;br /&gt;","10.1016/0031-9422(91)83473-X; 10.1016/S0040-4039(00)97322-2","10.1016/0031-9422(91)83473-X; 10.1016/0031-9422(88)83137-6","&lt;br /&gt;","&lt;br /&gt;","&lt;br /&gt;","&lt;br /&gt;","&lt;br /&gt;","10.1016/J.CCLET.2009.02.006","&lt;br /&gt;"],"html":true,"align":"left"}],"filterable":true,"defaultPageSize":10,"showPageSizeOptions":false,"pageSizeOptions":[10,25,50,100],"paginationType":"numbers","showPagination":true,"showPageInfo":true,"minRows":1,"height":"auto","theme":{"color":"#333333","backgroundColor":"#FFFFFF","stripedColor":"rgba(128,128,128,0.05)","style":{"font-family":"system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif","fontSize":"16px"},"tableStyle":{"borderTopStyle":"solid","borderTopWidth":"2px","borderTopColor":"#D3D3D3"},"headerStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"groupHeaderStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"cellStyle":{"fontWeight":"normal"}},"elementId":"eqqqofktay","dataKey":"444fb7d2e902ce5e2800a218363c79e8"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style","tag.attribs.columns.1.style","tag.attribs.columns.2.style","tag.attribs.columns.3.style","tag.attribs.columns.4.style","tag.attribs.columns.5.style","tag.attribs.columns.6.style","tag.attribs.columns.7.style","tag.attribs.columns.8.style","tag.attribs.columns.9.style","tag.attribs.columns.10.style","tag.attribs.columns.11.style","tag.attribs.columns.12.style","tag.attribs.columns.13.style"],"jsHooks":[]}&lt;/script&gt;
+  &lt;div id="gigwxbdcji" class="reactable html-widget" style="width:auto;height:auto;"&gt;&lt;/div&gt;
+  &lt;script type="application/json" data-for="gigwxbdcji"&gt;{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Peak ID":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44],"Peak RT [min]":[3.13,3.32,3.53,4.57,4.95,5.31,5.48,6.85,7.03,7.1,7.83,8.07,8.48,8.75,9.12,9.47,10.06,10.48,10.99,11.38,11.69,11.95,12.04,13,14.03,14.28,14.7,14.77,16.35,17.73,19.33,21.58,23.92,25.38,25.66,25.73,27.1,29.3,30.01,30.16,30.48,30.87,31.15,31.22],"Peak Area [%]":[1.45,1.57,1.96,6.26,4.34,3.8,1.65,0.84,0.96,1,1.61,3.01,6.74,6,4.66,2.5,3.72,4.42,3.69,2.01,1.48,1.32,1.49,1.15,1.12,1.55,1.38,1.6,1.31,1.6,1.48,0.63,3.82,1.94,1.4,1.92,1.91,1.05,1.27,2.33,1.99,1.85,1.15,1.08],"Feature ID":[90,133,212,281,281,281,381,494,609,640,743,780,780,898,898,878,1034,1136,1174,1174,1353,1353,1437,1576,1626,1785,1785,1814,1992,2168,2421,2662,2966,3124,3134,3226,3309,3567,3665,3701,3701,3729,3761,3834],"Feature RT [min]":[2.8,3.59,4.36,4.83,4.83,4.83,5.7,6.48,7.14,7.33,7.89,8.07,8.07,8.86,8.86,8.79,9.79,10.4,10.68,10.68,11.73,11.73,12.23,13.28,13.65,14.68,14.68,14.92,16.41,17.72,19.78,21.67,24.04,25.4,25.53,26.2,27.01,28.99,29.95,30.27,30.27,30.54,30.84,31.69],"Feature m/z":[397.111,285.0644,449.1057,405.0819,405.0819,405.0819,533.0601,452.0862,773.156,213.1021,587.1775,603.1705,603.1705,623.1364,623.1364,587.1752,552.15,432.3316,695.124,695.124,500.063,500.063,348.2745,305.0658,313.2372,295.0213,295.0213,333.0974,428.0652,480.3809,455.3535,455.3535,450.3738,413.3804,349.2735,427.3965,439.3593,746.5474,786.5765,802.572,802.572,610.4707,397.3855,723.5625],"Structure":["C=CC1C(OC2OC(CO)C(O)C(O)C2O)OC=C2C(=O)OCCC21O","CCOC(=O)NCCOC(=O)N(C1=CC=C(C=C1)Cl)O","O=c1cc(-c2ccc(O)cc2)oc2cc(O)c(OC3OC(CO)C(O)C(O)C3O)c(O)c12","O=c1c2cc(O)c(O)cc2oc2cc(O)c(C3OC(CO)C(O)C(O)C3O)c(O)c12","O=c1c2cc(O)c(O)cc2oc2cc(O)c(C3OC(CO)C(O)C(O)C3O)c(O)c12","O=c1c2cc(O)c(O)cc2oc2cc(O)c(C3OC(CO)C(O)C(O)C3O)c(O)c12","COC1=CC=CC2=C1OC(=O)C(=C2)C3=CC(=O)OC4=C3C=CC(=C4)OCC5=CC(=CC=C5)C(F)(F)F","COC1=C(C=C(C(=C1)C(=O)OC)NC(=O)CN2C(=O)C3=CC=CC=C3NC2=O)OC","CC(=C)C(=O)OCCOC(=O)C1=CC(=C(C=C1)C(=O)OCC(=O)OCOC(=O)COC(=O)C2=C(C=C(C=C2)C(=O)OCCOC(=O)C(=C)C)C(=O)O)C(=O)O","COc1ccc2c(c1)[nH]c1c(C)nccc12","C=CC1C(OC2OC(CO)C(O)C(O)C2OC(=O)c2c(O)cc(O)cc2-c2cccc(O)c2)OC=C2C(=O)OCCC21","C=CC1C(OC2OC(CO)C(O)C(O)C2OC(=O)c2c(O)cc(O)cc2-c2cccc(O)c2)OC=C2C(=O)OCCC21O","C=CC1C(OC2OC(CO)C(O)C(O)C2OC(=O)c2c(O)cc(O)cc2-c2cccc(O)c2)OC=C2C(=O)OCCC21O","CC(=O)OCC1C(C(C(C(O1)C2=C(C3=C(C=C2O)OC(=CC3=O)C4=CC=C(C=C4)O)O)OC(=O)C)OC(=O)C)OC(=O)C","CC(=O)OCC1C(C(C(C(O1)C2=C(C3=C(C=C2O)OC(=CC3=O)C4=CC=C(C=C4)O)O)OC(=O)C)OC(=O)C)OC(=O)C","C=CC1C(OC2OC(CO)C(O)C(O)C2OC(=O)c2c(O)cc(O)cc2-c2cccc(O)c2)OC=C2C(=O)OCCC21","C1CC(C(C1)OC(=O)C2=CC(=C(C(=C2)O)C(=O)C3=C(C=CC=C3OCC(=O)O)O)O)NC(=O)C4=CC=C(C=C4)O","CCCCCCCCOC(=O)OCCN(C)CCOC(=O)OCCCCCCCC","COc1cc(O)c2c(=O)c3c(O)c(-c4c(O)c(C5OC(CO)C(O)C(O)C5O)c(O)c5c(=O)c6cc(O)c(O)cc6oc45)cc(O)c3oc2c1","COc1cc(O)c2c(=O)c3c(O)c(-c4c(O)c(C5OC(CO)C(O)C(O)C5O)c(O)c5c(=O)c6cc(O)c(O)cc6oc45)cc(O)c3oc2c1","CC(C1=CC=C(C=C1)C2=CC(=CC=C2)S(=O)(=O)C)(C3=CC=C(C=C3)C4=CC(=O)NS4(=O)=O)S","CC(C1=CC=C(C=C1)C2=CC(=CC=C2)S(=O)(=O)C)(C3=CC=C(C=C3)C4=CC(=O)NS4(=O)=O)S","CCCCCCC(O)C(O)C=CC(O)CCCCCCC(=O)O","COc1ccc(O)c2c(=O)c3c(O)cc(O)c(OC)c3oc12","CCCCCCC(O)C(O)C=CC(O)CCCCCCC(=O)O","C1CC(C1)(CCN)C2=C(N=CC(=C2)Br)F","C1CC(C1)(CCN)C2=C(N=CC(=C2)Br)F","COc1c(OC)c(O)c2c(=O)c3cccc(OC)c3oc2c1OC","COC=C(C1=CC=CC=C1OC2=NC=NC(=C2)OC3=CC=CC=C3C#N)C(=O)O","CCCCCCCCCCOCCCCCCCCCCOP(=O)(O)OCC[N+](C)(C)C","CC(C)C1CCC2(C)C1=CCC1(C)C2CCC2C3(C)C4OC(OC4=O)C(C)(C)C3CCC21C","CC(C)C1=C2CCC3(C)C(CCC4C5(C)C6OC(OC6=O)C(C)(C)C5CCC43C)C2(C)CC1","CCCCCCCCCCCCCCCCCCCOP(=O)(O)OCC[N+](C)(C)C","CCC(CCC(C)C1CCC2C3CCC4=CC(=O)CCC4(C)C3CCC12C)C(C)C","CCNCC(CCCCCCCCCC1C(CC(C(N1)C)O)N2CC=NC2)(CC(=O)O)O","CC1(C)CCC2(C)C(=CCC3(C)C2CCC2C4(C)CCC(O)C(C)(C)C4CCC23C)C1","CC1(C)CCC2(C(=O)O)CCC3(C)C(=CCC4C5(C)CCC(O)C(C)(C)C5CCC43C)C2C1","CC1CCC2C(C3CCC4C(C3CN2C1)CC5C4CC(C6C5(CC7(CCC(C7)CCC8=CC9=CC1=CC=CC=C1C=C9C=C8CC(C)C)C(C6)O)C)O)(C)O","CCCCCC1CC(C(C=C1)CCCCC2CCC(C3CC(CC3(CCC(C2C(=O)O)O)O)CC4=CCNC(=C4)N)C5=CC6=C(N5)CC7C=CCC(C7C6C)C)O","CCC1C2CC3C(=C(C(N3)CC4C(C(C(N4)CC5C(=C(C(N5)CC(C1CCC(=O)OC)N2)CC)CCC(=O)OC)CC)CCC(=O)OC)CC)CCC(=O)OC","CCC1C2CC3C(=C(C(N3)CC4C(C(C(N4)CC5C(=C(C(N5)CC(C1CCC(=O)OC)N2)CC)CCC(=O)OC)CC)CCC(=O)OC)CC)CCC(=O)OC","CCCC1OC(=O)C(C)CC(C)CCCCCCCCC(CC)C=CC=C(COC)CCC(O)C(O)CC(O)CNC1=O","CCC(CCC(C)C1CCC2C3CC=C4CC(OC5OC(CO)C(O)C(O)C5O)CCC4(C)C3CCC12C)C(C)C","CCC(C)CCCCCCCC(C)CCC(C1C(O1)CO)OC2C3C(=CCC4C3(C(CC5C4(CCC6C5(CCCC6(C)C)C)C)OC(=O)C)C)C(=O)O2"],"InChIKey no stereo":["HEYZWPRKKUGDCR","BABYDPWBUGJCLI","OMLROHMANJRCLP","AEDDIBAIWPIIBD","AEDDIBAIWPIIBD","AEDDIBAIWPIIBD","YIPALCHWTXABGZ","PHDSMTXYYXEWOW","JUPPUGXFFHYOJL","BXNJHAXVSOCGBA","DBOVHQOUSDWAPQ","UZYZCCWBBBCDAD","UZYZCCWBBBCDAD","PALZXWCYDBWDEX","PALZXWCYDBWDEX","DBOVHQOUSDWAPQ","FSPDDRAYNYPNIF","OYCMARLODNNDHK","GNMLPEJAIRBAAO","GNMLPEJAIRBAAO","DSFGPSBSMCZEIA","DSFGPSBSMCZEIA","YFCZLXRIKFCQFU","MXKGQHAVANZONW","YFCZLXRIKFCQFU","DIUZSAQPQFOCFE","DIUZSAQPQFOCFE","ZHOIDKZROFMQSS","IKCXDZCEWZARFL","IEKDBLOLVQSGKH","VORXDCSUUZISOZ","BHCAMAKQPUBALM","ZTMHDZXMZXECAU","RUVUHIUYGJBLGI","BBAMPWIBJGNLBF","YBYPZRUPFJPZSU","MIJYXULNPSFWEK","SDJIOKQVFNJKJT","WCXYPUIQOVODCY","PCWPQPIRTOTBLK","PCWPQPIRTOTBLK","VLCIAVLHXXOWFZ","NPJICTMALKLTFW","HZMJBJSXYMHJTP"],"Annotation Score":["0.62","0","0.62","0.94","0.94","0.94","0","0","0","0.58","0.68","0.72","0.72","0","0","0.69","0","0","0.67","0.67","0","0","0.58","0.59","0.61","0","0","0.54","0","0","0.68","0.69","0","0.63","0","0.76","0.93","0","0","0","0","0","0.53","0"],"Chemical Pathway":["Terpenoids","notConfident","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","notConfident","notConfident","notConfident","Alkaloids","Terpenoids","Terpenoids","Terpenoids","notConfident","notConfident","Terpenoids","notConfident","notConfident","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","notConfident","notConfident","Fatty acids","Shikimates and Phenylpropanoids","Fatty acids","notConfident","notConfident","Shikimates and Phenylpropanoids","notConfident","notConfident","Terpenoids","Terpenoids","notConfident","Terpenoids","notConfident","Terpenoids","Terpenoids","notConfident","notConfident","notConfident","notConfident","notConfident","Terpenoids","notConfident"],"Chemical Superclass":["Monoterpenoids","notConfident notConfident","Flavonoids","Xanthones","Xanthones","Xanthones","notConfident notConfident","notConfident notConfident","notConfident notConfident","Tryptophan alkaloids","Monoterpenoids","Monoterpenoids","Monoterpenoids","notConfident notConfident","notConfident notConfident","Monoterpenoids","notConfident notConfident","notConfident notConfident","Xanthones","Xanthones","notConfident notConfident","notConfident notConfident","Octadecanoids","Xanthones","Octadecanoids","notConfident notConfident","notConfident notConfident","Xanthones","notConfident notConfident","notConfident notConfident","Triterpenoids","Triterpenoids","notConfident notConfident","Steroids","notConfident notConfident","Triterpenoids","Triterpenoids","notConfident notConfident","notConfident notConfident","notConfident notConfident","notConfident notConfident","notConfident notConfident","Steroids","notConfident notConfident"],"Chemical Class":["Secoiridoid monoterpenoids","notConfident notConfident notConfident","Flavones","Plant xanthones","Plant xanthones","Plant xanthones","notConfident notConfident notConfident","notConfident notConfident notConfident","notConfident notConfident notConfident","Carboline alkaloids","Secoiridoid monoterpenoids","Secoiridoid monoterpenoids","Secoiridoid monoterpenoids","notConfident notConfident notConfident","notConfident notConfident notConfident","Secoiridoid monoterpenoids","notConfident notConfident notConfident","notConfident notConfident notConfident","Plant xanthones","Plant xanthones","notConfident notConfident notConfident","notConfident notConfident notConfident","Other Octadecanoids","Plant xanthones","Other Octadecanoids","notConfident notConfident notConfident","notConfident notConfident notConfident","Plant xanthones","notConfident notConfident notConfident","notConfident notConfident notConfident","Hopane and Moretane triterpenoids","Hopane and Moretane triterpenoids","notConfident notConfident notConfident","Stigmastane steroids","notConfident notConfident notConfident","Gammacerane triterpenoids","Oleanane triterpenoids","notConfident notConfident notConfident","notConfident notConfident notConfident","notConfident notConfident notConfident","notConfident notConfident notConfident","notConfident notConfident notConfident","Stigmastane steroids","notConfident notConfident notConfident"],"Closest Organism with Structure Reported":["Swertia chirayita",null,"Swertia","Swertia chirayita","Swertia chirayita","Swertia chirayita",null,null,null,"Gentianales","Swertia chirayita","Swertia chirayita","Swertia chirayita",null,null,"Swertia chirayita",null,null,"Swertia","Swertia",null,null,"Magnoliopsida","Gentianeae","Magnoliopsida",null,null,"Swertia chirayita",null,null,"Swertia","Swertia",null,"Swertia chirayita",null,"Swertia chirayita","Swertia chirayita",null,null,null,null,null,"Swertia",null],"Reference(s)":["10.1002/PTR.2738",null,"10.1248/YAKUSHI1947.89.9_1276","10.1016/S0040-4039(00)95355-3","10.1016/S0040-4039(00)95355-3","10.1016/S0040-4039(00)95355-3",null,null,null,"10.1016/S0031-9422(98)00492-0; 10.1002/(SICI)1099-1573(199603)10:2&lt;161::AID-PTR803&gt;3.0.CO;2-B","10.1002/PTR.2738; 10.1002/1099-0690(200104)2001:8&lt;1459::AID-EJOC1459&gt;3.0.CO;2-0; 10.1016/S0040-4039(00)72792-4; 10.1055/S-2000-8579; 10.1021/NP960018G; 10.1002/TCM.10057","10.1021/NP960018G; 10.1002/PTR.2738","10.1021/NP960018G; 10.1002/PTR.2738",null,null,"10.1002/PTR.2738; 10.1002/1099-0690(200104)2001:8&lt;1459::AID-EJOC1459&gt;3.0.CO;2-0; 10.1016/S0040-4039(00)72792-4; 10.1055/S-2000-8579; 10.1021/NP960018G; 10.1002/TCM.10057",null,null,"10.1021/NP100008R; 10.3987/COM-11-12257; 10.1021/JO00025A032; 10.1016/0031-9422(92)80465-Q","10.1021/NP100008R; 10.3987/COM-11-12257; 10.1021/JO00025A032; 10.1016/0031-9422(92)80465-Q",null,null,"10.1021/JF025651O; 10.1248/CPB.54.676; 10.1080/14786419.2010.488230; 10.1007/S10600-011-9930-4; 10.1007/S10600-014-1163-X","10.1016/0305-1978(82)90006-0","10.1021/JF025651O; 10.1248/CPB.54.676; 10.1080/14786419.2010.488230; 10.1007/S10600-011-9930-4; 10.1007/S10600-014-1163-X",null,null,"10.1007/S10870-005-2802-7",null,null,"10.1016/S0031-9422(00)82512-1","10.1016/S0031-9422(00)82512-1",null,"10.1016/0031-9422(91)83473-X",null,"10.1016/0031-9422(91)83473-X; 10.1016/S0040-4039(00)97322-2","10.1016/0031-9422(91)83473-X; 10.1016/0031-9422(88)83137-6",null,null,null,null,null,"10.1016/J.CCLET.2009.02.006",null]},"columns":[{"id":"Peak ID","name":"Peak ID","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44"],"html":true,"align":"right"},{"id":"Peak RT [min]","name":"Peak RT [min]","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["3.13","3.32","3.53","4.57","4.95","5.31","5.48","6.85","7.03","7.10","7.83","8.07","8.48","8.75","9.12","9.47","10.06","10.48","10.99","11.38","11.69","11.95","12.04","13.00","14.03","14.28","14.70","14.77","16.35","17.73","19.33","21.58","23.92","25.38","25.66","25.73","27.10","29.30","30.01","30.16","30.48","30.87","31.15","31.22"],"html":true,"align":"right"},{"id":"Peak Area [%]","name":"Peak Area [%]","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["1.45","1.57","1.96","6.26","4.34","3.80","1.65","0.84","0.96","1.00","1.61","3.01","6.74","6.00","4.66","2.50","3.72","4.42","3.69","2.01","1.48","1.32","1.49","1.15","1.12","1.55","1.38","1.60","1.31","1.60","1.48","0.63","3.82","1.94","1.40","1.92","1.91","1.05","1.27","2.33","1.99","1.85","1.15","1.08"],"html":true,"align":"right"},{"id":"Feature ID","name":"Feature ID","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["90","133","212","281","281","281","381","494","609","640","743","780","780","898","898","878","1034","1136","1174","1174","1353","1353","1437","1576","1626","1785","1785","1814","1992","2168","2421","2662","2966","3124","3134","3226","3309","3567","3665","3701","3701","3729","3761","3834"],"html":true,"align":"right"},{"id":"Feature RT [min]","name":"Feature RT [min]","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["2.80","3.59","4.36","4.83","4.83","4.83","5.70","6.48","7.14","7.33","7.89","8.07","8.07","8.86","8.86","8.79","9.79","10.40","10.68","10.68","11.73","11.73","12.23","13.28","13.65","14.68","14.68","14.92","16.41","17.72","19.78","21.67","24.04","25.40","25.53","26.20","27.01","28.99","29.95","30.27","30.27","30.54","30.84","31.69"],"html":true,"align":"right"},{"id":"Feature m/z","name":"Feature m/z","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["397.1110","285.0644","449.1057","405.0819","405.0819","405.0819","533.0601","452.0862","773.1560","213.1021","587.1775","603.1705","603.1705","623.1364","623.1364","587.1752","552.1500","432.3316","695.1240","695.1240","500.0630","500.0630","348.2745","305.0658","313.2372","295.0213","295.0213","333.0974","428.0652","480.3809","455.3535","455.3535","450.3738","413.3804","349.2735","427.3965","439.3593","746.5474","786.5765","802.5720","802.5720","610.4707","397.3855","723.5625"],"html":true,"align":"right"},{"id":"Structure","name":"Structure","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=C=CC1C(OC2OC(CO)C(O)C(O)C2O)OC=C2C(=O)OCCC21O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCOC(=O)NCCOC(=O)N(C1=CC=C(C=C1)Cl)O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=O=c1cc(-c2ccc(O)cc2)oc2cc(O)c(OC3OC(CO)C(O)C(O)C3O)c(O)c12\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=O=c1c2cc(O)c(O)cc2oc2cc(O)c(C3OC(CO)C(O)C(O)C3O)c(O)c12\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=O=c1c2cc(O)c(O)cc2oc2cc(O)c(C3OC(CO)C(O)C(O)C3O)c(O)c12\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=O=c1c2cc(O)c(O)cc2oc2cc(O)c(C3OC(CO)C(O)C(O)C3O)c(O)c12\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=COC1=CC=CC2=C1OC(=O)C(=C2)C3=CC(=O)OC4=C3C=CC(=C4)OCC5=CC(=CC=C5)C(F)(F)F\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=COC1=C(C=C(C(=C1)C(=O)OC)NC(=O)CN2C(=O)C3=CC=CC=C3NC2=O)OC\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CC(=C)C(=O)OCCOC(=O)C1=CC(=C(C=C1)C(=O)OCC(=O)OCOC(=O)COC(=O)C2=C(C=C(C=C2)C(=O)OCCOC(=O)C(=C)C)C(=O)O)C(=O)O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=COc1ccc2c(c1)[nH]c1c(C)nccc12\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=C=CC1C(OC2OC(CO)C(O)C(O)C2OC(=O)c2c(O)cc(O)cc2-c2cccc(O)c2)OC=C2C(=O)OCCC21\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=C=CC1C(OC2OC(CO)C(O)C(O)C2OC(=O)c2c(O)cc(O)cc2-c2cccc(O)c2)OC=C2C(=O)OCCC21O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=C=CC1C(OC2OC(CO)C(O)C(O)C2OC(=O)c2c(O)cc(O)cc2-c2cccc(O)c2)OC=C2C(=O)OCCC21O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CC(=O)OCC1C(C(C(C(O1)C2=C(C3=C(C=C2O)OC(=CC3=O)C4=CC=C(C=C4)O)O)OC(=O)C)OC(=O)C)OC(=O)C\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CC(=O)OCC1C(C(C(C(O1)C2=C(C3=C(C=C2O)OC(=CC3=O)C4=CC=C(C=C4)O)O)OC(=O)C)OC(=O)C)OC(=O)C\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=C=CC1C(OC2OC(CO)C(O)C(O)C2OC(=O)c2c(O)cc(O)cc2-c2cccc(O)c2)OC=C2C(=O)OCCC21\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=C1CC(C(C1)OC(=O)C2=CC(=C(C(=C2)O)C(=O)C3=C(C=CC=C3OCC(=O)O)O)O)NC(=O)C4=CC=C(C=C4)O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCCCCCCCOC(=O)OCCN(C)CCOC(=O)OCCCCCCCC\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=COc1cc(O)c2c(=O)c3c(O)c(-c4c(O)c(C5OC(CO)C(O)C(O)C5O)c(O)c5c(=O)c6cc(O)c(O)cc6oc45)cc(O)c3oc2c1\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=COc1cc(O)c2c(=O)c3c(O)c(-c4c(O)c(C5OC(CO)C(O)C(O)C5O)c(O)c5c(=O)c6cc(O)c(O)cc6oc45)cc(O)c3oc2c1\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CC(C1=CC=C(C=C1)C2=CC(=CC=C2)S(=O)(=O)C)(C3=CC=C(C=C3)C4=CC(=O)NS4(=O)=O)S\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CC(C1=CC=C(C=C1)C2=CC(=CC=C2)S(=O)(=O)C)(C3=CC=C(C=C3)C4=CC(=O)NS4(=O)=O)S\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCCCCCC(O)C(O)C=CC(O)CCCCCCC(=O)O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=COc1ccc(O)c2c(=O)c3c(O)cc(O)c(OC)c3oc12\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCCCCCC(O)C(O)C=CC(O)CCCCCCC(=O)O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=C1CC(C1)(CCN)C2=C(N=CC(=C2)Br)F\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=C1CC(C1)(CCN)C2=C(N=CC(=C2)Br)F\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=COc1c(OC)c(O)c2c(=O)c3cccc(OC)c3oc2c1OC\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=COC=C(C1=CC=CC=C1OC2=NC=NC(=C2)OC3=CC=CC=C3C#N)C(=O)O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCCCCCCCCCOCCCCCCCCCCOP(=O)(O)OCC[N+](C)(C)C\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CC(C)C1CCC2(C)C1=CCC1(C)C2CCC2C3(C)C4OC(OC4=O)C(C)(C)C3CCC21C\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CC(C)C1=C2CCC3(C)C(CCC4C5(C)C6OC(OC6=O)C(C)(C)C5CCC43C)C2(C)CC1\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCCCCCCCCCCCCCCCCCCOP(=O)(O)OCC[N+](C)(C)C\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCC(CCC(C)C1CCC2C3CCC4=CC(=O)CCC4(C)C3CCC12C)C(C)C\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCNCC(CCCCCCCCCC1C(CC(C(N1)C)O)N2CC=NC2)(CC(=O)O)O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CC1(C)CCC2(C)C(=CCC3(C)C2CCC2C4(C)CCC(O)C(C)(C)C4CCC23C)C1\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CC1(C)CCC2(C(=O)O)CCC3(C)C(=CCC4C5(C)CCC(O)C(C)(C)C5CCC43C)C2C1\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CC1CCC2C(C3CCC4C(C3CN2C1)CC5C4CC(C6C5(CC7(CCC(C7)CCC8=CC9=CC1=CC=CC=C1C=C9C=C8CC(C)C)C(C6)O)C)O)(C)O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCCCCC1CC(C(C=C1)CCCCC2CCC(C3CC(CC3(CCC(C2C(=O)O)O)O)CC4=CCNC(=C4)N)C5=CC6=C(N5)CC7C=CCC(C7C6C)C)O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCC1C2CC3C(=C(C(N3)CC4C(C(C(N4)CC5C(=C(C(N5)CC(C1CCC(=O)OC)N2)CC)CCC(=O)OC)CC)CCC(=O)OC)CC)CCC(=O)OC\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCC1C2CC3C(=C(C(N3)CC4C(C(C(N4)CC5C(=C(C(N5)CC(C1CCC(=O)OC)N2)CC)CCC(=O)OC)CC)CCC(=O)OC)CC)CCC(=O)OC\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCCC1OC(=O)C(C)CC(C)CCCCCCCCC(CC)C=CC=C(COC)CCC(O)C(O)CC(O)CNC1=O\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCC(CCC(C)C1CCC2C3CC=C4CC(OC5OC(CO)C(O)C(O)C5O)CCC4(C)C3CCC12C)C(C)C\" style=\"height:75px;\"&gt;","&lt;img src=\"https://www.simolecule.com/cdkdepict/depict/bot/svg?smi=CCC(C)CCCCCCCC(C)CCC(C1C(O1)CO)OC2C3C(=CCC4C3(C(CC5C4(CCC6C5(CCCC6(C)C)C)C)OC(=O)C)C)C(=O)O2\" style=\"height:75px;\"&gt;"],"html":true,"align":"left"},{"id":"InChIKey no stereo","name":"InChIKey no stereo","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["HEYZWPRKKUGDCR","BABYDPWBUGJCLI","OMLROHMANJRCLP","AEDDIBAIWPIIBD","AEDDIBAIWPIIBD","AEDDIBAIWPIIBD","YIPALCHWTXABGZ","PHDSMTXYYXEWOW","JUPPUGXFFHYOJL","BXNJHAXVSOCGBA","DBOVHQOUSDWAPQ","UZYZCCWBBBCDAD","UZYZCCWBBBCDAD","PALZXWCYDBWDEX","PALZXWCYDBWDEX","DBOVHQOUSDWAPQ","FSPDDRAYNYPNIF","OYCMARLODNNDHK","GNMLPEJAIRBAAO","GNMLPEJAIRBAAO","DSFGPSBSMCZEIA","DSFGPSBSMCZEIA","YFCZLXRIKFCQFU","MXKGQHAVANZONW","YFCZLXRIKFCQFU","DIUZSAQPQFOCFE","DIUZSAQPQFOCFE","ZHOIDKZROFMQSS","IKCXDZCEWZARFL","IEKDBLOLVQSGKH","VORXDCSUUZISOZ","BHCAMAKQPUBALM","ZTMHDZXMZXECAU","RUVUHIUYGJBLGI","BBAMPWIBJGNLBF","YBYPZRUPFJPZSU","MIJYXULNPSFWEK","SDJIOKQVFNJKJT","WCXYPUIQOVODCY","PCWPQPIRTOTBLK","PCWPQPIRTOTBLK","VLCIAVLHXXOWFZ","NPJICTMALKLTFW","HZMJBJSXYMHJTP"],"html":true,"align":"left"},{"id":"Annotation Score","name":"Annotation Score","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["0.62","0","0.62","0.94","0.94","0.94","0","0","0","0.58","0.68","0.72","0.72","0","0","0.69","0","0","0.67","0.67","0","0","0.58","0.59","0.61","0","0","0.54","0","0","0.68","0.69","0","0.63","0","0.76","0.93","0","0","0","0","0","0.53","0"],"html":true,"align":"right"},{"id":"Chemical Pathway","name":"Chemical Pathway","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["Terpenoids","notConfident","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","notConfident","notConfident","notConfident","Alkaloids","Terpenoids","Terpenoids","Terpenoids","notConfident","notConfident","Terpenoids","notConfident","notConfident","Shikimates and Phenylpropanoids","Shikimates and Phenylpropanoids","notConfident","notConfident","Fatty acids","Shikimates and Phenylpropanoids","Fatty acids","notConfident","notConfident","Shikimates and Phenylpropanoids","notConfident","notConfident","Terpenoids","Terpenoids","notConfident","Terpenoids","notConfident","Terpenoids","Terpenoids","notConfident","notConfident","notConfident","notConfident","notConfident","Terpenoids","notConfident"],"html":true,"align":"left"},{"id":"Chemical Superclass","name":"Chemical Superclass","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["Monoterpenoids","notConfident notConfident","Flavonoids","Xanthones","Xanthones","Xanthones","notConfident notConfident","notConfident notConfident","notConfident notConfident","Tryptophan alkaloids","Monoterpenoids","Monoterpenoids","Monoterpenoids","notConfident notConfident","notConfident notConfident","Monoterpenoids","notConfident notConfident","notConfident notConfident","Xanthones","Xanthones","notConfident notConfident","notConfident notConfident","Octadecanoids","Xanthones","Octadecanoids","notConfident notConfident","notConfident notConfident","Xanthones","notConfident notConfident","notConfident notConfident","Triterpenoids","Triterpenoids","notConfident notConfident","Steroids","notConfident notConfident","Triterpenoids","Triterpenoids","notConfident notConfident","notConfident notConfident","notConfident notConfident","notConfident notConfident","notConfident notConfident","Steroids","notConfident notConfident"],"html":true,"align":"left"},{"id":"Chemical Class","name":"Chemical Class","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["Secoiridoid monoterpenoids","notConfident notConfident notConfident","Flavones","Plant xanthones","Plant xanthones","Plant xanthones","notConfident notConfident notConfident","notConfident notConfident notConfident","notConfident notConfident notConfident","Carboline alkaloids","Secoiridoid monoterpenoids","Secoiridoid monoterpenoids","Secoiridoid monoterpenoids","notConfident notConfident notConfident","notConfident notConfident notConfident","Secoiridoid monoterpenoids","notConfident notConfident notConfident","notConfident notConfident notConfident","Plant xanthones","Plant xanthones","notConfident notConfident notConfident","notConfident notConfident notConfident","Other Octadecanoids","Plant xanthones","Other Octadecanoids","notConfident notConfident notConfident","notConfident notConfident notConfident","Plant xanthones","notConfident notConfident notConfident","notConfident notConfident notConfident","Hopane and Moretane triterpenoids","Hopane and Moretane triterpenoids","notConfident notConfident notConfident","Stigmastane steroids","notConfident notConfident notConfident","Gammacerane triterpenoids","Oleanane triterpenoids","notConfident notConfident notConfident","notConfident notConfident notConfident","notConfident notConfident notConfident","notConfident notConfident notConfident","notConfident notConfident notConfident","Stigmastane steroids","notConfident notConfident notConfident"],"html":true,"align":"left"},{"id":"Closest Organism with Structure Reported","name":"Closest Organism with Structure Reported","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["Swertia chirayita","&lt;br /&gt;","Swertia","Swertia chirayita","Swertia chirayita","Swertia chirayita","&lt;br /&gt;","&lt;br /&gt;","&lt;br /&gt;","Gentianales","Swertia chirayita","Swertia chirayita","Swertia chirayita","&lt;br /&gt;","&lt;br /&gt;","Swertia chirayita","&lt;br /&gt;","&lt;br /&gt;","Swertia","Swertia","&lt;br /&gt;","&lt;br /&gt;","Magnoliopsida","Gentianeae","Magnoliopsida","&lt;br /&gt;","&lt;br /&gt;","Swertia chirayita","&lt;br /&gt;","&lt;br /&gt;","Swertia","Swertia","&lt;br /&gt;","Swertia chirayita","&lt;br /&gt;","Swertia chirayita","Swertia chirayita","&lt;br /&gt;","&lt;br /&gt;","&lt;br /&gt;","&lt;br /&gt;","&lt;br /&gt;","Swertia","&lt;br /&gt;"],"html":true,"align":"left"},{"id":"Reference(s)","name":"Reference(s)","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["10.1002/PTR.2738","&lt;br /&gt;","10.1248/YAKUSHI1947.89.9_1276","10.1016/S0040-4039(00)95355-3","10.1016/S0040-4039(00)95355-3","10.1016/S0040-4039(00)95355-3","&lt;br /&gt;","&lt;br /&gt;","&lt;br /&gt;","10.1016/S0031-9422(98)00492-0; 10.1002/(SICI)1099-1573(199603)10:2&amp;lt;161::AID-PTR803&amp;gt;3.0.CO;2-B","10.1002/PTR.2738; 10.1002/1099-0690(200104)2001:8&amp;lt;1459::AID-EJOC1459&amp;gt;3.0.CO;2-0; 10.1016/S0040-4039(00)72792-4; 10.1055/S-2000-8579; 10.1021/NP960018G; 10.1002/TCM.10057","10.1021/NP960018G; 10.1002/PTR.2738","10.1021/NP960018G; 10.1002/PTR.2738","&lt;br /&gt;","&lt;br /&gt;","10.1002/PTR.2738; 10.1002/1099-0690(200104)2001:8&amp;lt;1459::AID-EJOC1459&amp;gt;3.0.CO;2-0; 10.1016/S0040-4039(00)72792-4; 10.1055/S-2000-8579; 10.1021/NP960018G; 10.1002/TCM.10057","&lt;br /&gt;","&lt;br /&gt;","10.1021/NP100008R; 10.3987/COM-11-12257; 10.1021/JO00025A032; 10.1016/0031-9422(92)80465-Q","10.1021/NP100008R; 10.3987/COM-11-12257; 10.1021/JO00025A032; 10.1016/0031-9422(92)80465-Q","&lt;br /&gt;","&lt;br /&gt;","10.1021/JF025651O; 10.1248/CPB.54.676; 10.1080/14786419.2010.488230; 10.1007/S10600-011-9930-4; 10.1007/S10600-014-1163-X","10.1016/0305-1978(82)90006-0","10.1021/JF025651O; 10.1248/CPB.54.676; 10.1080/14786419.2010.488230; 10.1007/S10600-011-9930-4; 10.1007/S10600-014-1163-X","&lt;br /&gt;","&lt;br /&gt;","10.1007/S10870-005-2802-7","&lt;br /&gt;","&lt;br /&gt;","10.1016/S0031-9422(00)82512-1","10.1016/S0031-9422(00)82512-1","&lt;br /&gt;","10.1016/0031-9422(91)83473-X","&lt;br /&gt;","10.1016/0031-9422(91)83473-X; 10.1016/S0040-4039(00)97322-2","10.1016/0031-9422(91)83473-X; 10.1016/0031-9422(88)83137-6","&lt;br /&gt;","&lt;br /&gt;","&lt;br /&gt;","&lt;br /&gt;","&lt;br /&gt;","10.1016/J.CCLET.2009.02.006","&lt;br /&gt;"],"html":true,"align":"left"}],"filterable":true,"defaultPageSize":10,"showPageSizeOptions":false,"pageSizeOptions":[10,25,50,100],"paginationType":"numbers","showPagination":true,"showPageInfo":true,"minRows":1,"height":"auto","theme":{"color":"#333333","backgroundColor":"#FFFFFF","stripedColor":"rgba(128,128,128,0.05)","style":{"font-family":"system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif","fontSize":"16px"},"tableStyle":{"borderTopStyle":"solid","borderTopWidth":"2px","borderTopColor":"#D3D3D3"},"headerStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"groupHeaderStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"cellStyle":{"fontWeight":"normal"}},"elementId":"gigwxbdcji","dataKey":"444fb7d2e902ce5e2800a218363c79e8"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style","tag.attribs.columns.1.style","tag.attribs.columns.2.style","tag.attribs.columns.3.style","tag.attribs.columns.4.style","tag.attribs.columns.5.style","tag.attribs.columns.6.style","tag.attribs.columns.7.style","tag.attribs.columns.8.style","tag.attribs.columns.9.style","tag.attribs.columns.10.style","tag.attribs.columns.11.style","tag.attribs.columns.12.style","tag.attribs.columns.13.style"],"jsHooks":[]}&lt;/script&gt;
 &lt;/div&gt;
 
 $csv_table
@@ -1201,6 +1202,7 @@ $csv_table
                                                                                                                                                                  Reference(s)
                                                                                                                                                                        &lt;char&gt;</code></pre>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(old_wd)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 
