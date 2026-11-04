@@ -98,14 +98,23 @@ pp_res <- prepare_peaks(data.frame(rtime = c(2, 4, 10), intensity = c(5, 9, 7)))
 expect_equal(pp_res$rtime, c(0, 0.25, 1), tolerance = 1e-12)
 expect_identical(pp_res$intensity, c(5, 9, 7))
 
-pp_empty <- prepare_peaks(data.frame(rtime = numeric(0L), intensity = numeric(0L)))
+pp_empty <- prepare_peaks(data.frame(
+  rtime = numeric(0L),
+  intensity = numeric(0L)
+))
 expect_identical(pp_empty$rtime, numeric(0L))
 expect_identical(pp_empty$intensity, numeric(0L))
 
-prt <- prepare_rt(data.frame(rt_min = c(1.5, 9), rt_max = c(2.5, 9)), shift = 0.5)
+prt <- prepare_rt(
+  data.frame(rt_min = c(1.5, 9), rt_max = c(2.5, 9)),
+  shift = 0.5
+)
 expect_identical(prt, cbind(rtmin = 120, rtmax = 180))
 
-pmz <- prepare_mz(data.frame(mz_min = c(100.1, 200.2), mz_max = c(100.3, 200.4)))
+pmz <- prepare_mz(data.frame(
+  mz_min = c(100.1, 200.2),
+  mz_max = c(100.3, 200.4)
+))
 expect_identical(
   pmz,
   list(
@@ -192,14 +201,14 @@ ms_synth <- list(
   )
 )
 rts_list <- list(
-  cbind(rtmin = 5, rtmax = 8),     # Peak 1: no scans in window (r_rt <= l_rt)
-  cbind(rtmin = 10, rtmax = 40)    # Peak 2: scans 1..4 (scan 1 is empty, scans 2..4 have 1 or 2 hits)
+  cbind(rtmin = 5, rtmax = 8), # Peak 1: no scans in window (r_rt <= l_rt)
+  cbind(rtmin = 10, rtmax = 40) # Peak 2: scans 1..4 (scan 1 is empty, scans 2..4 have 1 or 2 hits)
 )
 mzs_list <- list(
   list(cbind(mzmin = 99.9, mzmax = 100.1)),
   list(
-    cbind(mzmin = 99.9, mzmax = 100.1),   # Feature 1: single hit per scan (10, 30, 50)
-    cbind(mzmin = 199.9, mzmax = 200.1)   # Feature 2: multi-hit summed per scan (150, 200, 400)
+    cbind(mzmin = 99.9, mzmax = 100.1), # Feature 1: single hit per scan (10, 30, 50)
+    cbind(mzmin = 199.9, mzmax = 200.1) # Feature 2: multi-hit summed per scan (150, 200, 400)
   )
 )
 ext_res <- extract_ms_progress(
@@ -218,7 +227,10 @@ expect_equal(ext_res[[2L]][[2L]]$rtime, c(0, 1), tolerance = 1e-12)
 
 # --- closest_idx all branches ---
 expect_identical(closest_idx(numeric(0L), c(1, 2), 0.5), integer(0L))
-expect_identical(closest_idx(c(1, 2), numeric(0L), 0.5), c(NA_integer_, NA_integer_))
+expect_identical(
+  closest_idx(c(1, 2), numeric(0L), 0.5),
+  c(NA_integer_, NA_integer_)
+)
 # Queries remaining after table exhausted (it > nt)
 expect_identical(
   closest_idx(c(1.0, 5.0, 9.0), c(1.0), tolerance = 0.2),
@@ -234,9 +246,9 @@ expect_identical(
   closest_idx(c(1.01, 1.15), c(1.0, 5.0), tolerance = 0.2),
   c(1L, NA_integer_)
 )
-# Exact tolerance boundary
+# Exact tolerance boundary (including IEEE 754 positive rounding 0.3 - 0.1 > 0.2)
 expect_identical(
-  closest_idx(c(1.2, 1.25), c(1.0), tolerance = 0.2),
+  closest_idx(c(0.3, 0.35), c(0.1), tolerance = 0.2),
   c(1L, NA_integer_)
 )
 

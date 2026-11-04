@@ -146,12 +146,33 @@ df_neg <- data.frame(
   rtime = seq(0, 2, length.out = 50L),
   intensity = seq(-5, 4, length.out = 50L)
 )
+df_zero <- data.frame(
+  rtime = seq(0, 2, length.out = 50L),
+  intensity = seq(0, 9, length.out = 50L)
+)
 imp_pos <- improve_signal(
   df_pos,
   frequency = 1,
   resample = 1,
   time_min = 0,
-  time_max = 1.5
+  time_max = 1.5,
+  intensity_floor = 0.5
+)
+imp_pos_floor2 <- improve_signal(
+  df_pos,
+  frequency = 1,
+  resample = 1,
+  time_min = 0,
+  time_max = 1.5,
+  intensity_floor = 5.0
+)
+imp_zero <- improve_signal(
+  df_zero,
+  frequency = 1,
+  resample = 1,
+  time_min = 0,
+  time_max = 1.5,
+  intensity_floor = 1.0
 )
 imp_neg <- improve_signal(
   df_neg,
@@ -159,14 +180,18 @@ imp_neg <- improve_signal(
   resample = 1,
   time_min = 0,
   time_max = 1.5,
-  intensity_floor = 0.5
+  intensity_floor = 6.0
 )
 # Expected time grid: seq(0, 1.5, by = 1/60)[5:91]
 expected_time <- seq(0, 1.5, by = 1 / 60)[5:91]
 expect_equal(imp_pos$rtime, expected_time, tolerance = 1e-12)
 expect_equal(imp_neg$rtime, expected_time, tolerance = 1e-12)
-expect_true(all(is.finite(imp_pos$intensity)))
-expect_true(all(is.finite(imp_neg$intensity)))
+# When min_intensity > 0, shift_amount is 0 regardless of intensity_floor
+expect_equal(imp_pos$intensity, imp_pos_floor2$intensity, tolerance = 1e-12)
+# When min_intensity == 0, shift_amount = 0 + 1.0 = 1.0, matching df_pos
+expect_equal(imp_zero$intensity, imp_pos$intensity, tolerance = 1e-12)
+# When min_intensity == -5, shift_amount = 5 + 6.0 = 11.0, so df_neg + 11 == df_pos + 5
+expect_equal(imp_neg$intensity, imp_pos$intensity + 5.0, tolerance = 1e-12)
 
 prog_res <- improve_signals_progress(
   list(a = df_pos, b = df_neg),
@@ -181,11 +206,32 @@ expect_equal(prog_res$a, imp_pos, tolerance = 1e-12)
 # --- baseline_chromatogram ---
 df_bl <- data.frame(
   rtime = seq(1, 20, by = 1),
-  intensity = c(10, NA, 10, 12, 30, 80, 30, 12, 10, 10, 10, 10, 15, 40, 15, 10, 10, 10, 10, 10)
+  intensity = c(
+    10,
+    NA,
+    10,
+    12,
+    30,
+    80,
+    30,
+    12,
+    10,
+    10,
+    10,
+    10,
+    15,
+    40,
+    15,
+    10,
+    10,
+    10,
+    10,
+    10
+  )
 )
 bl_out <- baseline_chromatogram(df_bl, method = "als")
 expect_identical(bl_out$rtime, df_bl$rtime)
-expect_identical( nrow(bl_out), nrow(df_bl))
+expect_identical(nrow(bl_out), nrow(df_bl))
 expect_true(all(is.finite(bl_out$intensity)))
 
 # --- normalize_chromatograms_list ---

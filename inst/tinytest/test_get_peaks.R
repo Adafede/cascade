@@ -7,7 +7,11 @@ t_pts <- seq(1, 50, by = 1)
 sig_1 <- 5 + 100 * exp(-((t_pts - 15)^2) / 8) + 80 * exp(-((t_pts - 35)^2) / 10)
 sig_2 <- 2 + 50 * exp(-((t_pts - 25)^2) / 6)
 
-mat_1col <- matrix(sig_1, ncol = 1L, dimnames = list(as.character(t_pts), "254"))
+mat_1col <- matrix(
+  sig_1,
+  ncol = 1L,
+  dimnames = list(as.character(t_pts), "254")
+)
 mat_2col <- cbind("254" = sig_1, "280" = sig_2)
 rownames(mat_2col) <- as.character(t_pts)
 
@@ -107,10 +111,17 @@ r_sg_odd <- get_peaks(
 expect_true(nrow(r_sg_odd$s1[["254"]]) >= 1L)
 
 # 7. Flat signal -> no peaks detected -> returns 0-row data.frame with expected columns
-mat_flat <- matrix(rep(1, 20L), ncol = 1L, dimnames = list(as.character(1:20), "254"))
+mat_flat <- matrix(
+  rep(1, 20L),
+  ncol = 1L,
+  dimnames = list(as.character(1:20), "254")
+)
 res_flat <- get_peaks(list(s1 = mat_flat), lambdas = "254", fit = "egh")
 expect_identical(nrow(res_flat$s1[["254"]]), 0L)
-expect_true(all(c("sample", "lambda", "rt", "start", "end", "area") %in% names(res_flat$s1[["254"]])))
+expect_true(all(
+  c("sample", "lambda", "rt", "start", "end", "area") %in%
+    names(res_flat$s1[["254"]])
+))
 
 # 8. sd.max filtering removes wide peaks when sd.max is small, keeps all when sd.max = NULL
 res_sd_strict <- get_peaks(

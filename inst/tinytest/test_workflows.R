@@ -173,6 +173,11 @@ local({
           c(
             "structure,structureLabel,structure_id,structureSmiles,taxaLabels,taxa,referencesLabels,references_ids,references",
             paste0("Q1,Comp1,IK1,C=C,", sp_prefix, " sp1,QT1,Ref1,10.1/1,QR1"),
+            paste0(
+              "Q1b,Comp1b,IK1b,C=C,",
+              sp_prefix,
+              " sp1,QT1,Ref1,10.1/1,QR1"
+            ),
             paste0("Q2,Comp2,IK2,C=O,", sp_prefix, " sp2,QT2,Ref2,10.1/2,QR2")
           ),
           destfile
@@ -189,6 +194,7 @@ local({
       c(
         "structure_inchikey,structure_smiles_2D,structure_exact_mass,structure_xlogp,structure_taxonomy_npclassifier_01pathway,structure_taxonomy_npclassifier_02superclass,structure_taxonomy_npclassifier_03class",
         "IK1,C=C,300.0,1.5,Terpenoids,Monoterpenoids,Secoiridoids",
+        "IK1b,C=C,300.0,1.5,Terpenoids,Monoterpenoids,Secoiridoids",
         "IK2,C=O,350.0,2.0,Alkaloids,Indole alkaloids,Simple indole"
       ),
       lotus_gz
@@ -209,5 +215,6 @@ local({
     expect_true("special" %in% names(res_ids$treemaps))
     expect_inherits(res_ids$tables$Swertia, "gt_tbl")
     expect_inherits(res_ids$tables$Gentiana, "gt_tbl")
+    expect_identical(nrow(res_ids$tables$Swertia[["_data"]]), 3L)
   })
 })

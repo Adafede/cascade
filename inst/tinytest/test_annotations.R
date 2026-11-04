@@ -339,7 +339,7 @@ local({
     feature_rt = c(1.5, 1.5, 2.5, 2.5, 3.5, 3.5, 4.5),
     feature_mz = seq(100, 700, by = 100),
     feature_area = rep(1000, 7L),
-    comparison_score = c(0.9, 0.85, 0.75, 0.9, 0.82, 0.88, 0.5)
+    comparison_score = c(0.9, 0.85, 0.6, 0.9, 0.8, 0.88, 0.5)
   )
   ninf_dt <- data.table::data.table(
     sample = "s1",

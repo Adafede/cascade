@@ -129,7 +129,9 @@ withr::with_dir(work_dir, {
     function(url, handle = NULL) {
       list(
         status_code = 200L,
-        content = charToRaw('{"files": [{"links": {"self": "https://zenodo.org/api/records/123/files/other.txt"}}]}')
+        content = charToRaw(
+          '{"files": [{"links": {"self": "https://zenodo.org/api/records/123/files/other.txt"}}]}'
+        )
       )
     },
     envir = curl_ns
@@ -185,7 +187,10 @@ withr::with_dir(work_dir, {
     ann_file
   )
   dt_ann <- load_annotations(ann_file, show_example = FALSE, mode = "neg")
-  expect_identical(dt_ann$candidate_structure_tax_npc_01pat, "AlkaloidsorTerpenoids$Sub")
+  expect_identical(
+    dt_ann$candidate_structure_tax_npc_01pat,
+    "AlkaloidsorTerpenoids$Sub"
+  )
   expect_identical(dt_ann$other_col, "keep$u00A7")
   expect_identical(dt_ann$mode, "neg")
 
@@ -195,7 +200,11 @@ withr::with_dir(work_dir, {
     "sample_run.mzML"
   )
   expect_identical(
-    load_name("/some/dir/sample_run.mzML", default = "def.mzML", show_example = TRUE),
+    load_name(
+      "/some/dir/sample_run.mzML",
+      default = "def.mzML",
+      show_example = TRUE
+    ),
     "def.mzML"
   )
 
@@ -214,10 +223,22 @@ withr::with_dir(work_dir, {
   # Explicit file path when show_example = FALSE and show_example = TRUE
   inf_custom <- file.path(work_dir, "inf_custom.tsv")
   writeLines(c("peak_id\tfeature_id", "1\t99"), inf_custom)
-  expect_identical(load_features_informed(inf_custom, show_example = FALSE)$feature_id, 99L)
-  expect_identical(load_features_informed(inf_custom, show_example = TRUE)$feature_id, 99L)
-  expect_identical(load_features_not_informed(inf_custom, show_example = FALSE)$feature_id, 99L)
-  expect_identical(load_features_not_informed(inf_custom, show_example = TRUE)$feature_id, 99L)
+  expect_identical(
+    load_features_informed(inf_custom, show_example = FALSE)$feature_id,
+    99L
+  )
+  expect_identical(
+    load_features_informed(inf_custom, show_example = TRUE)$feature_id,
+    99L
+  )
+  expect_identical(
+    load_features_not_informed(inf_custom, show_example = FALSE)$feature_id,
+    99L
+  )
+  expect_identical(
+    load_features_not_informed(inf_custom, show_example = TRUE)$feature_id,
+    99L
+  )
 
   # Fallback when file is non-existent and show_example = FALSE (calls fread_gz(file))
   expect_identical(
