@@ -57,176 +57,180 @@ local({
     add = TRUE
   )
 
-# 2a. CSV success with remove_url = TRUE vs remove_url = FALSE, GET with '?' in endpoint
-last_url <- NULL
-assign(
-  "curl_download",
-  function(url, destfile, quiet = TRUE, mode = "wb", handle = NULL) {
-    last_url <<- url
-    writeLines(
-      c(
-        "taxon,label,count",
-        "http://www.wikidata.org/entity/Q158572,Swertia,10",
-        "https://www.wikidata.org/entity/Q12345,Gentiana,20"
-      ),
-      destfile
-    )
-    invisible(destfile)
-  },
-  envir = curl_ns
-)
-
-res_strip <- query_wikidata(
-  "SELECT * WHERE {}",
-  remove_url = TRUE,
-  endpoint = "https://example.org/sparql?format=csv",
-  fallback = FALSE
-)
-expect_true(grepl("&query=", last_url, fixed = TRUE))
-expect_identical(res_strip$taxon, c("Q158572", "Q12345"))
-expect_identical(res_strip$label, c("Swertia", "Gentiana"))
-expect_identical(res_strip$count, c(10L, 20L))
-
-res_keep_url <- query_wikidata(
-  "SELECT * WHERE {}",
-  remove_url = FALSE,
-  endpoint = "https://example.org/sparql",
-  post = TRUE,
-  fallback = FALSE
-)
-expect_identical(last_url, "https://example.org/sparql")
-expect_identical(
-  res_keep_url$taxon,
-  c(
-    "http://www.wikidata.org/entity/Q158572",
-    "https://www.wikidata.org/entity/Q12345"
-  )
-)
-
-# 2b. Legacy argument shims: character timeout -> headers, numeric headers -> timeout
-res_shim1 <- query_wikidata(
-  "SELECT * WHERE {}",
-  timeout = "text/csv",
-  fallback = FALSE
-)
-expect_identical(nrow(res_shim1), 2L)
-
-res_shim2 <- query_wikidata(
-  "SELECT * WHERE {}",
-  timeout = FALSE,
-  headers = 30L
-)
-expect_identical(nrow(res_shim2), 2L)
-
-# 2c. HTML/XML error response detection + TSV fallback with RDF literal/URI stripping
-call_idx <- 0L
-assign(
-  "curl_download",
-  function(url, destfile, quiet = TRUE, mode = "wb", handle = NULL) {
-    call_idx <<- call_idx + 1L
-    if (call_idx == 1L) {
-      writeLines("  <html><body>Error 502</body></html>", destfile)
-    } else {
+  # 2a. CSV success with remove_url = TRUE vs remove_url = FALSE, GET with '?' in endpoint
+  state <- new.env(parent = emptyenv())
+  state$last_url <- NULL
+  assign(
+    "curl_download",
+    function(url, destfile, quiet = TRUE, mode = "wb", handle = NULL) {
+      state$last_url <- url
       writeLines(
         c(
-          "?taxon\t?label",
-          "<http://www.wikidata.org/entity/Q158572>\tSwertia",
-          "<https://www.wikidata.org/entity/Q999>\tGentiana"
+          "taxon,label,count",
+          "http://www.wikidata.org/entity/Q158572,Swertia,10",
+          "https://www.wikidata.org/entity/Q12345,Gentiana,20"
         ),
         destfile
       )
-    }
-    invisible(destfile)
-  },
-  envir = curl_ns
-)
-res_tsv_fb <- query_wikidata("SELECT ?taxon ?label WHERE {}", fallback = FALSE)
-expect_identical(names(res_tsv_fb), c("taxon", "label"))
-expect_identical(res_tsv_fb$taxon, c("Q158572", "Q999"))
-expect_identical(res_tsv_fb$label, c("Swertia", "Gentiana"))
+      invisible(destfile)
+    },
+    envir = curl_ns
+  )
 
-# 2d. Primary endpoint fails -> warns and succeeds on QLever fallback endpoint
-assign(
-  "curl_download",
-  function(url, destfile, quiet = TRUE, mode = "wb", handle = NULL) {
-    if (!grepl("qlever", url, fixed = TRUE)) {
-      stop("Primary connection timeout")
-    }
-    writeLines(c("taxon", "http://www.wikidata.org/entity/Q777"), destfile)
-    invisible(destfile)
-  },
-  envir = curl_ns
-)
-expect_warning(
-  res_qlever <- query_wikidata("SELECT ?taxon WHERE {}", fallback = TRUE),
-  pattern = "Primary endpoint failed.*Retrying with fallback"
-)
-expect_identical(res_qlever$taxon, "Q777")
+  res_strip <- query_wikidata(
+    "SELECT * WHERE {}",
+    remove_url = TRUE,
+    endpoint = "https://example.org/sparql?format=csv",
+    fallback = FALSE
+  )
+  expect_true(grepl("&query=", state$last_url, fixed = TRUE))
+  expect_identical(res_strip$taxon, c("Q158572", "Q12345"))
+  expect_identical(res_strip$label, c("Swertia", "Gentiana"))
+  expect_identical(res_strip$count, c(10L, 20L))
 
-# 2e. Both primary and fallback endpoints fail -> stops with combined message
-assign(
-  "curl_download",
-  function(url, destfile, quiet = TRUE, mode = "wb", handle = NULL) {
-    stop("Network unreachable")
-  },
-  envir = curl_ns
-)
-expect_warning(
+  res_keep_url <- query_wikidata(
+    "SELECT * WHERE {}",
+    remove_url = FALSE,
+    endpoint = "https://example.org/sparql",
+    post = TRUE,
+    fallback = FALSE
+  )
+  expect_identical(state$last_url, "https://example.org/sparql")
+  expect_identical(
+    res_keep_url$taxon,
+    c(
+      "http://www.wikidata.org/entity/Q158572",
+      "https://www.wikidata.org/entity/Q12345"
+    )
+  )
+
+  # 2b. Legacy argument shims: character timeout -> headers, numeric headers -> timeout
+  res_shim1 <- query_wikidata(
+    "SELECT * WHERE {}",
+    timeout = "text/csv",
+    fallback = FALSE
+  )
+  expect_identical(nrow(res_shim1), 2L)
+
+  res_shim2 <- query_wikidata(
+    "SELECT * WHERE {}",
+    timeout = FALSE,
+    headers = 30L
+  )
+  expect_identical(nrow(res_shim2), 2L)
+
+  # 2c. HTML/XML error response detection + TSV fallback with RDF literal/URI stripping
+  state$call_idx <- 0L
+  assign(
+    "curl_download",
+    function(url, destfile, quiet = TRUE, mode = "wb", handle = NULL) {
+      state$call_idx <- state$call_idx + 1L
+      if (state$call_idx == 1L) {
+        writeLines("  <html><body>Error 502</body></html>", destfile)
+      } else {
+        writeLines(
+          c(
+            "?taxon\t?label",
+            "<http://www.wikidata.org/entity/Q158572>\tSwertia",
+            "<https://www.wikidata.org/entity/Q999>\tGentiana"
+          ),
+          destfile
+        )
+      }
+      invisible(destfile)
+    },
+    envir = curl_ns
+  )
+  res_tsv_fb <- query_wikidata(
+    "SELECT ?taxon ?label WHERE {}",
+    fallback = FALSE
+  )
+  expect_identical(names(res_tsv_fb), c("taxon", "label"))
+  expect_identical(res_tsv_fb$taxon, c("Q158572", "Q999"))
+  expect_identical(res_tsv_fb$label, c("Swertia", "Gentiana"))
+
+  # 2d. Primary endpoint fails -> warns and succeeds on QLever fallback endpoint
+  assign(
+    "curl_download",
+    function(url, destfile, quiet = TRUE, mode = "wb", handle = NULL) {
+      if (!grepl("qlever", url, fixed = TRUE)) {
+        stop("Primary connection timeout")
+      }
+      writeLines(c("taxon", "http://www.wikidata.org/entity/Q777"), destfile)
+      invisible(destfile)
+    },
+    envir = curl_ns
+  )
+  expect_warning(
+    res_qlever <- query_wikidata("SELECT ?taxon WHERE {}", fallback = TRUE),
+    pattern = "Primary endpoint failed.*Retrying with fallback"
+  )
+  expect_identical(res_qlever$taxon, "Q777")
+
+  # 2e. Both primary and fallback endpoints fail -> stops with combined message
+  assign(
+    "curl_download",
+    function(url, destfile, quiet = TRUE, mode = "wb", handle = NULL) {
+      stop("Network unreachable")
+    },
+    envir = curl_ns
+  )
+  expect_warning(
+    expect_error(
+      query_wikidata("SELECT ?taxon WHERE {}", fallback = TRUE),
+      pattern = "Both endpoints failed"
+    ),
+    pattern = "Primary endpoint failed"
+  )
   expect_error(
-    query_wikidata("SELECT ?taxon WHERE {}", fallback = TRUE),
-    pattern = "Both endpoints failed"
-  ),
-  pattern = "Primary endpoint failed"
-)
-expect_error(
-  query_wikidata("SELECT ?taxon WHERE {}", fallback = FALSE),
-  pattern = "Network unreachable"
-)
+    query_wikidata("SELECT ?taxon WHERE {}", fallback = FALSE),
+    pattern = "Network unreachable"
+  )
 
-# --- 3. taxon_name_to_qid ---
-expect_error(
-  taxon_name_to_qid(123),
-  pattern = "`taxon_name` must be a single non-missing character string"
-)
-expect_error(
-  taxon_name_to_qid(c("Swertia", "Gentiana")),
-  pattern = "`taxon_name` must be a single non-missing character string"
-)
-expect_error(
-  taxon_name_to_qid(NA_character_),
-  pattern = "`taxon_name` must be a single non-missing character string"
-)
+  # --- 3. taxon_name_to_qid ---
+  expect_error(
+    taxon_name_to_qid(123),
+    pattern = "`taxon_name` must be a single non-missing character string"
+  )
+  expect_error(
+    taxon_name_to_qid(c("Swertia", "Gentiana")),
+    pattern = "`taxon_name` must be a single non-missing character string"
+  )
+  expect_error(
+    taxon_name_to_qid(NA_character_),
+    pattern = "`taxon_name` must be a single non-missing character string"
+  )
 
-# Successful QID resolution and empty result handling
-assign(
-  "curl_download",
-  function(url, destfile, quiet = TRUE, mode = "wb", handle = NULL) {
-    writeLines(c("taxon", "http://www.wikidata.org/entity/Q158572"), destfile)
-    invisible(destfile)
-  },
-  envir = curl_ns
-)
-expect_identical(taxon_name_to_qid("Swertia"), "Q158572")
+  # Successful QID resolution and empty result handling
+  assign(
+    "curl_download",
+    function(url, destfile, quiet = TRUE, mode = "wb", handle = NULL) {
+      writeLines(c("taxon", "http://www.wikidata.org/entity/Q158572"), destfile)
+      invisible(destfile)
+    },
+    envir = curl_ns
+  )
+  expect_identical(taxon_name_to_qid("Swertia"), "Q158572")
 
-assign(
-  "curl_download",
-  function(url, destfile, quiet = TRUE, mode = "wb", handle = NULL) {
-    writeLines("taxon", destfile)
-    invisible(destfile)
-  },
-  envir = curl_ns
-)
-expect_identical(taxon_name_to_qid("NonExistentTaxon"), character(0L))
+  assign(
+    "curl_download",
+    function(url, destfile, quiet = TRUE, mode = "wb", handle = NULL) {
+      writeLines("taxon", destfile)
+      invisible(destfile)
+    },
+    envir = curl_ns
+  )
+  expect_identical(taxon_name_to_qid("NonExistentTaxon"), character(0L))
 
-# --- 4. wiki_progress ---
-assign(
-  "curl_download",
-  function(url, destfile, quiet = TRUE, mode = "wb", handle = NULL) {
-    writeLines(c("structure", "Q415869"), destfile)
-    invisible(destfile)
-  },
-  envir = curl_ns
-)
+  # --- 4. wiki_progress ---
+  assign(
+    "curl_download",
+    function(url, destfile, quiet = TRUE, mode = "wb", handle = NULL) {
+      writeLines(c("structure", "Q415869"), destfile)
+      invisible(destfile)
+    },
+    envir = curl_ns
+  )
   wp_out <- wiki_progress(list(Swertia = "SELECT ?structure WHERE {}"))
   expect_identical(names(wp_out), "Swertia")
   expect_identical(wp_out$Swertia$structure, "Q415869")
@@ -318,9 +322,15 @@ tp_res <- tables_progress(
   structures_classified = sc_mock
 )
 expect_identical(nrow(tp_res$nonempty), 2L)
-expect_false(any(c("references_ids", "structure_id", "structureSmiles") %in% names(tp_res$nonempty)))
-expect_identical( names(tp_res$nonempty)[1:3], c("structureLabel", "structure", "structureImage"))
-expect_true(any(is.na(tp_res$nonempty$structureImage)))
+expect_false(any(
+  c("references_ids", "structure_id", "structureSmiles") %in%
+    names(tp_res$nonempty)
+))
+expect_identical(
+  names(tp_res$nonempty)[1:3],
+  c("structureLabel", "structure", "structureImage")
+)
+expect_true(anyNA(tp_res$nonempty$structureImage))
 expect_true(any(tp_res$nonempty$structureImage == utils::URLencode("C=C")))
 
 # Empty table branch returns 1-row NA template
