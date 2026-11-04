@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_ids.R
 \name{generate_ids}
 \alias{generate_ids}
-\title{Generate IDs}
+\title{Generate chemotaxonomic literature hierarchies and plots from Wikidata/LOTUS}
 \usage{
 generate_ids(
   taxa = c("Swertia", "Kopsia", "Ginkgo"),
@@ -11,32 +11,62 @@ generate_ids(
   filter_ms_conditions = TRUE,
   start = "0",
   end = "9999",
-  limit = "1000000"
+  limit = "1000000",
+  show_title = FALSE,
+  format_tables = FALSE
 )
 }
 \arguments{
-\item{taxa}{Taxa}
+\item{taxa}{Character vector of scientific taxon names to query. Default is
+\code{c("Swertia", "Kopsia", "Ginkgo")}.}
 
-\item{comparison}{Comparison}
+\item{comparison}{Optional character vector of two taxon names in \code{taxa} for
+side-by-side comparative visualization. Default is \code{NULL}.}
 
-\item{no_stereo}{No stereo}
+\item{no_stereo}{Logical; collapse stereoisomers to unique 2D structures per
+taxon/reference. Default is \code{TRUE}.}
 
-\item{filter_ms_conditions}{Filter MS conditions}
+\item{filter_ms_conditions}{Logical; filter structures to chromatographiable
+mass (\verb{50..1500} Da) and XLogP (\verb{-1..6}) ranges. Default is \code{TRUE}.}
 
-\item{start}{Start}
+\item{start}{Character(1); minimum publication year. Default is \code{"0"}.}
 
-\item{end}{End}
+\item{end}{Character(1); maximum publication year. Default is \code{"9999"}.}
 
-\item{limit}{Limit}
+\item{limit}{Character(1); maximum number of SPARQL rows per taxon. Default
+is \code{"1000000"}.}
+
+\item{show_title}{Logical; include taxon name and unique structure count
+titles on interactive treemaps and sunbursts. Default is \code{FALSE}.}
+
+\item{format_tables}{Logical; format the returned \code{tables} element as
+interactive \code{\link[gt:gt]{gt::gt()}} tables with clickable Wikidata links and 2D
+structure depictions. Default is \code{FALSE}.}
 }
 \value{
-IDs
+A named list with four elements:
+\itemize{
+\item \code{plots}: Named list of \code{ggplot} chemical class histograms.
+\item \code{treemaps}: Named list of interactive \code{plotly} treemap widgets.
+\item \code{sunbursts}: Named list of interactive \code{plotly} sunburst widgets.
+\item \code{tables}: Named list of compound-taxon-reference \code{data.table} objects
+(or \code{gt_tbl} objects when \code{format_tables = TRUE}).
+}
 }
 \description{
-Generate IDs
+Queries Wikidata for natural products reported in the specified \code{taxa}
+within a publication year range (\code{start} to \code{end}), enriches them with
+NPClassifier chemical classifications from LOTUS, optionally deduplicates
+stereoisomers and filters to chromatographiable mass/XLogP ranges, and
+builds stacked histograms, interactive treemaps, and sunburst plots.
 }
 \examples{
-\dontrun{
-generate_ids()
+\donttest{
+try(generate_ids(taxa = "Swertia"))
 }
 }
+\concept{EDAM:operation_0224 Query and retrieval}
+\concept{EDAM:operation_2942 Treemap visualisation}
+\concept{EDAM:operation_3803 Natural product identification}
+\concept{EDAM:topic_0154 Small molecules}
+\concept{EDAM:topic_3172 Metabolomics}

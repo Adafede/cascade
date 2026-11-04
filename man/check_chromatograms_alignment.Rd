@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_chromatograms_alignment.R
 \name{check_chromatograms_alignment}
 \alias{check_chromatograms_alignment}
-\title{Check chromatograms alignment}
+\title{Check multi-detector chromatogram alignment}
 \usage{
 check_chromatograms_alignment(
   file_negative = NULL,
@@ -30,65 +30,72 @@ check_chromatograms_alignment(
 )
 }
 \arguments{
-\item{file_negative}{Negative file path}
+\item{file_negative}{Path to negative-mode \code{.mzML} file (optional).}
 
-\item{file_positive}{Positive file path}
+\item{file_positive}{Path to positive-mode \code{.mzML} file (optional).}
 
-\item{time_min}{Minimum time in minutes. Default is 0.5.}
+\item{time_min}{Minimum retention time in minutes. Default is \code{0.5}.}
 
-\item{time_max}{Maximum time in minutes. Default is 32.5.}
+\item{time_max}{Maximum retention time in minutes. Default is \code{32.5}.}
 
-\item{cad_shift}{CAD time shift in minutes. Default is 0.05.}
+\item{cad_shift}{CAD retention time shift in minutes. Default is \code{0.05}.}
 
-\item{pda_shift}{PDA time shift in minutes. Default is 0.1.}
+\item{pda_shift}{PDA retention time shift in minutes. Default is \code{0.1}.}
 
-\item{fourier_components}{Fraction of Fourier components to keep. Default is
-0.01.}
+\item{fourier_components}{Fraction of Fourier components to retain. Default
+is \code{0.01}.}
 
-\item{frequency}{Acquisition frequency in Hz. Default is 1.}
+\item{frequency}{Acquisition frequency in Hz. Default is \code{1}.}
 
-\item{resample}{Resampling factor. Default is 1.}
+\item{resample}{Resampling factor. Default is \code{1}.}
 
-\item{chromatograms}{Chromatograms to plot. Default is c("bpi_pos",
-"cad_pos", "pda_pos").}
+\item{chromatograms}{Character vector of chromatograms to plot. Default is
+\code{c("bpi_pos", "cad_pos", "pda_pos")}.}
 
-\item{headers}{Named vector mapping detector types to header names in the
-mzML file.}
+\item{headers}{Named character vector mapping detector types (\code{"bpi"},
+\code{"pda"}, \code{"cad"}) to \code{.mzML} chromatogram header IDs.}
 
-\item{type}{Type of chromatogram to display. Either "baselined" or
-"improved". Default is "baselined".}
+\item{type}{Type of chromatogram to display: \code{"baselined"} or \code{"improved"}.
+Default is \code{"baselined"}.}
 
-\item{normalize_intensity}{Normalize intensity? Default is TRUE.}
+\item{normalize_intensity}{Logical; normalize intensity to \verb{[0, 1]}. Default
+is \code{TRUE}.}
 
-\item{normalize_time}{Normalize time? Default is FALSE.}
+\item{normalize_time}{Logical; normalize time to \verb{[0, 1]}. Default is
+\code{FALSE}.}
 
-\item{show_example}{Show example data? Default is FALSE.}
+\item{show_example}{Logical; use bundled example data. Default is \code{FALSE}.}
 
 \item{intensity_floor}{Small positive value for intensity floor. Default is
-0.001.}
+\code{0.001}.}
 
-\item{k2}{K2 parameter for signal sharpening. Default is 250.}
+\item{k2}{Second-derivative weight for signal sharpening. Default is \code{250}.}
 
-\item{k4}{K4 parameter for signal sharpening. Default is 1250000.}
+\item{k4}{Fourth-derivative weight for signal sharpening. Default is
+\code{1250000}.}
 
-\item{sigma}{Sigma parameter for signal sharpening. Default is 0.05.}
+\item{sigma}{Gaussian sigma for signal sharpening. Default is \code{0.05}.}
 
-\item{smoothing_width}{Smoothing width for signal sharpening. Default is 8.}
+\item{smoothing_width}{Moving-average window width for derivative smoothing.
+Default is \code{8}.}
 
-\item{baseline_method}{Method for baseline correction. Default is
-"peakDetection".}
+\item{baseline_method}{Baseline correction method passed to
+\code{\link[baseline:baseline]{baseline::baseline()}}. Default is \code{"peakDetection"}.}
 
-\item{improve_signal}{Logical. Whether to apply signal improvement (Fourier
-filtering and sharpening). Default is TRUE.}
+\item{improve_signal}{Logical; apply Fourier filtering and sharpening.
+Default is \code{TRUE}.}
 }
 \value{
-A plot with (non-)aligned chromatograms
+A \code{plotly} htmlwidget displaying the aligned chromatograms.
 }
 \description{
-Check chromatograms alignment
+Visualizes and aligns BPI, CAD, and PDA chromatograms across positive and/or
+negative ionization runs after optional Fourier noise filtering, peak
+sharpening, and baseline correction.
 }
 \examples{
-\dontrun{
 check_chromatograms_alignment(show_example = TRUE)
 }
-}
+\concept{EDAM:operation_3203 Chromatogram visualisation}
+\concept{EDAM:operation_3628 Chromatographic alignment}
+\concept{EDAM:topic_3172 Metabolomics}

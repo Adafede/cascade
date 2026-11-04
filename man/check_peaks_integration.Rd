@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_peaks_integration.R
 \name{check_peaks_integration}
 \alias{check_peaks_integration}
-\title{Check chromatograms alignment}
+\title{Check chromatographic peak detection and integration bounds}
 \usage{
 check_peaks_integration(
   file = NULL,
@@ -34,74 +34,84 @@ check_peaks_integration(
 )
 }
 \arguments{
-\item{file}{File path}
+\item{file}{Path to \code{.mzML} file (optional when \code{show_example = TRUE}).}
 
-\item{features}{Features path}
+\item{features}{Path to feature table (optional when \code{show_example = TRUE}).}
 
-\item{detector}{Detector type (e.g., "cad", "bpi", "pda")}
+\item{detector}{Detector type: \code{"cad"}, \code{"bpi"}, or \code{"pda"}. Default is
+\code{"cad"}.}
 
-\item{chromatogram}{Chromatogram type. One of "original", "improved", or
-"baselined". Default is "baselined".}
+\item{chromatogram}{Chromatogram processing stage: \code{"original"},
+\code{"improved"}, or \code{"baselined"}. Default is \code{"baselined"}.}
 
-\item{headers}{Named vector mapping detector types to header names.}
+\item{headers}{Named character vector mapping detector types to \code{.mzML}
+chromatogram header IDs.}
 
-\item{min_area}{Minimum area fraction for peak filtering. Default is 0.005.}
+\item{min_area}{Minimum relative area fraction for peak filtering. Default is
+\code{0.005}.}
 
-\item{min_intensity}{Minimum intensity for feature filtering. Default is
-1E4.}
+\item{min_intensity}{Minimum MS intensity for feature filtering. Default is
+\code{1e4}.}
 
-\item{shift}{Time shift in minutes. Default is 0.05.}
+\item{shift}{Retention time shift in minutes. Default is \code{0.05}.}
 
-\item{show_example}{Show example data? Default is FALSE.}
+\item{show_example}{Logical; use bundled example data. Default is \code{FALSE}.}
 
-\item{fourier_components}{Fraction of Fourier components to keep. Default is
-0.01.}
+\item{fourier_components}{Fraction of Fourier components to retain. Default
+is \code{0.01}.}
 
-\item{time_min}{Time min in minutes. Default is 0.5.}
+\item{time_min}{Minimum retention time in minutes. Default is \code{0.5}.}
 
-\item{time_max}{Time max in minutes. Default is 32.5.}
+\item{time_max}{Maximum retention time in minutes. Default is \code{32.5}.}
 
-\item{frequency}{Acquisition frequency in Hz. Default is 1.}
+\item{frequency}{Acquisition frequency in Hz. Default is \code{1}.}
 
-\item{resample}{Resampling factor. Default is 1.}
+\item{resample}{Resampling factor. Default is \code{1}.}
 
 \item{intensity_floor}{Small positive value for intensity floor. Default is
-0.001.}
+\code{0.001}.}
 
-\item{k2}{K2 parameter for signal sharpening. Default is 250.}
+\item{k2}{Second-derivative weight for signal sharpening. Default is \code{250}.}
 
-\item{k4}{K4 parameter for signal sharpening. Default is 1250000.}
+\item{k4}{Fourth-derivative weight for signal sharpening. Default is
+\code{1250000}.}
 
-\item{sigma}{Sigma parameter for signal sharpening. Default is 0.05.}
+\item{sigma}{Gaussian sigma for signal sharpening. Default is \code{0.05}.}
 
-\item{smoothing_width}{Smoothing width for signal sharpening. Default is 8.}
+\item{smoothing_width}{Moving-average window width for derivative smoothing.
+Default is \code{8}.}
 
-\item{baseline_method}{Method for baseline correction. Default is
-"peakDetection".}
+\item{baseline_method}{Baseline correction method passed to
+\code{\link[baseline:baseline]{baseline::baseline()}}. Default is \code{"peakDetection"}.}
 
-\item{sd_max}{Maximum standard deviation for peak filtering. Default is 50.}
+\item{sd_max}{Maximum standard deviation for peak filtering. Default is \code{50}.}
 
-\item{max_iter}{Maximum iterations for peak fitting. Default is 1000.}
+\item{max_iter}{Maximum iterations for peak fitting. Default is \code{1000}.}
 
-\item{noise_threshold}{Noise threshold for peak detection. Default is 0.001.}
+\item{noise_threshold}{Noise threshold for peak detection. Default is
+\code{0.001}.}
 
-\item{fit}{Peak fitting method. One of "egh", "gaussian", or "raw". Default
-is "egh".}
+\item{fit}{Peak fitting model: \code{"egh"}, \code{"gaussian"}, or \code{"raw"}. Default is
+\code{"egh"}.}
 
-\item{intensity_threshold}{Minimum normalized intensity threshold for
-filtering. Default is 0.1.}
+\item{intensity_threshold}{Minimum normalized intensity threshold for peak
+filtering. Default is \code{0.1}.}
 
-\item{improve_signal}{Logical. Whether to apply signal improvement. Default
-is TRUE.}
+\item{improve_signal}{Logical; apply Fourier filtering and sharpening.
+Default is \code{TRUE}.}
 }
 \value{
-A plot with (non-)aligned chromatograms
+A \code{plotly} htmlwidget showing the chromatogram and detected peak
+boundaries.
 }
 \description{
-Check chromatograms alignment
+Detects and integrates peaks in a detector chromatogram (CAD, BPI, or PDA),
+links them to MS features, and returns an interactive \code{plotly} visualization
+showing the signal, detected peak maxima, and start/end integration bounds.
 }
 \examples{
-\dontrun{
 check_peaks_integration(show_example = TRUE)
 }
-}
+\concept{EDAM:operation_3203 Chromatogram visualisation}
+\concept{EDAM:operation_3215 Peak detection}
+\concept{EDAM:topic_3172 Metabolomics}

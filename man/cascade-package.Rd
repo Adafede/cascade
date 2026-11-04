@@ -4,11 +4,11 @@
 \name{cascade-package}
 \alias{cascade}
 \alias{cascade-package}
-\title{cascade: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts}
+\title{cascade: Contextualizing Untargeted Annotation with Semi-Quantitative Charged Aerosol Detection for Pertinent Characterization of Natural Extracts}
 \description{
 \if{html}{\figure{logo.svg}{options: style='float: right' alt='logo' width='120'}}
 
-This package provides the infrastructure to perform Automated Composition Assessment of Natural Extracts.
+Provides the infrastructure to perform Automated Composition Assessment of Natural Extracts by combining untargeted mass spectrometry feature tables and taxonomically informed metabolite annotations (TIMA) with semi-quantitative universal detectors such as Charged Aerosol Detection (CAD) and Photodiode Array (PDA) chromatograms. Includes Fourier filtering, derivative-based peak sharpening, peak integration, extracted ion chromatogram correlation, Wikidata/LOTUS chemotaxonomic literature queries, and interactive visualizations.
 }
 \seealso{
 Useful links:
@@ -28,4 +28,16 @@ Authors:
 }
 
 }
+\concept{EDAM:operation_2942 Treemap visualisation}
+\concept{EDAM:operation_3203 Chromatogram visualisation}
+\concept{EDAM:operation_3214 Spectral analysis}
+\concept{EDAM:operation_3215 Peak detection}
+\concept{EDAM:operation_3628 Chromatographic alignment}
+\concept{EDAM:operation_3799 Quantification}
+\concept{EDAM:operation_3803 Natural product identification}
+\concept{EDAM:topic_0154 Small molecules}
+\concept{EDAM:topic_0780 Plant biology}
+\concept{EDAM:topic_2258 Cheminformatics}
+\concept{EDAM:topic_3172 Metabolomics}
+\concept{EDAM:topic_3370 Analytical chemistry}
 \keyword{internal}

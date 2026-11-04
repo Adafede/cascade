@@ -10,3 +10,21 @@ export(prepare_tima_annotations)
 export(process_compare_peaks)
 export(query_wikidata)
 export(taxon_name_to_qid)
+importFrom(data.table,
+  ":=",
+  .I,
+  .N,
+  .SD,
+  as.data.table,
+  data.table,
+  fifelse,
+  fread,
+  fwrite,
+  rbindlist,
+  set,
+  setcolorder,
+  setkey,
+  setnames,
+  setorder,
+  uniqueN
+)

@@ -8,7 +8,7 @@ query_wikidata(
   sparql_query,
   remove_url = TRUE,
   endpoint = "https://query.wikidata.org/sparql",
-  agent = "https://github.com/bearloga/WikidataQueryServiceR",
+  agent = "https://github.com/adafede/cascade",
   timeout = 3600L,
   fallback = TRUE,
   headers = NULL,
@@ -16,44 +16,46 @@ query_wikidata(
 )
 }
 \arguments{
-\item{sparql_query}{Character. SPARQL query string.}
+\item{sparql_query}{Character(1). SPARQL query string.}
 
-\item{remove_url}{Logical. Strip \verb{http://www.wikidata.org/entity/} prefix
-from character columns (default TRUE).}
+\item{remove_url}{Logical(1). Strip \verb{http(s)://www.wikidata.org/entity/}
+prefix from character columns (default \code{TRUE}).}
 
-\item{endpoint}{Character. SPARQL endpoint URL.}
+\item{endpoint}{Character(1). SPARQL endpoint URL. Default is
+\code{"https://query.wikidata.org/sparql"}.}
 
-\item{agent}{Character. User-Agent header string.}
+\item{agent}{Character(1). HTTP \code{User-Agent} header string.}
 
-\item{timeout}{Integer. Total request timeout in seconds (default 3600).}
+\item{timeout}{Numeric(1). Total request timeout in seconds (default
+\code{3600L}).}
 
-\item{fallback}{Logical. Retry with QLever Wikidata endpoint on failure.}
+\item{fallback}{Logical(1). Retry with QLever Wikidata endpoint on failure
+(default \code{TRUE}).}
 
-\item{headers}{Character or NULL. Optional \code{Accept} header used for
-backward compatibility with older versions. If set,
-this value is used as preferred response format.}
+\item{headers}{Character(1) or \code{NULL}. Optional \code{Accept} header for backward
+compatibility.}
 
-\item{post}{Logical. If TRUE, send the SPARQL query as an HTTP POST
-request body (application/x-www-form-urlencoded) rather
-than as a GET query parameter. Required for endpoints
-such as QLever that do not accept GET requests.}
+\item{post}{Logical(1). Send the SPARQL query as an HTTP POST request body
+(\code{application/x-www-form-urlencoded}) rather than a GET query parameter
+(default \code{FALSE}).}
 }
 \value{
-A \code{data.table}.
+A \code{data.table} containing the query results.
 }
 \description{
-Performs a SPARQL query and returns a data.table. Optimised for very large
-result sets (millions of rows):
-\itemize{
-\item Requests \strong{CSV} (no IRI angle-bracket decoration, smallest text format)
-\item Requests \strong{gzip} transfer encoding (3-5x less data over the wire)
-\item Streams the response \strong{directly to disk} via curl (zero R memory use
-during download)
-\item Parses with \strong{data.table::fread} (C-level, multi-threaded)
-}
-
-Falls back to JSON for endpoints that do not support CSV.
+Performs a SPARQL query against Wikidata (or another SPARQL 1.1 endpoint)
+and returns a \code{data.table}. Requests gzip-compressed CSV (falling back to
+TSV) streamed directly to disk via \code{curl} and parsed with
+\code{\link[data.table:fread]{data.table::fread()}}. Automatically retries against the QLever Wikidata
+endpoint (\verb{https://qlever.dev/api/wikidata}) when \code{fallback = TRUE}.
 }
 \examples{
-NULL
+\donttest{
+q <- "SELECT ?taxon WHERE { ?taxon <http://www.wikidata.org/prop/direct/P225> 'Gentiana lutea' . }"
+try(query_wikidata(q, timeout = 15L))
 }
+}
+\concept{EDAM:data_1086 Compound identifier}
+\concept{EDAM:format_3790 SPARQL}
+\concept{EDAM:operation_0224 Query and retrieval}
+\concept{EDAM:topic_3172 Metabolomics}

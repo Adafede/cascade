@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_tables.R
 \name{generate_tables}
 \alias{generate_tables}
-\title{Generate IDs}
+\title{Generate interactive HTML and TSV summary tables of annotated peaks}
 \usage{
 generate_tables(
   annotations = NULL,
@@ -17,32 +17,53 @@ generate_tables(
 )
 }
 \arguments{
-\item{annotations}{Annotations}
+\item{annotations}{Path to TIMA annotations \code{.tsv} file (optional when
+\code{show_example = TRUE}).}
 
-\item{file_negative}{File negative}
+\item{file_negative}{Path to negative-mode informed features \code{.tsv} file
+(optional).}
 
-\item{file_positive}{File positive}
+\item{file_positive}{Path to positive-mode informed features \code{.tsv} file
+(optional when \code{show_example = TRUE}).}
 
-\item{min_confidence}{Min confidence}
+\item{min_confidence}{Minimum final annotation confidence score. Default is
+\code{0.4}.}
 
-\item{show_example}{Show example? Default to FALSE}
+\item{show_example}{Logical; use bundled example data. Default is \code{FALSE}.}
 
-\item{export_csv}{Export CSV}
+\item{export_csv}{Logical; export \code{.tsv} summary table. Default is \code{TRUE}.}
 
-\item{export_html}{Export HTML}
+\item{export_html}{Logical; export \code{.html} interactive \code{gt} table. Default
+is \code{TRUE}.}
 
-\item{export_dir}{Export Dir}
+\item{export_dir}{Directory where output files are written. Default is
+\code{"data/processed"}.}
 
-\item{export_name}{Export name}
+\item{export_name}{Base filename (without extension) for exported tables.
+Default is \code{"cascade_table"}.}
 }
 \value{
-Tables
+A named list with two elements:
+\itemize{
+\item \code{pretty_table}: A \code{gt_tbl} interactive table object.
+\item \code{csv_table}: A \code{data.table} containing the formatted summary rows.
+}
 }
 \description{
-Generate IDs
+Integrates peak-informed features across positive and/or negative modes with
+TIMA structural annotations and LOTUS taxonomic/literature metadata to
+produce both an interactive HTML table (with 2D chemical structure
+depictions via CDK Depict) and a tab-separated summary table.
 }
 \examples{
-\dontrun{
-generate_tables()
+\donttest{
+generate_tables(show_example = TRUE, export_csv = FALSE, export_html = FALSE)
 }
 }
+\concept{EDAM:data_0962 Small molecule report}
+\concept{EDAM:data_1712 Chemical structure image}
+\concept{EDAM:format_2331 HTML}
+\concept{EDAM:format_3475 TSV}
+\concept{EDAM:operation_3803 Natural product identification}
+\concept{EDAM:topic_0154 Small molecules}
+\concept{EDAM:topic_3172 Metabolomics}

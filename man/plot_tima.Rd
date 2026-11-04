@@ -2,19 +2,33 @@
 % Please edit documentation in R/plot_tima.R
 \name{plot_tima}
 \alias{plot_tima}
-\title{Plot TIMA}
+\title{Plot TIMA annotation chemical class distributions}
 \usage{
 plot_tima(tables)
 }
 \arguments{
-\item{tables}{Tables}
+\item{tables}{A list of prepared annotation \code{data.table} objects (as
+returned by \code{\link[=prepare_tima_annotations]{prepare_tima_annotations()}}).}
 }
 \value{
-Pretty plots
+A named list with three elements:
+\itemize{
+\item \code{histogram}: A \code{ggplot} stacked bar chart.
+\item \code{treemap}: A \code{plotly} interactive treemap widget.
+\item \code{sunburst}: A \code{plotly} interactive sunburst widget.
+}
 }
 \description{
-Plot TIMA
+Generates a stacked horizontal histogram, an interactive treemap, and an
+interactive sunburst plot from one or more prepared TIMA annotation tables
+returned by \code{\link[=prepare_tima_annotations]{prepare_tima_annotations()}}.
 }
 \examples{
-NULL
+tables <- prepare_tima_annotations(show_example = TRUE)
+plot_tima(tables)
 }
+\concept{EDAM:operation_0337 Visualisation}
+\concept{EDAM:operation_2942 Treemap visualisation}
+\concept{EDAM:operation_3803 Natural product identification}
+\concept{EDAM:topic_0092 Data visualisation}
+\concept{EDAM:topic_3172 Metabolomics}

@@ -1,5 +1,5 @@
 Package: cascade
-Title: Contextualizing untargeted Annotation with Semi-quantitative Charged Aerosol Detection for pertinent characterization of natural Extracts
+Title: Contextualizing Untargeted Annotation with Semi-Quantitative Charged Aerosol Detection for Pertinent Characterization of Natural Extracts
 Version: 0.0.0.9002
 Author: Adriano Rutz
 Authors@R: c(
@@ -12,8 +12,14 @@ Authors@R: c(
         )
     )
 Maintainer: Adriano Rutz <adafede@gmail.com>
-Description: This package provides the infrastructure to perform
-    Automated Composition Assessment of Natural Extracts.
+Description: Provides the infrastructure to perform Automated Composition
+    Assessment of Natural Extracts by combining untargeted mass spectrometry
+    feature tables and taxonomically informed metabolite annotations (TIMA)
+    with semi-quantitative universal detectors such as Charged Aerosol
+    Detection (CAD) and Photodiode Array (PDA) chromatograms. Includes Fourier
+    filtering, derivative-based peak sharpening, peak integration, extracted
+    ion chromatogram correlation, Wikidata/LOTUS chemotaxonomic literature
+    queries, and interactive visualizations.
 License: AGPL (>= 3)
 URL: https://github.com/adafede/cascade, https://adafede.github.io/cascade
 BugReports: https://github.com/adafede/cascade/issues
@@ -21,118 +27,89 @@ Depends:
     R (>= 4.5.0)
 Imports:
     baseline (>= 1.3.7),
-    BiocParallel (>= 1.44.0),
-    caTools (>= 1.18.4),
     curl (>= 7.1.0),
     data.table (>= 1.18.4),
-    forcats (>= 1.0.1),
     ggplot2 (>= 4.0.3),
     gt (>= 1.3.0),
-    htmltools (>= 0.5.9),
-    httr2 (>= 1.3.0),
-    MSnbase (>= 2.36.0),
     mzR (>= 2.44.0),
     plotly (>= 4.12.1),
-    purrr (>= 1.2.2),
-    R.utils (>= 2.13.0),
-    tidytable (>= 0.11.2),
-    tima (>= 2.13.0.9000),
+    stats,
     utils
-Remotes:
-    taxonomicallyinformedannotation/tima
 Suggests:
     knitr (>= 1.51),
     quarto (>= 1.5.1),
+    spelling,
     svglite (>= 2.2.2),
     tinytest (>= 1.4.3),
     withr (>= 2.5.0)
 ByteCompile: TRUE
 Collate:
-    'normalize_chromatograms_list.R'
-    'add_chromato_line.R'
-    'baseline_chromatogram.R'
     'cascade-package.R'
-    'change_intensity_name.R'
-    'check_chromatograms.R'
-    'load_chromatograms.R'
-    'deriv.R'
-    'middle_pts.R'
-    'second_der.R'
-    'signal_sharpening.R'
-    'filter_fft.R'
-    'improve_signal.R'
-    'extract_chromatogram.R'
-    'check_chromatograms_alignment.R'
-    'check_export_dir.R'
-    'prepare_rt.R'
-    'prepare_peaks.R'
-    'prepare_mz.R'
-    'get_peaks.R'
-    'peaks_progress.R'
-    'normalize_chromato.R'
-    'join_peaks.R'
-    'preprocess_peaks.R'
-    'improve_signals_progress.R'
-    'preprocess_chromatograms.R'
-    'prepare_features.R'
-    'plot_peak_detection.R'
-    'load_name.R'
-    'load_features.R'
-    'check_peaks_integration.R'
-    'colors.R'
-    'compare_peaks.R'
-    'correct_acn.R'
     'data.R'
-    'extract_ms_peak.R'
-    'extract_ms_progress.R'
-    'format_gt.R'
-    'wiki_progress.R'
-    'treemaps_progress.R'
-    'taxon_name_to_qid.R'
-    'tables_progress.R'
-    'queries_progress.R'
-    'prepare_plot.R'
-    'prepare_hierarchy.R'
-    'plot_histograms.R'
-    'make_no_stereo.R'
-    'make_chromatographiable.R'
-    'hierarchies_grouped_progress.R'
-    'hierarchies_progress.R'
-    'generate_ids.R'
-    'prepare_comparison.R'
-    'no_other.R'
-    'make_other.R'
-    'plot_results.R'
-    'make_confident.R'
-    'y_as_na.R'
-    'keep_best_candidates.R'
-    'generate_pseudochromatograms.R'
-    'molinfo.R'
-    'load_features_informed.R'
-    'load_annotations.R'
-    'generate_tables.R'
+    'colors.R'
     'globals.R'
-    'histograms_progress.R'
-    'load_features_not_informed.R'
-    'load_ms_data.R'
-    'plot_chromatogram.R'
-    'plot_tima.R'
-    'prehistograms_progress.R'
-    'prepare_tima_annotations.R'
-    'transform_ms.R'
+    'load.R'
+    'signal.R'
+    'get_peaks.R'
+    'peaks.R'
+    'annotations.R'
+    'hierarchy.R'
+    'check_chromatograms_alignment.R'
+    'check_peaks_integration.R'
     'process_compare_peaks.R'
+    'generate_pseudochromatograms.R'
+    'generate_tables.R'
     'query_wikidata.R'
-    'save_histograms_progress.R'
-    'save_treemaps_progress.R'
+    'taxon_name_to_qid.R'
+    'generate_ids.R'
+    'prepare_tima_annotations.R'
+    'plot_tima.R'
 Config/roxygen2/markdown: TRUE
-Config/roxygen2/version: 8.1.0
+Config/roxygen2/version: 8.1.1
 Encoding: UTF-8
 Language: en-US
 LazyData: TRUE
 LazyDataCompression: bzip2
 VignetteBuilder:
     quarto
-biocViews: metaboliteAnnotation, chargedAerosolDetector, semiQuantitative, naturalProducts, computationalMetabolomics,
-               specializedMetabolome
-X-schema.org-keywords: metaboliteAnnotation, chargedAerosolDetector, semiQuantitative, naturalProducts, computationalMetabolomics,
-               specializedMetabolome
+biocViews: Metabolomics, MassSpectrometry, Cheminformatics, NaturalProducts,
+    Software
+X-schema.org-keywords: metaboliteAnnotation, chargedAerosolDetector,
+    semiQuantitative, naturalProducts, computationalMetabolomics,
+    specializedMetabolome, EDAM:topic_3172, EDAM:topic_0154, EDAM:topic_3370,
+    EDAM:topic_2258, EDAM:topic_0780, EDAM:operation_3803, EDAM:operation_3214,
+    EDAM:operation_3215, EDAM:operation_3628, EDAM:operation_3799,
+    EDAM:operation_3203, EDAM:operation_2942, EDAM:format_3244,
+    EDAM:format_3475, EDAM:format_2331, EDAM:format_3790
+X-EDAM-Topic: http://edamontology.org/topic_3172 (Metabolomics),
+    http://edamontology.org/topic_0154 (Small molecules),
+    http://edamontology.org/topic_3370 (Analytical chemistry),
+    http://edamontology.org/topic_2258 (Cheminformatics),
+    http://edamontology.org/topic_0780 (Plant biology),
+    http://edamontology.org/topic_0637 (Taxonomy),
+    http://edamontology.org/topic_0092 (Data visualisation)
+X-EDAM-Operation: http://edamontology.org/operation_3803 (Natural product identification),
+    http://edamontology.org/operation_3214 (Spectral analysis),
+    http://edamontology.org/operation_3801 (Spectral library search),
+    http://edamontology.org/operation_3215 (Peak detection),
+    http://edamontology.org/operation_3628 (Chromatographic alignment),
+    http://edamontology.org/operation_3799 (Quantification),
+    http://edamontology.org/operation_3203 (Chromatogram visualisation),
+    http://edamontology.org/operation_2942 (Treemap visualisation),
+    http://edamontology.org/operation_3460 (Taxonomic classification),
+    http://edamontology.org/operation_3564 (Chemical redundancy removal),
+    http://edamontology.org/operation_0224 (Query and retrieval)
+X-EDAM-Data: http://edamontology.org/data_2536 (Mass spectrometry data),
+    http://edamontology.org/data_0943 (Mass spectrum),
+    http://edamontology.org/data_0962 (Small molecule report),
+    http://edamontology.org/data_1086 (Compound identifier),
+    http://edamontology.org/data_1463 (Small molecule structure),
+    http://edamontology.org/data_1712 (Chemical structure image),
+    http://edamontology.org/data_1872 (Taxonomic classification)
+X-EDAM-Format: http://edamontology.org/format_3244 (mzML),
+    http://edamontology.org/format_3475 (TSV),
+    http://edamontology.org/format_3752 (CSV),
+    http://edamontology.org/format_2331 (HTML),
+    http://edamontology.org/format_3790 (SPARQL),
+    http://edamontology.org/format_1196 (SMILES),
+    http://edamontology.org/format_1199 (InChIKey)

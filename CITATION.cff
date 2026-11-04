@@ -7,11 +7,16 @@ cff-version: 1.2.0
 message: 'To cite package "cascade" in publications use:'
 type: software
 license: AGPL-3.0-or-later
-title: 'cascade: Contextualizing untargeted Annotation with Semi-quantitative Charged
-  Aerosol Detection for pertinent characterization of natural Extracts'
+title: 'cascade: Contextualizing Untargeted Annotation with Semi-Quantitative Charged
+  Aerosol Detection for Pertinent Characterization of Natural Extracts'
 version: 0.0.0.9002
-abstract: This package provides the infrastructure to perform Automated Composition
-  Assessment of Natural Extracts.
+abstract: Provides the infrastructure to perform Automated Composition Assessment
+  of Natural Extracts by combining untargeted mass spectrometry feature tables and
+  taxonomically informed metabolite annotations (TIMA) with semi-quantitative universal
+  detectors such as Charged Aerosol Detection (CAD) and Photodiode Array (PDA) chromatograms.
+  Includes Fourier filtering, derivative-based peak sharpening, peak integration,
+  extracted ion chromatogram correlation, Wikidata/LOTUS chemotaxonomic literature
+  queries, and interactive visualizations.
 authors:
 - family-names: Rutz
   given-names: Adriano
@@ -19,15 +24,15 @@ authors:
   orcid: https://orcid.org/0000-0003-0443-9902
 preferred-citation:
   type: manual
-  title: 'cascade: Contextualizing untargeted Annotation with Semi-quantitative Charged
-    Aerosol Detection for pertinent characterization of natural Extracts'
+  title: 'cascade: Contextualizing Untargeted Annotation with Semi-Quantitative Charged
+    Aerosol Detection for Pertinent Characterization of Natural Extracts'
   authors:
   - family-names: Rutz
     given-names: Adriano
     email: adafede@gmail.com
     orcid: https://orcid.org/0000-0003-0443-9902
   year: '2026'
-  notes: R package, version 0.0.9002
+  notes: R package, version 0.0.0.9002
 repository: https://bioconductor.org/
 repository-code: https://github.com/adafede/cascade
 url: https://adafede.github.io/cascade
@@ -43,6 +48,22 @@ keywords:
 - naturalProducts
 - computationalMetabolomics
 - specializedMetabolome
+- EDAM:topic_3172
+- EDAM:topic_0154
+- EDAM:topic_3370
+- EDAM:topic_2258
+- EDAM:topic_0780
+- EDAM:operation_3803
+- EDAM:operation_3214
+- EDAM:operation_3215
+- EDAM:operation_3628
+- EDAM:operation_3799
+- EDAM:operation_3203
+- EDAM:operation_2942
+- EDAM:format_3244
+- EDAM:format_3475
+- EDAM:format_2331
+- EDAM:format_3790
 - charged-aerosol-detector
 - chemical-composition
 - lc-msms
@@ -74,6 +95,9 @@ references:
   - natural products
   - computational metabolomics
   - specialized metabolome
+  - EDAM:topic_3172
+  - EDAM:topic_0154
+  - EDAM:operation_3803
   doi: 10.1021/acs.jafc.3c03099
   issn: 1664-462X
 - type: software
@@ -106,44 +130,6 @@ references:
   year: '2026'
   doi: 10.32614/CRAN.package.baseline
   version: '>= 1.3.7'
-- type: software
-  title: BiocParallel
-  abstract: 'BiocParallel: Bioconductor facilities for parallel evaluation'
-  notes: Imports
-  url: https://github.com/Bioconductor/BiocParallel
-  repository: https://bioconductor.org/
-  authors:
-  - family-names: Wang
-    given-names: Jiefei
-    email: jiefei0804@gmail.com
-  - family-names: Morgan
-    given-names: Martin
-    email: mtmorgan.bioc@gmail.com
-  - family-names: Obenchain
-    given-names: Valerie
-  - family-names: Lang
-    given-names: Michel
-    email: michellang@gmail.com
-  - family-names: Thompson
-    given-names: Ryan
-    email: rct@thompsonclan.org
-  - family-names: Turaga
-    given-names: Nitesh
-  year: '2026'
-  doi: 10.18129/B9.bioc.BiocParallel
-  version: '>= 1.44.0'
-- type: software
-  title: caTools
-  abstract: 'caTools: Tools: Moving Window Statistics, GIF, Base64, ROC AUC, etc'
-  notes: Imports
-  repository: https://CRAN.R-project.org/package=caTools
-  authors:
-  - family-names: Tuszynski
-    given-names: Jarek
-    email: jaroslaw.w.tuszynski@saic.com
-  year: '2026'
-  doi: 10.32614/CRAN.package.caTools
-  version: '>= 1.18.4'
 - type: software
   title: curl
   abstract: 'curl: A Modern and Flexible Web Client for R'
@@ -196,19 +182,6 @@ references:
   year: '2026'
   doi: 10.32614/CRAN.package.data.table
   version: '>= 1.18.4'
-- type: software
-  title: forcats
-  abstract: 'forcats: Tools for Working with Categorical Variables (Factors)'
-  notes: Imports
-  url: https://forcats.tidyverse.org/
-  repository: https://CRAN.R-project.org/package=forcats
-  authors:
-  - family-names: Wickham
-    given-names: Hadley
-    email: hadley@posit.co
-  year: '2026'
-  doi: 10.32614/CRAN.package.forcats
-  version: '>= 1.0.1'
 - type: software
   title: ggplot2
   abstract: 'ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics'
@@ -296,71 +269,6 @@ references:
   doi: 10.32614/CRAN.package.gt
   version: '>= 1.3.0'
 - type: software
-  title: htmltools
-  abstract: 'htmltools: Tools for HTML'
-  notes: Imports
-  url: https://rstudio.github.io/htmltools/
-  repository: https://CRAN.R-project.org/package=htmltools
-  authors:
-  - family-names: Cheng
-    given-names: Joe
-    email: joe@posit.co
-  - family-names: Sievert
-    given-names: Carson
-    email: carson@posit.co
-    orcid: https://orcid.org/0000-0002-4958-2844
-  - family-names: Schloerke
-    given-names: Barret
-    email: barret@posit.co
-    orcid: https://orcid.org/0000-0001-9986-114X
-  - family-names: Chang
-    given-names: Winston
-    email: winston@posit.co
-    orcid: https://orcid.org/0000-0002-1576-2126
-  - family-names: Xie
-    given-names: Yihui
-    email: yihui@posit.co
-  - family-names: Allen
-    given-names: Jeff
-  year: '2026'
-  doi: 10.32614/CRAN.package.htmltools
-  version: '>= 0.5.9'
-- type: software
-  title: httr2
-  abstract: 'httr2: Perform HTTP Requests and Process the Responses'
-  notes: Imports
-  url: https://httr2.r-lib.org
-  repository: https://CRAN.R-project.org/package=httr2
-  authors:
-  - family-names: Wickham
-    given-names: Hadley
-    email: hadley@posit.co
-  year: '2026'
-  doi: 10.32614/CRAN.package.httr2
-  version: '>= 1.3.0'
-- type: software
-  title: MSnbase
-  abstract: 'MSnbase: Base Functions and Classes for Mass Spectrometry and Proteomics'
-  notes: Imports
-  url: https://lgatto.github.io/MSnbase
-  repository: https://bioconductor.org/
-  authors:
-  - family-names: Gatto
-    given-names: Laurent
-    email: laurent.gatto@uclouvain.be
-    orcid: https://orcid.org/0000-0002-1520-2268
-  - family-names: Rainer
-    given-names: Johannes
-    email: Johannes.Rainer@eurac.edu
-    orcid: https://orcid.org/0000-0002-6977-7147
-  - family-names: Gibb
-    given-names: Sebastian
-    email: mail@sebastiangibb.de
-    orcid: https://orcid.org/0000-0001-7406-4443
-  year: '2026'
-  doi: 10.18129/B9.bioc.MSnbase
-  version: '>= 2.36.0'
-- type: software
   title: mzR
   abstract: 'mzR: parser for netCDF, mzXML and mzML and mzIdentML files (mass spectrometry
     data)'
@@ -381,9 +289,8 @@ references:
     given-names: Johannes
     email: Johannes.Rainer@eurac.edu
     orcid: https://orcid.org/0000-0002-6977-7147
-  year: '2026'
-  doi: 10.18129/B9.bioc.mzR
   version: '>= 2.44.0'
+  year: '2026'
 - type: software
   title: plotly
   abstract: 'plotly: Create Interactive Web Graphics via ''plotly.js'''
@@ -418,61 +325,18 @@ references:
   doi: 10.32614/CRAN.package.plotly
   version: '>= 4.12.1'
 - type: software
-  title: purrr
-  abstract: 'purrr: Functional Programming Tools'
+  title: stats
+  abstract: 'R: A Language and Environment for Statistical Computing'
   notes: Imports
-  url: https://purrr.tidyverse.org/
-  repository: https://CRAN.R-project.org/package=purrr
   authors:
-  - family-names: Wickham
-    given-names: Hadley
-    email: hadley@posit.co
-    orcid: https://orcid.org/0000-0003-4757-117X
-  - family-names: Henry
-    given-names: Lionel
-    email: lionel@posit.co
+  - name: R Core Team
+    website: https://ror.org/02zz1nj61
+  institution:
+    name: R Foundation for Statistical Computing
+    website: https://ror.org/05qewa988
+    address: Vienna, Austria
   year: '2026'
-  doi: 10.32614/CRAN.package.purrr
-  version: '>= 1.2.2'
-- type: software
-  title: R.utils
-  abstract: 'R.utils: Various Programming Utilities'
-  notes: Imports
-  url: https://henrikbengtsson.github.io/R.utils/
-  repository: https://CRAN.R-project.org/package=R.utils
-  authors:
-  - family-names: Bengtsson
-    given-names: Henrik
-    email: henrikb@braju.com
-  year: '2026'
-  doi: 10.32614/CRAN.package.R.utils
-  version: '>= 2.13.0'
-- type: software
-  title: tidytable
-  abstract: 'tidytable: Tidy Interface to ''data.table'''
-  notes: Imports
-  url: https://markfairbanks.github.io/tidytable/
-  repository: https://CRAN.R-project.org/package=tidytable
-  authors:
-  - family-names: Fairbanks
-    given-names: Mark
-    email: mark.t.fairbanks@gmail.com
-  year: '2026'
-  doi: 10.32614/CRAN.package.tidytable
-  version: '>= 0.11.2'
-- type: software
-  title: tima
-  abstract: 'tima: Taxonomically Informed Metabolite Annotation'
-  notes: Imports
-  url: https://taxonomicallyinformedannotation.github.io/tima-shinylive
-  repository: https://bioconductor.org/
-  authors:
-  - family-names: Rutz
-    given-names: Adriano
-    email: adafede@gmail.com
-    orcid: https://orcid.org/0000-0003-0443-9902
-  year: '2026'
-  version: '>= 2.13.0.9000'
+  doi: 10.32614/R.manuals
 - type: software
   title: utils
   abstract: 'R: A Language and Environment for Statistical Computing'
@@ -518,6 +382,22 @@ references:
   year: '2026'
   doi: 10.32614/CRAN.package.quarto
   version: '>= 1.5.1'
+- type: software
+  title: spelling
+  abstract: 'spelling: Tools for Spell Checking in R'
+  notes: Suggests
+  url: https://ropensci.r-universe.dev/spelling
+  repository: https://CRAN.R-project.org/package=spelling
+  authors:
+  - family-names: Ooms
+    given-names: Jeroen
+    email: jeroenooms@gmail.com
+    orcid: https://orcid.org/0000-0002-4035-0289
+  - family-names: Hester
+    given-names: Jim
+    email: james.hester@rstudio.com
+  year: '2026'
+  doi: 10.32614/CRAN.package.spelling
 - type: software
   title: svglite
   abstract: 'svglite: An ''SVG'' Graphics Device'

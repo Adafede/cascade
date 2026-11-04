@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_tima_annotations.R
 \name{prepare_tima_annotations}
 \alias{prepare_tima_annotations}
-\title{Prepare TIMA annotations}
+\title{Prepare TIMA structural and predicted annotation tables}
 \usage{
 prepare_tima_annotations(
   annotations = NULL,
@@ -19,34 +19,52 @@ prepare_tima_annotations(
 )
 }
 \arguments{
-\item{annotations}{annotations}
+\item{annotations}{Named character vector of annotation file paths (optional
+when \code{show_example = TRUE}).}
 
-\item{predicted_classes}{Show predicted classes? Default to FALSE}
+\item{predicted_classes}{Logical; use Sirius/CANOPUS predicted NPClassifier
+classes instead of candidate structure classes. Default is \code{FALSE}.}
 
-\item{min_score_initial}{Minimal initial score}
+\item{min_score_initial}{Minimum initial spectral similarity score. Default
+is \code{0.0}.}
 
-\item{min_score_biological}{Minimal biological score}
+\item{min_score_biological}{Minimum biological (taxonomic) score. Default is
+\code{0.0}.}
 
-\item{min_score_chemical}{Minimal chemical score}
+\item{min_score_chemical}{Minimum chemical consistency score. Default is
+\code{0.0}.}
 
-\item{min_score_final}{Minimal final score}
+\item{min_score_final}{Minimum final combined score. Default is \code{0.0}.}
 
-\item{min_matched_peaks_absolute}{Minimal number of matched peaks}
+\item{min_matched_peaks_absolute}{Minimum absolute number of matched MS2
+peaks. Default is \code{0L}.}
 
-\item{min_matched_peaks_percentage}{Minimal percentage of matched peaks}
+\item{min_matched_peaks_percentage}{Minimum fraction of spectrum peaks
+matched. Default is \code{0.0}.}
 
-\item{min_peaks}{Minimal number of peaks in spectrum}
+\item{min_peaks}{Minimum total number of peaks in the query MS2 spectrum.
+Default is \code{3L}.}
 
-\item{libraries}{Libraries to consider}
+\item{libraries}{Character vector of spectral libraries to retain. Default
+is \code{c("gnps", "massbank", "merlin", "ISDB", "ISDB - Wikidata", "TIMA MS1")}.}
 
-\item{show_example}{Show example? Default to FALSE}
+\item{show_example}{Logical; use bundled example data. Default is \code{FALSE}.}
 }
 \value{
-Prepared tables
+A named list of prepared \code{data.table} annotation tables.
 }
 \description{
-Prepare TIMA annotations
+Filters and standardizes Taxonomically Informed Metabolite Annotation (TIMA)
+output tables across initial spectral similarity, matched peak counts,
+biological, chemical, and final confidence scores, retaining the top
+candidate per feature for downstream visualization with \code{\link[=plot_tima]{plot_tima()}}.
 }
 \examples{
-NULL
+prepare_tima_annotations(show_example = TRUE)
 }
+\concept{EDAM:data_0962 Small molecule report}
+\concept{EDAM:operation_3214 Spectral analysis}
+\concept{EDAM:operation_3801 Spectral library search}
+\concept{EDAM:operation_3803 Natural product identification}
+\concept{EDAM:topic_0154 Small molecules}
+\concept{EDAM:topic_3172 Metabolomics}

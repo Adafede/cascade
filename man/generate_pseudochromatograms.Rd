@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_pseudochromatograms.R
 \name{generate_pseudochromatograms}
 \alias{generate_pseudochromatograms}
-\title{Generate pseudochromatograms}
+\title{Generate annotated pseudochromatograms and chemical class treemaps}
 \usage{
 generate_pseudochromatograms(
   annotations = NULL,
@@ -29,74 +29,108 @@ generate_pseudochromatograms(
   sigma = 0.05,
   smoothing_width = 8,
   baseline_method = "peakDetection",
-  improve_signal = TRUE
+  improve_signal = TRUE,
+  correct_acn = FALSE,
+  acn_time = 30.5,
+  dvol = 0.5
 )
 }
 \arguments{
-\item{annotations}{Annotations file path}
+\item{annotations}{Path to TIMA annotations \code{.tsv} file (optional when
+\code{show_example = TRUE}).}
 
-\item{features_informed}{Features informed file path}
+\item{features_informed}{Path to peak-informed features \code{.tsv} file
+(optional when \code{show_example = TRUE}).}
 
-\item{features_not_informed}{Features not informed file path}
+\item{features_not_informed}{Path to non-informed features \code{.tsv} file
+(optional when \code{show_example = TRUE}).}
 
-\item{file}{mzML file path}
+\item{file}{Path to \code{.mzML} file (optional when \code{show_example = TRUE}).}
 
-\item{headers}{Named vector mapping detector types to header names.}
+\item{headers}{Named character vector mapping detector types to \code{.mzML}
+chromatogram header IDs.}
 
-\item{detector}{Detector type (e.g., "cad", "bpi", "pda")}
+\item{detector}{Detector type: \code{"cad"}, \code{"bpi"}, or \code{"pda"}. Default is
+\code{"cad"}.}
 
-\item{show_example}{Show example data? Default is FALSE.}
+\item{show_example}{Logical; use bundled example data. Default is \code{FALSE}.}
 
-\item{min_confidence}{Minimum confidence score. Default is 0.4.}
+\item{min_confidence}{Minimum final annotation confidence score. Default is
+\code{0.4}.}
 
-\item{min_similarity_prefilter}{Minimum similarity for pre-filtering.
-Default is 0.6.}
+\item{min_similarity_prefilter}{Minimum correlation score for pre-filtering.
+Default is \code{0.6}.}
 
-\item{min_similarity_filter}{Minimum similarity for final filtering. Default
-is 0.8.}
+\item{min_similarity_filter}{Minimum correlation score for final filtering.
+Default is \code{0.8}.}
 
-\item{mode}{Ionization mode. Either "pos" or "neg". Default is "pos".}
+\item{mode}{Ionization mode: \code{"pos"} or \code{"neg"}. Default is \code{"pos"}.}
 
-\item{organism}{Organism name for taxonomic filtering.}
+\item{organism}{Investigated organism scientific name for taxonomic
+prioritization. Default is \code{"Swertia chirayita"}.}
 
-\item{fourier_components}{Fraction of Fourier components to keep. Default is
-0.01.}
+\item{fourier_components}{Fraction of Fourier components to retain. Default
+is \code{0.01}.}
 
-\item{frequency}{Acquisition frequency in Hz. Default is 1.}
+\item{frequency}{Acquisition frequency in Hz. Default is \code{1}.}
 
-\item{resample}{Resampling factor. Default is 1.}
+\item{resample}{Resampling factor. Default is \code{1}.}
 
-\item{shift}{Time shift in minutes. Default is 0.05.}
+\item{shift}{Retention time shift in minutes. Default is \code{0.05}.}
 
-\item{time_min}{Time min in minutes. Default is 0.5.}
+\item{time_min}{Minimum retention time in minutes. Default is \code{0.5}.}
 
-\item{time_max}{Time max in minutes. Default is 32.5.}
+\item{time_max}{Maximum retention time in minutes. Default is \code{32.5}.}
 
 \item{intensity_floor}{Small positive value for intensity floor. Default is
-0.001.}
+\code{0.001}.}
 
-\item{k2}{K2 parameter for signal sharpening. Default is 250.}
+\item{k2}{Second-derivative weight for signal sharpening. Default is \code{250}.}
 
-\item{k4}{K4 parameter for signal sharpening. Default is 1250000.}
+\item{k4}{Fourth-derivative weight for signal sharpening. Default is
+\code{1250000}.}
 
-\item{sigma}{Sigma parameter for signal sharpening. Default is 0.05.}
+\item{sigma}{Gaussian sigma for signal sharpening. Default is \code{0.05}.}
 
-\item{smoothing_width}{Smoothing width for signal sharpening. Default is 8.}
+\item{smoothing_width}{Moving-average window width for derivative smoothing.
+Default is \code{8}.}
 
-\item{baseline_method}{Method for baseline correction. Default is
-"peakDetection".}
+\item{baseline_method}{Baseline correction method passed to
+\code{\link[baseline:baseline]{baseline::baseline()}}. Default is \code{"peakDetection"}.}
 
-\item{improve_signal}{Logical. Whether to apply signal improvement. Default
-is TRUE.}
+\item{improve_signal}{Logical; apply Fourier filtering and sharpening.
+Default is \code{TRUE}.}
+
+\item{correct_acn}{Logical; apply acetonitrile gradient response correction
+to CAD peak areas. Default is \code{FALSE}.}
+
+\item{acn_time}{Numeric; gradient time in minutes to reach 100\% acetonitrile
+when \code{correct_acn = TRUE}. Default is \code{30.5}.}
+
+\item{dvol}{Numeric; dwell time offset in minutes when \code{correct_acn = TRUE}.
+Default is \code{0.5}.}
 }
 \value{
-A list of plots
+A named list with three elements:
+\itemize{
+\item \code{plots_1}: Named list of 8 \code{ggplot} pseudochromatograms.
+\item \code{plots_2}: Named list of 2 interactive \code{plotly} signal-based sunbursts.
+\item \code{treemaps}: Named list of interactive \code{plotly} treemap widgets.
+}
 }
 \description{
-Generate pseudochromatograms
+Combines preprocessed detector chromatograms, peak-correlated MS features,
+and TIMA structural annotations to produce a suite of annotated
+pseudochromatograms (colored by chemical pathway/superclass and closest
+taxonomic occurrence) and interactive chemical hierarchy treemaps.
 }
 \examples{
-\dontrun{
+\donttest{
 generate_pseudochromatograms(show_example = TRUE)
 }
 }
+\concept{EDAM:operation_2942 Treemap visualisation}
+\concept{EDAM:operation_3203 Chromatogram visualisation}
+\concept{EDAM:operation_3803 Natural product identification}
+\concept{EDAM:topic_0154 Small molecules}
+\concept{EDAM:topic_3172 Metabolomics}

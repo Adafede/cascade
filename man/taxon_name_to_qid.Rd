@@ -2,21 +2,28 @@
 % Please edit documentation in R/taxon_name_to_qid.R
 \name{taxon_name_to_qid}
 \alias{taxon_name_to_qid}
-\title{Taxon name to QID}
+\title{Convert a scientific taxon name to its Wikidata QID}
 \usage{
 taxon_name_to_qid(taxon_name)
 }
 \arguments{
-\item{taxon_name}{Taxon name}
+\item{taxon_name}{Character(1). Scientific name of the taxon (e.g.,
+\code{"Gentiana lutea"} or \code{"Swertia"}).}
 }
 \value{
-A QID
+Character vector of matching Wikidata QID(s).
 }
 \description{
-Taxon name to QID
+Queries Wikidata for the item whose taxon name (\code{wdt:P225}) matches
+\code{taxon_name} and returns the corresponding Wikidata entity identifier
+(e.g., \code{"Q158572"}).
 }
 \examples{
-\dontrun{
-taxon_name_to_qid(taxon_name = "Gentiana lutea")
+\donttest{
+try(taxon_name_to_qid(taxon_name = "Gentiana lutea"))
 }
 }
+\concept{EDAM:data_1872 Taxonomic classification}
+\concept{EDAM:operation_0224 Query and retrieval}
+\concept{EDAM:operation_3460 Taxonomic classification}
+\concept{EDAM:topic_0637 Taxonomy}

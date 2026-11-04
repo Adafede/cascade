@@ -2,7 +2,7 @@
 % Please edit documentation in R/process_compare_peaks.R
 \name{process_compare_peaks}
 \alias{process_compare_peaks}
-\title{Process compare peaks}
+\title{Compare MS extracted ion chromatograms against detector peaks}
 \usage{
 process_compare_peaks(
   file = NULL,
@@ -23,42 +23,62 @@ process_compare_peaks(
 )
 }
 \arguments{
-\item{file}{File path}
+\item{file}{Path to \code{.mzML} file (optional when \code{show_example = TRUE}).}
 
-\item{features}{Features path}
+\item{features}{Path to feature table (optional when \code{show_example = TRUE}).}
 
-\item{type}{Type. "original", "baselined" or "improved"}
+\item{type}{Chromatogram processing stage: \code{"original"}, \code{"baselined"}, or
+\code{"improved"}. Default is \code{"baselined"}.}
 
-\item{detector}{Detector}
+\item{detector}{Detector type: \code{"cad"}, \code{"bpi"}, or \code{"pda"}. Default is
+\code{"cad"}.}
 
-\item{headers}{Headers}
+\item{headers}{Named character vector mapping detector types to \code{.mzML}
+chromatogram header IDs.}
 
-\item{export_dir}{Export directory}
+\item{export_dir}{Directory where the output \code{.tsv} files are written.
+Default is \code{"data/interim/peaks"}.}
 
-\item{show_example}{Show example? Default to FALSE}
+\item{show_example}{Logical; use bundled example data. Default is \code{FALSE}.}
 
-\item{fourier_components}{Fourier components}
+\item{fourier_components}{Fraction of Fourier components to retain. Default
+is \code{0.01}.}
 
-\item{frequency}{Frequency}
+\item{frequency}{Acquisition frequency in Hz. Default is \code{1}.}
 
-\item{min_area}{Min area}
+\item{min_area}{Minimum relative area fraction for peak filtering. Default is
+\code{0.005}.}
 
-\item{min_intensity}{Min intensity}
+\item{min_intensity}{Minimum MS intensity for feature filtering. Default is
+\code{1e4}.}
 
-\item{resample}{Resample}
+\item{resample}{Resampling factor. Default is \code{1}.}
 
-\item{shift}{Shift}
+\item{shift}{Retention time shift in minutes. Default is \code{0.05}.}
 
-\item{time_min}{Time min}
+\item{time_min}{Minimum retention time in minutes. Default is \code{0.5}.}
 
-\item{time_max}{Time max}
+\item{time_max}{Maximum retention time in minutes. Default is \code{32.5}.}
 }
 \value{
-A plot with (non-)aligned chromatograms
+Invisibly returns a named list with two \code{data.table} elements:
+\code{features_informed} and \code{features_not_informed}.
 }
 \description{
-Process compare peaks
+Extracts MS1 ion chromatograms (XICs) for all features falling within
+detected chromatographic peaks (e.g., CAD, PDA, or BPI), computes Pearson
+correlation similarity scores between each feature's XIC profile and the
+corresponding detector peak profile, and exports both peak-informed and
+non-informed feature tables as TSV files.
 }
 \examples{
-NULL
+\donttest{
+tmp <- tempdir()
+process_compare_peaks(show_example = TRUE, export_dir = tmp)
 }
+}
+\concept{EDAM:data_2536 Mass spectrometry data}
+\concept{EDAM:operation_3215 Peak detection}
+\concept{EDAM:operation_3628 Chromatographic alignment}
+\concept{EDAM:operation_3799 Quantification}
+\concept{EDAM:topic_3172 Metabolomics}
