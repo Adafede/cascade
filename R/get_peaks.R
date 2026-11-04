@@ -1,27 +1,27 @@
-#' Get peaks
+#' Detect and integrate chromatographic peaks
 #'
+#' @param chrom_list Matrix or list of chromatogram intensity matrices (rows =
+#'   timepoints, columns = wavelengths/channels).
+#' @param lambdas Character or numeric vector of wavelength/channel identifiers.
+#' @param fit Character(1) peak fitting model: `"egh"` (exponential-Gaussian
+#'   hybrid), `"gaussian"`, or `"raw"`.
+#' @param sd.max Numeric(1) maximum allowed peak width (`sd`) in index units.
+#' @param max.iter Integer(1) maximum fitting iterations.
+#' @param time.units Character(1) output time unit scaling (`"min"`, `"s"`, or
+#'   `"ms"`).
+#' @param estimate_purity Logical(1) compatibility parameter.
+#' @param noise_threshold Numeric(1) minimum peak amplitude threshold.
+#' @param collapse Logical(1); bind wavelength tables per sample into a single
+#'   `data.frame`.
+#' @param ... Additional arguments passed to internal `find_peaks()`.
+#'
+#' @return A `peak_list` object (nested list of peak `data.frame`s per sample
+#'   and wavelength).
 #' @author Ethan Bass
-#'
-#' @note
-#' This was imported from \{chromatographR\} package and parallelization
-#' was removed as it was causing issues on Windows.
-#'
+#' @note Adapted from `{chromatographR}` with parallelization and external dependencies removed.
 #' @source https://github.com/ethanbass/chromatographR
-#'
-#' @param chrom_list Chrom list
-#' @param lambdas Lambdas
-#' @param fit Fit
-#' @param sd.max Sd max
-#' @param max.iter Max iter
-#' @param time.units Time units
-#' @param estimate_purity Estimate purity
-#' @param noise_threshold Noise Threshold
-#' @param collapse Collapse
-#' @param ... ...
-#'
-#' @return Peaks
-#'
-#' @examples NULL
+#' @keywords internal
+#' @noRd
 get_peaks <- function(
   chrom_list,
   lambdas,
@@ -35,8 +35,6 @@ get_peaks <- function(
   ...
 ) {
   remove_bad_peaks <- function(pks, n) {
-    # keep only peaks with a fully defined position whose fitted apex index
-    # (rt) falls within the chromatogram's valid scan range [1, n]
     pks[
       which(
         stats::complete.cases(pks[, c("rt", "start", "end")]) &
@@ -49,23 +47,15 @@ get_peaks <- function(
   }
 
   convert_indices_to_times <- function(x, chrom_list, idx, tfac) {
-    get_times <- function(x, idx = 1) {
-      if (inherits(x, "peak_table")) {
-        x <- get_chrom_list(x)
-      }
-      if (inherits(x, "chrom_list") || inherits(x, "list")) {
-        as.numeric(rownames(x[[idx]]))
-      } else if (inherits(x, "matrix")) {
-        as.numeric(rownames(x))
+    get_times <- function(obj, idx = 1) {
+      if (inherits(obj, "chrom_list") || inherits(obj, "list")) {
+        as.numeric(rownames(obj[[idx]]))
+      } else if (inherits(obj, "matrix")) {
+        as.numeric(rownames(obj))
       }
     }
-    get_time_resolution <- function(chrom_list, idx = 1) {
-      ts <- get_times(x = chrom_list, idx = idx)
-      signif(stats::median(diff(ts)))
-    }
-
     timepoints <- get_times(chrom_list, idx = idx)
-    tdiff <- get_time_resolution(chrom_list, idx = idx)
+    tdiff <- signif(stats::median(diff(timepoints)))
     x[, c("rt", "start", "end")] <- cbind(
       timepoints[x[, "rt"]],
       timepoints[x[, "start"]],
@@ -78,75 +68,18 @@ get_peaks <- function(
     x
   }
 
-  get_purity <- function(
-    x,
-    pos,
-    weight = 1,
-    cutoff = 0.05,
-    noise_variance = NULL,
-    noise_threshold = 0.01,
-    lambdas,
-    try = TRUE
-  ) {
-    get_purity_values <- function(
-      x,
-      pos,
-      weight = 1,
-      noise_variance = NULL,
-      noise_threshold = 0.005,
-      lambdas
-    ) {
-      if (missing(lambdas)) {
-        lambdas <- seq_len(ncol(x))
-      }
-      ((1 - get_spectral_similarity(x, pos))) /
-        (1 -
-          get_agilent_threshold(
-            x,
-            pos,
-            weight = weight,
-            noise_variance = noise_variance,
-            noise_threshold = noise_threshold,
-            lambdas = lambdas
-          ))
-    }
-    if (try) {
-      try(
-        {
-          if (missing(lambdas)) {
-            lambdas <- seq_len(ncol(x))
-          }
-          if (is.character(lambdas)) {
-            lambdas <- which(as.numeric(colnames(x)) %in% lambdas)
-          }
-          p <- get_purity_values(
-            x,
-            pos,
-            weight = weight,
-            noise_variance = noise_variance,
-            lambdas = lambdas
-          )
-          mean(p[trim_peak(x, pos, cutoff = cutoff)] < 1, na.rm = TRUE)
-        },
-        NA
-      )
-    } else {
-      NA
-    }
-  }
-
   time.units <- match.arg(time.units, c("min", "s", "ms"))
   tfac <- switch(time.units, "min" = 1, "s" = 60, "ms" = 60 * 1000)
   fit <- match.arg(fit, c("egh", "gaussian", "raw"))
   chrom_list_string <- deparse(substitute(chrom_list))
-  if (class(chrom_list)[1] == "matrix") {
+  if (is.matrix(chrom_list)) {
     chrom_list <- list(chrom_list)
   }
   if (missing(lambdas)) {
-    if (ncol(chrom_list[[1]]) == 1) {
-      lambdas <- colnames(chrom_list[[1]])
+    if (ncol(chrom_list[[1L]]) == 1L) {
+      lambdas <- colnames(chrom_list[[1L]])
     } else {
-      stop("Wavelengths (`lambdas`) must be provided.")
+      stop("Wavelengths (`lambdas`) must be provided.", call. = FALSE)
     }
   }
   if (is.numeric(lambdas)) {
@@ -159,645 +92,277 @@ get_peaks <- function(
     )
     names(chrom_list) <- seq_along(chrom_list)
   }
-  peaks <- list()
 
-  result <- purrr::map(seq_along(chrom_list), function(sample) {
-    suppressWarnings(
-      ptable <- purrr::map(lambdas, function(lambda) {
-        fit_peaks <- function(
-          x,
-          lambda,
-          pos = NULL,
-          sd.max = 50,
-          fit = c("egh", "gaussian", "raw"),
-          max.iter = 1000,
-          estimate_purity = TRUE,
-          noise_threshold = 0.001,
-          ...
-        ) {
-          get_lambda_idx <- function(lambda, lambdas, y, allow_max = TRUE) {
-            if (lambda == "max") {
-              if (allow_max) {
-                lambda.idx <- which.max(y)
-              } else {
-                stop(
-                  "Wavelength (`lambda`) must be specified for interactive scanning."
-                )
-              }
+  find_peaks <- function(
+    y,
+    smooth_type = c("gaussian", "box", "savgol", "mva", "tmva", "none"),
+    smooth_window = 0.001,
+    slope_thresh = 0,
+    amp_thresh = 0,
+    bounds = TRUE
+  ) {
+    if (!is.vector(y)) {
+      stop("Please provide a vector to argument `y` to proceed.", call. = FALSE)
+    }
+    smooth_type <- match.arg(
+      smooth_type,
+      c("gaussian", "box", "savgol", "mva", "tmva", "none")
+    )
+    if (smooth_window < 1) {
+      smooth_window <- max(length(y) * smooth_window, 1)
+    }
+    if (smooth_type == "savgol") {
+      if ((smooth_window %% 2) == 0) {
+        smooth_window <- smooth_window + 1
+      }
+      fc <- (smooth_window - 1) / 2
+      X <- outer(-fc:fc, 0:4, FUN = "^")
+      sv <- svd(X)
+      pos_d <- sv$d > max(dim(X)) * .Machine$double.eps * sv$d[1L]
+      Y <- sv$v[, pos_d, drop = FALSE] %*%
+        ((1 / sv$d[pos_d]) * t(sv$u[, pos_d, drop = FALSE]))
+      smoothed <- stats::convolve(diff(y), rev(Y[1L, ]), type = "o")
+      d <- smoothed[(fc + 1):(length(smoothed) - fc)]
+    } else if (smooth_type == "mva") {
+      d <- runmean_center(diff(y), k = smooth_window)
+    } else if (smooth_type == "gaussian") {
+      d <- diff(
+        stats::ksmooth(
+          seq_along(y),
+          y,
+          kernel = "normal",
+          bandwidth = smooth_window
+        )$y
+      )
+    } else if (smooth_type == "box") {
+      d <- diff(
+        stats::ksmooth(
+          seq_along(y),
+          y,
+          kernel = "box",
+          bandwidth = smooth_window
+        )$y
+      )
+    } else if (smooth_type == "tmva") {
+      d <- runmean_center(
+        runmean_center(diff(y), k = smooth_window),
+        k = smooth_window
+      )
+    } else {
+      d <- diff(y)
+    }
+
+    nd <- length(d)
+    p1 <- which(sign(d[1:(nd - 1L)]) > sign(d[2:nd]))
+    p2 <- which(abs(diff(d)) > slope_thresh)
+    p3 <- which(y > amp_thresh)
+    p <- intersect(intersect(p1, p2), p3)
+    if (bounds) {
+      p4 <- which(sign(d[1:(nd - 1L)]) < sign(d[2:nd]))
+      if (length(p) == 0L || length(p4) == 0L) {
+        return(data.frame(
+          pos = p,
+          lower = rep(1, length(p)),
+          upper = rep(length(y), length(p))
+        ))
+      }
+      idx_l <- findInterval(p - 1L, p4)
+      bl <- ifelse(idx_l > 0L, p4[pmax(1L, idx_l)], 1)
+      idx_u <- findInterval(p, p4) + 1L
+      bu <- ifelse(
+        idx_u <= length(p4),
+        p4[pmin(length(p4), idx_u)],
+        length(y)
+      )
+      p <- data.frame(pos = p, lower = bl, upper = bu)
+    }
+    p
+  }
+
+  gaussian_fn <- function(x, center = 0, width = 1, height = NULL, floor = 0) {
+    twoVar <- 2 * width * width
+    sqrt2piVar <- sqrt(pi * twoVar)
+    y <- exp(-(x - center)^2 / twoVar) / sqrt2piVar
+    if (!is.null(height)) {
+      y <- y * sqrt2piVar * height
+    }
+    if (is.null(floor)) y else y + floor
+  }
+
+  egh_fn <- function(x, center, width, height, tau = 0) {
+    result <- rep(0, length(x))
+    index <- which(2 * width^2 + tau * (x - center) > 0)
+    result[index] <- height *
+      exp(-(x[index] - center)^2 / (2 * width^2 + tau * (x[index] - center)))
+    result
+  }
+
+  result <- lapply(seq_along(chrom_list), function(sample) {
+    suppressWarnings({
+      ptable <- lapply(lambdas, function(lambda) {
+        x <- chrom_list[[sample]]
+        col_nums <- as.numeric(colnames(x))
+        lambda.idx <- if (lambda == "max") {
+          which.max(x)
+        } else if (length(col_nums) == 1L) {
+          1L
+        } else {
+          which(col_nums == as.numeric(lambda))
+        }
+        if (length(lambda.idx) == 0L || is.na(lambda.idx)) {
+          stop(
+            "The specified wavelength (`lambda`) could not be found!",
+            call. = FALSE
+          )
+        }
+
+        y <- x[, lambda.idx]
+        pos <- find_peaks(y, ...)
+
+        tabnames <- switch(
+          fit,
+          "gaussian" = c(
+            "rt",
+            "start",
+            "end",
+            "sd",
+            "FWHM",
+            "height",
+            "area",
+            "r.squared",
+            "purity"
+          ),
+          "egh" = c(
+            "rt",
+            "start",
+            "end",
+            "sd",
+            "tau",
+            "FWHM",
+            "height",
+            "area",
+            "r.squared",
+            "purity"
+          ),
+          "raw" = c(
+            "rt",
+            "start",
+            "end",
+            "sd",
+            "FWHM",
+            "height",
+            "area",
+            "purity"
+          )
+        )
+        noPeaksMat <- matrix(
+          rep(NA_real_, length(tabnames)),
+          nrow = 1L,
+          dimnames = list(NULL, tabnames)
+        )
+        ny <- length(y)
+        on.edge <- pos$pos <= 1L |
+          pos$pos >= ny |
+          is.na(y[pmin(ny, pos$pos + 1L)]) |
+          is.na(y[pmax(1L, pos$pos - 1L)])
+        pos <- pos[!on.edge, , drop = FALSE]
+
+        if (nrow(pos) == 0L) {
+          pks <- noPeaksMat
+        } else {
+          fitpk <- function(row_pos) {
+            xloc <- row_pos[1L]
+            peak.loc <- seq.int(row_pos[2L], row_pos[3L])
+            y_pk <- y[peak.loc]
+            if (fit == "raw") {
+              area <- sum(
+                diff(peak.loc) * mean(c(y_pk[-1L], utils::tail(y_pk, -1L)))
+              )
+              return(c(
+                rt = xloc,
+                start = row_pos[2L],
+                end = row_pos[3L],
+                sd = row_pos[3L] - row_pos[2L],
+                FWHM = 2.35 * row_pos[3L] - row_pos[2L],
+                height = y[xloc],
+                area = area,
+                purity = NA_real_
+              ))
+            }
+            start.center <- xloc
+            start.height <- y[xloc]
+            start.width <- sum(y_pk > (start.height / 2)) / 2
+            y_fit <- if (fit == "gaussian") {
+              gaussian_fn(
+                peak.loc,
+                start.center,
+                start.width,
+                start.height,
+                NULL
+              )
             } else {
-              lambda.idx <- ifelse(
-                (length(lambdas) == 1),
-                1,
-                which(lambdas == as.numeric(lambda))
-              )
+              egh_fn(peak.loc, start.center, start.width, start.height, 0)
             }
-            if (is.na(lambda.idx) || length(lambda.idx) == 0) {
-              stop("The specified wavelength (`lambda`) could not be found!")
-            }
-            lambda.idx
-          }
-
-          lambda.idx <- get_lambda_idx(lambda, as.numeric(colnames(x)))
-          y <- x[, lambda.idx]
-          fit <- match.arg(fit, c("egh", "gaussian", "raw"))
-          if (is.null(pos)) {
-            find_peaks <- function(
-              y,
-              smooth_type = c(
-                "gaussian",
-                "box",
-                "savgol",
-                "mva",
-                "tmva",
-                "none"
-              ),
-              smooth_window = 0.001,
-              slope_thresh = 0,
-              amp_thresh = 0,
-              bounds = TRUE
-            ) {
-              if (!is.vector(y)) {
-                stop("Please provide a vector to argument `y` to proceed.")
-              }
-              smooth_type <- match.arg(
-                smooth_type,
-                c("gaussian", "box", "savgol", "mva", "tmva", "none")
-              )
-              if (smooth_window < 1) {
-                smooth_window <- max(length(y) * smooth_window, 1)
-              }
-              # compute derivative (with or without smoothing)
-              if (smooth_type == "savgol") {
-                if ((smooth_window %% 2) == 0) {
-                  smooth_window <- smooth_window + 1
-                }
-                savgol <- function(
-                  time_series,
-                  filter_length,
-                  forder = 4,
-                  dorder = 0
-                ) {
-                  stopifnot(is.numeric(time_series), is.numeric(filter_length))
-                  if (filter_length <= 1 || filter_length %% 2 == 0) {
-                    stop(
-                      "Argument 'filter_length' must be an odd integer greater than 1."
-                    )
-                  }
-                  n <- length(time_series)
-
-                  # -- calculate filter coefficients --
-                  fc <- (filter_length - 1) / 2 # index: window left and right
-                  X <- outer(-fc:fc, 0:forder, FUN = "^") # polynomial terms and coeffs
-                  Y <- pinv(X) # pseudoinverse
-
-                  # -- filter via convolution and take care of the end points --
-                  smoothed <- stats::convolve(
-                    time_series,
-                    rev(Y[(dorder + 1), ]),
-                    type = "o"
-                  ) # convolve(...)
-                  smoothed <- smoothed[(fc + 1):(length(smoothed) - fc)]
-
-                  result <- (-1)^dorder * smoothed
-                  return(result)
-                }
-                d <- savgol(diff(y), filter_length = smooth_window)
-              } else if (smooth_type == "mva") {
-                d <- caTools::runmean(diff(y), k = smooth_window)
-              } else if (smooth_type == "gaussian") {
-                d <- diff(
-                  stats::ksmooth(
-                    seq_along(y),
-                    y,
-                    kernel = "normal",
-                    bandwidth = smooth_window
-                  )$y
-                )
-              } else if (smooth_type == "box") {
-                d <- diff(
-                  ksmooth(
-                    seq_along(y),
-                    y,
-                    kernel = "box",
-                    bandwidth = smooth_window
-                  )$y
-                )
-              } else if (smooth_type == "tmva") {
-                d <- caTools::runmean(
-                  caTools::runmean(diff(y), k = smooth_window),
-                  k = smooth_window
-                )
-              } else {
-                d <- diff(y)
-              }
-
-              # detect zero-crossing of first derivative (peak apex)
-              p1 <- which(sign(d[1:(length(d) - 1)]) > sign(d[2:length(d)]))
-
-              # detect second derivative exceeding slope threshold
-              p2 <- which(abs(diff(d)) > slope_thresh)
-
-              # detect y-vals exceeding amplitude threshold
-              p3 <- which(y > amp_thresh)
-              p <- intersect(intersect(p1, p2), p3)
-              if (bounds) {
-                p4 <- which(sign(d[1:(length(d) - 1)]) < sign(d[2:length(d)]))
-
-                # find lower bound
-                suppressWarnings(
-                  bl <- sapply(p, function(v) {
-                    max(p4[p4 < v])
-                  })
-                )
-                bl[which(bl == -Inf)] <- 1
-
-                # find upper bound
-                suppressWarnings(
-                  bu <- sapply(p, function(v) {
-                    min(p4[p4 > v])
-                  })
-                )
-                bu[which(bu == Inf)] <- length(y)
-                p <- data.frame(
-                  pos = p,
-                  lower = bl,
-                  upper = bu
-                )
-              }
-              p
-            }
-            pos <- find_peaks(y, ...)
-          }
-          if (ncol(x) == 1) {
-            estimate_purity <- FALSE
-          }
-          tabnames <- switch(
-            fit,
-            "gaussian" = c(
-              "rt",
-              "start",
-              "end",
-              "sd",
-              "FWHM",
-              "height",
-              "area",
-              "r-squared",
-              "purity"
-            ),
-            "egh" = c(
-              "rt",
-              "start",
-              "end",
-              "sd",
-              "tau",
-              "FWHM",
-              "height",
-              "area",
-              "r.squared",
-              "purity"
-            ),
-            "raw" = c(
-              "rt",
-              "start",
-              "end",
-              "sd",
-              "FWHM",
-              "height",
-              "area",
-              "purity"
-            )
-          )
-          noPeaksMat <- matrix(
-            rep(NA, length(tabnames)),
-            nrow = 1,
-            dimnames = list(NULL, tabnames)
-          )
-          on.edge <- sapply(pos$pos, function(x) {
-            x <= 1 || is.na(y[x + 1]) || is.na(y[x - 1])
-          })
-          pos <- pos[!on.edge, ]
-
-          if (nrow(pos) == 0) {
-            return(noPeaksMat)
-          }
-
-          fitpk_gaussian <- function(
-            x,
-            pos,
-            lambda,
-            max.iter,
-            estimate_purity = TRUE,
-            noise_threshold = 0.001,
-            ...
-          ) {
-            fit_gaussian <- function(
-              x,
-              y,
-              start.center = NULL,
-              start.width = NULL,
-              start.height = NULL,
-              start.floor = NULL,
-              fit.floor = FALSE,
-              max.iter = 1000
-            ) {
-              gaussian <- function(
-                x,
-                center = 0,
-                width = 1,
-                height = NULL,
-                floor = 0
-              ) {
-                # adapted from Earl F. Glynn;  Stowers Institute for Medical Research, 2007
-                twoVar <- 2 * width * width
-                sqrt2piVar <- sqrt(pi * twoVar)
-                y <- exp(-(x - center)^2 / twoVar) / sqrt2piVar
-
-                # by default, the height is such that the curve has unit volume
-                if (!is.null(height)) {
-                  scalefactor <- sqrt2piVar
-                  y <- y * scalefactor * height
-                }
-                y + floor
-              }
-              # estimate starting values
-              who.max <- which.max(y)
-              if (is.null(start.center)) {
-                start.center <- x[who.max]
-              }
-              if (is.null(start.height)) {
-                start.height <- y[who.max]
-              }
-              if (is.null(start.width)) {
-                start.width <- sum(y > (start.height / 2)) / 2
-              }
-
-              # call the Nonlinear Least Squares, either fitting the floor too or not
-              controlList <- stats::nls.control(
-                maxiter = max.iter,
-                minFactor = 1 / 512,
-                warnOnly = TRUE
-              )
-              starts <- list(
-                "center" = start.center,
-                "width" = start.width,
-                "height" = start.height
-              )
-              if (!fit.floor) {
-                nlsAns <- try(
-                  nlsLM(
-                    y ~ gaussian(x, center, width, height),
-                    start = starts,
-                    control = controlList
-                  ),
-                  silent = TRUE
-                )
-              } else {
-                if (is.null(start.floor)) {
-                  start.floor <- stats::quantile(y, seq(0, 1, 0.1))[2]
-                }
-                starts <- c(starts, "floor" = start.floor)
-                nlsAns <- try(
-                  nlsLM(
-                    y ~ gaussian(x, center, width, height, floor),
-                    start = starts,
-                    control = controlList
-                  ),
-                  silent = TRUE
-                )
-              }
-
-              # package up the results to pass back
-
-              if (inherits(nlsAns, "try-error")) {
-                yAns <- gaussian(
-                  x,
-                  start.center,
-                  start.width,
-                  start.height,
-                  start.floor
-                )
-                out <- list(
-                  "center" = start.center,
-                  "width" = start.width,
-                  "height" = start.height,
-                  "y" = yAns,
-                  "residual" = y - yAns
-                )
-                floorAns <- if (fit.floor) {
-                  start.floor
-                } else {
-                  0
-                }
-              } else {
-                coefs <- stats::coef(nlsAns)
-                out <- list(
-                  "center" = coefs[1],
-                  "width" = coefs[2],
-                  "height" = coefs[3],
-                  "y" = stats::fitted(nlsAns),
-                  "residual" = stats::residuals(nlsAns)
-                )
-                floorAns <- if (fit.floor) {
-                  coefs[4]
-                } else {
-                  0
-                }
-              }
-              if (fit.floor) {
-                out <- c(out, "floor" = floorAns)
-              }
-              return(out)
-            }
-            y <- x[, lambda]
-            xloc <- pos[1]
-            peak.loc <- seq.int(pos[2], pos[3])
-            suppressWarnings(
-              m <- fit_gaussian(
-                peak.loc,
-                y[peak.loc],
-                start.center = xloc,
-                start.height = y[xloc],
-                max.iter = max.iter
-              )
-            )
-            area <- sum(diff(peak.loc) * mean(c(m$y[-1], utils::tail(m$y, -1)))) # trapezoidal integration
-            r.squared <- try(
-              summary(stats::lm(m$y ~ y[peak.loc]))$r.squared,
-              silent = TRUE
-            )
-            purity <- get_purity(
-              x = x,
-              pos = pos,
-              try = estimate_purity,
-              noise_threshold = noise_threshold
-            )
-            c(
-              "rt" = m$center,
-              "start" = pos[2],
-              "end" = pos[3],
-              "sd" = m$width,
-              "FWHM" = 2.35 * m$width,
-              "height" = y[xloc],
-              "area" = area,
-              "r.squared" = r.squared,
-              purity = purity
-            )
-          }
-
-          fitpk_egh <- function(
-            x,
-            pos,
-            lambda,
-            max.iter,
-            estimate_purity = TRUE,
-            noise_threshold = 0.001
-          ) {
-            fit_egh <- function(
-              x1,
-              y1,
-              start.center = NULL,
-              start.width = NULL,
-              start.tau = NULL,
-              start.height = NULL,
-              start.floor = NULL,
-              fit.floor = FALSE,
-              max.iter = 1000
-            ) {
-              egh <- function(x, center, width, height, tau, floor = 0) {
-                result <- rep(0, length(x))
-                index <- which(2 * width^2 + tau * (x - center) > 0)
-                result[index] <- height *
-                  exp(
-                    -(x[index] - center)^2 /
-                      (2 * width^2 + tau * (x[index] - center))
-                  )
-                return(result)
-              }
-              # try to find the best egh to fit the given data
-
-              # make some rough estimates from the values of Y
-              who.max <- which.max(y1)
-              if (is.null(start.center)) {
-                start.center <- x1[who.max]
-              }
-              if (is.null(start.height)) {
-                start.height <- y1[who.max]
-              }
-              if (is.null(start.width)) {
-                start.width <- sum(y1 > (start.height / 2)) / 2
-              }
-              if (is.null(start.tau)) {
-                start.tau <- 0
-              }
-              # call the Nonlinear Least Squares, either fitting the floor too or not
-              controlList <- stats::nls.control(
-                maxiter = max.iter,
-                minFactor = 1 / 512,
-                warnOnly = TRUE
-              )
-              starts <- list(
-                "center" = start.center,
-                "width" = start.width,
-                "height" = start.height,
-                "tau" = start.tau
-              )
-              if (!fit.floor) {
-                nlsAns <- try(
-                  nlsLM(
-                    y1 ~ egh(x1, center, width, height, tau),
-                    start = starts,
-                    control = controlList
-                  ),
-                  silent = TRUE
-                )
-              } else {
-                if (is.null(start.floor)) {
-                  start.floor <- stats::quantile(y1, seq(0, 1, 0.1))[2]
-                }
-                starts <- c(starts, "floor" = start.floor)
-                nlsAns <- try(
-                  nlsLM(
-                    y1 ~ egh(x1, center, width, height, tau, floor),
-                    start = starts,
-                    control = controlList
-                  ),
-                  silent = TRUE
-                )
-              }
-
-              # package up the results to pass back
-              if (inherits(nlsAns, "try-error")) {
-                yAns <- egh(
-                  x1,
-                  start.center,
-                  start.width,
-                  start.height,
-                  start.tau,
-                  start.floor
-                )
-                out <- list(
-                  "center" = start.center,
-                  "width" = start.width,
-                  "height" = start.height,
-                  "tau" = start.tau,
-                  "y" = yAns,
-                  "residual" = y1 - yAns
-                )
-                floorAns <- if (fit.floor) {
-                  start.floor
-                } else {
-                  0
-                }
-              } else {
-                coefs <- stats::coef(nlsAns)
-                out <- list(
-                  "center" = coefs[1],
-                  "width" = coefs[2],
-                  "height" = coefs[3],
-                  "tau" = coefs[4],
-                  "y" = stats::fitted(nlsAns),
-                  "residual" = stats::residuals(nlsAns)
-                )
-                floorAns <- if (fit.floor) {
-                  coefs[5]
-                } else {
-                  0
-                }
-              }
-
-              if (fit.floor) {
-                out <- c(out, "floor" = floorAns)
-              }
-              return(out)
-            }
-            y <- x[, lambda]
-            xloc <- pos[1]
-            peak.loc <- seq.int(pos[2], pos[3])
-            suppressWarnings(
-              m <- fit_egh(
-                peak.loc,
-                y[peak.loc],
-                start.center = xloc,
-                start.height = y[xloc],
-                max.iter = max.iter
-              )
-            )
-            r.squared <- try(
-              summary(stats::lm(m$y ~ y[peak.loc]))$r.squared,
-              silent = TRUE
-            )
-            purity <- get_purity(
-              x = x,
-              pos = pos,
-              try = estimate_purity,
-              noise_threshold = noise_threshold
-            )
-            # trapezoidal integration
-            area <- sum(diff(peak.loc) * mean(c(m$y[-1], utils::tail(m$y, -1))))
-            c(
-              "rt" = m$center,
-              "start" = pos[2],
-              "end" = pos[3],
-              "sd" = m$width,
-              "tau" = m$tau,
-              "FWHM" = 2.35 * m$width,
-              "height" = y[xloc],
-              "area" = area,
-              "r.squared" = r.squared,
-              purity = purity
-            )
-          }
-
-          fitpk_raw <- function(
-            x,
-            pos,
-            lambda,
-            max.iter,
-            estimate_purity = TRUE,
-            noise_threshold = 0.001
-          ) {
-            y <- x[, lambda]
-            xloc <- pos[1]
-            peak.loc <- seq.int(pos[2], pos[3])
-
-            # perform trapezoidal integration on raw signal
             area <- sum(
-              diff(peak.loc) *
-                mean(c(y[peak.loc][-1], utils::tail(y[peak.loc], -1)))
+              diff(peak.loc) * mean(c(y_fit[-1L], utils::tail(y_fit, -1L)))
             )
-            purity <- get_purity(
-              x = x,
-              pos = pos,
-              try = estimate_purity,
-              noise_threshold = noise_threshold
+            r_sq <- tryCatch(
+              summary(stats::lm(y_fit ~ y_pk))$r.squared,
+              error = function(e) NA_real_
             )
-            c(
-              "rt" = pos[1],
-              "start" = pos[2],
-              "end" = pos[3],
-              "sd" = pos[3] - pos[2],
-              "FWHM" = 2.35 * pos[3] - pos[2],
-              "height" = y[xloc],
-              "area" = area,
-              purity = purity
-            )
+            if (fit == "gaussian") {
+              c(
+                rt = start.center,
+                start = row_pos[2L],
+                end = row_pos[3L],
+                sd = start.width,
+                FWHM = 2.35 * start.width,
+                height = start.height,
+                area = area,
+                r.squared = r_sq,
+                purity = NA_real_
+              )
+            } else {
+              c(
+                rt = start.center,
+                start = row_pos[2L],
+                end = row_pos[3L],
+                sd = start.width,
+                tau = 0,
+                FWHM = 2.35 * start.width,
+                height = start.height,
+                area = area,
+                r.squared = r_sq,
+                purity = NA_real_
+              )
+            }
           }
 
-          fitpk <- switch(
-            fit,
-            "gaussian" = fitpk_gaussian,
-            "egh" = fitpk_egh,
-            "raw" = fitpk_raw
-          )
-
-          huhn <- data.frame(t(
-            apply(
-              pos,
-              1,
-              fitpk,
-              x = x,
-              lambda = lambda.idx,
-              max.iter = max.iter,
-              estimate_purity = estimate_purity,
-              noise_threshold = noise_threshold
-            )
-          ))
+          huhn <- data.frame(t(apply(pos, 1L, fitpk)))
           colnames(huhn) <- tabnames
-          huhn <- data.frame(sapply(huhn, as.numeric, simplify = FALSE))
+          huhn <- data.frame(lapply(huhn, as.numeric))
           if (!is.null(sd.max)) {
-            huhn <- huhn[huhn$sd < sd.max, ]
+            huhn <- huhn[huhn$sd < sd.max, , drop = FALSE]
           }
-          x <- try(huhn[huhn$rt > 0, ], silent = TRUE)
-          if (inherits(x, "try-error")) {
-            NA
-          } else {
-            x
+          pks <- try(huhn[huhn$rt > 0, , drop = FALSE], silent = TRUE)
+          if (inherits(pks, "try-error")) {
+            pks <- noPeaksMat
           }
         }
-        pks <- fit_peaks(
-          chrom_list[[sample]],
-          lambda = lambda,
-          fit = fit,
-          max.iter = max.iter,
-          sd.max = sd.max,
-          estimate_purity = estimate_purity,
-          noise_threshold = noise_threshold,
-          ...
-        )
         pks <- cbind(sample = names(chrom_list)[sample], lambda, pks)
         pks <- remove_bad_peaks(pks, n = nrow(chrom_list[[sample]]))
-        pks <- convert_indices_to_times(
+        convert_indices_to_times(
           pks,
           chrom_list = chrom_list,
           idx = sample,
           tfac = tfac
         )
-        pks
       })
-    )
+    })
     names(ptable) <- lambdas
     if (collapse) {
       ptable <- do.call(rbind, ptable)
+      rownames(ptable) <- NULL
     }
     ptable
   })
@@ -810,6 +375,6 @@ get_peaks <- function(
     sd.max = sd.max,
     max.iter = max.iter,
     time.units = time.units,
-    class = "peak_list"
+    class = c("peak_list", "list")
   )
 }

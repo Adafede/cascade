@@ -1,4 +1,4 @@
-## Qualitative AND Sequential
+## Qualitative AND Sequential (Microshades)
 cvd_green <- c("#4E7705", "#6D9F06", "#97CE2F", "#BDEC6F", "#DDFFA0")
 cvd_orange <- c("#9D654C", "#C17754", "#F09163", "#FCB076", "#FFD5AF")
 cvd_blue <- c("#098BD9", "#56B4E9", "#7DCCFF", "#BCE1FF", "#E7F4FF")
@@ -11,6 +11,7 @@ blue <- c("#4292c6", "#6baed6", "#9ecae1", "#c6dbef", "#eff3ff")
 green <- c("#238b45", "#41ab5d", "#74c476", "#a1d99b", "#c7e9c0")
 brown <- c("#7D3200", "#9E5C00", "#B78560", "#CAA995", "#D8C7BE")
 gray <- c("#525252", "#737373", "#969696", "#bdbdbd", "#d9d9d9")
+
 microshades <- list(
   cvd_green,
   cvd_orange,
@@ -24,10 +25,7 @@ microshades <- list(
   brown
 )
 microshades_grey <- list(cvd_gray, gray)
-microshades_colors <- character()
-for (i in seq_len(length(microshades))) {
-  microshades_colors[i] <- microshades[[i]][1]
-}
+microshades_colors <- vapply(microshades, `[`, character(1L), 1L)
 
 ## Qualitative
 paired <- c(
@@ -223,4 +221,22 @@ pink_24 <- c(
   "#3c081b",
   "#2b0614",
   "#1a030c"
+)
+
+cascade_palettes <- list(
+  microshades = microshades,
+  microshades_grey = microshades_grey,
+  microshades_colors = microshades_colors,
+  paired = paired,
+  minibits = minibits,
+  tableau20 = tableau20,
+  discrete_rainbow_14 = discrete_rainbow_14,
+  discrete_rainbow_23 = discrete_rainbow_23,
+  elife = elife,
+  green_4 = green_4,
+  blue_4 = blue_4,
+  pink_4 = pink_4,
+  green_24 = green_24,
+  blue_24 = blue_24,
+  pink_24 = pink_24
 )
