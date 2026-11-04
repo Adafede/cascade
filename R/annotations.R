@@ -207,7 +207,16 @@ molinfo <- function(x) {
 keep_best_candidates <- function(df) {
   dt <- data.table::copy(data.table::as.data.table(df))
   for (col in names(dt)) {
-    data.table::set(dt, j = col, value = gsub("\\|.*", "", dt[[col]]))
+    val <- dt[[col]]
+    if (!is.character(val)) {
+      val <- as.character(val)
+    }
+    pos <- regexpr("|", val, fixed = TRUE)
+    hit <- which(pos > 0L)
+    if (length(hit) > 0L) {
+      val[hit] <- substr(val[hit], 1L, pos[hit] - 1L)
+    }
+    data.table::set(dt, j = col, value = val)
   }
 
   if (nrow(dt) > 0L && anyDuplicated(dt$feature_id) > 0L) {

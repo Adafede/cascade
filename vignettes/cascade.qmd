@@ -51,7 +51,7 @@ untargeted **A**nnotation with **S**emi-quantitative **C**harged **A**erosol
   containing features, as obtained by [mzmine](https://mzio.io)
 - A file ([.tsv](https://en.wikipedia.org/wiki/Tab-separated_values)) containing
   annotations, as obtained by
-  [TIMA](https://taxonomicallyinformedannotation.github.io/tima)
+  [TIMA](https://taxonomicallyinformedannotation.github.io/tima/)
 
 All coming steps admit you already installed `cascade`:
 

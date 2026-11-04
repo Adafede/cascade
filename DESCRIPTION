@@ -1,7 +1,6 @@
 Package: cascade
 Title: Contextualizing Untargeted Annotation with Semi-Quantitative Charged Aerosol Detection for Pertinent Characterization of Natural Extracts
 Version: 0.0.0.9002
-Author: Adriano Rutz
 Authors@R: c(
     person(
         given = "Adriano",
@@ -11,7 +10,6 @@ Authors@R: c(
         comment = c(ORCID = "0000-0003-0443-9902")
         )
     )
-Maintainer: Adriano Rutz <adafede@gmail.com>
 Description: Provides the infrastructure to perform Automated Composition
     Assessment of Natural Extracts by combining untargeted mass spectrometry
     feature tables and taxonomically informed metabolite annotations (TIMA)
@@ -21,7 +19,7 @@ Description: Provides the infrastructure to perform Automated Composition
     ion chromatogram correlation, Wikidata/LOTUS chemotaxonomic literature
     queries, and interactive visualizations.
 License: AGPL (>= 3)
-URL: https://github.com/adafede/cascade, https://adafede.github.io/cascade
+URL: https://github.com/adafede/cascade, https://adafede.github.io/cascade/
 BugReports: https://github.com/adafede/cascade/issues
 Depends:
     R (>= 4.5.0)

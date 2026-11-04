@@ -50,7 +50,7 @@ Here is what you *minimally* need:
   containing features, as obtained by [mzmine](https://mzio.io)
 - A file ([.tsv](https://en.wikipedia.org/wiki/Tab-separated_values)) containing
   annotations, as obtained by
-  [TIMA](https://taxonomicallyinformedannotation.github.io/tima)
+  [TIMA](https://taxonomicallyinformedannotation.github.io/tima/)
 
 ## Installation
 
@@ -68,7 +68,7 @@ install.packages(
 ```
 
 Once installed, you are ready to go through our
-[documentation](https://adafede.github.io/cascade/articles), with the major
+[documentation](https://adafede.github.io/cascade/articles/), with the major
 steps detailed.
 
 ## Main Citations

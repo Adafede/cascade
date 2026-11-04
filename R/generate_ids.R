@@ -41,7 +41,9 @@
 #'
 #' @examples
 #' \donttest{
+#' old_wd <- setwd(tempdir())
 #' try(generate_ids(taxa = "Swertia"))
+#' setwd(old_wd)
 #' }
 generate_ids <- function(
   taxa = c("Swertia", "Kopsia", "Ginkgo"),

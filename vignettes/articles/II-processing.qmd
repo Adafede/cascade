@@ -38,6 +38,7 @@ vignette: >
 #| include: false
 
 library("cascade")
+old_wd <- setwd(tempdir())
 ```
 
 This vignette describes the main processing function. It assumes you already

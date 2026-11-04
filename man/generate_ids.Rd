@@ -62,7 +62,9 @@ builds stacked histograms, interactive treemaps, and sunburst plots.
 }
 \examples{
 \donttest{
+old_wd <- setwd(tempdir())
 try(generate_ids(taxa = "Swertia"))
+setwd(old_wd)
 }
 }
 \concept{EDAM:operation_0224 Query and retrieval}

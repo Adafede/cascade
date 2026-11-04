@@ -33,7 +33,7 @@
 #' - **cascade_features_not_informed**: [data.frame], 893 rows x 11 columns (EDAM: `data_2536` Mass spectrometry data)
 #' - **cascade_chromatograms_positive**: [data.frame], 122,541 rows x 3 columns (EDAM: `data_2536` Mass spectrometry data)
 #' - **cascade_chromatograms_negative**: [data.frame], 122,079 rows x 3 columns (EDAM: `data_2536` Mass spectrometry data)
-#' - **cascade_ms_data**: S4 MS1 spectral container (5,668 MS1 scans; EDAM: `data_0943` Mass spectrum)
+#' - **cascade_ms_data**: Named list (`rt`, `mz`, `intensity`) containing 5,668 MS1 scans (EDAM: `data_0943` Mass spectrum)
 #'
 #' @concept EDAM:data_2536 Mass spectrometry data
 #' @concept EDAM:data_0943 Mass spectrum

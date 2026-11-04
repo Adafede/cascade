@@ -19,7 +19,7 @@
 \item \strong{cascade_features_not_informed}: \link{data.frame}, 893 rows x 11 columns (EDAM: \code{data_2536} Mass spectrometry data)
 \item \strong{cascade_chromatograms_positive}: \link{data.frame}, 122,541 rows x 3 columns (EDAM: \code{data_2536} Mass spectrometry data)
 \item \strong{cascade_chromatograms_negative}: \link{data.frame}, 122,079 rows x 3 columns (EDAM: \code{data_2536} Mass spectrometry data)
-\item \strong{cascade_ms_data}: S4 MS1 spectral container (5,668 MS1 scans; EDAM: \code{data_0943} Mass spectrum)
+\item \strong{cascade_ms_data}: Named list (\code{rt}, \code{mz}, \code{intensity}) containing 5,668 MS1 scans (EDAM: \code{data_0943} Mass spectrum)
 }
 
 An object of class \code{data.frame} with 3471 rows and 58 columns.
@@ -34,7 +34,7 @@ An object of class \code{data.frame} with 122541 rows and 3 columns.
 
 An object of class \code{data.frame} with 122079 rows and 3 columns.
 
-An object of class \code{MSnExp} with 1 rows and 1 columns.
+An object of class \code{list} of length 3.
 }
 \usage{
 cascade_annotations

@@ -14,7 +14,7 @@ Provides the infrastructure to perform Automated Composition Assessment of Natur
 Useful links:
 \itemize{
   \item \url{https://github.com/adafede/cascade}
-  \item \url{https://adafede.github.io/cascade}
+  \item \url{https://adafede.github.io/cascade/}
   \item Report bugs at \url{https://github.com/adafede/cascade/issues}
 }
 

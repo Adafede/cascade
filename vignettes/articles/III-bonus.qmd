@@ -38,6 +38,7 @@ vignette: >
 #| include: false
 
 library("cascade")
+old_wd <- setwd(tempdir())
 ```
 
 This vignette describes some additional bonus helper functions. A lot of it is

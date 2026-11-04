@@ -38,7 +38,9 @@
 #'
 #' @examples
 #' \donttest{
+#' old_wd <- setwd(tempdir())
 #' generate_tables(show_example = TRUE, export_csv = FALSE, export_html = FALSE)
+#' setwd(old_wd)
 #' }
 generate_tables <- function(
   annotations = NULL,
