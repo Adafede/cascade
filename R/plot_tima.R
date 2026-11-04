@@ -1,47 +1,49 @@
-#' Plot TIMA
+#' Plot TIMA annotation chemical class distributions
+#'
+#' Generates a stacked horizontal histogram, an interactive treemap, and an
+#' interactive sunburst plot from one or more prepared TIMA annotation tables
+#' returned by [prepare_tima_annotations()].
 #'
 #' @export
 #'
-#' @include plot_histograms.R
-#' @include prepare_hierarchy.R
-#' @include prepare_plot.R
-#' @include treemaps_progress.R
+#' @param tables A list of prepared annotation `data.table` objects (as
+#'   returned by [prepare_tima_annotations()]).
 #'
-#' @param tables Tables
+#' @return A named list with three elements:
+#'   - `histogram`: A `ggplot` stacked bar chart.
+#'   - `treemap`: A `plotly` interactive treemap widget.
+#'   - `sunburst`: A `plotly` interactive sunburst widget.
 #'
-#' @return Pretty plots
+#' @concept EDAM:operation_3803 Natural product identification
+#' @concept EDAM:operation_0337 Visualisation
+#' @concept EDAM:operation_2942 Treemap visualisation
+#' @concept EDAM:topic_3172 Metabolomics
+#' @concept EDAM:topic_0092 Data visualisation
 #'
-#' @examples NULL
+#' @examples
+#' tables <- prepare_tima_annotations(show_example = TRUE)
+#' plot_tima(tables)
 plot_tima <- function(tables) {
-  hierarchies <- tables |>
-    purrr::map(
-      prepare_hierarchy,
-      type = "literature"
-    )
-  names(hierarchies) <- "comparison"
+  hierarchies <- lapply(tables, prepare_hierarchy, type = "literature")
+  names(hierarchies)[1L] <- "comparison"
 
-  prepared_plots <- hierarchies |>
-    purrr::map(prepare_plot)
+  prepared_plots <- lapply(hierarchies, prepare_plot)
+  histograms <- lapply(prepared_plots, plot_histograms_litt, label = "")
 
-  histograms <- prepared_plots |>
-    purrr::map(plot_histograms_litt, label = "")
+  treemaps <- treemaps_progress_no_title(
+    xs = names(hierarchies),
+    hierarchies = hierarchies
+  )
 
-  treemaps <-
-    treemaps_progress_no_title(
-      xs = names(hierarchies),
-      hierarchies = hierarchies
-    )
+  sunbursts <- treemaps_progress_no_title(
+    xs = names(hierarchies),
+    type = "sunburst",
+    hierarchies = hierarchies
+  )
 
-  sunbursts <-
-    treemaps_progress_no_title(
-      xs = names(hierarchies),
-      type = "sunburst",
-      hierarchies = hierarchies
-    )
-
-  return(list(
-    histogram = histograms[[1]],
-    treemap = treemaps[[1]],
-    sunburst = sunbursts[[1]]
-  ))
+  list(
+    histogram = histograms[[1L]],
+    treemap = treemaps[[1L]],
+    sunburst = sunbursts[[1L]]
+  )
 }

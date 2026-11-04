@@ -1,63 +1,58 @@
-if (!requireNamespace("curl", quietly = TRUE)) {
-  utils::install.packages("curl")
-}
-if (!requireNamespace("data.table", quietly = TRUE)) {
-  utils::install.packages("data.table")
-}
-
-#' @title Query a SPARQL endpoint efficiently
+#' Query a SPARQL endpoint efficiently
 #'
-#' @description
-#' Performs a SPARQL query and returns a data.table. Optimised for very large
-#' result sets (millions of rows):
+#' Performs a SPARQL query against Wikidata (or another SPARQL 1.1 endpoint)
+#' and returns a `data.table`. Requests gzip-compressed CSV (falling back to
+#' TSV) streamed directly to disk via `curl` and parsed with
+#' [data.table::fread()]. Automatically retries against the QLever Wikidata
+#' endpoint (`https://qlever.dev/api/wikidata`) when `fallback = TRUE`.
 #'
-#'  - Requests **CSV** (no IRI angle-bracket decoration, smallest text format)
-#'  - Requests **gzip** transfer encoding (3-5x less data over the wire)
-#'  - Streams the response **directly to disk** via curl (zero R memory use
-#'    during download)
-#'  - Parses with **data.table::fread** (C-level, multi-threaded)
+#' @param sparql_query Character(1). SPARQL query string.
+#' @param remove_url Logical(1). Strip `http(s)://www.wikidata.org/entity/`
+#'   prefix from character columns (default `TRUE`).
+#' @param endpoint Character(1). SPARQL endpoint URL. Default is
+#'   `"https://query.wikidata.org/sparql"`.
+#' @param agent Character(1). HTTP `User-Agent` header string.
+#' @param timeout Numeric(1). Total request timeout in seconds (default
+#'   `3600L`).
+#' @param fallback Logical(1). Retry with QLever Wikidata endpoint on failure
+#'   (default `TRUE`).
+#' @param headers Character(1) or `NULL`. Optional `Accept` header for backward
+#'   compatibility.
+#' @param post Logical(1). Send the SPARQL query as an HTTP POST request body
+#'   (`application/x-www-form-urlencoded`) rather than a GET query parameter
+#'   (default `FALSE`).
 #'
-#' Falls back to JSON for endpoints that do not support CSV.
-#'
-#' @param sparql_query  Character. SPARQL query string.
-#' @param remove_url    Logical. Strip `http://www.wikidata.org/entity/` prefix
-#'                      from character columns (default TRUE).
-#' @param endpoint      Character. SPARQL endpoint URL.
-#' @param agent         Character. User-Agent header string.
-#' @param timeout       Integer. Total request timeout in seconds (default 3600).
-#' @param fallback      Logical. Retry with QLever Wikidata endpoint on failure.
-#' @param headers       Character or NULL. Optional `Accept` header used for
-#'                      backward compatibility with older versions. If set,
-#'                      this value is used as preferred response format.
-#' @param post          Logical. If TRUE, send the SPARQL query as an HTTP POST
-#'                      request body (application/x-www-form-urlencoded) rather
-#'                      than as a GET query parameter. Required for endpoints
-#'                      such as QLever that do not accept GET requests.
-#'
-#' @return A `data.table`.
+#' @return A `data.table` containing the query results.
 #' @export
-#' @examples NULL
+#'
+#' @concept EDAM:operation_0224 Query and retrieval
+#' @concept EDAM:data_1086 Compound identifier
+#' @concept EDAM:format_3790 SPARQL
+#' @concept EDAM:topic_3172 Metabolomics
+#'
+#' @examples
+#' \donttest{
+#' q <- "SELECT ?taxon WHERE { ?taxon <http://www.wikidata.org/prop/direct/P225> 'Gentiana lutea' . }"
+#' try(query_wikidata(q, timeout = 15L))
+#' }
 query_wikidata <- function(
   sparql_query,
   remove_url = TRUE,
   endpoint = "https://query.wikidata.org/sparql",
-  agent = "https://github.com/bearloga/WikidataQueryServiceR",
+  agent = "https://github.com/adafede/cascade",
   timeout = 3600L,
   fallback = TRUE,
   headers = NULL,
   post = FALSE
 ) {
-  # Support legacy signature where `headers` was argument #5.
   if (is.character(timeout) && length(timeout) == 1L && is.null(headers)) {
     headers <- timeout
     timeout <- 3600L
   }
 
-  # Support accidental positional use with both legacy and current conventions:
-  # query_wikidata(..., <timeout>, <fallback>) while still allowing `headers`.
   if (
     !is.null(headers) &&
-      (is.numeric(headers)) &&
+      is.numeric(headers) &&
       (is.logical(timeout) || is.numeric(timeout) || is.integer(timeout))
   ) {
     fallback <- as.logical(timeout)[1L]
@@ -65,7 +60,6 @@ query_wikidata <- function(
     headers <- NULL
   }
 
-  # ── Validation ──────────────────────────────────────────────────────────────
   if (
     !is.character(sparql_query) ||
       length(sparql_query) != 1L ||
@@ -106,7 +100,7 @@ query_wikidata <- function(
     )
   }
   if (
-    !(is.numeric(timeout)) ||
+    !is.numeric(timeout) ||
       length(timeout) != 1L ||
       is.na(timeout) ||
       timeout <= 0
@@ -129,15 +123,11 @@ query_wikidata <- function(
     )
   }
 
-  # ── Helpers ─────────────────────────────────────────────────────────────────
-
-  # Build the full request URL with query param
   build_url <- function(ep) {
     sep <- if (grepl("?", ep, fixed = TRUE)) "&" else "?"
     paste0(ep, sep, "query=", curl::curl_escape(sparql_query))
   }
 
-  # Strip Wikidata entity prefix from all character columns (vectorised)
   strip_wd <- function(dt) {
     wd <- "^https?://www\\.wikidata\\.org/entity/"
     char_j <- which(vapply(dt, is.character, logical(1L)))
@@ -150,16 +140,20 @@ query_wikidata <- function(
     dt
   }
 
-  # ── Primary path: CSV + gzip via curl ───────────────────────────────────────
-  execute_csv <- function(ep, accept = "text/csv", use_post = post) {
-    tmp <- tempfile(fileext = ".csv")
+  execute_delimited <- function(
+    ep,
+    accept = "text/csv",
+    sep = ",",
+    use_post = post
+  ) {
+    tmp <- tempfile(fileext = if (sep == "\t") ".tsv" else ".csv")
     on.exit(unlink(tmp), add = TRUE)
 
     h <- curl::new_handle()
     curl::handle_setheaders(
       h,
       "Accept" = accept,
-      "Accept-Encoding" = "gzip, deflate", # compress transfer
+      "Accept-Encoding" = "gzip, deflate",
       "User-Agent" = agent
     )
     curl::handle_setopt(h, timeout = as.integer(timeout), followlocation = 1L)
@@ -176,116 +170,37 @@ query_wikidata <- function(
       )
       url <- ep
     } else {
-      # Stream to disk — curl decompresses gzip transparently
       url <- build_url(ep)
     }
 
     curl::curl_download(url, destfile = tmp, handle = h, quiet = TRUE)
 
-    # Detect if the server returned an error document instead of CSV
-    # (some endpoints return 200 + HTML error page)
     first_line <- readLines(tmp, n = 1L, warn = FALSE)
     if (length(first_line) && startsWith(trimws(first_line), "<")) {
       stop(
-        "Endpoint returned non-CSV response (HTML/XML). ",
+        "Endpoint returned non-tabular response (HTML/XML). ",
         "Check the URL or query syntax.",
         call. = FALSE
       )
     }
 
-    # fread: C-level, multi-threaded, handles gzip natively too
     dt <- data.table::fread(
       tmp,
-      sep = ",",
+      sep = sep,
       header = TRUE,
       encoding = "UTF-8",
       showProgress = FALSE,
       data.table = TRUE
     )
 
-    if (remove_url && nrow(dt) > 0L) {
-      dt <- strip_wd(dt)
-    }
-    dt
-  }
-
-  # ── JSON fallback (endpoints without CSV support) ───────────────────────────
-  execute_json <- function(
-    ep,
-    accept = "application/sparql-results+json",
-    use_post = post
-  ) {
-    if (!requireNamespace("httr2", quietly = TRUE)) {
-      utils::install.packages("httr2")
-    }
-
-    req <- httr2::request(ep) |>
-      httr2::req_user_agent(agent) |>
-      httr2::req_headers(
-        Accept = accept,
-        `Accept-Encoding` = "gzip, deflate"
-      ) |>
-      httr2::req_timeout(timeout)
-
-    req <- if (use_post) {
-      req |> httr2::req_body_form(query = sparql_query)
-    } else {
-      req |> httr2::req_url_query(query = sparql_query)
-    }
-
-    resp <- httr2::req_perform(req)
-    body <- httr2::resp_body_json(resp)
-    col_names <- unlist(body$head$vars)
-    bindings <- body$results$bindings
-
-    if (length(bindings) == 0L) {
-      return(data.table::as.data.table(
-        stats::setNames(
-          replicate(length(col_names), character(0L), simplify = FALSE),
-          col_names
-        )
-      ))
-    }
-
-    # Vectorised column extraction — no nested for-loops
-    dt <- data.table::as.data.table(
-      stats::setNames(
-        lapply(col_names, \(col) {
-          vapply(
-            bindings,
-            \(row) {
-              v <- row[[col]]$value
-              v %||% NA_character_
-            },
-            character(1L)
-          )
-        }),
-        col_names
-      )
-    )
-
-    # xsd:dateTime detection & conversion
-    for (col in col_names) {
-      is_datetime <- any(vapply(
-        bindings,
-        FUN = function(row) {
-          dt_type <- row[[col]]$datatype
-          !is.null(dt_type) &&
-            dt_type == "http://www.w3.org/2001/XMLSchema#dateTime"
-        },
-        FUN.VALUE = logical(1L)
-      ))
-      if (is_datetime) {
-        data.table::set(
-          dt,
-          j = col,
-          value = as.POSIXct(
-            dt[[col]],
-            format = "%Y-%m-%dT%H:%M:%SZ",
-            tz = "GMT"
-          )
-        )
+    if (sep == "\t" && nrow(dt) > 0L) {
+      for (j in which(vapply(dt, is.character, logical(1L)))) {
+        v <- dt[[j]]
+        v <- sub("^<(.+)>$", "\\1", v)
+        v <- sub('^"(.*)"(@[a-zA-Z0-9-]+|\\^\\^<[^>]+>)?$', "\\1", v)
+        data.table::set(dt, j = j, value = v)
       }
+      data.table::setnames(dt, sub("^\\?", "", names(dt)))
     }
 
     if (remove_url && nrow(dt) > 0L) {
@@ -294,40 +209,28 @@ query_wikidata <- function(
     dt
   }
 
-  # ── Execute with optional fallback ──────────────────────────────────────────
   execute <- function(ep, use_post = post) {
-    prefer_json <- !is.null(headers) &&
-      grepl("json", headers, ignore.case = TRUE)
-    preferred <- if (prefer_json) execute_json else execute_csv
-    alternate <- if (identical(preferred, execute_csv)) {
-      execute_json
-    } else {
-      execute_csv
-    }
-
-    preferred_accept <- headers %||%
-      if (identical(preferred, execute_csv)) {
-        "text/csv"
-      } else {
-        "application/sparql-results+json"
-      }
-    alternate_accept <- if (identical(alternate, execute_csv)) {
-      "text/csv"
-    } else {
-      "application/sparql-results+json"
-    }
-
     tryCatch(
-      preferred(ep, accept = preferred_accept, use_post = use_post),
+      execute_delimited(
+        ep,
+        accept = "text/csv",
+        sep = ",",
+        use_post = use_post
+      ),
       error = function(e) {
         message(
-          "Preferred format attempt failed on ",
+          "CSV attempt failed on ",
           ep,
           " (",
           conditionMessage(e),
-          ") - retrying with alternate format."
+          ") - retrying with TSV format."
         )
-        alternate(ep, accept = alternate_accept, use_post = use_post)
+        execute_delimited(
+          ep,
+          accept = "text/tab-separated-values",
+          sep = "\t",
+          use_post = use_post
+        )
       }
     )
   }
@@ -364,4 +267,229 @@ query_wikidata <- function(
       }
     }
   )
+}
+
+#' Build parameterized SPARQL queries for a list of taxon QIDs
+#'
+#' @param xs Named list of taxon QIDs.
+#' @param start Start year for publication date filter (character).
+#' @param end End year for publication date filter (character).
+#' @param limit Maximum number of results per query (character).
+#' @param query_url Optional URL to a remote SPARQL query template.
+#' @param query_part_1 Optional legacy query prefix.
+#' @param query_part_2 Optional legacy query segment 2.
+#' @param query_part_3 Optional legacy query segment 3.
+#' @param query_part_4 Optional legacy query suffix.
+#'
+#' @return A named list of SPARQL query strings.
+#' @keywords internal
+#' @noRd
+queries_progress <- function(
+  xs,
+  start = "0",
+  end = "9999",
+  limit = "1000000",
+  query_url = NULL,
+  query_part_1 = NULL,
+  query_part_2 = NULL,
+  query_part_3 = NULL,
+  query_part_4 = NULL
+) {
+  if (
+    !is.null(query_part_1) &&
+      !is.null(query_part_2) &&
+      !is.null(query_part_3) &&
+      !is.null(query_part_4)
+  ) {
+    return(lapply(xs, function(x) {
+      paste0(
+        query_part_1,
+        x,
+        query_part_2,
+        start,
+        query_part_3,
+        end,
+        query_part_4,
+        "\nLIMIT ",
+        limit
+      )
+    }))
+  }
+
+  if (!is.null(query_url)) {
+    query_template <- tryCatch(
+      paste0(readLines(query_url, warn = FALSE), collapse = "\n"),
+      error = function(e) {
+        stop(
+          "Failed to fetch SPARQL query from: ",
+          query_url,
+          "\nError: ",
+          conditionMessage(e),
+          call. = FALSE
+        )
+      }
+    )
+  } else {
+    query_template <- paste0(
+      "SELECT DISTINCT ?structure ?structureLabel ?structure_id ?structureSmiles ?taxaLabels ?taxa ?referencesLabels ?references_ids ?references WHERE {\n",
+      "  ?taxa (wdt:P171*) wd:Q158572;\n",
+      "  wdt:P225 ?taxaLabels.\n",
+      "  ?structure wdt:P235 ?structure_id;\n",
+      "  wdt:P233 ?structureSmiles;\n",
+      "  p:P703 ?statement.\n",
+      "  ?statement ps:P703 ?taxa;\n",
+      "  prov:wasDerivedFrom ?ref.\n",
+      "  ?ref pr:P248 ?references.\n",
+      "  SERVICE <https://query-scholarly.wikidata.org/sparql> {\n",
+      "    ?references wdt:P1476 ?referencesLabels;\n",
+      "    wdt:P356 ?references_ids;\n",
+      "    wdt:P577 ?art_date.\n",
+      "  }\n",
+      "  FILTER(((YEAR(?art_date)) >= 0 ) && ((YEAR(?art_date)) <= 9999 ))\n",
+      "  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE], mul, en\". }\n",
+      "}\nLIMIT 1000000"
+    )
+  }
+
+  lapply(xs, function(taxon_qid) {
+    q <- gsub("Q158572", taxon_qid, query_template, fixed = TRUE)
+    q <- gsub(" 0 ", paste0(" ", start, " "), q, fixed = TRUE)
+    q <- gsub(" 9999 ", paste0(" ", end, " "), q, fixed = TRUE)
+    gsub("1000000", limit, q, fixed = TRUE)
+  })
+}
+
+#' Execute a list of SPARQL queries against Wikidata
+#'
+#' @param xs Named list of SPARQL query strings.
+#'
+#' @return A named list of `data.table` query results.
+#' @keywords internal
+#' @noRd
+wiki_progress <- function(xs) {
+  lapply(xs, query_wikidata)
+}
+
+#' Join Wikidata query results with LOTUS chemical classifications
+#'
+#' @param xs Named list of `data.table` results from `wiki_progress()`.
+#' @param structures_classified `data.table` of LOTUS classified structures.
+#'
+#' @return A named list of cleaned and classified `data.table` objects.
+#' @keywords internal
+#' @noRd
+tables_progress <- function(xs, structures_classified) {
+  sc_dt <- data.table::as.data.table(structures_classified)
+
+  lapply(xs, function(x) {
+    dt <- data.table::copy(data.table::as.data.table(x))
+    if (nrow(dt) > 0L) {
+      joined <- dt_left_join(dt, sc_dt)
+      joined[,
+        structureImage := vapply(
+          structureSmiles,
+          function(s) {
+            if (is.na(s)) NA_character_ else utils::URLencode(as.character(s))
+          },
+          character(1L),
+          USE.NAMES = FALSE
+        )
+      ]
+
+      drop_cols <- intersect(
+        c("references_ids", "structure_id", "structureSmiles"),
+        names(joined)
+      )
+      if (length(drop_cols) > 0L) {
+        joined[, (drop_cols) := NULL]
+      }
+
+      first_cols <- intersect(
+        c("structureLabel", "structure", "structureImage"),
+        names(joined)
+      )
+      data.table::setcolorder(
+        joined,
+        c(first_cols, setdiff(names(joined), first_cols))
+      )
+
+      for (grp_col in c(
+        "structureLabel",
+        "chemical_class",
+        "chemical_superclass",
+        "chemical_pathway"
+      )) {
+        if (grp_col %in% names(joined)) {
+          joined[, .tmp_n := .N, by = grp_col]
+          data.table::setorder(joined, -.tmp_n, na.last = TRUE)
+          joined[, .tmp_n := NULL]
+        }
+      }
+
+      unique(joined)
+    } else {
+      data.table::data.table(
+        structureLabel = NA_character_,
+        structure = NA_character_,
+        structureImage = NA_character_,
+        taxaLabels = NA_character_,
+        taxa = NA_character_,
+        referencesLabels = NA_character_,
+        references = NA_character_,
+        chemical_pathway = NA_character_,
+        chemical_superclass = NA_character_,
+        chemical_class = NA_character_
+      )
+    }
+  })
+}
+
+#' Format a Wikidata compound-taxon-reference table as an interactive gt table
+#'
+#' Converts `structure`, `taxa`, and `references` columns into clickable HTML
+#' links and renders `structureImage` SMILES strings as 2D chemical depictions
+#' via `molinfo()`.
+#'
+#' @param table Data frame or `data.table` from `tables_progress()`.
+#' @param title Table header title (default `""`).
+#' @param subtitle Table header subtitle (default `""`).
+#'
+#' @return A `gt_tbl` object.
+#' @keywords internal
+#' @noRd
+format_gt <- function(table, title = "", subtitle = "") {
+  df <- as.data.frame(table, stringsAsFactors = FALSE)
+  make_wd_links <- function(vals) {
+    lapply(as.character(vals), function(v) {
+      if (is.na(v) || !nzchar(v)) {
+        return(gt::html(""))
+      }
+      href <- if (grepl("^https?://", v)) {
+        v
+      } else {
+        paste0("http://www.wikidata.org/entity/", v)
+      }
+      gt::html(sprintf('<a href="%s">%s</a>', href, v))
+    })
+  }
+
+  for (col in intersect(c("structure", "taxa", "references"), names(df))) {
+    df[[col]] <- I(make_wd_links(df[[col]]))
+  }
+
+  gt_out <- gt::gt(df) |>
+    gt::tab_header(
+      title = gt::md(title),
+      subtitle = gt::md(subtitle)
+    )
+
+  if ("structureImage" %in% names(df)) {
+    gt_out <- gt::text_transform(
+      gt_out,
+      locations = gt::cells_body(columns = structureImage),
+      fn = molinfo
+    )
+  }
+
+  gt_out
 }

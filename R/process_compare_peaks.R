@@ -1,38 +1,50 @@
-#' Process compare peaks
+#' Compare MS extracted ion chromatograms against detector peaks
+#'
+#' Extracts MS1 ion chromatograms (XICs) for all features falling within
+#' detected chromatographic peaks (e.g., CAD, PDA, or BPI), computes Pearson
+#' correlation similarity scores between each feature's XIC profile and the
+#' corresponding detector peak profile, and exports both peak-informed and
+#' non-informed feature tables as TSV files.
 #'
 #' @export
 #'
-#' @include check_export_dir.R
-#' @include compare_peaks.R
-#' @include extract_ms_progress.R
-#' @include extract_ms_peak.R
-#' @include load_chromatograms.R
-#' @include load_features.R
-#' @include load_name.R
-#' @include prepare_features.R
-#' @include preprocess_chromatograms.R
-#' @include preprocess_peaks.R
-#' @include transform_ms.R
+#' @param file Path to `.mzML` file (optional when `show_example = TRUE`).
+#' @param features Path to feature table (optional when `show_example = TRUE`).
+#' @param type Chromatogram processing stage: `"original"`, `"baselined"`, or
+#'   `"improved"`. Default is `"baselined"`.
+#' @param detector Detector type: `"cad"`, `"bpi"`, or `"pda"`. Default is
+#'   `"cad"`.
+#' @param headers Named character vector mapping detector types to `.mzML`
+#'   chromatogram header IDs.
+#' @param export_dir Directory where the output `.tsv` files are written.
+#'   Default is `"data/interim/peaks"`.
+#' @param show_example Logical; use bundled example data. Default is `FALSE`.
+#' @param fourier_components Fraction of Fourier components to retain. Default
+#'   is `0.01`.
+#' @param frequency Acquisition frequency in Hz. Default is `1`.
+#' @param min_area Minimum relative area fraction for peak filtering. Default is
+#'   `0.005`.
+#' @param min_intensity Minimum MS intensity for feature filtering. Default is
+#'   `1e4`.
+#' @param resample Resampling factor. Default is `1`.
+#' @param shift Retention time shift in minutes. Default is `0.05`.
+#' @param time_min Minimum retention time in minutes. Default is `0.5`.
+#' @param time_max Maximum retention time in minutes. Default is `32.5`.
 #'
-#' @param file File path
-#' @param features Features path
-#' @param type Type. "original", "baselined" or "improved"
-#' @param detector Detector
-#' @param headers Headers
-#' @param export_dir Export directory
-#' @param show_example Show example? Default to FALSE
-#' @param fourier_components Fourier components
-#' @param frequency Frequency
-#' @param min_area Min area
-#' @param min_intensity Min intensity
-#' @param resample Resample
-#' @param shift Shift
-#' @param time_min Time min
-#' @param time_max Time max
+#' @return Invisibly returns a named list with two `data.table` elements:
+#'   `features_informed` and `features_not_informed`.
 #'
-#' @return A plot with (non-)aligned chromatograms
+#' @concept EDAM:operation_3215 Peak detection
+#' @concept EDAM:operation_3628 Chromatographic alignment
+#' @concept EDAM:operation_3799 Quantification
+#' @concept EDAM:data_2536 Mass spectrometry data
+#' @concept EDAM:topic_3172 Metabolomics
 #'
-#' @examples NULL
+#' @examples
+#' \donttest{
+#' tmp <- tempdir()
+#' process_compare_peaks(show_example = TRUE, export_dir = tmp)
+#' }
 process_compare_peaks <- function(
   file = NULL,
   features = NULL,
@@ -55,44 +67,42 @@ process_compare_peaks <- function(
   time_max = 32.5
 ) {
   message("loading MS data")
-  ms_data <- file |>
-    load_ms_data(show_example = show_example)
+  ms_data <- load_ms_data(file, show_example = show_example)
 
   message("loading chromatograms")
-  chromatograms_all <- file |>
-    load_chromatograms(show_example = show_example, headers = headers)
+  chromatograms_all <- load_chromatograms(
+    file,
+    show_example = show_example,
+    headers = headers
+  )
 
   message("loading name")
-  name <- file |>
-    load_name(show_example = show_example)
+  name <- load_name(file, show_example = show_example)
 
   message("loading feature table")
-  feature_table <- features |>
-    load_features(show_example = show_example)
+  feature_table <- data.table::as.data.table(
+    load_features(features, show_example = show_example)
+  )
 
   message("preparing features")
-  if (show_example) {
-    message("selecting 10 random features for the example")
-    set.seed(42)
-    feature_table <- feature_table |>
-      tidytable::slice_sample(n = 10)
-  }
-  df_features <- feature_table |>
-    prepare_features(min_intensity = min_intensity, name = name)
+  df_features <- prepare_features(
+    feature_table,
+    min_intensity = min_intensity,
+    name = name
+  )
 
   message("preprocessing chromatograms")
-  switch <- switch(
+  selected_header <- switch(
     detector,
     "bpi" = headers["bpi"],
     "cad" = headers["cad"],
     "pda" = headers["pda"]
   )
-  list <- chromatograms_all[switch |> names()]
+  chrom_sub <- chromatograms_all[names(selected_header)]
   chromatograms_list <- preprocess_chromatograms(
     detector = detector,
     name = name,
-    list = list,
-    # signal_name = signal_name,
+    list = chrom_sub,
     shift = shift,
     fourier_components = fourier_components,
     time_min = time_min,
@@ -101,23 +111,27 @@ process_compare_peaks <- function(
     resample = resample
   )
 
+  df_long_sel <- data.table::copy(data.table::as.data.table(switch(
+    type,
+    "original" = chromatograms_list$chromatograms_original_long,
+    "improved" = chromatograms_list$chromatograms_improved_long,
+    "baselined" = chromatograms_list$chromatograms_baselined_long
+  )))
+  df_long_sel[, intensity := intensity / max(intensity)]
+
+  df_xy_sel <- switch(
+    type,
+    "original" = chromatograms_list$chromatograms_original[[1L]],
+    "improved" = chromatograms_list$chromatograms_improved[[1L]],
+    "baselined" = chromatograms_list$chromatograms_baselined[[1L]]
+  )
+
   message("preprocessing peaks")
   peaks_prelist <- preprocess_peaks(
     detector = detector,
     df_features = df_features,
-    df_long = switch(
-      type,
-      "original" = chromatograms_list$chromatograms_original_long,
-      "improved" = chromatograms_list$chromatograms_improved_long,
-      "baselined" = chromatograms_list$chromatograms_baselined_long
-    ) |>
-      tidytable::mutate(intensity = intensity / max(intensity)),
-    df_xy = switch(
-      type,
-      "original" = chromatograms_list$chromatograms_original[[1]],
-      "improved" = chromatograms_list$chromatograms_improved[[1]],
-      "baselined" = chromatograms_list$chromatograms_baselined[[1]]
-    ),
+    df_long = df_long_sel,
+    df_xy = df_xy_sel,
     min_area = min_area,
     shift = shift,
     name = name
@@ -125,120 +139,112 @@ process_compare_peaks <- function(
 
   message("processing ", detector, " peaks")
   message("extracting ms chromatograms (longest step)")
-  message(
-    "count approx 1 minute per worker per 1000 features (increasing with features number)"
+  n_groups <- length(peaks_prelist$list_df_features_with_peaks_long)
+  list_ms_chromatograms <- extract_ms_progress(
+    xs = seq_len(n_groups),
+    ms_data = ms_data,
+    rts = peaks_prelist$list_rtr,
+    mzs = peaks_prelist$list_mzr,
+    nrows = lapply(peaks_prelist$list_df_features_with_peaks_long, nrow)
   )
-  message("varies a lot depending on features distribution")
-  list_ms_chromatograms <- seq_along(
-    peaks_prelist$list_df_features_with_peaks_long
-  ) |>
-    extract_ms_progress(
-      ms_data = ms_data,
-      rts = peaks_prelist$list_rtr,
-      mzs = peaks_prelist$list_mzr,
-      nrows = peaks_prelist$list_df_features_with_peaks_long |>
-        purrr::map(.f = nrow)
-    )
 
   message("extracting ms peaks")
-  list_ms_peaks <- list_ms_chromatograms |>
-    purrr::map(
-      .f = extract_ms_peak
-    )
+  list_ms_peaks <- lapply(list_ms_chromatograms, extract_ms_peak)
 
   message("comparing peaks")
-  list_comparison_score <- seq_along(list_ms_peaks) |>
-    purrr::map(
-      .f = compare_peaks,
-      list_ms_peaks = list_ms_peaks,
-      peaks_prelist = peaks_prelist
-    )
+  list_comparison_score <- lapply(
+    seq_along(list_ms_peaks),
+    compare_peaks,
+    list_ms_peaks = list_ms_peaks,
+    peaks_prelist = peaks_prelist
+  )
 
   message("summarizing comparison scores")
   n_scores <- sum(lengths(list_comparison_score))
-
   message("there are ", n_scores, " scores calculated")
 
   message("selecting features with peaks")
   list_df_features_with_scores <- Map(
     function(df, score) {
-      df$comparison_score <- unlist(score, use.names = FALSE)
-      df
+      dt <- data.table::copy(data.table::as.data.table(df))
+      dt[, comparison_score := unlist(score, use.names = FALSE)]
+      dt
     },
     peaks_prelist$list_df_features_with_peaks_long,
     list_comparison_score
   )
 
-  if (length(list_df_features_with_scores) == 0) {
-    # Keep expected columns for downstream select/export when no peak match exists.
-    df_features_with_peaks <- peaks_prelist$df_features_without_peaks[0, ]
-    df_features_with_peaks$comparison_score <- numeric(0)
+  if (length(list_df_features_with_scores) == 0L) {
+    df_features_with_peaks <- data.table::copy(data.table::as.data.table(
+      peaks_prelist$df_features_without_peaks[0L, ]
+    ))
+    df_features_with_peaks[, comparison_score := numeric(0)]
   } else {
-    df_features_with_peaks <- list_df_features_with_scores |>
-      tidytable::bind_rows()
+    df_features_with_peaks <- data.table::rbindlist(
+      list_df_features_with_scores,
+      use.names = TRUE,
+      fill = TRUE
+    )
   }
 
   message("final aesthetics")
-  df_features_with_peaks_scored <- df_features_with_peaks |>
-    tidytable::select(
-      sample = id,
-      peak_id,
-      peak_rt_min = rt_min,
-      peak_rt_apex = rt_apex,
-      peak_rt_max = rt_max,
-      peak_area = integral,
-      feature_id,
-      feature_rt = rt,
-      feature_mz = mz,
-      feature_area = area,
-      comparison_score
-    ) |>
-    tidytable::distinct()
+  df_features_with_peaks_scored <- unique(df_features_with_peaks[, list(
+    sample = id,
+    peak_id = peak_id,
+    peak_rt_min = rt_min,
+    peak_rt_apex = rt_apex,
+    peak_rt_max = rt_max,
+    peak_area = integral,
+    feature_id = feature_id,
+    feature_rt = rt,
+    feature_mz = mz,
+    feature_area = area,
+    comparison_score = comparison_score
+  )])
 
-  df_features_without_peaks_scored <-
-    peaks_prelist$df_features_without_peaks |>
-    tidytable::mutate(comparison_score = NA) |>
-    tidytable::select(
-      sample = id,
-      peak_id,
-      peak_rt_min = rt_min,
-      peak_rt_apex = rt_apex,
-      peak_rt_max = rt_max,
-      peak_area = integral,
-      feature_id,
-      feature_rt = rt,
-      feature_mz = mz,
-      feature_area = area,
-      comparison_score
-    ) |>
-    tidytable::distinct()
+  without_dt <- data.table::copy(data.table::as.data.table(
+    peaks_prelist$df_features_without_peaks
+  ))
+  without_dt[, comparison_score := NA_real_]
+  df_features_without_peaks_scored <- unique(without_dt[, list(
+    sample = id,
+    peak_id = peak_id,
+    peak_rt_min = rt_min,
+    peak_rt_apex = rt_apex,
+    peak_rt_max = rt_max,
+    peak_area = integral,
+    feature_id = feature_id,
+    feature_rt = rt,
+    feature_mz = mz,
+    feature_area = area,
+    comparison_score = comparison_score
+  )])
 
   message("checking export directory")
   check_export_dir(export_dir)
 
   message("exporting")
+  base_stem <- sub("\\.[^.]+$", "", name)
+  data.table::fwrite(
+    df_features_with_peaks_scored,
+    file = file.path(
+      export_dir,
+      paste0(base_stem, "_featuresInformed_", detector, ".tsv")
+    ),
+    sep = "\t"
+  )
 
-  df_features_with_peaks_scored |>
-    tidytable::fwrite(
-      file = file.path(
-        export_dir,
-        name |>
-          gsub(pattern = "\\.[^.]+$", replacement = "") |>
-          paste("featuresInformed", detector, sep = "_") |>
-          paste0(".tsv")
-      ),
-      sep = "\t"
-    )
+  data.table::fwrite(
+    df_features_without_peaks_scored,
+    file = file.path(
+      export_dir,
+      paste0(base_stem, "_featuresNotInformed_", detector, ".tsv")
+    ),
+    sep = "\t"
+  )
 
-  df_features_without_peaks_scored |>
-    tidytable::fwrite(
-      file = file.path(
-        export_dir,
-        name |>
-          gsub(pattern = "\\.[^.]+$", replacement = "") |>
-          paste("featuresNotInformed", detector, sep = "_") |>
-          paste0(".tsv")
-      ),
-      sep = "\t"
-    )
+  invisible(list(
+    features_informed = df_features_with_peaks_scored,
+    features_not_informed = df_features_without_peaks_scored
+  ))
 }

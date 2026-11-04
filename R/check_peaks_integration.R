@@ -1,56 +1,141 @@
-#' Check chromatograms alignment
+#' Plot chromatogram with detected peak apexes and integration bounds
+#'
+#' @param df1 Chromatogram `data.table` with `rtime` and `intensity`.
+#' @param df2 Peaks `data.table` with `rt_apex`, `peak_max`, `rt_min`, `rt_max`.
+#' @param fun Approximating function mapping retention time to normalized signal
+#'   intensity.
+#'
+#' @return A `plotly` object.
+#' @keywords internal
+#' @noRd
+plot_peak_detection <- function(df1, df2, fun) {
+  plotly::plot_ly(df1) |>
+    plotly::add_trace(
+      data = df1,
+      x = ~rtime,
+      y = ~intensity,
+      type = "scatter",
+      mode = "lines",
+      name = "signal",
+      line = list(color = "#1f78b4", width = 1)
+    ) |>
+    plotly::add_trace(
+      data = df2,
+      x = ~rt_apex,
+      y = ~peak_max,
+      yaxis = "y2",
+      type = "scatter",
+      mode = "markers",
+      marker = list(color = "#ff7f00", symbol = "star"),
+      name = "detected maximum",
+      line = list(color = "#1f78b4", width = 0)
+    ) |>
+    plotly::add_trace(
+      data = df2,
+      x = ~rt_min,
+      y = ~ fun(rt_min),
+      yaxis = "y2",
+      type = "scatter",
+      mode = "markers",
+      marker = list(color = "#33a02c", symbol = "triangle-right"),
+      name = "detected minimum (start)",
+      line = list(color = "#1f78b4", width = 0)
+    ) |>
+    plotly::add_trace(
+      data = df2,
+      x = ~rt_max,
+      y = ~ fun(rt_max),
+      yaxis = "y2",
+      type = "scatter",
+      mode = "markers",
+      marker = list(color = "#33a02c", symbol = "triangle-left"),
+      name = "detected minimum (end)",
+      line = list(color = "#1f78b4", width = 0)
+    ) |>
+    plotly::layout(
+      yaxis = list(
+        title = "Normalized Intensity",
+        zeroline = TRUE,
+        showline = FALSE,
+        showticklabels = FALSE,
+        showgrid = FALSE
+      ),
+      yaxis2 = list(
+        title = "",
+        zeroline = FALSE,
+        showline = FALSE,
+        showticklabels = FALSE,
+        showgrid = FALSE,
+        overlaying = "y",
+        side = "right"
+      ),
+      xaxis = list(
+        title = "Time [min]",
+        showticklabels = FALSE,
+        showgrid = FALSE
+      ),
+      showlegend = FALSE
+    )
+}
+
+#' Check chromatographic peak detection and integration bounds
+#'
+#' Detects and integrates peaks in a detector chromatogram (CAD, BPI, or PDA),
+#' links them to MS features, and returns an interactive `plotly` visualization
+#' showing the signal, detected peak maxima, and start/end integration bounds.
 #'
 #' @export
 #'
-#' @include load_chromatograms.R
-#' @include load_features.R
-#' @include load_name.R
-#' @include plot_peak_detection.R
-#' @include prepare_features.R
-#' @include preprocess_chromatograms.R
-#' @include preprocess_peaks.R
-#'
-#' @param file File path
-#' @param features Features path
-#' @param detector Detector type (e.g., "cad", "bpi", "pda")
-#' @param chromatogram Chromatogram type. One of "original", "improved", or
-#'   "baselined". Default is "baselined".
-#' @param headers Named vector mapping detector types to header names.
-#' @param min_area Minimum area fraction for peak filtering. Default is 0.005.
-#' @param min_intensity Minimum intensity for feature filtering. Default is
-#'   1E4.
-#' @param shift Time shift in minutes. Default is 0.05.
-#' @param show_example Show example data? Default is FALSE.
-#' @param fourier_components Fraction of Fourier components to keep. Default is
-#'   0.01.
-#' @param time_min Time min in minutes. Default is 0.5.
-#' @param time_max Time max in minutes. Default is 32.5.
-#' @param frequency Acquisition frequency in Hz. Default is 1.
-#' @param resample Resampling factor. Default is 1.
+#' @param file Path to `.mzML` file (optional when `show_example = TRUE`).
+#' @param features Path to feature table (optional when `show_example = TRUE`).
+#' @param detector Detector type: `"cad"`, `"bpi"`, or `"pda"`. Default is
+#'   `"cad"`.
+#' @param chromatogram Chromatogram processing stage: `"original"`,
+#'   `"improved"`, or `"baselined"`. Default is `"baselined"`.
+#' @param headers Named character vector mapping detector types to `.mzML`
+#'   chromatogram header IDs.
+#' @param min_area Minimum relative area fraction for peak filtering. Default is
+#'   `0.005`.
+#' @param min_intensity Minimum MS intensity for feature filtering. Default is
+#'   `1e4`.
+#' @param shift Retention time shift in minutes. Default is `0.05`.
+#' @param show_example Logical; use bundled example data. Default is `FALSE`.
+#' @param fourier_components Fraction of Fourier components to retain. Default
+#'   is `0.01`.
+#' @param time_min Minimum retention time in minutes. Default is `0.5`.
+#' @param time_max Maximum retention time in minutes. Default is `32.5`.
+#' @param frequency Acquisition frequency in Hz. Default is `1`.
+#' @param resample Resampling factor. Default is `1`.
 #' @param intensity_floor Small positive value for intensity floor. Default is
-#'   0.001.
-#' @param k2 K2 parameter for signal sharpening. Default is 250.
-#' @param k4 K4 parameter for signal sharpening. Default is 1250000.
-#' @param sigma Sigma parameter for signal sharpening. Default is 0.05.
-#' @param smoothing_width Smoothing width for signal sharpening. Default is 8.
-#' @param baseline_method Method for baseline correction. Default is
-#'   "peakDetection".
-#' @param sd_max Maximum standard deviation for peak filtering. Default is 50.
-#' @param max_iter Maximum iterations for peak fitting. Default is 1000.
-#' @param noise_threshold Noise threshold for peak detection. Default is 0.001.
-#' @param fit Peak fitting method. One of "egh", "gaussian", or "raw". Default
-#'   is "egh".
-#' @param intensity_threshold Minimum normalized intensity threshold for
-#'   filtering. Default is 0.1.
-#' @param improve_signal Logical. Whether to apply signal improvement. Default
-#'   is TRUE.
+#'   `0.001`.
+#' @param k2 Second-derivative weight for signal sharpening. Default is `250`.
+#' @param k4 Fourth-derivative weight for signal sharpening. Default is
+#'   `1250000`.
+#' @param sigma Gaussian sigma for signal sharpening. Default is `0.05`.
+#' @param smoothing_width Moving-average window width for derivative smoothing.
+#'   Default is `8`.
+#' @param baseline_method Baseline correction method passed to
+#'   [baseline::baseline()]. Default is `"peakDetection"`.
+#' @param sd_max Maximum standard deviation for peak filtering. Default is `50`.
+#' @param max_iter Maximum iterations for peak fitting. Default is `1000`.
+#' @param noise_threshold Noise threshold for peak detection. Default is
+#'   `0.001`.
+#' @param fit Peak fitting model: `"egh"`, `"gaussian"`, or `"raw"`. Default is
+#'   `"egh"`.
+#' @param intensity_threshold Minimum normalized intensity threshold for peak
+#'   filtering. Default is `0.1`.
+#' @param improve_signal Logical; apply Fourier filtering and sharpening.
+#'   Default is `TRUE`.
 #'
-#' @return A plot with (non-)aligned chromatograms
+#' @return A `plotly` htmlwidget showing the chromatogram and detected peak
+#'   boundaries.
+#'
+#' @concept EDAM:operation_3215 Peak detection
+#' @concept EDAM:operation_3203 Chromatogram visualisation
+#' @concept EDAM:topic_3172 Metabolomics
 #'
 #' @examples
-#' \dontrun{
 #' check_peaks_integration(show_example = TRUE)
-#' }
 check_peaks_integration <- function(
   file = NULL,
   features = NULL,
@@ -84,33 +169,37 @@ check_peaks_integration <- function(
   improve_signal = TRUE
 ) {
   message("loading chromatograms")
-  chromatograms_all <- file |>
-    load_chromatograms(show_example = show_example, headers = headers)
+  chromatograms_all <- load_chromatograms(
+    file,
+    show_example = show_example,
+    headers = headers
+  )
 
   message("loading name")
-  name <- file |>
-    load_name(show_example = show_example)
+  name <- load_name(file, show_example = show_example)
 
   message("loading feature table")
-  feature_table <- features |>
-    load_features(show_example = show_example)
+  feature_table <- load_features(features, show_example = show_example)
 
   message("preparing features")
-  df_features <- feature_table |>
-    prepare_features(min_intensity = min_intensity, name = name)
+  df_features <- prepare_features(
+    feature_table,
+    min_intensity = min_intensity,
+    name = name
+  )
 
   message("Preprocessing chromatograms")
-  switch <- switch(
+  selected_header <- switch(
     detector,
     "bpi" = headers["bpi"],
     "cad" = headers["cad"],
     "pda" = headers["pda"]
   )
-  list <- chromatograms_all[switch |> names()]
+  chrom_sub <- chromatograms_all[names(selected_header)]
   chromatograms_list <- preprocess_chromatograms(
     detector = detector,
     name = name,
-    list = list,
+    list = chrom_sub,
     shift = shift,
     fourier_components = fourier_components,
     time_min = time_min,
@@ -126,60 +215,66 @@ check_peaks_integration <- function(
     improve_signal = improve_signal
   )
 
-  peaks <-
-    preprocess_peaks(
-      df_features = df_features,
-      df_long = switch(
-        chromatogram,
-        "original" = chromatograms_list$chromatograms_original_long,
-        "improved" = chromatograms_list$chromatograms_improved_long,
-        "baselined" = chromatograms_list$chromatograms_baselined_long
-      ) |>
-        tidytable::mutate(intensity = intensity / max(intensity)),
-      df_xy = switch(
-        chromatogram,
-        "original" = chromatograms_list$chromatograms_original[[1]],
-        "improved" = chromatograms_list$chromatograms_improved[[1]],
-        "baselined" = chromatograms_list$chromatograms_baselined[[1]]
-      ),
-      min_area = min_area,
-      shift = shift,
-      name = name,
-      sd_max = sd_max,
-      max_iter = max_iter,
-      noise_threshold = noise_threshold,
-      fit = fit,
-      intensity_threshold = intensity_threshold
-    )
-
-  chromatogram_normalized <- switch(
+  df_long_sel <- data.table::copy(data.table::as.data.table(switch(
     chromatogram,
-    "original" = chromatograms_list$chromatograms_original_long |>
-      tidytable::bind_rows() |>
-      tidytable::filter(row_number() %% 10 == 1) |>
-      tidytable::mutate(intensity = intensity / max(intensity)),
-    "improved" = chromatograms_list$chromatograms_improved_long |>
-      tidytable::bind_rows() |>
-      tidytable::mutate(intensity = intensity / max(intensity)),
-    "baselined" = chromatograms_list$chromatograms_baselined_long |>
-      tidytable::bind_rows() |>
-      tidytable::mutate(intensity = intensity / max(intensity))
+    "original" = chromatograms_list$chromatograms_original_long,
+    "improved" = chromatograms_list$chromatograms_improved_long,
+    "baselined" = chromatograms_list$chromatograms_baselined_long
+  )))
+  df_long_sel[, intensity := intensity / max(intensity)]
+
+  df_xy_sel <- switch(
+    chromatogram,
+    "original" = chromatograms_list$chromatograms_original[[1L]],
+    "improved" = chromatograms_list$chromatograms_improved[[1L]],
+    "baselined" = chromatograms_list$chromatograms_baselined[[1L]]
   )
 
-  peaks_normalized <- peaks$list_df_features_with_peaks_long |>
-    tidytable::bind_rows() |>
-    tidytable::mutate(
+  peaks <- preprocess_peaks(
+    df_features = df_features,
+    df_long = df_long_sel,
+    df_xy = df_xy_sel,
+    min_area = min_area,
+    shift = shift,
+    name = name,
+    sd_max = sd_max,
+    max_iter = max_iter,
+    noise_threshold = noise_threshold,
+    fit = fit,
+    intensity_threshold = intensity_threshold
+  )
+
+  chromatogram_normalized <- if (chromatogram == "original") {
+    orig_dt <- data.table::copy(data.table::as.data.table(
+      chromatograms_list$chromatograms_original_long
+    ))
+    orig_dt <- orig_dt[seq_len(nrow(orig_dt)) %% 10L == 1L]
+    orig_dt[, intensity := intensity / max(intensity)]
+    orig_dt
+  } else {
+    df_long_sel
+  }
+
+  peaks_normalized <- data.table::rbindlist(
+    peaks$list_df_features_with_peaks_long,
+    use.names = TRUE,
+    fill = TRUE
+  )
+  if (nrow(peaks_normalized) > 0L) {
+    peaks_normalized[, `:=`(
       intensity = intensity_max / max(intensity_max),
       peak_max = peak_max / max(peak_max)
-    )
+    )]
+  }
 
   approx_f <- stats::approxfun(
-    x = chromatogram_normalized |>
-      tidytable::pull(rtime),
-    y = chromatogram_normalized |>
-      tidytable::pull(intensity)
+    x = chromatogram_normalized$rtime,
+    y = chromatogram_normalized$intensity
   )
 
-  chromatogram_normalized |>
-    plot_peak_detection(df2 = peaks_normalized, fun = approx_f)
+  plot_peak_detection(
+    df1 = chromatogram_normalized,
+    df2 = peaks_normalized,
+    fun = approx_f
+  )
 }
