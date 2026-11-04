@@ -296,6 +296,10 @@ expect_true(
   length(tm_titled$Swertia$x$layoutAttrs) >
     length(tm_untitled$Swertia$x$layoutAttrs)
 )
+expect_true(
+  length(tm_titled$special$x$layoutAttrs) >
+    length(tm_untitled$special$x$layoutAttrs)
+)
 
 tm_null_tables <- treemaps_progress(
   xs = "Swertia",
