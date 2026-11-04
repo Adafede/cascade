@@ -87,8 +87,10 @@ filter_fft <- function(x, components = 0.01) {
   x[is.na(x)] <- 0
   temp <- stats::fft(x)
   n <- length(temp)
-  keep <- round(n * components)
-  temp[keep:(n - keep)] <- 0
+  keep <- max(2L, round(n * components))
+  if (keep <= n - keep) {
+    temp[keep:(n - keep)] <- 0
+  }
   Re(stats::fft(temp, inverse = TRUE)) / n
 }
 
