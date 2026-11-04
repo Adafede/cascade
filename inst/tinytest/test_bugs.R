@@ -71,3 +71,23 @@ res_sd_filtered <- get_peaks_fn(
 )
 expect_inherits(res_sd_filtered$s1[["280"]], "data.frame")
 expect_identical(nrow(res_sd_filtered$s1[["280"]]), 0L)
+
+# Regression test 5: filter_fft() must preserve the DC component when
+# round(n * components) < 2L and must not reverse the index range when
+# components >= 0.5 or n <= 2L.
+filter_fft_fn <- utils::getFromNamespace("filter_fft", "cascade")
+expect_equal(
+  filter_fft_fn(rep(10, 50L), components = 0.01),
+  rep(10, 50L),
+  tolerance = 1e-12
+)
+expect_equal(
+  filter_fft_fn(c(2, 4, 6, 8), components = 1.0),
+  c(2, 4, 6, 8),
+  tolerance = 1e-12
+)
+expect_equal(
+  filter_fft_fn(c(3, 7), components = 0.01),
+  c(3, 7),
+  tolerance = 1e-12
+)
