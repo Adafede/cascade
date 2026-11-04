@@ -91,3 +91,8 @@ expect_equal(
   c(3, 7),
   tolerance = 1e-12
 )
+expect_equal(
+  filter_fft_fn(c(1, 5, -1, -5), components = 0.01),
+  c(0.5, 2.5, -0.5, -2.5),
+  tolerance = 1e-12
+)

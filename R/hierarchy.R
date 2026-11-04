@@ -1526,11 +1526,19 @@ plot_results_2 <- function(list) {
 #' @param hierarchies Named list of hierarchy `data.table` objects.
 #' @param tables Named list of compound-taxon `data.table` objects used to
 #'   count distinct structures for the plot title.
+#' @param show_title Logical(1) whether to include a structure-count title in
+#'   the layout (default `TRUE`).
 #'
-#' @return A named list of titled `plotly` treemap/sunburst widgets.
+#' @return A named list of `plotly` treemap/sunburst widgets.
 #' @keywords internal
 #' @noRd
-treemaps_progress <- function(xs, type = "treemap", hierarchies, tables) {
+treemaps_progress <- function(
+  xs,
+  type = "treemap",
+  hierarchies,
+  tables = NULL,
+  show_title = TRUE
+) {
   count_structures <- function(nm) {
     if (is.null(tables) || is.null(tables[[nm]])) {
       return(0L)
@@ -1552,7 +1560,7 @@ treemaps_progress <- function(xs, type = "treemap", hierarchies, tables) {
       d2 <- data.table::as.data.table(hierarchies[[sp_vals[2L]]])[
         labels != "notClassified sub"
       ]
-      plotly::plot_ly() |>
+      p <- plotly::plot_ly() |>
         plotly::add_trace(
           data = d1,
           ids = ~ids,
@@ -1578,6 +1586,13 @@ treemaps_progress <- function(xs, type = "treemap", hierarchies, tables) {
           domain = list(row = 0, column = 1)
         ) |>
         plotly::layout(
+          grid = list(rows = 1, columns = 2),
+          colorway = microshades_colors,
+          margin = list(t = 40)
+        )
+      if (isTRUE(show_title)) {
+        p <- plotly::layout(
+          p,
           title = paste(
             "Comparative analysis",
             "\n",
@@ -1590,13 +1605,12 @@ treemaps_progress <- function(xs, type = "treemap", hierarchies, tables) {
             "(",
             count_structures(sp_vals[2L]),
             ")"
-          ),
-          grid = list(rows = 1, columns = 2),
-          colorway = microshades_colors,
-          margin = list(t = 40)
+          )
         )
+      }
+      p
     } else {
-      plotly::plot_ly(
+      p <- plotly::plot_ly(
         data = h_dt[labels != "notClassified sub"],
         ids = ~ids,
         labels = ~labels,
@@ -1609,9 +1623,12 @@ treemaps_progress <- function(xs, type = "treemap", hierarchies, tables) {
       ) |>
         plotly::layout(
           colorway = microshades_colors,
-          title = paste(x, "(", count_structures(x), ")"),
           margin = list(t = 40)
         )
+      if (isTRUE(show_title)) {
+        p <- plotly::layout(p, title = paste(x, "(", count_structures(x), ")"))
+      }
+      p
     }
   })
 }
@@ -1626,60 +1643,11 @@ treemaps_progress <- function(xs, type = "treemap", hierarchies, tables) {
 #' @keywords internal
 #' @noRd
 treemaps_progress_no_title <- function(xs, type = "treemap", hierarchies) {
-  lapply(stats::setNames(xs, xs), function(x) {
-    h_dt <- data.table::as.data.table(hierarchies[[x]])
-    if (x == "special") {
-      sp_vals <- unique(h_dt$species)
-      d1 <- data.table::as.data.table(hierarchies[[sp_vals[1L]]])[
-        labels != "notClassified sub"
-      ]
-      d2 <- data.table::as.data.table(hierarchies[[sp_vals[2L]]])[
-        labels != "notClassified sub"
-      ]
-      plotly::plot_ly() |>
-        plotly::add_trace(
-          data = d1,
-          ids = ~ids,
-          labels = ~labels,
-          parents = ~parents,
-          values = ~values,
-          maxdepth = 3,
-          type = type,
-          textinfo = "label+percent value+percent parent+percent root",
-          domain = list(row = 0, column = 0)
-        ) |>
-        plotly::add_trace(
-          data = d2,
-          ids = ~ids,
-          labels = ~labels,
-          parents = ~parents,
-          values = ~values,
-          maxdepth = 3,
-          type = type,
-          textinfo = "label+percent value+percent parent+percent root",
-          domain = list(row = 0, column = 1)
-        ) |>
-        plotly::layout(
-          grid = list(rows = 1, columns = 2),
-          colorway = microshades_colors,
-          margin = list(t = 40)
-        )
-    } else {
-      plotly::plot_ly(
-        data = h_dt[labels != "notClassified sub"],
-        ids = ~ids,
-        labels = ~labels,
-        parents = ~parents,
-        values = ~values,
-        maxdepth = 3,
-        type = type,
-        branchvalues = "total",
-        textinfo = "label+percent value+percent parent+percent root"
-      ) |>
-        plotly::layout(
-          colorway = microshades_colors,
-          margin = list(t = 40)
-        )
-    }
-  })
+  treemaps_progress(
+    xs = xs,
+    type = type,
+    hierarchies = hierarchies,
+    tables = NULL,
+    show_title = FALSE
+  )
 }

@@ -284,6 +284,19 @@ expect_identical(names(tm_titled), c("Swertia", "Gentiana", "special"))
 expect_inherits(tm_titled$Swertia, "plotly")
 expect_inherits(tm_titled$special, "plotly")
 
+tm_untitled <- treemaps_progress_no_title(
+  xs = c("Swertia", "special"),
+  type = "treemap",
+  hierarchies = h_map
+)
+expect_identical(names(tm_untitled), c("Swertia", "special"))
+expect_inherits(tm_untitled$Swertia, "plotly")
+expect_inherits(tm_untitled$special, "plotly")
+expect_true(
+  length(tm_titled$Swertia$x$layoutAttrs) >
+    length(tm_untitled$Swertia$x$layoutAttrs)
+)
+
 tm_null_tables <- treemaps_progress(
   xs = "Swertia",
   type = "sunburst",
