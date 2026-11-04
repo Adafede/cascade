@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.19">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -71,19 +71,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../man/generate_pseudochromatograms.html" rel="next">
-<link href="../man/check_peaks_integration.html" rel="prev">
+<link href="../man/prepare_tima_annotations.html" rel="next">
+<link href="../man/generate_tables.html" rel="prev">
 <link href="../man/figures/logo.svg" rel="icon" type="image/svg+xml">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-2f71d848462b676b2af838f1236eb696.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-3dba021ccb97a5709654d2c27fb431b2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -115,11 +116,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar floating nav-fixed quarto-light">
+<body class="nav-sidebar floating nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../index.html" class="navbar-brand navbar-brand-logo">
@@ -130,8 +131,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <span class="navbar-title">CASCADE</span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -186,15 +186,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
+            <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Functions</li><li class="breadcrumb-item"><a href="../man/generate_ids.html">Generate</a></li><li class="breadcrumb-item"><a href="../man/generate_ids.html">generate_ids</a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item">Functions</li><li class="breadcrumb-item"><a href="../man/process_compare_peaks.html">Process &amp; Generate</a></li><li class="breadcrumb-item"><a href="../man/generate_ids.html">generate_ids</a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
   </nav>
@@ -202,27 +203,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Section">
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">Functions</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Functions</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
- <span class="menu-text">Check</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Check</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/check_chromatograms_alignment.html" class="sidebar-item-text sidebar-link">
@@ -239,17 +234,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
- <span class="menu-text">Generate</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Process &amp; Generate</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../man/generate_ids.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">generate_ids</span></a>
+  <a href="../man/process_compare_peaks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">process_compare_peaks</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -264,8 +256,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">generate_tables</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/generate_ids.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">generate_ids</span></a>
+  </div>
+</li>
       </ul>
   </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">TIMA &amp; Wikidata</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/prepare_tima_annotations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">prepare_tima_annotations</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/plot_tima.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">plot_tima</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/query_wikidata.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">query_wikidata</span></a>
+  </div>
+</li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/taxon_name_to_qid.html" class="sidebar-item-text sidebar-link">
@@ -274,17 +296,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
       </ul>
   </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">Datasets</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/cascade_datasets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">cascade_datasets</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#generate-ids" id="toc-generate-ids" class="nav-link active" data-scroll-target="#generate-ids">Generate IDs</a>
+  <li><a href="#generate-chemotaxonomic-literature-hierarchies-and-plots-from-wikidatalotus" id="toc-generate-chemotaxonomic-literature-hierarchies-and-plots-from-wikidatalotus" class="nav-link active" data-scroll-target="#generate-chemotaxonomic-literature-hierarchies-and-plots-from-wikidatalotus">Generate chemotaxonomic literature hierarchies and plots from Wikidata/LOTUS</a>
   <ul class="collapse">
   <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
   <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
@@ -296,16 +334,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Functions</li><li class="breadcrumb-item"><a href="../man/generate_ids.html">Generate</a></li><li class="breadcrumb-item"><a href="../man/generate_ids.html">generate_ids</a></li></ol></nav></header>
+<main class="content" id="quarto-document-content" tabindex="-1"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item">Functions</li><li class="breadcrumb-item"><a href="../man/process_compare_peaks.html">Process &amp; Generate</a></li><li class="breadcrumb-item"><a href="../man/generate_ids.html">generate_ids</a></li></ol></nav></header>
 
 
 
 <script async="" src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
-<section id="generate-ids" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="generate-ids">Generate IDs</h2>
+<section id="generate-chemotaxonomic-literature-hierarchies-and-plots-from-wikidatalotus" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="generate-chemotaxonomic-literature-hierarchies-and-plots-from-wikidatalotus">Generate chemotaxonomic literature hierarchies and plots from Wikidata/LOTUS</h2>
 <section id="description" class="level3">
 <h3 class="anchored" data-anchor-id="description">Description</h3>
-<p>Generate IDs</p>
+<p>Queries Wikidata for natural products reported in the specified <code>taxa</code> within a publication year range (<code>start</code> to <code>end</code>), enriches them with NPClassifier chemical classifications from LOTUS, optionally deduplicates stereoisomers and filters to chromatographiable mass/XLogP ranges, and builds stacked histograms, interactive treemaps, and sunburst plots.</p>
 </section>
 <section id="usage" class="level3">
 <h3 class="anchored" data-anchor-id="usage">Usage</h3>
@@ -316,7 +354,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   filter_ms_conditions = TRUE,
   start = "0",
   end = "9999",
-  limit = "1000000"
+  limit = "1000000",
+  show_title = FALSE,
+  format_tables = FALSE
 )
 </code></pre>
 </section>
@@ -328,7 +368,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <code id="taxa">taxa</code>
 </td>
 <td>
-Taxa
+Character vector of scientific taxon names to query. Default is <code>c(“Swertia”, “Kopsia”, “Ginkgo”)</code>.
 </td>
 </tr>
 <tr>
@@ -336,7 +376,7 @@ Taxa
 <code id="comparison">comparison</code>
 </td>
 <td>
-Comparison
+Optional character vector of two taxon names in <code>taxa</code> for side-by-side comparative visualization. Default is <code>NULL</code>.
 </td>
 </tr>
 <tr>
@@ -344,7 +384,7 @@ Comparison
 <code id="no_stereo">no_stereo</code>
 </td>
 <td>
-No stereo
+Logical; collapse stereoisomers to unique 2D structures per taxon/reference. Default is <code>TRUE</code>.
 </td>
 </tr>
 <tr>
@@ -352,7 +392,7 @@ No stereo
 <code id="filter_ms_conditions">filter_ms_conditions</code>
 </td>
 <td>
-Filter MS conditions
+Logical; filter structures to chromatographiable mass (<code style="white-space: pre;">50..1500</code> Da) and XLogP (<code style="white-space: pre;">-1..6</code>) ranges. Default is <code>TRUE</code>.
 </td>
 </tr>
 <tr>
@@ -360,7 +400,7 @@ Filter MS conditions
 <code id="start">start</code>
 </td>
 <td>
-Start
+Character(1); minimum publication year. Default is <code>“0”</code>.
 </td>
 </tr>
 <tr>
@@ -368,7 +408,7 @@ Start
 <code id="end">end</code>
 </td>
 <td>
-End
+Character(1); maximum publication year. Default is <code>“9999”</code>.
 </td>
 </tr>
 <tr>
@@ -376,21 +416,166 @@ End
 <code id="limit">limit</code>
 </td>
 <td>
-Limit
+Character(1); maximum number of SPARQL rows per taxon. Default is <code>“1000000”</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="show_title">show_title</code>
+</td>
+<td>
+Logical; include taxon name and unique structure count titles on interactive treemaps and sunbursts. Default is <code>FALSE</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="format_tables">format_tables</code>
+</td>
+<td>
+Logical; format the returned <code>tables</code> element as interactive <code>gt::gt()</code> tables with clickable Wikidata links and 2D structure depictions. Default is <code>FALSE</code>.
 </td>
 </tr>
 </tbody></table>
 </section>
 <section id="value" class="level3">
 <h3 class="anchored" data-anchor-id="value">Value</h3>
-<p>IDs</p>
+<p>A named list with four elements:</p>
+<ul>
+<li>
+<p><code>plots</code>: Named list of <code>ggplot</code> chemical class histograms.</p>
+</li>
+<li>
+<p><code>treemaps</code>: Named list of interactive <code>plotly</code> treemap widgets.</p>
+</li>
+<li>
+<p><code>sunbursts</code>: Named list of interactive <code>plotly</code> sunburst widgets.</p>
+</li>
+<li>
+<p><code>tables</code>: Named list of compound-taxon-reference <code>data.table</code> objects (or <code>gt_tbl</code> objects when <code>format_tables = TRUE</code>).</p>
+</li>
+</ul>
 </section>
 <section id="examples" class="level3">
 <h3 class="anchored" data-anchor-id="examples">Examples</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"cascade"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">generate_ids</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">generate_ids</span>(<span class="at">taxa =</span> <span class="st">"Swertia"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$plots
+$plots$Swertia</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="generate_ids_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$plots$Swertia_grouped</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="generate_ids_files/figure-html/unnamed-chunk-1-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+
+$treemaps
+$treemaps$Swertia
+
+
+$sunbursts
+$sunbursts$Swertia
+
+
+$tables
+$tables$Swertia
+     structureLabel  structure                               structureImage
+             &lt;char&gt;     &lt;char&gt;                                       &lt;char&gt;
+  1:      sweroside  Q27151406 C=CC1C2CCOC(=O)C2=COC1OC3C(C(C(C(O3)CO)O)O)O
+  2:      sweroside  Q27151406 C=CC1C2CCOC(=O)C2=COC1OC3C(C(C(C(O3)CO)O)O)O
+  3:      sweroside  Q27151406 C=CC1C2CCOC(=O)C2=COC1OC3C(C(C(C(O3)CO)O)O)O
+  4:      sweroside  Q27151406 C=CC1C2CCOC(=O)C2=COC1OC3C(C(C(C(O3)CO)O)O)O
+  5:      sweroside  Q27151406 C=CC1C2CCOC(=O)C2=COC1OC3C(C(C(C(O3)CO)O)O)O
+ ---                                                                       
+477:        hexanal    Q420698                                     CCCCCC=O
+478:  oct-1-en-3-ol    Q161667                                 CCCCCC(C=C)O
+479:  ethyl acetate    Q407153                                    CCOC(=O)C
+480: Swerilactone F Q104950941     O=C1OCCC2=CC3=C(C=C12)C4=C(C(=O)OCC4)CC3
+481: Swerilactone F Q104950941     O=C1OCCC2=CC3=C(C=C12)C4=C(C(=O)OCC4)CC3
+            taxaLabels       taxa
+                &lt;char&gt;     &lt;char&gt;
+  1:   Swertia chirata Q104664512
+  2:  Swertia japonica  Q11255805
+  3:  Swertia japonica  Q11255805
+  4:  Swertia japonica  Q11255805
+  5:    Swertia decora  Q15251129
+ ---                             
+477:  Swertia japonica  Q11255805
+478:  Swertia japonica  Q11255805
+479:  Swertia japonica  Q11255805
+480:   Swertia leducii  Q15237903
+481: Swertia mileensis  Q15248620
+                                                                                                                                           referencesLabels
+                                                                                                                                                     &lt;char&gt;
+  1:                  Amarogentin, a naturally occurring secoiridoid glycoside and a newly recognized inhibitor of topoisomerase I from Leishmania donovani
+  2: Qualitative and quantitative analysis of Swertia herbs by high performance liquid chromatography-diode array detector-mass spectrometry (HPLC-DAD-MS).
+  3:                                                           Studies on the mutagenicity of Swertiae Herba. I. Identification of the mutagenic components
+  4:                              Hepatoprotective principles of Swertia japonica Makino on D-galactosamine/lipopolysaccharide-induced liver injury in mice
+  5: Qualitative and quantitative analysis of Swertia herbs by high performance liquid chromatography-diode array detector-mass spectrometry (HPLC-DAD-MS).
+ ---                                                                                                                                                       
+477:                              Semburins and Swertiols, Novel 2,8-Dioxabicyclo[3.3.1]nonanes and Their Precursory Alcohols, from Swertia japonica Makino
+478:                              Semburins and Swertiols, Novel 2,8-Dioxabicyclo[3.3.1]nonanes and Their Precursory Alcohols, from Swertia japonica Makino
+479:                              Semburins and Swertiols, Novel 2,8-Dioxabicyclo[3.3.1]nonanes and Their Precursory Alcohols, from Swertia japonica Makino
+480:                                                                                       Swerilactones E–G, three unusual lactones from Swertia mileensis
+481:                                                                                       Swerilactones E–G, three unusual lactones from Swertia mileensis
+     references structure_exact_mass structure_xlogp
+         &lt;char&gt;                &lt;num&gt;           &lt;num&gt;
+  1:  Q34412486            358.12638            -0.9
+  2:  Q47803813            358.12638            -0.9
+  3:  Q50208245            358.12638            -0.9
+  4:  Q73936251            358.12638            -0.9
+  5:  Q47803813            358.12638            -0.9
+ ---                                                
+477: Q104247105            100.08882             1.8
+478: Q104247105            128.12012             2.6
+479: Q104247105             88.05243             0.7
+480: Q104950940            270.08921             2.0
+481: Q104950940            270.08921             2.0
+                                 chemical_pathway chemical_superclass
+                                           &lt;char&gt;              &lt;char&gt;
+  1:                                   Terpenoids      Monoterpenoids
+  2:                                   Terpenoids      Monoterpenoids
+  3:                                   Terpenoids      Monoterpenoids
+  4:                                   Terpenoids      Monoterpenoids
+  5:                                   Terpenoids      Monoterpenoids
+ ---                                                                 
+477:                                  Fatty acids         Fatty acyls
+478:                                  Fatty acids         Fatty acyls
+479:                                  Fatty acids        Fatty esters
+480: Shikimates and Phenylpropanoids $ Terpenoids                    
+481: Shikimates and Phenylpropanoids $ Terpenoids                    
+                 chemical_class
+                         &lt;char&gt;
+  1: Secoiridoid monoterpenoids
+  2: Secoiridoid monoterpenoids
+  3: Secoiridoid monoterpenoids
+  4: Secoiridoid monoterpenoids
+  5: Secoiridoid monoterpenoids
+ ---                           
+477:            Fatty aldehydes
+478:             Fatty alcohols
+479:             Wax monoesters
+480:                           
+481:                           </code></pre>
+</div>
 </div>
 
 
@@ -476,7 +661,8 @@ Limit
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -485,8 +671,69 @@ Limit
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -500,6 +747,7 @@ Limit
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -662,44 +910,54 @@ Limit
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -798,15 +1056,18 @@ Limit
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
   <div class="nav-page nav-page-previous">
-      <a href="../man/check_peaks_integration.html" class="pagination-link" aria-label="check_peaks_integration">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">check_peaks_integration</span>
+      <a href="../man/generate_tables.html" class="pagination-link" aria-label="generate_tables">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">generate_tables</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../man/generate_pseudochromatograms.html" class="pagination-link" aria-label="generate_pseudochromatograms">
-        <span class="nav-page-text">generate_pseudochromatograms</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../man/prepare_tima_annotations.html" class="pagination-link" aria-label="prepare_tima_annotations">
+        <span class="nav-page-text">prepare_tima_annotations</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
