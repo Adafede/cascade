@@ -438,8 +438,11 @@ Logical(1). Send the SPARQL query as an HTTP POST request body (<code>applicatio
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"cascade"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> <span class="st">"SELECT ?taxon WHERE { ?taxon &lt;http://www.wikidata.org/prop/direct/P225&gt; 'Gentiana lutea' . }"</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">query_wikidata</span>(q, <span class="at">timeout =</span> <span class="dv">15</span>L))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"SELECT ?taxon WHERE { "</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"?taxon &lt;http://www.wikidata.org/prop/direct/P225&gt; 'Gentiana lutea' . }"</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">query_wikidata</span>(q, <span class="at">timeout =</span> <span class="dv">15</span>L))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     taxon
     &lt;char&gt;
