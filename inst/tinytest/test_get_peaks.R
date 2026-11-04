@@ -15,7 +15,8 @@ mat_1col <- matrix(
 mat_2col <- cbind("254" = sig_1, "280" = sig_2)
 rownames(mat_2col) <- as.character(t_pts)
 
-# 1. Matrix input (coerced to list) + missing lambdas on 1-column matrix + warning on unnamed list
+# 1. Matrix input (coerced to list) + missing lambdas on 1-column matrix +
+# warning on unnamed list
 expect_warning(
   res_mat <- get_peaks(mat_1col, fit = "gaussian", smooth_type = "none"),
   pattern = "Sample names not found"
@@ -89,7 +90,8 @@ expect_equal(
 )
 expect_identical(res_sec$s1[["254"]]$rt, res_min$s1[["254"]]$rt)
 
-# 6. All smoothing types in find_peaks: gaussian, box, savgol (even & odd window), mva, tmva, none
+# 6. All smoothing types in find_peaks: gaussian, box, savgol (even & odd
+# window), mva, tmva, none
 for (st in c("gaussian", "box", "savgol", "mva", "tmva", "none")) {
   r_st <- get_peaks(
     list(s1 = mat_1col),
@@ -110,7 +112,8 @@ r_sg_odd <- get_peaks(
 )
 expect_true(nrow(r_sg_odd$s1[["254"]]) >= 1L)
 
-# 7. Flat signal -> no peaks detected -> returns 0-row data.frame with expected columns
+# 7. Flat signal -> no peaks detected -> returns 0-row data.frame with expected
+# columns
 mat_flat <- matrix(
   rep(1, 20L),
   ncol = 1L,
@@ -123,7 +126,7 @@ expect_true(all(
     names(res_flat$s1[["254"]])
 ))
 
-# 8. sd.max filtering removes wide peaks when sd.max is small, keeps all when sd.max = NULL
+# 8. sd.max filtering removes wide peaks when small, keeps all when NULL
 res_sd_strict <- get_peaks(
   list(s1 = mat_1col),
   lambdas = "254",

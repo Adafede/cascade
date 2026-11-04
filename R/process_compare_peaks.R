@@ -206,7 +206,7 @@ process_compare_peaks <- function(
     peaks_prelist$df_features_without_peaks
   ))
   without_dt[, comparison_score := NA_real_]
-  df_features_without_peaks_scored <- unique(without_dt[, list(
+  df_feat_without_peaks_scored <- unique(without_dt[, list(
     sample = id,
     peak_id = peak_id,
     peak_rt_min = rt_min,
@@ -235,7 +235,7 @@ process_compare_peaks <- function(
   )
 
   data.table::fwrite(
-    df_features_without_peaks_scored,
+    df_feat_without_peaks_scored,
     file = file.path(
       export_dir,
       paste0(base_stem, "_featuresNotInformed_", detector, ".tsv")
@@ -245,6 +245,6 @@ process_compare_peaks <- function(
 
   invisible(list(
     features_informed = df_features_with_peaks_scored,
-    features_not_informed = df_features_without_peaks_scored
+    features_not_informed = df_feat_without_peaks_scored
   ))
 }

@@ -46,7 +46,8 @@ matched. Default is \code{0.0}.}
 Default is \code{3L}.}
 
 \item{libraries}{Character vector of spectral libraries to retain. Default
-is \code{c("gnps", "massbank", "merlin", "ISDB", "ISDB - Wikidata", "TIMA MS1")}.}
+is \verb{c("gnps", "massbank", "merlin", "ISDB", "ISDB - Wikidata",}
+\verb{"TIMA MS1")}.}
 
 \item{show_example}{Logical; use bundled example data. Default is \code{FALSE}.}
 }

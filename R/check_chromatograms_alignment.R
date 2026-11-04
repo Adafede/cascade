@@ -67,10 +67,14 @@ check_chromatograms <- function(
     "cad_neg",
     "pda_neg"
   )
+  if (!all(chromatograms %in% valid_chroms)) {
+    stop(
+      "chromatograms must be in 'bpi_pos', 'bpi_neg', ",
+      "'cad_pos', 'cad_neg', 'pda_pos', 'pda_neg'",
+      call. = FALSE
+    )
+  }
   stopifnot(
-    "chromatograms must be in 'bpi_pos', 'bpi_neg', 'cad_pos', 'cad_neg', 'pda_pos', 'pda_neg'" = all(
-      chromatograms %in% valid_chroms
-    ),
     "type must be one of 'improved' or 'baselined'" = type %in%
       c("improved", "baselined")
   )

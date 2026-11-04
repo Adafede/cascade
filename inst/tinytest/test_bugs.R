@@ -4,7 +4,8 @@ library(cascade)
 compare_peaks_fn <- utils::getFromNamespace("compare_peaks", "cascade")
 get_peaks_fn <- utils::getFromNamespace("get_peaks", "cascade")
 
-# Regression test 1: compare_peaks() must return 0 (not crash with NaN tolerance)
+# Regression test 1: compare_peaks() must return 0 (not crash with NaN
+# tolerance)
 # when the detector peak has <= 1 retention time point.
 peaks_prelist_single <- list(
   list_chromato_peaks = list(
@@ -26,7 +27,8 @@ expect_identical(
 )
 
 # Regression test 2: get_peaks(lambdas = "max") on a multi-column matrix must
-# select the column with the global maximum rather than indexing by linear offset.
+# select the column with the global maximum rather than indexing by linear
+# offset.
 rt_grid <- seq(1, 10, by = 1)
 col_254 <- c(0, 1, 5, 1, 0, 0, 0, 0, 0, 0)
 col_280 <- c(0, 0, 0, 0, 0, 2, 15, 2, 0, 0)

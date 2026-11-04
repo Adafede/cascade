@@ -44,7 +44,8 @@ expect_error(
   pattern = "`post` must be a single non-missing logical value"
 )
 
-# --- 2. query_wikidata offline execution & branches via mocked curl_download ---
+# --- 2. query_wikidata offline execution & branches via mocked curl_download
+# ---
 local({
   curl_ns <- asNamespace("curl")
   orig_dl <- get("curl_download", envir = curl_ns)
@@ -57,7 +58,8 @@ local({
     add = TRUE
   )
 
-  # 2a. CSV success with remove_url = TRUE vs remove_url = FALSE, GET with '?' in endpoint
+  # 2a. CSV success with remove_url = TRUE vs remove_url = FALSE, GET with '?'
+  # in endpoint
   state <- new.env(parent = emptyenv())
   state$last_url <- NULL
   assign(
@@ -104,7 +106,8 @@ local({
     )
   )
 
-  # 2b. Legacy argument shims: character timeout -> headers, numeric headers -> timeout
+  # 2b. Legacy argument shims: character timeout -> headers, numeric headers ->
+  # timeout
   res_shim1 <- query_wikidata(
     "SELECT * WHERE {}",
     timeout = "text/csv",
@@ -119,7 +122,8 @@ local({
   )
   expect_identical(nrow(res_shim2), 2L)
 
-  # 2c. HTML/XML error response detection + TSV fallback with RDF literal/URI stripping
+  # 2c. HTML/XML error response detection + TSV fallback with RDF literal/URI
+  # stripping
   state$call_idx <- 0L
   assign(
     "curl_download",
@@ -236,7 +240,8 @@ local({
   expect_identical(wp_out$Swertia$structure, "Q415869")
 })
 
-# --- 5. queries_progress (default template, custom query_url, failing query_url, legacy parts) ---
+# --- 5. queries_progress (default template, custom query_url, failing
+# query_url, legacy parts) ---
 local({
   # 5a. Default template
   qp_def <- queries_progress(
@@ -257,7 +262,10 @@ local({
   on.exit(unlink(tmpl_file), add = TRUE)
   writeLines(
     c(
-      "SELECT * WHERE { ?x wdt:P171* wd:Q158572 . FILTER(YEAR(?d) >= 0 && YEAR(?d) <= 9999 ) }",
+      paste0(
+        "SELECT * WHERE { ?x wdt:P171* wd:Q158572 . ",
+        "FILTER(YEAR(?d) >= 0 && YEAR(?d) <= 9999 ) }"
+      ),
       "LIMIT 1000000"
     ),
     tmpl_file
@@ -352,7 +360,8 @@ expect_identical(
   )
 )
 
-# --- 7. format_gt branches (NA/empty link values, http:// URLs vs QIDs, missing structureImage) ---
+# --- 7. format_gt branches (NA/empty link values, http:// URLs vs QIDs,
+# missing structureImage) ---
 df_gt_edge <- data.frame(
   structureLabel = c("CompA", "CompB"),
   structure = c("https://www.wikidata.org/entity/Q1", NA_character_),

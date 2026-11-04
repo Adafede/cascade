@@ -103,7 +103,8 @@ filter_fft <- function(x, components = 0.01) {
 #' @param Smoothing_width Integer(1) running-mean window width (default `8`).
 #' @param Baseline_adjust Numeric(1) additive baseline offset (default `0`).
 #'
-#' @return Numeric vector of sharpened intensities (trimmed by 4 leading points).
+#' @return Numeric vector of sharpened intensities
+#'   (trimmed by 4 leading points).
 #' @keywords internal
 #' @noRd
 signal_sharpening <- function(
@@ -112,8 +113,8 @@ signal_sharpening <- function(
   k2 = 250,
   k4 = 1250000,
   sigma = 0.05,
-  Smoothing_width = 8,
-  Baseline_adjust = 0
+  Smoothing_width = 8, # nolint: object_name_linter.
+  Baseline_adjust = 0 # nolint: object_name_linter.
 ) {
   smooth_1 <- runmean_center(intensity, k = Smoothing_width) + Baseline_adjust
   smooth_2 <- runmean_center(smooth_1, k = Smoothing_width)
@@ -136,7 +137,8 @@ signal_sharpening <- function(
 #' @param frequency Numeric(1) detector sampling frequency in Hz.
 #' @param resample Numeric(1) resampling multiplier.
 #' @param time_min,time_max Numeric(1) retention time window bounds.
-#' @param intensity_floor Numeric(1) positive shift floor for non-positive signals.
+#' @param intensity_floor Numeric(1) positive shift floor for non-positive
+#'   signals.
 #' @param k2,k4,sigma,smoothing_width Signal sharpening parameters passed to
 #'   `signal_sharpening()`.
 #'
@@ -200,8 +202,10 @@ improve_signal <- function(
 #' Apply signal improvement across a list of chromatograms
 #'
 #' @param xs List of chromatogram data frames (`rtime`, `intensity`).
-#' @param fourier_components,frequency,resample,time_min,time_max,intensity_floor,k2,k4,sigma,smoothing_width
+#' @param fourier_components,frequency,resample,time_min,time_max
 #'   Signal processing parameters forwarded to `improve_signal()`.
+#' @param intensity_floor,k2,k4,sigma,smoothing_width
+#'   Additional signal processing parameters forwarded to `improve_signal()`.
 #'
 #' @return List of improved chromatogram data frames.
 #' @keywords internal
@@ -330,13 +334,16 @@ extract_chromatogram <- function(list, type, headers) {
 #' Preprocess original, improved, and baselined chromatograms
 #'
 #' @param detector Character(1) detector label (default `"cad"`).
-#' @param fourier_components,frequency,resample,time_min,time_max,intensity_floor,k2,k4,sigma,smoothing_width
+#' @param fourier_components,frequency,resample,time_min,time_max
 #'   Signal improvement parameters forwarded to `improve_signals_progress()`.
+#' @param intensity_floor,k2,k4,sigma,smoothing_width
+#'   Additional parameters forwarded to `improve_signals_progress()`.
 #' @param list List of raw chromatogram data frames.
 #' @param name Character vector of sample names.
 #' @param shift Numeric(1) retention time shift in minutes.
 #' @param baseline_method Character(1) baseline correction method.
-#' @param improve_signal Logical(1); whether to apply FFT + derivative sharpening.
+#' @param improve_signal Logical(1); whether to apply FFT and derivative
+#'   sharpening.
 #'
 #' @return Named list with `chromatograms_original`,
 #'   `chromatograms_original_long`, `chromatograms_improved`,

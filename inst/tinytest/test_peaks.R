@@ -30,7 +30,8 @@ peaks_dt <- data.table::data.table(
   rt_min = c(1, 5),
   rt_max = c(3, 7)
 )
-# Peak 1 integral = 40, Peak 2 integral = 120, total = 160 -> fractions 0.25 and 0.75
+# Peak 1 integral = 40, Peak 2 integral = 120, total = 160 -> fractions 0.25
+# and 0.75
 jp_exact <- join_peaks(chrom_dt, peaks_dt, min_area = 0.25)
 expect_identical(nrow(jp_exact), 2L)
 expect_identical(jp_exact$integral, c(40, 120))
@@ -175,7 +176,8 @@ raw_xic <- list(
 tms <- transform_ms(raw_xic, min_intensity = 0.2)
 # Valid intensities: 10, 30, 50, 110 -> norm: 0, 0.2, 0.4, 1.0
 # Keep >= 0.2 -> intensities 0.2, 0.4, 1.0 at rtime 2, 4, 3
-# Norm rtime of (2, 4, 3) -> (0, 1, 0.5); sorted by rtime -> rtimes (0, 0.5, 1), intensities (0.2, 1.0, 0.4)
+# Norm rtime of (2, 4, 3) -> (0, 1, 0.5); sorted by rtime -> rtimes (0, 0.5,
+# 1), intensities (0.2, 1.0, 0.4)
 expect_equal(tms[[1L]]$rtime, c(0, 0.5, 1), tolerance = 1e-12)
 expect_equal(tms[[1L]]$intensity, c(0.2, 1.0, 0.4), tolerance = 1e-12)
 expect_identical(nrow(tms[[2L]]), 0L)
@@ -184,7 +186,8 @@ emp <- extract_ms_peak(tms)
 expect_equal(emp[[1L]]$rtime, c(0, 0.5, 1), tolerance = 1e-12)
 expect_equal(emp[[1L]]$intensity, c(0.2, 1.0, 0.4), tolerance = 1e-12)
 
-# --- extract_ms_progress branches (empty RT window, empty scan, 1 hit, >1 hits) ---
+# --- extract_ms_progress branches (empty RT window, empty scan, 1 hit, >1
+# hits) ---
 ms_synth <- list(
   rt = c(10, 20, 30, 40),
   mz = list(
@@ -202,13 +205,16 @@ ms_synth <- list(
 )
 rts_list <- list(
   cbind(rtmin = 5, rtmax = 8), # Peak 1: no scans in window (r_rt <= l_rt)
-  cbind(rtmin = 10, rtmax = 40) # Peak 2: scans 1..4 (scan 1 is empty, scans 2..4 have 1 or 2 hits)
+  # Peak 2: scans 1..4 (scan 1 is empty, scans 2..4 have 1 or 2 hits)
+  cbind(rtmin = 10, rtmax = 40)
 )
 mzs_list <- list(
   list(cbind(mzmin = 99.9, mzmax = 100.1)),
   list(
-    cbind(mzmin = 99.9, mzmax = 100.1), # Feature 1: single hit per scan (10, 30, 50)
-    cbind(mzmin = 199.9, mzmax = 200.1) # Feature 2: multi-hit summed per scan (150, 200, 400)
+    # Feature 1: single hit per scan (10, 30, 50)
+    cbind(mzmin = 99.9, mzmax = 100.1),
+    # Feature 2: multi-hit summed per scan (150, 200, 400)
+    cbind(mzmin = 199.9, mzmax = 200.1)
   )
 )
 ext_res <- extract_ms_progress(
@@ -218,10 +224,12 @@ ext_res <- extract_ms_progress(
   mzs = mzs_list
 )
 expect_identical(nrow(ext_res[[1L]][[1L]]), 0L)
-# Feature 1 in Peak 2: raw intensities (NA, 10, 30, 50) at rt (10, 20, 30, 40) -> norm int (0, 0.5, 1) -> keep >= 0.1 gives (0.5, 1) at rt (0, 1)
+# Feature 1 in Peak 2: raw intensities (NA, 10, 30, 50) at rt (10, 20, 30, 40)
+# -> norm int (0, 0.5, 1) -> keep >= 0.1 gives (0.5, 1) at rt (0, 1)
 expect_equal(ext_res[[2L]][[1L]]$intensity, c(0.5, 1.0), tolerance = 1e-12)
 expect_equal(ext_res[[2L]][[1L]]$rtime, c(0, 1), tolerance = 1e-12)
-# Feature 2 in Peak 2: raw summed intensities (NA, 150, 200, 400) -> norm int (0, 50/250=0.2, 1.0) -> keep >= 0.1 gives (0.2, 1.0)
+# Feature 2 in Peak 2: raw summed intensities (NA, 150, 200, 400) -> norm int
+# (0, 50/250=0.2, 1.0) -> keep >= 0.1 gives (0.2, 1.0)
 expect_equal(ext_res[[2L]][[2L]]$intensity, c(0.2, 1.0), tolerance = 1e-12)
 expect_equal(ext_res[[2L]][[2L]]$rtime, c(0, 1), tolerance = 1e-12)
 
@@ -236,7 +244,8 @@ expect_identical(
   closest_idx(c(1.0, 5.0, 9.0), c(1.0), tolerance = 0.2),
   c(1L, NA_integer_, NA_integer_)
 )
-# Duplicate match to same table element: second x is closer so first is overwritten with NA
+# Duplicate match to same table element: second x is closer so first is
+# overwritten with NA
 expect_identical(
   closest_idx(c(0.9, 0.99), c(1.0, 5.0), tolerance = 0.2),
   c(NA_integer_, 1L)
@@ -246,7 +255,8 @@ expect_identical(
   closest_idx(c(1.01, 1.15), c(1.0, 5.0), tolerance = 0.2),
   c(1L, NA_integer_)
 )
-# Exact tolerance boundary (including IEEE 754 positive rounding 0.3 - 0.1 > 0.2)
+# Exact tolerance boundary (including IEEE 754 positive rounding 0.3 - 0.1 >
+# 0.2)
 expect_identical(
   closest_idx(c(0.3, 0.35), c(0.1), tolerance = 0.2),
   c(1L, NA_integer_)

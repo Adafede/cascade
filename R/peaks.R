@@ -5,7 +5,8 @@
 #' @param max_iter Integer(1) maximum fitting iterations (default `1000`).
 #' @param noise_threshold Numeric(1) minimum peak amplitude threshold (default
 #'   `0.001`).
-#' @param fit Character(1) peak fitting model (`"egh"`, `"gaussian"`, or `"raw"`).
+#' @param fit Character(1) peak fitting model (`"egh"`, `"gaussian"`,
+#'   or `"raw"`).
 #'
 #' @return A `data.table` of detected peaks with `peak_id`, `peak_max`,
 #'   `rt_apex`, `rt_min`, and `rt_max`.
@@ -187,14 +188,15 @@ prepare_mz <- function(x) {
 #' Preprocess detector peaks and overlap with MS features
 #'
 #' @param detector Character(1) detector name (default `"cad"`).
-#' @param df_features Keyed `data.table` of MS features from `prepare_features()`.
+#' @param df_features Keyed `data.table` of MS features from
+#'   `prepare_features()`.
 #' @param df_long Long-format `data.table` of chromatogram points.
 #' @param df_xy Single-chromatogram `data.frame` (`rtime`, `intensity`).
 #' @param name Character(1) sample name.
 #' @param shift Numeric(1) retention time shift in minutes.
 #' @param min_area Numeric(1) minimum relative peak area fraction.
-#' @param sd_max,max_iter,noise_threshold,fit Peak detection parameters passed to
-#'   `peaks_progress()`.
+#' @param sd_max,max_iter,noise_threshold,fit Peak detection parameters passed
+#'   to `peaks_progress()`.
 #' @param intensity_threshold Numeric(1) normalized intensity threshold.
 #'
 #' @return Named list with `list_df_features_with_peaks_long`,
@@ -250,7 +252,7 @@ preprocess_peaks <- function(
 
   message("splitting by file")
   if (nrow(df_features_with_peaks) == 0L) {
-    list_df_features_with_peaks_long <- list()
+    list_feat_with_pks_long <- list()
   } else {
     by_id <- split(
       df_features_with_peaks,
@@ -263,7 +265,7 @@ preprocess_peaks <- function(
     by_peak <- lapply(by_id, function(x) {
       split(x, factor(x$peak_id, levels = unique(x$peak_id)))
     })
-    list_df_features_with_peaks_long <- unname(unlist(
+    list_feat_with_pks_long <- unname(unlist(
       by_peak,
       recursive = FALSE
     ))
@@ -275,7 +277,7 @@ preprocess_peaks <- function(
 
   message("normalizing chromato")
   list_chromato_with_peak <- lapply(
-    list_df_features_with_peaks_long,
+    list_feat_with_pks_long,
     normalize_chromato,
     df_xy = df_xy,
     intensity_threshold = intensity_threshold
@@ -286,16 +288,16 @@ preprocess_peaks <- function(
 
   message("preparing rt")
   list_rtr <- lapply(
-    list_df_features_with_peaks_long,
+    list_feat_with_pks_long,
     prepare_rt,
     shift = shift
   )
 
   message("preparing mz")
-  list_mzr <- lapply(list_df_features_with_peaks_long, prepare_mz)
+  list_mzr <- lapply(list_feat_with_pks_long, prepare_mz)
 
   list(
-    list_df_features_with_peaks_long = list_df_features_with_peaks_long,
+    list_df_features_with_peaks_long = list_feat_with_pks_long,
     list_chromato_peaks = list_chromato_peaks,
     list_rtr = list_rtr,
     list_mzr = list_mzr,
@@ -303,7 +305,7 @@ preprocess_peaks <- function(
   )
 }
 
-#' Transform extracted MS chromatogram slice to normalized `[0, 1]` rtime and intensity
+#' Transform extracted MS chromatogram slice to normalized rtime and intensity
 #'
 #' @param x List of raw feature XIC lists (`intensity`, `rtime`).
 #' @param min_intensity Numeric(1) minimum normalized intensity threshold
@@ -421,7 +423,9 @@ extract_ms_peak <- function(x) {
   })
 }
 
-#' Exact base-R implementation of MsCoreUtils::closest(..., duplicates = "closest")
+#' Exact base-R implementation of closest-duplicate matching
+#'
+#' Matches `MsCoreUtils::closest(..., duplicates = "closest")`.
 #'
 #' @param x Sorted numeric query vector.
 #' @param table Sorted numeric target vector.
@@ -477,13 +481,14 @@ closest_idx <- function(x, table, tolerance) {
   out
 }
 
-#' Compare CAD peak shape with MS feature XIC peak shapes via closest-RT Pearson correlation
+#' Compare CAD peak shape with MS feature XIC peak shapes
 #'
 #' @param x Integer(1) peak index.
 #' @param list_ms_peaks List of extracted MS peak lists.
 #' @param peaks_prelist Output list from `preprocess_peaks()`.
 #'
-#' @return List of Pearson correlation coefficients for each feature in peak `x`.
+#' @return List of Pearson correlation coefficients for each feature in
+#'   peak `x`.
 #' @keywords internal
 #' @noRd
 compare_peaks <- function(x, list_ms_peaks, peaks_prelist) {

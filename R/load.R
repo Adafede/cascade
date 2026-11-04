@@ -274,7 +274,10 @@ load_features_informed <- function(file = NULL, show_example = FALSE) {
     return(fread_gz(file))
   }
   if (show_example) {
-    default_tsv <- "data/interim/peaks/210619_AR_06_V_03_2_01_featuresInformed_cad.tsv"
+    default_tsv <- file.path(
+      "data/interim/peaks",
+      "210619_AR_06_V_03_2_01_featuresInformed_cad.tsv"
+    )
     if (file.exists(default_tsv) && file.size(default_tsv) > 0) {
       return(fread_gz(default_tsv))
     }
@@ -301,7 +304,10 @@ load_features_not_informed <- function(file = NULL, show_example = FALSE) {
     return(fread_gz(file))
   }
   if (show_example) {
-    default_tsv <- "data/interim/peaks/210619_AR_06_V_03_2_01_featuresNotInformed_cad.tsv"
+    default_tsv <- file.path(
+      "data/interim/peaks",
+      "210619_AR_06_V_03_2_01_featuresNotInformed_cad.tsv"
+    )
     if (file.exists(default_tsv) && file.size(default_tsv) > 0) {
       return(fread_gz(default_tsv))
     }
@@ -327,7 +333,8 @@ load_features_not_informed <- function(file = NULL, show_example = FALSE) {
 load_ms_data <- function(file = NULL, show_example = FALSE) {
   if (show_example) {
     message(
-      "Loading example MS data from package data, doing it on disk will be more efficient"
+      "Loading example MS data from package data, ",
+      "doing it on disk will be more efficient"
     )
     cached <- .cascade_env[["example_ms_spectra"]]
     if (!is.null(cached)) {
@@ -362,7 +369,7 @@ load_ms_data <- function(file = NULL, show_example = FALSE) {
   )
 }
 
-#' Convert MSnExp or list spectral container into indexed list(rt, mz, intensity)
+#' Convert MSnExp or list spectral container into indexed list
 #'
 #' @param ms_data Either a pre-parsed `list(rt, mz, intensity)` or a legacy S4
 #'   `OnDiskMSnExp`/`MSnExp` object with an `assayData` environment.

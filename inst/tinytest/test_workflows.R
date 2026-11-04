@@ -50,14 +50,34 @@ expect_inherits(p_all_neg, "plotly")
 local({
   ann_tmp <- tempfile(fileext = ".tsv")
   on.exit(unlink(ann_tmp), add = TRUE)
-  writeLines(
-    c(
-      "feature_id\tfeature_mz\tfeature_rt\tcandidate_structure_smiles_no_stereo\tcandidate_structure_inchikey_connectivity_layer\tcandidate_structure_molecular_formula\tcandidate_count_similarity_peaks_matched\tcandidate_score_similarity\tscore_initial\tscore_biological\tscore_chemical\tscore_final\tcandidate_structure_organism_occurrence_closest\tfeature_pred_tax_npc_01pat_val\tfeature_pred_tax_npc_02sup_val\tfeature_pred_tax_npc_03cla_val\tfeature_pred_tax_npc_01pat_score\tfeature_pred_tax_npc_02sup_score\tfeature_pred_tax_npc_03cla_score\tcandidate_structure_tax_npc_01pat\tcandidate_structure_tax_npc_02sup\tcandidate_structure_tax_npc_03cla\tfeature_spectrum_peaks\tcandidate_library",
-      "1\t300.1\t5.0\tC=C\tIK1\tC2H4\t5\t0.9\t0.9\t0.8\t0.8\t0.85\tSwertia\tTerpenoids\tMono\tIridoids\t0.9\t0.9\t0.9\tTerpenoids\tMonoterpenoids\tSecoiridoids\t6\tgnps"
-    ),
-    ann_tmp
+  ann_df <- data.table::data.table(
+    feature_id = 1L,
+    feature_mz = 300.1,
+    feature_rt = 5.0,
+    candidate_structure_smiles_no_stereo = "C=C",
+    candidate_structure_inchikey_connectivity_layer = "IK1",
+    candidate_structure_molecular_formula = "C2H4",
+    candidate_count_similarity_peaks_matched = 5L,
+    candidate_score_similarity = 0.9,
+    score_initial = 0.9,
+    score_biological = 0.8,
+    score_chemical = 0.8,
+    score_final = 0.85,
+    candidate_structure_organism_occurrence_closest = "Swertia",
+    feature_pred_tax_npc_01pat_val = "Terpenoids",
+    feature_pred_tax_npc_02sup_val = "Mono",
+    feature_pred_tax_npc_03cla_val = "Iridoids",
+    feature_pred_tax_npc_01pat_score = 0.9,
+    feature_pred_tax_npc_02sup_score = 0.9,
+    feature_pred_tax_npc_03cla_score = 0.9,
+    candidate_structure_tax_npc_01pat = "Terpenoids",
+    candidate_structure_tax_npc_02sup = "Monoterpenoids",
+    candidate_structure_tax_npc_03cla = "Secoiridoids",
+    feature_spectrum_peaks = 6L,
+    candidate_library = "gnps"
   )
-  # Unnamed character vector triggers nms <- as.character(seq_along(annotations))
+  data.table::fwrite(ann_df, ann_tmp, sep = "\t")
+  # Unnamed character vector triggers sequential integer names
   tima_unnamed <- prepare_tima_annotations(
     annotations = ann_tmp,
     show_example = FALSE
@@ -66,7 +86,7 @@ local({
   expect_identical(nrow(tima_unnamed[["1"]]), 1L)
 })
 
-# --- 3. generate_tables with file_negative, empty lotus match, and export = FALSE ---
+# --- 3. generate_tables with file_negative, empty lotus match, export=FALSE ---
 local({
   wf_dir <- tempfile("cascade_wf_")
   dir.create(
@@ -77,12 +97,40 @@ local({
   on.exit(unlink(wf_dir, recursive = TRUE), add = TRUE)
 
   withr::with_dir(wf_dir, {
-    # Create a tiny lotus.csv.gz with non-matching InChIKey to exercise nrow(lotus_sub) == 0L branch
+    # Tiny lotus.csv.gz with non-matching InChIKey to exercise empty match
     lotus_gz <- gzfile("data/source/libraries/lotus.csv.gz", open = "wb")
     writeLines(
       c(
-        "structure_inchikey,organism_taxonomy_01domain,organism_taxonomy_02kingdom,organism_taxonomy_03phylum,organism_taxonomy_04class,organism_taxonomy_05order,organism_taxonomy_06family,organism_taxonomy_07tribe,organism_taxonomy_08genus,organism_taxonomy_09species,organism_taxonomy_10varietas,reference_doi",
-        "NONMATCHINGIK-UHFFFAOYSA-N,Eukaryota,Plantae,Streptophyta,Magnoliopsida,Gentianales,Gentianaceae,Gentianeae,Swertia,Swertia chirayita,NA,10.1000/test"
+        paste(
+          "structure_inchikey",
+          "organism_taxonomy_01domain",
+          "organism_taxonomy_02kingdom",
+          "organism_taxonomy_03phylum",
+          "organism_taxonomy_04class",
+          "organism_taxonomy_05order",
+          "organism_taxonomy_06family",
+          "organism_taxonomy_07tribe",
+          "organism_taxonomy_08genus",
+          "organism_taxonomy_09species",
+          "organism_taxonomy_10varietas",
+          "reference_doi",
+          sep = ","
+        ),
+        paste(
+          "NONMATCHINGIK-UHFFFAOYSA-N",
+          "Eukaryota",
+          "Plantae",
+          "Streptophyta",
+          "Magnoliopsida",
+          "Gentianales",
+          "Gentianaceae",
+          "Gentianeae",
+          "Swertia",
+          "Swertia chirayita",
+          "NA",
+          "10.1000/test",
+          sep = ","
+        )
       ),
       lotus_gz
     )
@@ -92,28 +140,70 @@ local({
     neg_tsv <- file.path(wf_dir, "neg.tsv")
     ann_tsv <- file.path(wf_dir, "ann.tsv")
 
-    writeLines(
-      c(
-        "sample\tpeak_id\tpeak_rt_min\tpeak_rt_apex\tpeak_rt_max\tpeak_area\tfeature_id\tfeature_rt\tfeature_mz\tfeature_area\tcomparison_score",
-        "s1\t1\t1.0\t1.5\t2.0\t100\t1\t1.5\t300.1\t1000\t0.95",
-        "s1\t2\t3.0\t3.5\t4.0\t200\t2\t3.5\t400.2\t2000\t0.92"
+    data.table::fwrite(
+      data.table::data.table(
+        sample = c("s1", "s1"),
+        peak_id = c(1L, 2L),
+        peak_rt_min = c(1.0, 3.0),
+        peak_rt_apex = c(1.5, 3.5),
+        peak_rt_max = c(2.0, 4.0),
+        peak_area = c(100, 200),
+        feature_id = c(1L, 2L),
+        feature_rt = c(1.5, 3.5),
+        feature_mz = c(300.1, 400.2),
+        feature_area = c(1000, 2000),
+        comparison_score = c(0.95, 0.92)
       ),
-      pos_tsv
+      pos_tsv,
+      sep = "\t"
     )
-    writeLines(
-      c(
-        "sample\tpeak_id\tpeak_rt_min\tpeak_rt_apex\tpeak_rt_max\tpeak_area\tfeature_id\tfeature_rt\tfeature_mz\tfeature_area\tcomparison_score",
-        "s1\t1\t1.0\t1.5\t2.0\t100\t1\t1.5\t298.1\t800\t0.90"
+    data.table::fwrite(
+      data.table::data.table(
+        sample = "s1",
+        peak_id = 1L,
+        peak_rt_min = 1.0,
+        peak_rt_apex = 1.5,
+        peak_rt_max = 2.0,
+        peak_area = 100,
+        feature_id = 1L,
+        feature_rt = 1.5,
+        feature_mz = 298.1,
+        feature_area = 800,
+        comparison_score = 0.90
       ),
-      neg_tsv
+      neg_tsv,
+      sep = "\t"
     )
-    writeLines(
-      c(
-        "feature_id\tfeature_mz\tfeature_rt\tcandidate_structure_smiles_no_stereo\tcandidate_structure_inchikey_connectivity_layer\tcandidate_structure_molecular_formula\tcandidate_count_similarity_peaks_matched\tcandidate_score_similarity\tscore_initial\tscore_biological\tscore_chemical\tscore_final\tcandidate_structure_organism_occurrence_closest\tfeature_pred_tax_npc_01pat_val\tfeature_pred_tax_npc_02sup_val\tfeature_pred_tax_npc_03cla_val\tfeature_pred_tax_npc_01pat_score\tfeature_pred_tax_npc_02sup_score\tfeature_pred_tax_npc_03cla_score\tcandidate_structure_tax_npc_01pat\tcandidate_structure_tax_npc_02sup\tcandidate_structure_tax_npc_03cla",
-        "1\t300.1\t1.5\tC=C\tIK1\tC2H4\t5\t0.9\t0.9\t0.8\t0.8\t0.85\tSwertia\tTerpenoids\tMono\tIridoids\t0.9\t0.9\t0.9\tTerpenoids\tMonoterpenoids\tSecoiridoids",
-        "2\t400.2\t3.5\tC=O\tIK2\tCH2O\t6\t0.95\t0.95\t0.9\t0.9\t1.20\tSwertia\tAlkaloids\tIndole\tSimple\t0.9\t0.9\t0.9\tAlkaloids\tIndole\tSimple"
+    data.table::fwrite(
+      data.table::data.table(
+        feature_id = c(1L, 2L),
+        feature_mz = c(300.1, 400.2),
+        feature_rt = c(1.5, 3.5),
+        candidate_structure_smiles_no_stereo = c("C=C", "C=O"),
+        candidate_structure_inchikey_connectivity_layer = c("IK1", "IK2"),
+        candidate_structure_molecular_formula = c("C2H4", "CH2O"),
+        candidate_count_similarity_peaks_matched = c(5L, 6L),
+        candidate_score_similarity = c(0.9, 0.95),
+        score_initial = c(0.9, 0.95),
+        score_biological = c(0.8, 0.9),
+        score_chemical = c(0.8, 0.9),
+        score_final = c(0.85, 1.20),
+        candidate_structure_organism_occurrence_closest = c(
+          "Swertia",
+          "Swertia"
+        ),
+        feature_pred_tax_npc_01pat_val = c("Terpenoids", "Alkaloids"),
+        feature_pred_tax_npc_02sup_val = c("Mono", "Indole"),
+        feature_pred_tax_npc_03cla_val = c("Iridoids", "Simple"),
+        feature_pred_tax_npc_01pat_score = c(0.9, 0.9),
+        feature_pred_tax_npc_02sup_score = c(0.9, 0.9),
+        feature_pred_tax_npc_03cla_score = c(0.9, 0.9),
+        candidate_structure_tax_npc_01pat = c("Terpenoids", "Alkaloids"),
+        candidate_structure_tax_npc_02sup = c("Monoterpenoids", "Indole"),
+        candidate_structure_tax_npc_03cla = c("Secoiridoids", "Simple")
       ),
-      ann_tsv
+      ann_tsv,
+      sep = "\t"
     )
 
     gt_res <- generate_tables(
@@ -132,7 +222,7 @@ local({
   })
 })
 
-# --- 4. generate_ids offline with comparison, show_title = FALSE, format_tables = TRUE ---
+# --- 4. generate_ids offline with comparison and format_tables = TRUE ---
 local({
   ids_dir <- tempfile("cascade_ids_")
   dir.create(
@@ -171,7 +261,18 @@ local({
         sp_prefix <- if (state$q_call == 3L) "Swertia" else "Gentiana"
         writeLines(
           c(
-            "structure,structureLabel,structure_id,structureSmiles,taxaLabels,taxa,referencesLabels,references_ids,references",
+            paste(
+              "structure",
+              "structureLabel",
+              "structure_id",
+              "structureSmiles",
+              "taxaLabels",
+              "taxa",
+              "referencesLabels",
+              "references_ids",
+              "references",
+              sep = ","
+            ),
             paste0("Q1,Comp1,IK1,C=C,", sp_prefix, " sp1,QT1,Ref1,10.1/1,QR1"),
             paste0(
               "Q1b,Comp1b,IK1b,C=C,",
@@ -192,7 +293,16 @@ local({
     lotus_gz <- gzfile("data/source/libraries/lotus.csv.gz", open = "wb")
     writeLines(
       c(
-        "structure_inchikey,structure_smiles_2D,structure_exact_mass,structure_xlogp,structure_taxonomy_npclassifier_01pathway,structure_taxonomy_npclassifier_02superclass,structure_taxonomy_npclassifier_03class",
+        paste(
+          "structure_inchikey",
+          "structure_smiles_2D",
+          "structure_exact_mass",
+          "structure_xlogp",
+          "structure_taxonomy_npclassifier_01pathway",
+          "structure_taxonomy_npclassifier_02superclass",
+          "structure_taxonomy_npclassifier_03class",
+          sep = ","
+        ),
         "IK1,C=C,300.0,1.5,Terpenoids,Monoterpenoids,Secoiridoids",
         "IK1b,C=C,300.0,1.5,Terpenoids,Monoterpenoids,Secoiridoids",
         "IK2,C=O,350.0,2.0,Alkaloids,Indole alkaloids,Simple indole"

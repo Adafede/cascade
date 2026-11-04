@@ -13,13 +13,20 @@
 \title{CASCADE Example Datasets}
 \format{
 \itemize{
-\item \strong{cascade_annotations}: \link{data.frame}, 3,471 rows x 58 columns (EDAM: \code{data_0962} Small molecule report)
-\item \strong{cascade_features}: \link{data.frame}, 3,471 rows x 101 columns (EDAM: \code{data_2536} Mass spectrometry data)
-\item \strong{cascade_features_informed}: \link{data.frame}, 3,860 rows x 11 columns (EDAM: \code{data_2536} Mass spectrometry data)
-\item \strong{cascade_features_not_informed}: \link{data.frame}, 893 rows x 11 columns (EDAM: \code{data_2536} Mass spectrometry data)
-\item \strong{cascade_chromatograms_positive}: \link{data.frame}, 122,541 rows x 3 columns (EDAM: \code{data_2536} Mass spectrometry data)
-\item \strong{cascade_chromatograms_negative}: \link{data.frame}, 122,079 rows x 3 columns (EDAM: \code{data_2536} Mass spectrometry data)
-\item \strong{cascade_ms_data}: Named list (\code{rt}, \code{mz}, \code{intensity}) containing 5,668 MS1 scans (EDAM: \code{data_0943} Mass spectrum)
+\item \strong{cascade_annotations}: \link{data.frame}, 3,471 rows x 58 columns
+(EDAM: \code{data_0962} Small molecule report)
+\item \strong{cascade_features}: \link{data.frame}, 3,471 rows x 101 columns
+(EDAM: \code{data_2536} Mass spectrometry data)
+\item \strong{cascade_features_informed}: \link{data.frame}, 3,860 rows x 11 columns
+(EDAM: \code{data_2536} Mass spectrometry data)
+\item \strong{cascade_features_not_informed}: \link{data.frame}, 893 rows x 11 columns
+(EDAM: \code{data_2536} Mass spectrometry data)
+\item \strong{cascade_chromatograms_positive}: \link{data.frame}, 122,541 rows x 3 columns
+(EDAM: \code{data_2536} Mass spectrometry data)
+\item \strong{cascade_chromatograms_negative}: \link{data.frame}, 122,079 rows x 3 columns
+(EDAM: \code{data_2536} Mass spectrometry data)
+\item \strong{cascade_ms_data}: Named list (\code{rt}, \code{mz}, \code{intensity}) containing
+5,668 MS1 scans (EDAM: \code{data_0943} Mass spectrum)
 }
 
 An object of class \code{data.frame} with 3471 rows and 58 columns.
@@ -52,44 +59,52 @@ cascade_chromatograms_negative
 cascade_ms_data
 }
 \description{
-Example datasets included with CASCADE for demonstration and testing purposes.
-All tabular datasets are stored as \link{data.frame} objects and converted to
-\link[data.table:data.table]{data.table::data.table} when loaded via the internal \verb{load_*} helpers.
+Example datasets included with CASCADE for demonstration and testing
+purposes. All tabular datasets are stored as \link{data.frame} objects and
+converted to \link[data.table:data.table]{data.table::data.table} when loaded via the internal \verb{load_*}
+helpers.
 }
 \section{cascade_annotations}{
 
 Metabolite annotation table from a \emph{Swertia} extract analyzed with TIMA.
-Contains 3,471 unique features with their chemical and taxonomic contextualizations.
+Contains 3,471 unique features with their chemical and taxonomic
+contextualizations.
 }
 
 \section{cascade_features}{
 
-Complete mzmine feature table. Contains 3,471 features with \emph{m/z}, retention time, and intensity.
+Complete mzmine feature table. Contains 3,471 features with \emph{m/z},
+retention time, and intensity.
 }
 
 \section{cascade_features_informed}{
 
-CAD-detected peaks that matched annotation hypotheses. Contains 3,860 peak-feature matches.
+CAD-detected peaks that matched annotation hypotheses. Contains 3,860
+peak-feature matches.
 }
 
 \section{cascade_features_not_informed}{
 
-CAD-detected peaks that did not match any annotation hypothesis. Contains 893 peak-feature matches.
+CAD-detected peaks that did not match any annotation hypothesis. Contains
+893 peak-feature matches.
 }
 
 \section{cascade_chromatograms_positive}{
 
-Chromatogram traces from positive-mode analysis. Tidy long-form \link{data.frame} with 3 columns.
+Chromatogram traces from positive-mode analysis. Tidy long-form
+\link{data.frame} with 3 columns.
 }
 
 \section{cascade_chromatograms_negative}{
 
-Chromatogram traces from negative-mode analysis. Tidy long-form \link{data.frame} with 3 columns.
+Chromatogram traces from negative-mode analysis. Tidy long-form
+\link{data.frame} with 3 columns.
 }
 
 \section{cascade_ms_data}{
 
-Example MS1 spectral dataset used for extracted ion chromatogram (XIC) reconstruction and peak shape comparison.
+Example MS1 spectral dataset used for extracted ion chromatogram (XIC)
+reconstruction and peak shape comparison.
 }
 
 \concept{EDAM:data_0943 Mass spectrum}

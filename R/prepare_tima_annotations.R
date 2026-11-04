@@ -25,7 +25,8 @@
 #' @param min_peaks Minimum total number of peaks in the query MS2 spectrum.
 #'   Default is `3L`.
 #' @param libraries Character vector of spectral libraries to retain. Default
-#'   is `c("gnps", "massbank", "merlin", "ISDB", "ISDB - Wikidata", "TIMA MS1")`.
+#'   is `c("gnps", "massbank", "merlin", "ISDB", "ISDB - Wikidata",`
+#'   `"TIMA MS1")`.
 #' @param show_example Logical; use bundled example data. Default is `FALSE`.
 #'
 #' @return A named list of prepared `data.table` annotation tables.
@@ -97,13 +98,14 @@ prepare_tima_annotations <- function(
           ))
           spec_peaks <- suppressWarnings(as.numeric(dt$feature_spectrum_peaks))
 
+          valid_pct <- !is.na(peaks_matched) &
+            !is.na(spec_peaks) &
+            peaks_matched >= spec_peaks * min_matched_peaks_percentage
+          valid_abs <- !is.na(peaks_matched) &
+            peaks_matched >= min_matched_peaks_absolute
           keep_idx <- !is.na(s_init) &
             s_init >= min_score_initial &
-            ((!is.na(peaks_matched) &
-              !is.na(spec_peaks) &
-              peaks_matched >= spec_peaks * min_matched_peaks_percentage) |
-              (!is.na(peaks_matched) &
-                peaks_matched >= min_matched_peaks_absolute)) &
+            (valid_pct | valid_abs) &
             !is.na(spec_peaks) &
             spec_peaks >= min_peaks &
             dt$candidate_library %in% libraries

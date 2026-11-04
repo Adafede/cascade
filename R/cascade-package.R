@@ -14,11 +14,13 @@
 "_PACKAGE"
 
 ## usethis namespace: start
-#' @importFrom data.table := .I .N .SD as.data.table data.table fifelse fread fwrite rbindlist set setcolorder setkey setnames setorder uniqueN
+#' @importFrom data.table := .I .N .SD as.data.table data.table fifelse fread
+#' @importFrom data.table fwrite rbindlist set setcolorder setkey setnames
+#' @importFrom data.table setorder uniqueN
 ## usethis namespace: end
 NULL
 
-.datatable.aware <- TRUE
+.datatable.aware <- TRUE # nolint: object_name_linter.
 
 .cascade_env <- new.env(parent = emptyenv())
 

@@ -32,7 +32,8 @@ expect_identical(
   c("x", NA_character_, NA_character_)
 )
 
-# --- 2. dt_left_join, dt_inner_join, dt_full_join (named by, colliding cols, suffixes) ---
+# --- 2. dt_left_join, dt_inner_join, dt_full_join (named by, colliding cols,
+# suffixes) ---
 dx <- data.table::data.table(
   id_x = c("b", "a", "c"),
   shared = c(1L, 1L, 1L),
@@ -121,7 +122,8 @@ expect_true(grepl(
   mi
 ))
 
-# --- 4. keep_best_candidates (with and without rank_final, pipes, sentinels) ---
+# --- 4. keep_best_candidates (with and without rank_final, pipes, sentinels)
+# ---
 raw_cand <- data.table::data.table(
   feature_id = c(1L, 1L, 2L, 3L, 4L),
   feature_mz = c("300.1|300.1", "300.1", "400.2", "500.3", "600.4"),
@@ -200,7 +202,8 @@ raw_cand <- data.table::data.table(
     ""
   )
 )
-# Without rank_final column: feature 1 should pick row 2 (score_final = 0.95 > 0.4)
+# Without rank_final column: feature 1 should pick row 2 (score_final = 0.95 >
+# 0.4)
 kbc_no_rk <- keep_best_candidates(raw_cand)
 expect_identical(nrow(kbc_no_rk), 4L)
 expect_identical(kbc_no_rk[feature_id == "1"]$smiles_2D, "C=O")
@@ -318,16 +321,20 @@ mc_filt <- make_chromatographiable(
 )
 expect_identical(mc_filt$id, c(1L, 3L, 5L, 7L, 9L))
 
-# --- 8. prepare_comparison (taxonomic prioritization, thresholds, ACN correction, empty precor) ---
+# --- 8. prepare_comparison (taxonomic prioritization, thresholds, ACN
+# correction, empty precor) ---
 local({
   tmp_inf <- tempfile(fileext = ".tsv")
   tmp_ninf <- tempfile(fileext = ".tsv")
   on.exit(unlink(c(tmp_inf, tmp_ninf)), add = TRUE)
 
-  # Peak 1: feature 1 has exact species match (Swertia chirayita), feature 2 has genus match (Swertia) -> only feature 1 kept
-  # Peak 2: feature 3 has genus match (Swertia), feature 4 has unrelated organism (Gentiana) -> only feature 3 kept
+  # Peak 1: feature 1 has exact species match (Swertia chirayita), feature 2
+  # has genus match (Swertia) -> only feature 1 kept
+  # Peak 2: feature 3 has genus match (Swertia), feature 4 has unrelated
+  # organism (Gentiana) -> only feature 3 kept
   # Peak 3: feature 5 & 6 have unrelated organisms -> both kept (sum == 0)
-  # Peak 4: feature 7 has comparison_score = 0.5 < min_similarity_prefilter (0.6) -> moved to peaks_min_precor
+  # Peak 4: feature 7 has comparison_score = 0.5 < min_similarity_prefilter
+  # (0.6) -> moved to peaks_min_precor
   inf_dt <- data.table::data.table(
     sample = rep("s1", 7L),
     peak_id = c(1L, 1L, 2L, 2L, 3L, 3L, 4L),
@@ -393,7 +400,8 @@ local({
     correct_acn = TRUE
   )
   expect_identical(comp_res$peaks_maj_precor$feature_id, as.numeric(1:6))
-  # After taxonomic prioritization: feature 1 (peak 1), feature 3 (peak 2), features 5 & 6 (peak 3)
+  # After taxonomic prioritization: feature 1 (peak 1), feature 3 (peak 2),
+  # features 5 & 6 (peak 3)
   expect_identical(comp_res$peaks_maj_precor_taxo$feature_id, c(1, 3, 5, 6))
   # After min_similarity_filter >= 0.8: feature 3 (score 0.75) is filtered out
   expect_identical(comp_res$peaks_maj_precor_taxo_cor$feature_id, c(1, 5, 6))

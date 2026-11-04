@@ -18,7 +18,8 @@
 #' @return A `peak_list` object (nested list of peak `data.frame`s per sample
 #'   and wavelength).
 #' @author Ethan Bass
-#' @note Adapted from `{chromatographR}` with parallelization and external dependencies removed.
+#' @note Adapted from `{chromatographR}` with parallelization and external
+#'   dependencies removed.
 #' @source https://github.com/ethanbass/chromatographR
 #' @keywords internal
 #' @noRd
@@ -26,9 +27,9 @@ get_peaks <- function(
   chrom_list,
   lambdas,
   fit = c("egh", "gaussian", "raw"),
-  sd.max = 50,
-  max.iter = 100,
-  time.units = c("min", "s", "ms"),
+  sd.max = 50, # nolint: object_name_linter.
+  max.iter = 100, # nolint: object_name_linter.
+  time.units = c("min", "s", "ms"), # nolint: object_name_linter.
   estimate_purity = FALSE,
   noise_threshold = 0.001,
   collapse = FALSE,
@@ -71,8 +72,8 @@ get_peaks <- function(
     x
   }
 
-  time.units <- match.arg(time.units, c("min", "s", "ms"))
-  tfac <- switch(time.units, "min" = 1, "s" = 60, "ms" = 60 * 1000)
+  time_units <- match.arg(time.units, c("min", "s", "ms"))
+  tfac <- switch(time_units, "min" = 1, "s" = 60, "ms" = 60 * 1000)
   fit <- match.arg(fit, c("egh", "gaussian", "raw"))
   chrom_list_string <- deparse(substitute(chrom_list))
   if (is.matrix(chrom_list)) {
@@ -90,7 +91,8 @@ get_peaks <- function(
   }
   if (is.null(names(chrom_list))) {
     warning(
-      "Sample names not found. It is recommended to include names for your samples.",
+      "Sample names not found. ",
+      "It is recommended to include names for your samples.",
       immediate. = TRUE
     )
     names(chrom_list) <- seq_along(chrom_list)
@@ -119,12 +121,12 @@ get_peaks <- function(
         smooth_window <- smooth_window + 1
       }
       fc <- (smooth_window - 1) / 2
-      X <- outer(-fc:fc, 0:4, FUN = "^")
-      sv <- svd(X)
-      pos_d <- sv$d > max(dim(X)) * .Machine$double.eps * sv$d[1L]
-      Y <- sv$v[, pos_d, drop = FALSE] %*%
+      x_mat <- outer(-fc:fc, 0:4, FUN = "^")
+      sv <- svd(x_mat)
+      pos_d <- sv$d > max(dim(x_mat)) * .Machine$double.eps * sv$d[1L]
+      y_mat <- sv$v[, pos_d, drop = FALSE] %*%
         ((1 / sv$d[pos_d]) * t(sv$u[, pos_d, drop = FALSE]))
-      smoothed <- stats::convolve(diff(y), rev(Y[1L, ]), type = "o")
+      smoothed <- stats::convolve(diff(y), rev(y_mat[1L, ]), type = "o")
       d <- smoothed[(fc + 1):(length(smoothed) - fc)]
     } else if (smooth_type == "mva") {
       d <- runmean_center(diff(y), k = smooth_window)
@@ -183,11 +185,11 @@ get_peaks <- function(
   }
 
   gaussian_fn <- function(x, center = 0, width = 1, height = NULL, floor = 0) {
-    twoVar <- 2 * width * width
-    sqrt2piVar <- sqrt(pi * twoVar)
-    y <- exp(-(x - center)^2 / twoVar) / sqrt2piVar
+    two_var <- 2 * width * width
+    sqrt_2pi_var <- sqrt(pi * two_var)
+    y <- exp(-(x - center)^2 / two_var) / sqrt_2pi_var
     if (!is.null(height)) {
-      y <- y * sqrt2piVar * height
+      y <- y * sqrt_2pi_var * height
     }
     if (is.null(floor)) y else y + floor
   }
@@ -205,21 +207,21 @@ get_peaks <- function(
       ptable <- lapply(lambdas, function(lambda) {
         x <- chrom_list[[sample]]
         col_nums <- as.numeric(colnames(x))
-        lambda.idx <- if (lambda == "max") {
+        lambda_idx <- if (lambda == "max") {
           which.max(apply(x, 2L, max, na.rm = TRUE))
         } else if (length(col_nums) == 1L) {
           1L
         } else {
           which(col_nums == as.numeric(lambda))
         }
-        if (length(lambda.idx) == 0L || is.na(lambda.idx)) {
+        if (length(lambda_idx) == 0L || is.na(lambda_idx)) {
           stop(
             "The specified wavelength (`lambda`) could not be found!",
             call. = FALSE
           )
         }
 
-        y <- x[, lambda.idx]
+        y <- x[, lambda_idx]
         pos <- find_peaks(y, ...)
 
         tabnames <- switch(
@@ -258,28 +260,28 @@ get_peaks <- function(
             "purity"
           )
         )
-        noPeaksMat <- as.data.frame(matrix(
+        no_peaks_mat <- as.data.frame(matrix(
           rep(NA_real_, length(tabnames)),
           nrow = 1L,
           dimnames = list(NULL, tabnames)
         ))
         ny <- length(y)
-        on.edge <- pos$pos <= 1L |
+        on_edge <- pos$pos <= 1L |
           pos$pos >= ny |
           is.na(y[pmin(ny, pos$pos + 1L)]) |
           is.na(y[pmax(1L, pos$pos - 1L)])
-        pos <- pos[!on.edge, , drop = FALSE]
+        pos <- pos[!on_edge, , drop = FALSE]
 
         if (nrow(pos) == 0L) {
-          pks <- noPeaksMat
+          pks <- no_peaks_mat
         } else {
           fitpk <- function(row_pos) {
             xloc <- row_pos[1L]
-            peak.loc <- seq.int(row_pos[2L], row_pos[3L])
-            y_pk <- y[peak.loc]
+            peak_loc <- seq.int(row_pos[2L], row_pos[3L])
+            y_pk <- y[peak_loc]
             if (fit == "raw") {
               area <- sum(
-                diff(peak.loc) * mean(c(y_pk[-1L], utils::tail(y_pk, -1L)))
+                diff(peak_loc) * mean(c(y_pk[-1L], utils::tail(y_pk, -1L)))
               )
               return(c(
                 rt = xloc,
@@ -292,22 +294,22 @@ get_peaks <- function(
                 purity = NA_real_
               ))
             }
-            start.center <- xloc
-            start.height <- y[xloc]
-            start.width <- sum(y_pk > (start.height / 2)) / 2
+            start_center <- xloc
+            start_height <- y[xloc]
+            start_width <- sum(y_pk > (start_height / 2)) / 2
             y_fit <- if (fit == "gaussian") {
               gaussian_fn(
-                peak.loc,
-                start.center,
-                start.width,
-                start.height,
+                peak_loc,
+                start_center,
+                start_width,
+                start_height,
                 NULL
               )
             } else {
-              egh_fn(peak.loc, start.center, start.width, start.height, 0)
+              egh_fn(peak_loc, start_center, start_width, start_height, 0)
             }
             area <- sum(
-              diff(peak.loc) * mean(c(y_fit[-1L], utils::tail(y_fit, -1L)))
+              diff(peak_loc) * mean(c(y_fit[-1L], utils::tail(y_fit, -1L)))
             )
             r_sq <- tryCatch(
               summary(stats::lm(y_fit ~ y_pk))$r.squared,
@@ -315,25 +317,25 @@ get_peaks <- function(
             )
             if (fit == "gaussian") {
               c(
-                rt = start.center,
+                rt = start_center,
                 start = row_pos[2L],
                 end = row_pos[3L],
-                sd = start.width,
-                FWHM = 2.35 * start.width,
-                height = start.height,
+                sd = start_width,
+                FWHM = 2.35 * start_width,
+                height = start_height,
                 area = area,
                 r.squared = r_sq,
                 purity = NA_real_
               )
             } else {
               c(
-                rt = start.center,
+                rt = start_center,
                 start = row_pos[2L],
                 end = row_pos[3L],
-                sd = start.width,
+                sd = start_width,
                 tau = 0,
-                FWHM = 2.35 * start.width,
-                height = start.height,
+                FWHM = 2.35 * start_width,
+                height = start_height,
                 area = area,
                 r.squared = r_sq,
                 purity = NA_real_
@@ -349,7 +351,7 @@ get_peaks <- function(
           }
           pks <- try(huhn[huhn$rt > 0, , drop = FALSE], silent = TRUE)
           if (inherits(pks, "try-error") || nrow(pks) == 0L) {
-            pks <- noPeaksMat
+            pks <- no_peaks_mat
           }
         }
         pks <- cbind(sample = names(chrom_list)[sample], lambda, pks)
@@ -377,7 +379,7 @@ get_peaks <- function(
     fit = fit,
     sd.max = sd.max,
     max.iter = max.iter,
-    time.units = time.units,
+    time.units = time_units,
     class = c("peak_list", "list")
   )
 }

@@ -34,7 +34,8 @@ withr::with_dir(work_dir, {
   # Idempotent when directory already exists
   expect_identical(check_export_dir(nested_dir), nested_dir)
 
-  # --- 2. fread_gz (plain file, .gz cold cache, .gz warm cache, .gz evicted file) ---
+  # --- 2. fread_gz (plain file, .gz cold cache, .gz warm cache, .gz evicted
+  # file) ---
   plain_csv <- file.path(work_dir, "plain.csv")
   writeLines(c("id,val", "1,10.5", "2,20.5"), plain_csv)
   dt_plain <- fread_gz(plain_csv)
@@ -129,9 +130,10 @@ withr::with_dir(work_dir, {
     function(url, handle = NULL) {
       list(
         status_code = 200L,
-        content = charToRaw(
-          '{"files": [{"links": {"self": "https://zenodo.org/api/records/123/files/other.txt"}}]}'
-        )
+        content = charToRaw(paste0(
+          '{"files": [{"links": {"self": ',
+          '"https://zenodo.org/api/records/123/files/other.txt"}}]}'
+        ))
       )
     },
     envir = curl_ns
@@ -150,9 +152,10 @@ withr::with_dir(work_dir, {
     function(url, handle = NULL) {
       list(
         status_code = 200L,
-        content = charToRaw(
-          '{"links": "https://zenodo.org/api/records/5794106/files/230101_frozen_metadata.csv.gz/content"}'
-        )
+        content = charToRaw(paste0(
+          '{"links": "https://zenodo.org/api/records/5794106/',
+          'files/230101_frozen_metadata.csv.gz/content"}'
+        ))
       )
     },
     envir = curl_ns
@@ -169,7 +172,10 @@ withr::with_dir(work_dir, {
   expect_identical(get_zenodo_file(path = dl_dest), dl_dest)
   expect_identical(
     readLines(dl_dest),
-    "downloaded_from https://zenodo.org/api/records/5794106/files/230101_frozen_metadata.csv.gz/content"
+    paste0(
+      "downloaded_from https://zenodo.org/api/records/5794106/",
+      "files/230101_frozen_metadata.csv.gz/content"
+    )
   )
 
   # Restore curl bindings immediately
@@ -240,7 +246,8 @@ withr::with_dir(work_dir, {
     99L
   )
 
-  # Fallback when file is non-existent and show_example = FALSE (calls fread_gz(file))
+  # Fallback when file is non-existent and show_example = FALSE (calls
+  # fread_gz(file))
   expect_identical(
     load_features_informed(file = inf_custom, show_example = FALSE)$peak_id,
     1L
@@ -287,30 +294,49 @@ withr::with_dir(work_dir, {
   ms_warm <- load_ms_data(show_example = TRUE)
   expect_identical(ms_warm$rt, ms_cold$rt)
 
-  # 7c. Real mzML file loading for load_ms_data(show_example = FALSE) and load_chromatograms(show_example = FALSE)
-  # Base64-encoded 64-bit little-endian IEEE754 floats:
-  # c(100.0, 200.0) -> "AAAAAAAAWUAAAAAAAABpQA=="
-  # c(10.0, 20.0)   -> "AAAAAAAkQAAAAAAAADRA"
-  # c(1.0, 2.0)     -> "AAAAAAAA8D8AAAAAAAAAQA=="
+  # 7c. Real mzML file loading for load_ms_data and load_chromatograms
+  # Base64-encoded 64-bit little-endian IEEE754 floats for 100/200, 10/20, 1/2:
   mzml_1scan <- paste0(
     "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n",
     "<mzML xmlns=\"http://psi.hupo.org/ms/mzml\" version=\"1.1.0\">\n",
     "  <run id=\"r1\">\n",
     "    <spectrumList count=\"1\">\n",
     "      <spectrum index=\"0\" id=\"scan=1\" defaultArrayLength=\"2\">\n",
-    "        <cvParam cvRef=\"MS\" accession=\"MS:1000511\" name=\"ms level\" value=\"1\"/>\n",
-    "        <scanList count=\"1\"><scan><cvParam cvRef=\"MS\" accession=\"MS:1000016\" name=\"scan start time\" value=\"15.0\" unitCvRef=\"UO\" unitAccession=\"UO:0000010\" unitName=\"second\"/></scan></scanList>\n",
+    "        <cvParam cvRef=\"MS\" accession=\"MS:1000511\"",
+    " name=\"ms level\" value=\"1\"/>\n",
+    "        <scanList count=\"1\"><scan>",
+    "<cvParam cvRef=\"MS\" accession=\"MS:1000016\"",
+    " name=\"scan start time\" value=\"15.0\"",
+    " unitCvRef=\"UO\" unitAccession=\"UO:0000010\"",
+    " unitName=\"second\"/></scan></scanList>\n",
     "        <binaryDataArrayList count=\"2\">\n",
-    "          <binaryDataArray encodedLength=\"24\"><cvParam cvRef=\"MS\" accession=\"MS:1000523\" name=\"64-bit float\"/><cvParam cvRef=\"MS\" accession=\"MS:1000576\" name=\"no compression\"/><cvParam cvRef=\"MS\" accession=\"MS:1000514\" name=\"m/z array\"/><binary>AAAAAAAAWUAAAAAAAABpQA==</binary></binaryDataArray>\n",
-    "          <binaryDataArray encodedLength=\"24\"><cvParam cvRef=\"MS\" accession=\"MS:1000523\" name=\"64-bit float\"/><cvParam cvRef=\"MS\" accession=\"MS:1000576\" name=\"no compression\"/><cvParam cvRef=\"MS\" accession=\"MS:1000515\" name=\"intensity array\"/><binary>AAAAAAAAJEAAAAAAAAA0QA==</binary></binaryDataArray>\n",
+    "          <binaryDataArray encodedLength=\"24\">",
+    "<cvParam cvRef=\"MS\" accession=\"MS:1000523\" name=\"64-bit float\"/>",
+    "<cvParam cvRef=\"MS\" accession=\"MS:1000576\" name=\"no compression\"/>",
+    "<cvParam cvRef=\"MS\" accession=\"MS:1000514\" name=\"m/z array\"/>",
+    "<binary>AAAAAAAAWUAAAAAAAABpQA==</binary></binaryDataArray>\n",
+    "          <binaryDataArray encodedLength=\"24\">",
+    "<cvParam cvRef=\"MS\" accession=\"MS:1000523\" name=\"64-bit float\"/>",
+    "<cvParam cvRef=\"MS\" accession=\"MS:1000576\" name=\"no compression\"/>",
+    "<cvParam cvRef=\"MS\" accession=\"MS:1000515\" name=\"intensity array\"/>",
+    "<binary>AAAAAAAAJEAAAAAAAAA0QA==</binary></binaryDataArray>\n",
     "        </binaryDataArrayList>\n",
     "      </spectrum>\n",
     "    </spectrumList>\n",
     "    <chromatogramList count=\"1\">\n",
-    "      <chromatogram index=\"0\" id=\"UV#1_CAD_1_0\" defaultArrayLength=\"2\">\n",
+    "      <chromatogram index=\"0\" id=\"UV#1_CAD_1_0\"",
+    " defaultArrayLength=\"2\">\n",
     "        <binaryDataArrayList count=\"2\">\n",
-    "          <binaryDataArray encodedLength=\"24\"><cvParam cvRef=\"MS\" accession=\"MS:1000523\" name=\"64-bit float\"/><cvParam cvRef=\"MS\" accession=\"MS:1000576\" name=\"no compression\"/><cvParam cvRef=\"MS\" accession=\"MS:1000595\" name=\"time array\"/><binary>AAAAAAAA8D8AAAAAAAAAQA==</binary></binaryDataArray>\n",
-    "          <binaryDataArray encodedLength=\"24\"><cvParam cvRef=\"MS\" accession=\"MS:1000523\" name=\"64-bit float\"/><cvParam cvRef=\"MS\" accession=\"MS:1000576\" name=\"no compression\"/><cvParam cvRef=\"MS\" accession=\"MS:1000515\" name=\"intensity array\"/><binary>AAAAAAAAJEAAAAAAAAA0QA==</binary></binaryDataArray>\n",
+    "          <binaryDataArray encodedLength=\"24\">",
+    "<cvParam cvRef=\"MS\" accession=\"MS:1000523\" name=\"64-bit float\"/>",
+    "<cvParam cvRef=\"MS\" accession=\"MS:1000576\" name=\"no compression\"/>",
+    "<cvParam cvRef=\"MS\" accession=\"MS:1000595\" name=\"time array\"/>",
+    "<binary>AAAAAAAA8D8AAAAAAAAAQA==</binary></binaryDataArray>\n",
+    "          <binaryDataArray encodedLength=\"24\">",
+    "<cvParam cvRef=\"MS\" accession=\"MS:1000523\" name=\"64-bit float\"/>",
+    "<cvParam cvRef=\"MS\" accession=\"MS:1000576\" name=\"no compression\"/>",
+    "<cvParam cvRef=\"MS\" accession=\"MS:1000515\" name=\"intensity array\"/>",
+    "<binary>AAAAAAAAJEAAAAAAAAA0QA==</binary></binaryDataArray>\n",
     "        </binaryDataArrayList>\n",
     "      </chromatogram>\n",
     "    </chromatogramList>\n",

@@ -32,7 +32,10 @@
 #'
 #' @examples
 #' \donttest{
-#' q <- "SELECT ?taxon WHERE { ?taxon <http://www.wikidata.org/prop/direct/P225> 'Gentiana lutea' . }"
+#' q <- paste0(
+#'   "SELECT ?taxon WHERE { ",
+#'   "?taxon <http://www.wikidata.org/prop/direct/P225> 'Gentiana lutea' . }"
+#' )
 #' try(query_wikidata(q, timeout = 15L))
 #' }
 query_wikidata <- function(
@@ -90,10 +93,9 @@ query_wikidata <- function(
       call. = FALSE
     )
   }
-  if (
-    !(is.null(headers) ||
-      (is.character(headers) && length(headers) == 1L && !is.na(headers)))
-  ) {
+  valid_headers <- is.null(headers) ||
+    (is.character(headers) && length(headers) == 1L && !is.na(headers))
+  if (!valid_headers) {
     stop(
       "`headers` must be NULL or a single non-missing character string.",
       call. = FALSE
@@ -331,7 +333,9 @@ queries_progress <- function(
     )
   } else {
     query_template <- paste0(
-      "SELECT DISTINCT ?structure ?structureLabel ?structure_id ?structureSmiles ?taxaLabels ?taxa ?referencesLabels ?references_ids ?references WHERE {\n",
+      "SELECT DISTINCT ?structure ?structureLabel ?structure_id ",
+      "?structureSmiles ?taxaLabels ?taxa ?referencesLabels ",
+      "?references_ids ?references WHERE {\n",
       "  ?taxa (wdt:P171*) wd:Q158572;\n",
       "  wdt:P225 ?taxaLabels.\n",
       "  ?structure wdt:P235 ?structure_id;\n",
@@ -346,7 +350,8 @@ queries_progress <- function(
       "    wdt:P577 ?art_date.\n",
       "  }\n",
       "  FILTER(((YEAR(?art_date)) >= 0 ) && ((YEAR(?art_date)) <= 9999 ))\n",
-      "  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE], mul, en\". }\n",
+      "  SERVICE wikibase:label { ",
+      "bd:serviceParam wikibase:language \"[AUTO_LANGUAGE], mul, en\". }\n",
       "}\nLIMIT 1000000"
     )
   }

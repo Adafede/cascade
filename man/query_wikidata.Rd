@@ -51,7 +51,10 @@ endpoint (\verb{https://qlever.dev/api/wikidata}) when \code{fallback = TRUE}.
 }
 \examples{
 \donttest{
-q <- "SELECT ?taxon WHERE { ?taxon <http://www.wikidata.org/prop/direct/P225> 'Gentiana lutea' . }"
+q <- paste0(
+  "SELECT ?taxon WHERE { ",
+  "?taxon <http://www.wikidata.org/prop/direct/P225> 'Gentiana lutea' . }"
+)
 try(query_wikidata(q, timeout = 15L))
 }
 }

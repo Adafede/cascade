@@ -64,7 +64,7 @@ expect_identical(
 )
 expect_identical(runmean_center(c(2, 4, 6), 10L), c(3, 4, 5))
 
-# Property: linearity runmean_center(a * x + b, k) == a * runmean_center(x, k) + b
+# Property: affine linearity of centered running mean
 set.seed(42L)
 x_rand <- rnorm(30L)
 expect_equal(
@@ -190,7 +190,7 @@ expect_equal(imp_neg$rtime, expected_time, tolerance = 1e-12)
 expect_equal(imp_pos$intensity, imp_pos_floor2$intensity, tolerance = 1e-12)
 # When min_intensity == 0, shift_amount = 0 + 1.0 = 1.0, matching df_pos
 expect_equal(imp_zero$intensity, imp_pos$intensity, tolerance = 1e-12)
-# When min_intensity == -5, shift_amount = 5 + 6.0 = 11.0, so df_neg + 11 == df_pos + 5
+# When min_intensity is -5, shift_amount is 11.0, matching df_pos shifted by 5
 expect_equal(imp_neg$intensity, imp_pos$intensity + 5.0, tolerance = 1e-12)
 
 prog_res <- improve_signals_progress(

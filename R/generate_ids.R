@@ -56,10 +56,26 @@ generate_ids <- function(
   show_title = FALSE,
   format_tables = FALSE
 ) {
-  query_part_1 <- "SELECT DISTINCT ?structure ?structureLabel ?structure_id ?structureSmiles ?taxaLabels ?taxa ?referencesLabels ?references_ids ?references WHERE {\n  ?taxa (wdt:P171*) wd:"
-  query_part_2 <- ";\n  wdt:P225 ?taxaLabels. \n  ?structure wdt:P235 ?structure_id;\n  wdt:P233 ?structureSmiles;\n  p:P703 ?statement.\n  ?statement ps:P703 ?taxa;\n  prov:wasDerivedFrom ?ref.\n  ?ref pr:P248 ?references.\n  SERVICE <https://query-scholarly.wikidata.org/sparql> { \n ?references wdt:P1476 ?referencesLabels;\n  wdt:P356 ?references_ids;\n  wdt:P577 ?art_date.\n  }\n FILTER(((YEAR(?art_date)) >= "
+  query_part_1 <- paste0(
+    "SELECT DISTINCT ?structure ?structureLabel ?structure_id ",
+    "?structureSmiles ?taxaLabels ?taxa ?referencesLabels ",
+    "?references_ids ?references WHERE {\n  ?taxa (wdt:P171*) wd:"
+  )
+  query_part_2 <- paste0(
+    ";\n  wdt:P225 ?taxaLabels. \n  ?structure wdt:P235 ?structure_id;\n",
+    "  wdt:P233 ?structureSmiles;\n  p:P703 ?statement.\n",
+    "  ?statement ps:P703 ?taxa;\n  prov:wasDerivedFrom ?ref.\n",
+    "  ?ref pr:P248 ?references.\n",
+    "  SERVICE <https://query-scholarly.wikidata.org/sparql> { \n",
+    " ?references wdt:P1476 ?referencesLabels;\n",
+    "  wdt:P356 ?references_ids;\n  wdt:P577 ?art_date.\n  }\n",
+    " FILTER(((YEAR(?art_date)) >= "
+  )
   query_part_3 <- " ) && ((YEAR(?art_date)) <= "
-  query_part_4 <- " ))\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE], mul, en\". }\n}"
+  query_part_4 <- paste0(
+    " ))\n  SERVICE wikibase:label { ",
+    "bd:serviceParam wikibase:language \"[AUTO_LANGUAGE], mul, en\". }\n}"
+  )
 
   lotus_path <- "data/source/libraries/lotus.csv.gz"
   message("Getting last LOTUS version")

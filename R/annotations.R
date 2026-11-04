@@ -243,7 +243,7 @@ keep_best_candidates <- function(df) {
       smiles_2D = candidate_structure_smiles_no_stereo,
       inchikey_2D = candidate_structure_inchikey_connectivity_layer,
       molecular_formula = candidate_structure_molecular_formula,
-      candidate_count_similarity_peaks_matched = candidate_count_similarity_peaks_matched,
+      candidate_count_similarity_peaks_matched,
       candidate_score_similarity = candidate_score_similarity,
       score_initial = score_initial,
       score_biological = score_biological,
@@ -449,7 +449,8 @@ make_chromatographiable <- function(
 #' @param features_informed Path to informed features table (or `NULL`).
 #' @param features_not_informed Path to non-informed features table (or `NULL`).
 #' @param candidates_confident Confident candidates `data.table`.
-#' @param min_similarity_prefilter Minimum similarity pre-filter (default `0.6`).
+#' @param min_similarity_prefilter Minimum similarity pre-filter
+#'   (default `0.6`).
 #' @param min_similarity_filter Minimum similarity filter (default `0.8`).
 #' @param mode Ionization mode (`"pos"` or `"neg"`).
 #' @param show_example Logical; use package example data if `TRUE`.

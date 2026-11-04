@@ -1,4 +1,6 @@
-#' Reorder factor levels by two variables (base R replacement for forcats::fct_reorder2)
+#' Reorder factor levels by two variables
+#'
+#' Base R replacement for `forcats::fct_reorder2`.
 #'
 #' @param f Factor or character vector.
 #' @param x First sorting vector.
@@ -981,7 +983,8 @@ prepare_plot <- function(dataframe, organism = "species") {
 #' @param dataframe Data frame or `data.table` of features.
 #'
 #' @return A `data.table` with chemical class colors and biological source
-#'   levels ready for `plot_histograms_confident()` and `plot_histograms_taxo()`.
+#'   levels ready for `plot_histograms_confident()` and
+#'   `plot_histograms_taxo()`.
 #' @keywords internal
 #' @noRd
 prepare_plot_2 <- function(dataframe) {
@@ -1299,11 +1302,7 @@ plot_histograms_litt <- function(
       values = as.character(levels(dataframe$color)),
       guide = ggplot2::guide_legend(ncol = 1)
     ) +
-    {
-      if (xlab) {
-        ggplot2::scale_x_discrete(labels = levels(dataframe$sample))
-      }
-    } +
+    (if (xlab) ggplot2::scale_x_discrete(labels = levels(dataframe$sample))) +
     ggplot2::labs(fill = "Chemical class") +
     ggplot2::theme_bw() +
     ggplot2::theme(
@@ -1482,7 +1481,7 @@ plot_results_2 <- function(list) {
   )
 
   message("... on confident")
-  table_taxo_maj_cor_conf_signal_2 <- prepare_hierarchy(
+  tbl_taxo_maj_cor_conf_sig2 <- prepare_hierarchy(
     dedup_peaks(
       strip_posneg(no_other(list$peaks_maj_precor_taxo_cor)),
       colname = "newrt"
@@ -1496,21 +1495,21 @@ plot_results_2 <- function(list) {
     index_signal_duo <- unique(index_signal_duo, by = c("ids", "labels"))
   }
 
-  sunburst_microshades_grey_signal_duo <- microshades_colors
+  sb_grey_signal_duo <- microshades_colors
   index_s_duo <- which(index_signal_duo$ids == "Other")
   if (length(index_s_duo) > 0L) {
-    sunburst_microshades_grey_signal_duo[index_s_duo] <- microshades_grey[[
+    sb_grey_signal_duo[index_s_duo] <- microshades_grey[[
       1L
     ]][[5L]]
   }
 
   sunburst_signal_based_duo <- plotly::layout(
     quick_sb(table_taxo_maj_cor_signal_2),
-    colorway = sunburst_microshades_grey_signal_duo
+    colorway = sb_grey_signal_duo
   )
 
   sunburst_conf_signal_based_duo <- plotly::layout(
-    quick_sb(table_taxo_maj_cor_conf_signal_2),
+    quick_sb(tbl_taxo_maj_cor_conf_sig2),
     colorway = microshades_colors
   )
 

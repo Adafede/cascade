@@ -52,7 +52,8 @@ expect_identical(
 )
 expect_identical(dense_rank_base(numeric(0L)), integer(0L))
 
-# --- 2. prepare_hierarchy validation, rescale = TRUE vs FALSE, safety == "Y" ---
+# --- 2. prepare_hierarchy validation, rescale = TRUE vs FALSE, safety == "Y"
+# ---
 expect_error(
   prepare_hierarchy(data.frame(), type = "invalid"),
   pattern = "'type' must be either 'analysis' or 'literature'"
@@ -87,7 +88,8 @@ anal_df <- data.table::data.table(
     "notClassified notClassified"
   ),
   best_candidate_3 = c(
-    "Monoterpenoids", # same as best_candidate_2 -> triggers safety == "Y" ('Monoterpenoids sub')
+    # same as best_candidate_2 -> triggers safety == "Y" ('Monoterpenoids sub')
+    "Monoterpenoids",
     "Simple indole",
     "Flavones",
     "notAnnotated notAnnotated notAnnotated",
@@ -149,7 +151,8 @@ expect_identical(nrow(hp_multi$Empty), 1L)
 expect_identical(hp_multi$Empty$values, 0)
 expect_true(is.na(hp_multi$Empty$parents))
 
-# Grouped progress: >1 non-var taxa returns hierarchy; ==1 non-var taxon returns NULL; empty returns 1-row NA
+# Grouped progress: >1 non-var taxa returns hierarchy; ==1 non-var taxon
+# returns NULL; empty returns 1-row NA
 hgp <- hierarchies_grouped_progress(
   list(Multi = lit_tbl, Single = lit_single_sp, Empty = lit_empty)
 )
@@ -159,7 +162,8 @@ expect_null(hgp$Single)
 expect_identical(nrow(hgp$Empty), 1L)
 expect_identical(hgp$Empty$values, 0)
 
-# --- 4. prepare_plot (empty presamples, without 'Other', and >5 subgroups color overflow fallback) ---
+# --- 4. prepare_plot (empty presamples, without 'Other', and >5 subgroups
+# color overflow fallback) ---
 pp_empty <- prepare_plot(
   data.table::data.table(
     parents = "",
@@ -172,7 +176,8 @@ pp_empty <- prepare_plot(
 )
 expect_identical(nrow(pp_empty), 0L)
 
-# 7 subgroups under 1 parent (exceeds 5 shades in microshades palette -> triggers #00%04d fallback)
+# 7 subgroups under 1 parent (exceeds 5 shades in microshades palette ->
+# triggers #00%04d fallback)
 overflow_h <- data.table::data.table(
   parents = rep("Terpenoids", 7L),
   ids = paste0("Terpenoids-Sub", 1:7),
@@ -189,7 +194,8 @@ expect_true(any(grepl("^#00000", as.character(pp_over$color))))
 p_litt_no_xlab <- plot_histograms_litt(pp_over, label = "Sample", xlab = FALSE)
 expect_inherits(p_litt_no_xlab, "ggplot")
 
-# --- 5. prepare_plot_2 (empty table and all 5 biological score tiers) & plot_histograms_taxo(mode = "neg") ---
+# --- 5. prepare_plot_2 (empty table and all 5 biological score tiers) &
+# plot_histograms_taxo(mode = "neg") ---
 pp2_empty <- prepare_plot_2(data.table::data.table(inchikey_2D = NA_character_))
 expect_identical(nrow(pp2_empty), 0L)
 
@@ -253,7 +259,8 @@ p_taxo_neg <- plot_histograms_taxo(
 )
 expect_inherits(p_taxo_neg, "ggplot")
 
-# --- 6. treemaps_progress (regular + "special" comparative domain, with/without structure column) ---
+# --- 6. treemaps_progress (regular + "special" comparative domain,
+# with/without structure column) ---
 h_swertia <- hp_multi$Swertia
 h_gentiana <- data.table::copy(h_swertia)
 h_gentiana[, `:=`(sample = "Gentiana", species = "Gentiana")]

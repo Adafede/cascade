@@ -21,12 +21,11 @@
 #' try(taxon_name_to_qid(taxon_name = "Gentiana lutea"))
 #' }
 taxon_name_to_qid <- function(taxon_name) {
+  valid <- is.character(taxon_name) &&
+    length(taxon_name) == 1L &&
+    !is.na(taxon_name)
   stopifnot(
-    "`taxon_name` must be a single non-missing character string." = is.character(
-      taxon_name
-    ) &&
-      length(taxon_name) == 1L &&
-      !is.na(taxon_name)
+    "`taxon_name` must be a single non-missing character string." = valid
   )
 
   query <- sprintf(
