@@ -152,6 +152,7 @@ df_zero <- data.frame(
 )
 imp_pos <- improve_signal(
   df_pos,
+  fourier_components = 0.1,
   frequency = 1,
   resample = 1,
   time_min = 0,
@@ -160,6 +161,7 @@ imp_pos <- improve_signal(
 )
 imp_pos_floor2 <- improve_signal(
   df_pos,
+  fourier_components = 0.1,
   frequency = 1,
   resample = 1,
   time_min = 0,
@@ -168,6 +170,7 @@ imp_pos_floor2 <- improve_signal(
 )
 imp_zero <- improve_signal(
   df_zero,
+  fourier_components = 0.1,
   frequency = 1,
   resample = 1,
   time_min = 0,
@@ -176,6 +179,7 @@ imp_zero <- improve_signal(
 )
 imp_neg <- improve_signal(
   df_neg,
+  fourier_components = 0.1,
   frequency = 1,
   resample = 1,
   time_min = 0,
@@ -195,6 +199,7 @@ expect_equal(imp_neg$intensity, imp_pos$intensity + 5.0, tolerance = 1e-12)
 
 prog_res <- improve_signals_progress(
   list(a = df_pos, b = df_neg),
+  fourier_components = 0.1,
   frequency = 1,
   resample = 1,
   time_min = 0,
