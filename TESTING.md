@@ -6,18 +6,18 @@ unit, property-based, and integration testing. Test files live in
 
 ## Test Suite Layout
 
-| File | Scope |
-|------|-------|
-| `inst/tinytest/test_cascade.R` | End-to-end integration tests across the 5 exported workflow functions |
-| `inst/tinytest/test_bugs.R` | Regression tests for edge-case bugs in `compare_peaks()` and `get_peaks()` |
-| `inst/tinytest/test_signal.R` | Signal processing (`runmean_center`, `deriv`, `second_der`, `filter_fft`, `signal_sharpening`, `improve_signal`, `baseline_chromatogram`, `normalize_chromatograms_list`, `preprocess_chromatograms`) |
-| `inst/tinytest/test_peaks.R` | Peak integration, RT/m/z window preparation, MS1 XIC extraction, `closest_idx()`, and `compare_peaks()` |
-| `inst/tinytest/test_get_peaks.R` | Chromatographic peak detection (`find_peaks`, Gaussian/EGH/raw fitting, smoothing kernels, `sd.max`, time unit scaling) |
-| `inst/tinytest/test_load.R` | Data loaders (`check_export_dir`, `fread_gz`, `get_zenodo_file`, `load_annotations`, `load_chromatograms`, `load_features*`, `load_ms_data`, `parse_ms_spectra`) |
-| `inst/tinytest/test_query_wikidata.R` | SPARQL client (`query_wikidata`), HTTP GET/POST, CSV-to-TSV fallback, QLever failover, `queries_progress()`, `tables_progress()`, `format_gt()`, `molinfo()`, and `taxon_name_to_qid()` |
-| `inst/tinytest/test_annotations.R` | Order-preserving `data.table` joins (`dt_left_join`, `dt_inner_join`, `dt_full_join`), `keep_best_candidates()`, `make_confident()`, `make_other()`, `no_other()`, `make_no_stereo()`, `make_chromatographiable()`, and `prepare_comparison()` |
-| `inst/tinytest/test_hierarchy.R` | Taxonomic/chemical hierarchy builders (`fct_reorder2_base`, `dense_rank_base`, `prepare_hierarchy`, `hierarchies_progress`, `hierarchies_grouped_progress`, `prepare_plot`, `prepare_plot_2`, `plot_results_2`, `treemaps_progress`) |
-| `inst/tinytest/test_workflows.R` | High-level workflow branches (`check_chromatograms_alignment`, `prepare_tima_annotations`, `generate_tables`, `generate_ids`) with offline fixtures |
+  | File                                  | Scope                                                                                                                                                                                                                                          |
+  | ------                                | -------                                                                                                                                                                                                                                        |
+  | `inst/tinytest/test_cascade.R`        | End-to-end integration tests across the 5 exported workflow functions                                                                                                                                                                          |
+  | `inst/tinytest/test_bugs.R`           | Regression tests for edge-case bugs in `compare_peaks()` and `get_peaks()`                                                                                                                                                                     |
+  | `inst/tinytest/test_signal.R`         | Signal processing (`runmean_center`, `deriv`, `second_der`, `filter_fft`, `signal_sharpening`, `improve_signal`, `baseline_chromatogram`, `normalize_chromatograms_list`, `preprocess_chromatograms`)                                          |
+  | `inst/tinytest/test_peaks.R`          | Peak integration, RT/m/z window preparation, MS1 XIC extraction, `closest_idx()`, and `compare_peaks()`                                                                                                                                        |
+  | `inst/tinytest/test_get_peaks.R`      | Chromatographic peak detection (`find_peaks`, Gaussian/EGH/raw fitting, smoothing kernels, `sd.max`, time unit scaling)                                                                                                                        |
+  | `inst/tinytest/test_load.R`           | Data loaders (`check_export_dir`, `fread_gz`, `get_zenodo_file`, `load_annotations`, `load_chromatograms`, `load_features*`, `load_ms_data`, `parse_ms_spectra`)                                                                               |
+  | `inst/tinytest/test_query_wikidata.R` | SPARQL client (`query_wikidata`), HTTP GET/POST, CSV-to-TSV fallback, QLever failover, `queries_progress()`, `tables_progress()`, `format_gt()`, `molinfo()`, and `taxon_name_to_qid()`                                                        |
+  | `inst/tinytest/test_annotations.R`    | Order-preserving `data.table` joins (`dt_left_join`, `dt_inner_join`, `dt_full_join`), `keep_best_candidates()`, `make_confident()`, `make_other()`, `no_other()`, `make_no_stereo()`, `make_chromatographiable()`, and `prepare_comparison()` |
+  | `inst/tinytest/test_hierarchy.R`      | Taxonomic/chemical hierarchy builders (`fct_reorder2_base`, `dense_rank_base`, `prepare_hierarchy`, `hierarchies_progress`, `hierarchies_grouped_progress`, `prepare_plot`, `prepare_plot_2`, `plot_results_2`, `treemaps_progress`)           |
+  | `inst/tinytest/test_workflows.R`      | High-level workflow branches (`check_chromatograms_alignment`, `prepare_tima_annotations`, `generate_tables`, `generate_ids`) with offline fixtures                                                                                            |
 
 ## Running Tests Locally
 
