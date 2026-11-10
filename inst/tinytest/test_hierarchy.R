@@ -308,3 +308,74 @@ tm_null_tables <- treemaps_progress(
   tables = NULL
 )
 expect_inherits(tm_null_tables$Swertia, "plotly")
+
+# --- 7. prepare_hierarchy (>10 pathways -> "Other" & "Other other", and empty input) ---
+many_pathways_dt <- data.table::data.table(
+  feature_id = 1:12,
+  smiles_2D = paste0("C", 1:12),
+  inchikey_2D = paste0("IK", 1:12),
+  score_biological = rep(0.9, 12L),
+  score_chemical = rep(0.9, 12L),
+  score_final = rep(0.9, 12L),
+  best_candidate_organism = rep("Swertia", 12L),
+  best_candidate_1 = c(paste0("Pathway", 1:10), "Other", "notClassified"),
+  best_candidate_2 = c(paste0("Super", 1:10), "Other", "notClassified"),
+  best_candidate_3 = c(paste0("Class", 1:10), "Other other", "notClassified"),
+  sample = rep("s1", 12L),
+  id = rep("s1", 12L),
+  integral = as.numeric(12:1),
+  intensity = as.numeric(12:1),
+  species = rep("Swertia", 12L),
+  organism = rep("Swertia", 12L)
+)
+ph_many <- prepare_hierarchy(many_pathways_dt, type = "analysis")
+expect_true("Other" %in% ph_many$parents)
+expect_true("Other other other" %in% ph_many$labels)
+
+# prepare_plot with "Other" parent exercises group == 666 and grey palette
+pp_other <- prepare_plot(ph_many)
+expect_true(666 %in% pp_other$group)
+expect_true(all(nzchar(as.character(pp_other$color))))
+
+# prepare_plot with >10 non-"Other" parents and >5 subgroups under "Other"
+# exercises NA_character_ palette overflow guards -> replaced by #0000xx quickfix
+pp_overflow_dt <- data.table::data.table(
+  parents = c(paste0("P", 1:11), rep("Other", 6L)),
+  ids = c(paste0("I", 1:11), paste0("O", 1:6)),
+  labels = c(paste0("L", 1:11), paste0("OL", 1:6)),
+  values = as.numeric(17:1),
+  sample = rep("s1", 17L),
+  species = rep("Swertia", 17L)
+)
+pp_overflow <- prepare_plot(pp_overflow_dt)
+expect_true(any(grepl("^#0000", as.character(pp_overflow$color))))
+
+# Empty 0-row input to prepare_hierarchy(type = "analysis")
+ph_empty <- prepare_hierarchy(many_pathways_dt[0L], type = "analysis")
+expect_identical(nrow(ph_empty), 0L)
+
+# plot_results_2 with empty 0-row tables exercises dedup_peaks & strip_posneg 0-row guards
+empty_pk_dt <- data.table::data.table(
+  feature_id = integer(0),
+  smiles_2D = character(0),
+  inchikey_2D = character(0),
+  score_biological = numeric(0),
+  score_chemical = numeric(0),
+  score_final = numeric(0),
+  best_candidate_organism = character(0),
+  best_candidate_1 = character(0),
+  best_candidate_2 = character(0),
+  best_candidate_3 = character(0),
+  sample = character(0),
+  id = character(0),
+  peak_rt_apex = numeric(0),
+  comparison_score = numeric(0),
+  integral = numeric(0),
+  intensity = numeric(0),
+  species = character(0)
+)
+pr2_empty <- plot_results_2(list(
+  peaks_maj_precor_taxo_cor = empty_pk_dt
+))
+expect_inherits(pr2_empty$sunburst_signal_based_duo, "plotly")
+expect_inherits(pr2_empty$sunburst_conf_signal_based_duo, "plotly")

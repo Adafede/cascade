@@ -193,14 +193,15 @@ estimate_rt_shift <- function(
 ) {
   t_min <- max(min(ref$rtime, na.rm = TRUE), min(target$rtime, na.rm = TRUE))
   t_max <- min(max(ref$rtime, na.rm = TRUE), max(target$rtime, na.rm = TRUE))
-  if (!is.finite(t_min) || !is.finite(t_max) || (t_max - t_min) <= grid_step) {
+  if (
+    !is.finite(t_min) ||
+      !is.finite(t_max) ||
+      (t_max - t_min) < 3 * grid_step
+  ) {
     return(0)
   }
   grid <- seq(t_min, t_max, by = grid_step)
   ng <- length(grid)
-  if (ng < 4L) {
-    return(0)
-  }
   y_ref <- stats::approx(ref$rtime, ref$intensity, xout = grid, rule = 2)$y
   y_tgt <- stats::approx(
     target$rtime,

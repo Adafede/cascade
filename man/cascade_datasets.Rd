@@ -17,9 +17,9 @@
 (EDAM: \code{data_0962} Small molecule report)
 \item \strong{cascade_features}: \link{data.frame}, 3,471 rows x 101 columns
 (EDAM: \code{data_2536} Mass spectrometry data)
-\item \strong{cascade_features_informed}: \link{data.frame}, 3,860 rows x 11 columns
+\item \strong{cascade_features_informed}: \link{data.frame}, 4,132 rows x 11 columns
 (EDAM: \code{data_2536} Mass spectrometry data)
-\item \strong{cascade_features_not_informed}: \link{data.frame}, 893 rows x 11 columns
+\item \strong{cascade_features_not_informed}: \link{data.frame}, 650 rows x 11 columns
 (EDAM: \code{data_2536} Mass spectrometry data)
 \item \strong{cascade_chromatograms_positive}: \link{data.frame}, 122,541 rows x 3 columns
 (EDAM: \code{data_2536} Mass spectrometry data)
@@ -33,9 +33,9 @@ An object of class \code{data.frame} with 3471 rows and 58 columns.
 
 An object of class \code{data.frame} with 3471 rows and 101 columns.
 
-An object of class \code{data.frame} with 3860 rows and 11 columns.
+An object of class \code{data.frame} with 4132 rows and 11 columns.
 
-An object of class \code{data.frame} with 893 rows and 11 columns.
+An object of class \code{data.frame} with 650 rows and 11 columns.
 
 An object of class \code{data.frame} with 122541 rows and 3 columns.
 
@@ -79,14 +79,14 @@ retention time, and intensity.
 
 \section{cascade_features_informed}{
 
-CAD-detected peaks that matched annotation hypotheses. Contains 3,860
+CAD-detected peaks that matched annotation hypotheses. Contains 4,132
 peak-feature matches.
 }
 
 \section{cascade_features_not_informed}{
 
 CAD-detected peaks that did not match any annotation hypothesis. Contains
-893 peak-feature matches.
+650 peak-feature matches.
 }
 
 \section{cascade_chromatograms_positive}{

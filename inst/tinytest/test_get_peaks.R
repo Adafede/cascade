@@ -172,3 +172,52 @@ expect_equal(
 )
 expect_equal(res_egh_exact$r.squared[1L], 1.0, tolerance = 1e-6)
 expect_true(res_min$s1[["254"]]$r.squared[1L] > 0.99)
+expect_equal(
+  res_min$s1[["254"]]$area[1L],
+  100 * 2 * sqrt(2 * pi),
+  tolerance = 0.01
+)
+
+# 10. Zero-height peak (start_height == 0) yields ssy == 0 -> r.squared == 0
+mat_zero_h <- matrix(
+  c(-10, -8, -5, 0, -5, -8, -10),
+  ncol = 1L,
+  dimnames = list(as.character(1:7), "254")
+)
+res_zero_h <- get_peaks(
+  list(s1 = mat_zero_h),
+  lambdas = "254",
+  fit = "gaussian",
+  smooth_type = "none",
+  amp_thresh = -20,
+  noise_threshold = -1
+)$s1[["254"]]
+expect_identical(nrow(res_zero_h), 1L)
+expect_equal(res_zero_h$r.squared[1L], 0, tolerance = 1e-12)
+
+# 11. High-baseline peak where no point in [start, end] drops below half_h
+# exercises fallback t_left / t_right and max.iter = 0L
+mat_high_base <- matrix(
+  c(10, 8, 9, 10, 9, 8, 10),
+  ncol = 1L,
+  dimnames = list(as.character(1:7), "254")
+)
+res_high_base <- get_peaks(
+  list(s1 = mat_high_base),
+  lambdas = "254",
+  fit = "egh",
+  max.iter = 0L,
+  smooth_type = "none"
+)$s1[["254"]]
+expect_identical(nrow(res_high_base), 1L)
+expect_true(res_high_base$area[1L] > 0)
+
+# 12. lambdas = "max" selects wavelength column with highest maximum intensity
+res_max_lam <- get_peaks(
+  list(s1 = mat_2col),
+  lambdas = "max",
+  fit = "gaussian",
+  smooth_type = "none"
+)$s1[["max"]]
+expect_identical(nrow(res_max_lam), 2L)
+expect_equal(res_max_lam$rt, c(15, 35), tolerance = 0.1)

@@ -162,6 +162,28 @@ pp_no_ov <- preprocess_peaks(
 expect_identical(length(pp_no_ov$list_df_features_with_peaks_long), 0L)
 expect_identical(nrow(pp_no_ov$df_features_without_peaks), 1L)
 
+# Overlapping feature at rt [4.5, 5.5]
+feat_ov <- data.table::copy(feat_no_ov)
+feat_ov[, `:=`(rt = 5.0, rt_1 = 4.5, rt_2 = 5.5)]
+data.table::setkey(feat_ov, rt_1, rt_2)
+pp_ov <- preprocess_peaks(
+  detector = "cad",
+  df_features = feat_ov,
+  df_long = df_long_synth,
+  df_xy = df_xy_synth,
+  name = "sample.mzML",
+  shift = 0,
+  min_area = 0.01,
+  fit = "gaussian"
+)
+expect_identical(length(pp_ov$list_df_features_with_peaks_long), 1L)
+expect_identical(nrow(pp_ov$df_features_without_peaks), 0L)
+
+# prepare_peaks with rt_bounds attribute
+x_bounded <- data.frame(rtime = c(2, 4), intensity = c(0.5, 1.0))
+attr(x_bounded, "rt_bounds") <- c(0, 8)
+expect_equal(prepare_peaks(x_bounded)$rtime, c(0.25, 0.50), tolerance = 1e-12)
+
 # --- transform_ms & extract_ms_peak ---
 raw_xic <- list(
   list(
@@ -289,16 +311,44 @@ cp_same <- compare_peaks(1L, ms_same, p_pre_same)
 expect_equal(cp_same[[1L]], 1.0, tolerance = 1e-12)
 expect_equal(cp_same[[2L]], -1.0, tolerance = 1e-12)
 
-# 3. Different retention time vectors aligned via closest_idx
+# 3. Different retention time vectors aligned via linear interpolation
 p_pre_diff <- list(
   list_chromato_peaks = list(
-    list(rtime = c(0.0, 0.25, 0.5, 0.75, 1.0), intensity = c(1, 2, 4, 2, 1))
+    list(rtime = c(0.0, 0.25, 0.5, 0.75, 1.0), intensity = c(0, 0.5, 1, 0.5, 0))
   )
 )
 ms_diff <- list(
   list(
-    list(rtime = c(0.01, 0.51, 0.99), intensity = c(10, 40, 10))
+    list(rtime = c(0.01, 0.50, 0.99), intensity = c(0.02, 1.0, 0.02)),
+    # Mismatched window bounds (abs(x_min - y_min) > tol) triggers union grid
+    # with zero-padding outside [y_min, y_max]
+    list(rtime = c(0.45, 0.50, 0.55), intensity = c(0.5, 1.0, 0.5)),
+    # Zero variance -> cor is NA -> returns 0
+    list(rtime = c(0.0, 0.25, 0.5, 0.75, 1.0), intensity = c(1, 1, 1, 1, 1)),
+    # <= 1 point -> returns 0
+    list(rtime = 0.5, intensity = 1.0)
   )
 )
 cp_diff <- compare_peaks(1L, ms_diff, p_pre_diff)
 expect_equal(cp_diff[[1L]], 1.0, tolerance = 1e-12)
+expect_true(cp_diff[[2L]] > 0.5 && cp_diff[[2L]] < 1.0)
+expect_identical(cp_diff[[3L]], 0)
+expect_identical(cp_diff[[4L]], 0)
+
+# closest_idx branch where table advances (next_t_d < cur_d and next_t_d <= next_x_d)
+expect_identical(
+  closest_idx(c(5.0), c(1.0, 5.0), tolerance = 0.2),
+  2L
+)
+
+# extract_ms_progress with plain numeric vector in mzs[[x]] (is.null(dim(mz_mat)))
+ext_vec_mz <- extract_ms_progress(
+  xs = 2L,
+  ms_data = ms_synth,
+  rts = rts_list,
+  mzs = list(
+    list(c(100, 102)),
+    list(c(100, 102))
+  )
+)
+expect_equal(ext_vec_mz[[1L]][[1L]]$intensity, c(0.5, 1.0), tolerance = 1e-12)

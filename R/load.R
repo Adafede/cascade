@@ -75,7 +75,7 @@ get_zenodo_file <- function(
       file.size(session_cached) > 0
   ) {
     check_export_dir(dirname(path))
-    if (!file.symlink(session_cached, path)) {
+    if (!suppressWarnings(file.symlink(session_cached, path))) {
       file.copy(session_cached, path, overwrite = TRUE)
     }
     return(invisible(path))
@@ -87,7 +87,7 @@ get_zenodo_file <- function(
   if (file.exists(cache_file) && file.size(cache_file) > 0) {
     .cascade_env[["zenodo_lotus_path"]] <- normalizePath(cache_file)
     check_export_dir(dirname(path))
-    if (!file.symlink(cache_file, path)) {
+    if (!suppressWarnings(file.symlink(cache_file, path))) {
       file.copy(cache_file, path, overwrite = TRUE)
     }
     return(invisible(path))

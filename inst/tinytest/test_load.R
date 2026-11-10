@@ -79,6 +79,11 @@ withr::with_dir(work_dir, {
   expect_identical(get_zenodo_file(path = session_dest), session_dest)
   expect_true(file.exists(session_dest))
   expect_identical(readLines(session_dest), "dummy_content")
+  # Pre-existing 0-byte file forces file.symlink() to return FALSE -> file.copy()
+  session_dest_0 <- file.path(work_dir, "sub_session", "zero_session.csv.gz")
+  file.create(session_dest_0)
+  expect_identical(get_zenodo_file(path = session_dest_0), session_dest_0)
+  expect_identical(readLines(session_dest_0), "dummy_content")
 
   # 3c. User cache directory hit (tools::R_user_dir("cascade", which = "cache"))
   cascade_env[["zenodo_lotus_path"]] <- NULL
@@ -93,6 +98,13 @@ withr::with_dir(work_dir, {
   expect_identical(get_zenodo_file(path = uc_dest), uc_dest)
   expect_true(file.exists(uc_dest))
   expect_identical(readLines(uc_dest), "user_cached_content")
+  # Pre-existing 0-byte file forces file.symlink() to return FALSE -> file.copy()
+  cascade_env[["zenodo_lotus_path"]] <- NULL
+  uc_dest_0 <- file.path(work_dir, "sub_uc2", unique_name)
+  dir.create(dirname(uc_dest_0), recursive = TRUE, showWarnings = FALSE)
+  file.create(uc_dest_0)
+  expect_identical(get_zenodo_file(path = uc_dest_0), uc_dest_0)
+  expect_identical(readLines(uc_dest_0), "user_cached_content")
 
   # 3d. Zenodo API download & error paths (isolated via mocked curl bindings)
   cascade_env[["zenodo_lotus_path"]] <- NULL
@@ -222,9 +234,9 @@ withr::with_dir(work_dir, {
 
   # Fallback to package data when default interim TSV does not exist
   dt_inf_pkg <- load_features_informed(show_example = TRUE)
-  expect_identical(nrow(dt_inf_pkg), 3860L)
+  expect_identical(nrow(dt_inf_pkg), 4132L)
   dt_ninf_pkg <- load_features_not_informed(show_example = TRUE)
-  expect_identical(nrow(dt_ninf_pkg), 893L)
+  expect_identical(nrow(dt_ninf_pkg), 650L)
 
   # Explicit file path when show_example = FALSE and show_example = TRUE
   inf_custom <- file.path(work_dir, "inf_custom.tsv")
@@ -248,9 +260,14 @@ withr::with_dir(work_dir, {
 
   # Fallback when file is non-existent and show_example = FALSE (calls
   # fread_gz(file))
-  expect_identical(
-    load_features_informed(file = inf_custom, show_example = FALSE)$peak_id,
-    1L
+  expect_error(
+    load_features_informed(file = "/nonexistent/inf.tsv", show_example = FALSE)
+  )
+  expect_error(
+    load_features_not_informed(
+      file = "/nonexistent/ninf.tsv",
+      show_example = FALSE
+    )
   )
 
   # --- 7. parse_ms_spectra & load_ms_data & load_chromatograms ---

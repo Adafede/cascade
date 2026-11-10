@@ -15,12 +15,12 @@
 #' retention time, and intensity.
 #'
 #' @section cascade_features_informed:
-#' CAD-detected peaks that matched annotation hypotheses. Contains 3,860
+#' CAD-detected peaks that matched annotation hypotheses. Contains 4,132
 #' peak-feature matches.
 #'
 #' @section cascade_features_not_informed:
 #' CAD-detected peaks that did not match any annotation hypothesis. Contains
-#' 893 peak-feature matches.
+#' 650 peak-feature matches.
 #'
 #' @section cascade_chromatograms_positive:
 #' Chromatogram traces from positive-mode analysis. Tidy long-form
@@ -39,9 +39,9 @@
 #'   (EDAM: `data_0962` Small molecule report)
 #' - **cascade_features**: [data.frame], 3,471 rows x 101 columns
 #'   (EDAM: `data_2536` Mass spectrometry data)
-#' - **cascade_features_informed**: [data.frame], 3,860 rows x 11 columns
+#' - **cascade_features_informed**: [data.frame], 4,132 rows x 11 columns
 #'   (EDAM: `data_2536` Mass spectrometry data)
-#' - **cascade_features_not_informed**: [data.frame], 893 rows x 11 columns
+#' - **cascade_features_not_informed**: [data.frame], 650 rows x 11 columns
 #'   (EDAM: `data_2536` Mass spectrometry data)
 #' - **cascade_chromatograms_positive**: [data.frame], 122,541 rows x 3 columns
 #'   (EDAM: `data_2536` Mass spectrometry data)

@@ -405,9 +405,6 @@ extract_ms_progress <- function(xs, ms_data, rts, mzs, nrows = NULL) {
     message("CAD Peak: ", x)
     rt_mat <- rts[[x]]
     mz_mat <- do.call(rbind, mzs[[x]])
-    if (is.null(dim(mz_mat))) {
-      mz_mat <- matrix(mz_mat, nrow = 1L)
-    }
     n_feat <- nrow(mz_mat)
     mz1 <- mz_mat[, 1L]
     mz2 <- mz_mat[, 2L]
@@ -494,8 +491,8 @@ closest_idx <- function(x, table, tolerance) {
   out <- rep.int(NA_integer_, nx)
   ix <- 1L
   it <- 1L
-  last_ix <- 2L
-  last_it <- 2L
+  last_ix <- 0L
+  last_it <- 0L
   while (ix <= nx) {
     if (it > nt) {
       out[ix] <- NA_integer_
@@ -584,10 +581,9 @@ compare_peaks <- function(x, list_ms_peaks, peaks_prelist) {
         )$y
         r_val <- stats::cor(x_eval, y_eval, use = "pairwise.complete.obs")
       }
-      if (is.na(r_val)) 0 else r_val
     } else {
       r_val <- stats::cor(x_int, y_int, use = "pairwise.complete.obs")
-      if (is.na(r_val)) 0 else r_val
     }
+    if (is.na(r_val)) 0 else r_val
   })
 }

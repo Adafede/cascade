@@ -149,6 +149,16 @@ expect_equal(
   tolerance = 1e-12
 )
 expect_true(max(s_pos) > max(s0))
+# Positive 4th-derivative term at Gaussian apex increases apex height above 2nd-derivative-only
+s_no_d4 <- signal_sharpening(
+  t_sharp,
+  y_gauss,
+  sigma = 0.05,
+  k2 = 10,
+  k4 = Inf,
+  Smoothing_width = 4L
+)
+expect_true(s_pos[49L] > s_no_d4[49L])
 # Symmetry preservation: symmetric Gaussian centered at midpoint index 51 (in
 # 1..101 -> index 49 in 3..99) remains strictly symmetric
 expect_equal(s_pos[49L - (1:20)], s_pos[49L + (1:20)], tolerance = 1e-12)
@@ -400,3 +410,21 @@ expect_identical(
   prep_no_imp$chromatograms_improved_long$rt_2,
   prep_no_imp$chromatograms_improved_long$rtime
 )
+
+prep_with_imp <- preprocess_chromatograms(
+  detector = "cad",
+  list = raw_list,
+  name = "sample_A",
+  shift = 0.5,
+  time_min = 0.2,
+  time_max = 1.8,
+  fourier_components = 0.2,
+  baseline_method = "als",
+  improve_signal = TRUE
+)
+expect_identical(names(prep_with_imp$chromatograms_improved), "sample_A")
+expect_true(nrow(prep_with_imp$chromatograms_improved$sample_A) > 0L)
+
+# filter_fft short input (n <= 2L) and high cutoff (components >= 0.5) return x
+expect_identical(filter_fft(c(1, 2), components = 0.01), c(1, 2))
+expect_identical(filter_fft(c(1, 2, 3, 4), components = 0.5), c(1, 2, 3, 4))

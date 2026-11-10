@@ -51,14 +51,7 @@ get_peaks <- function(
     if (nrow(x) == 0L) {
       return(x)
     }
-    get_times <- function(obj, idx = 1) {
-      if (inherits(obj, "chrom_list") || inherits(obj, "list")) {
-        as.numeric(rownames(obj[[idx]]))
-      } else if (inherits(obj, "matrix")) {
-        as.numeric(rownames(obj))
-      }
-    }
-    timepoints <- get_times(chrom_list, idx = idx)
+    timepoints <- as.numeric(rownames(chrom_list[[idx]]))
     tdiff <- signif(stats::median(diff(timepoints)))
     x[, c("rt", "start", "end")] <- cbind(
       timepoints[x[, "rt"]],
@@ -106,9 +99,6 @@ get_peaks <- function(
     amp_thresh = 0,
     bounds = TRUE
   ) {
-    if (!is.vector(y)) {
-      stop("Please provide a vector to argument `y` to proceed.", call. = FALSE)
-    }
     smooth_type <- match.arg(
       smooth_type,
       c("gaussian", "box", "savgol", "mva", "tmva", "none")
@@ -184,14 +174,8 @@ get_peaks <- function(
     p
   }
 
-  gaussian_fn <- function(x, center = 0, width = 1, height = NULL, floor = 0) {
-    two_var <- 2 * width * width
-    sqrt_2pi_var <- sqrt(pi * two_var)
-    y <- exp(-(x - center)^2 / two_var) / sqrt_2pi_var
-    if (!is.null(height)) {
-      y <- y * sqrt_2pi_var * height
-    }
-    if (is.null(floor)) y else y + floor
+  gaussian_fn <- function(x, center = 0, width = 1, height = 1) {
+    height * exp(-(x - center)^2 / (2 * width * width))
   }
 
   egh_fn <- function(x, center, width, height, tau = 0) {
@@ -281,11 +265,7 @@ get_peaks <- function(
             y_pk <- y[peak_loc]
             n_pk <- length(y_pk)
             if (fit == "raw") {
-              area <- if (n_pk > 1L) {
-                sum((y_pk[-1L] + y_pk[-n_pk]) / 2, na.rm = TRUE)
-              } else {
-                0
-              }
+              area <- sum((y_pk[-1L] + y_pk[-n_pk]) / 2, na.rm = TRUE)
               return(c(
                 rt = xloc,
                 start = row_pos[2L],
@@ -298,50 +278,42 @@ get_peaks <- function(
               ))
             }
             start_center <- xloc
-            apex_rel <- which.max(y_pk)
-            mu_init <- peak_loc[apex_rel]
-            start_height <- y_pk[apex_rel]
+            valid_obs <- !is.na(y_pk)
+            x_obs <- peak_loc[valid_obs]
+            y_obs <- y_pk[valid_obs]
+            n_obs <- length(y_obs)
+            apex_obs <- which.max(y_obs)
+            mu_init <- x_obs[apex_obs]
+            start_height <- y_obs[apex_obs]
             half_h <- start_height / 2
             # Sub-grid linear interpolation of left/right half-height crossings
             left_idx <- which(
-              seq_len(apex_rel) < apex_rel &
-                !is.na(y_pk[seq_len(apex_rel)]) &
-                y_pk[seq_len(apex_rel)] <= half_h
+              seq_len(apex_obs) < apex_obs &
+                y_obs[seq_len(apex_obs)] <= half_h
             )
             if (length(left_idx) > 0L) {
               il <- left_idx[length(left_idx)]
-              denom_l <- y_pk[il + 1L] - y_pk[il]
-              frac_l <- if (!is.na(denom_l) && denom_l > 0) {
-                (half_h - y_pk[il]) / denom_l
-              } else {
-                0.5
-              }
-              t_left <- peak_loc[il] + frac_l
+              frac_l <- (half_h - y_obs[il]) / (y_obs[il + 1L] - y_obs[il])
+              t_left <- x_obs[il] + frac_l * (x_obs[il + 1L] - x_obs[il])
             } else {
               t_left <- max(
                 row_pos[2L],
-                mu_init - sum(y_pk > half_h, na.rm = TRUE) / 2
+                mu_init - sum(y_obs > half_h) / 2
               )
             }
-            right_candidates <- seq.int(apex_rel, n_pk)
+            right_candidates <- seq.int(apex_obs, n_obs)
             right_below <- which(
-              right_candidates > apex_rel &
-                !is.na(y_pk[right_candidates]) &
-                y_pk[right_candidates] <= half_h
+              right_candidates > apex_obs &
+                y_obs[right_candidates] <= half_h
             )
             if (length(right_below) > 0L) {
               ir <- right_candidates[right_below[1L]]
-              denom_r <- y_pk[ir - 1L] - y_pk[ir]
-              frac_r <- if (!is.na(denom_r) && denom_r > 0) {
-                (y_pk[ir - 1L] - half_h) / denom_r
-              } else {
-                0.5
-              }
-              t_right <- peak_loc[ir - 1L] + frac_r
+              frac_r <- (y_obs[ir - 1L] - half_h) / (y_obs[ir - 1L] - y_obs[ir])
+              t_right <- x_obs[ir - 1L] + frac_r * (x_obs[ir] - x_obs[ir - 1L])
             } else {
               t_right <- min(
                 row_pos[3L],
-                mu_init + sum(y_pk > half_h, na.rm = TRUE) / 2
+                mu_init + sum(y_obs > half_h) / 2
               )
             }
             b_half <- max(0.25, mu_init - t_left)
@@ -351,15 +323,12 @@ get_peaks <- function(
             if (fit == "gaussian") {
               sd_init <- (a_half + b_half) / c_fwhm
               tau_fit <- 0
-              valid_obs <- !is.na(y_pk)
-              x_obs <- peak_loc[valid_obs]
-              y_obs <- y_pk[valid_obs]
               mu_fit <- mu_init
               sd_fit <- sd_init
               h_fit <- start_height
-              if (max.iter > 0L && length(y_obs) >= 3L && start_height > 0) {
+              if (max.iter > 0L && n_obs >= 3L && start_height > 0) {
                 obj_g <- function(p) {
-                  yf <- gaussian_fn(x_obs, p[1L], p[2L], p[3L], NULL)
+                  yf <- gaussian_fn(x_obs, p[1L], p[2L], p[3L])
                   sum((y_obs - yf)^2)
                 }
                 opt_g <- tryCatch(
@@ -389,20 +358,17 @@ get_peaks <- function(
                   }
                 }
               }
-              y_fit <- gaussian_fn(peak_loc, mu_fit, sd_fit, h_fit, NULL)
+              y_fit <- gaussian_fn(peak_loc, mu_fit, sd_fit, h_fit)
               fwhm_fit <- c_fwhm * sd_fit
             } else {
               # Lan & Jorgenson (2001) analytical EGH parameter initialization
               sd_init <- sqrt((a_half * b_half) / (2 * log(2)))
               tau_init <- (a_half - b_half) / log(2)
-              valid_obs <- !is.na(y_pk)
-              x_obs <- peak_loc[valid_obs]
-              y_obs <- y_pk[valid_obs]
               mu_fit <- mu_init
               sd_fit <- sd_init
               tau_fit <- tau_init
               h_fit <- start_height
-              if (max.iter > 0L && length(y_obs) >= 4L && start_height > 0) {
+              if (max.iter > 0L && n_obs >= 4L && start_height > 0) {
                 obj_egh <- function(p) {
                   yf <- egh_fn(x_obs, p[1L], p[2L], p[4L], p[3L])
                   sum((y_obs - yf)^2)
@@ -445,27 +411,18 @@ get_peaks <- function(
               y_fit <- egh_fn(peak_loc, mu_fit, sd_fit, h_fit, tau_fit)
               fwhm_fit <- sqrt(8 * log(2) * sd_fit^2 + (log(2) * tau_fit)^2)
             }
-            area <- if (n_pk > 1L) {
-              sum((y_fit[-1L] + y_fit[-n_pk]) / 2, na.rm = TRUE)
-            } else {
+            area <- sum((y_fit[-1L] + y_fit[-n_pk]) / 2, na.rm = TRUE)
+            yf_v <- y_fit[valid_obs]
+            yp_v <- y_obs
+            dy <- yf_v - mean(yf_v)
+            dx <- yp_v - mean(yp_v)
+            ssx <- sum(dx * dx)
+            ssy <- sum(dy * dy)
+            r_sq <- if (ssx == 0 || ssy == 0) {
               0
-            }
-            valid <- !(is.na(y_fit) | is.na(y_pk))
-            yf_v <- y_fit[valid]
-            yp_v <- y_pk[valid]
-            r_sq <- if (length(yf_v) == 0L) {
-              NA_real_
             } else {
-              dy <- yf_v - mean(yf_v)
-              dx <- yp_v - mean(yp_v)
-              ssx <- sum(dx * dx)
-              ssy <- sum(dy * dy)
-              if (ssx == 0 || ssy == 0) {
-                0
-              } else {
-                cxy <- sum(dx * dy)
-                ((cxy * cxy) / ssx) / ssy
-              }
+              cxy <- sum(dx * dy)
+              ((cxy * cxy) / ssx) / ssy
             }
             if (fit == "gaussian") {
               c(
