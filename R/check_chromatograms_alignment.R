@@ -168,8 +168,12 @@ check_chromatograms <- function(
 #' @param file_positive Path to positive-mode `.mzML` file (optional).
 #' @param time_min Minimum retention time in minutes. Default is `0.5`.
 #' @param time_max Maximum retention time in minutes. Default is `32.5`.
-#' @param cad_shift CAD retention time shift in minutes. Default is `0.05`.
-#' @param pda_shift PDA retention time shift in minutes. Default is `0.1`.
+#' @param cad_shift CAD retention time shift in minutes, or `"auto"` / `NULL`
+#'   to estimate the optimal shift via FFT cross-correlation against the MS BPI
+#'   trace. Default is `0.05`.
+#' @param pda_shift PDA retention time shift in minutes, or `"auto"` / `NULL`
+#'   to estimate the optimal shift via FFT cross-correlation against the MS BPI
+#'   trace. Default is `0.1`.
 #' @param fourier_components Fraction of Fourier components to retain. Default
 #'   is `0.01`.
 #' @param frequency Acquisition frequency in Hz. Default is `1`.
@@ -341,6 +345,33 @@ check_chromatograms_alignment <- function(
           "_neg_baselined"
         )]] <- res$baselined
       }
+    }
+  }
+
+  ref_bpi <- chromatograms_list[[paste0("chromatogram_bpi_pos_", type)]]
+  if (is.null(ref_bpi)) {
+    ref_bpi <- chromatograms_list[[paste0("chromatogram_bpi_neg_", type)]]
+  }
+  if (is.null(cad_shift) || identical(cad_shift, "auto")) {
+    tgt_cad <- chromatograms_list[[paste0("chromatogram_cad_pos_", type)]]
+    if (is.null(tgt_cad)) {
+      tgt_cad <- chromatograms_list[[paste0("chromatogram_cad_neg_", type)]]
+    }
+    cad_shift <- if (!is.null(ref_bpi) && !is.null(tgt_cad)) {
+      estimate_rt_shift(ref_bpi, tgt_cad)
+    } else {
+      0
+    }
+  }
+  if (is.null(pda_shift) || identical(pda_shift, "auto")) {
+    tgt_pda <- chromatograms_list[[paste0("chromatogram_pda_pos_", type)]]
+    if (is.null(tgt_pda)) {
+      tgt_pda <- chromatograms_list[[paste0("chromatogram_pda_neg_", type)]]
+    }
+    pda_shift <- if (!is.null(ref_bpi) && !is.null(tgt_pda)) {
+      estimate_rt_shift(ref_bpi, tgt_pda)
+    } else {
+      0
     }
   }
 

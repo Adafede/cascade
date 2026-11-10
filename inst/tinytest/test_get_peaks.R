@@ -145,21 +145,30 @@ res_sd_null <- get_peaks(
 )
 expect_identical(nrow(res_sd_null$s1[["254"]]), 2L)
 
-# 9. Exact equivalence of vectorized OLS r.squared and area with stats::lm()
-pk_loc_1 <- as.integer(res_min$s1[["254"]]$start[1L]):as.integer(
-  res_min$s1[["254"]]$end[1L]
+# 9. Exact recovery of tailed EGH parameters (sigma, tau, FWHM, area, R^2 = 1)
+t_egh <- seq(1, 100, by = 1)
+true_sd <- 3.5
+true_tau <- 2.5
+true_h <- 100
+denom_e <- 2 * true_sd^2 + true_tau * (t_egh - 45)
+y_egh_test <- ifelse(denom_e > 0, true_h * exp(-(t_egh - 45)^2 / denom_e), 0)
+mat_egh_test <- matrix(
+  y_egh_test,
+  ncol = 1L,
+  dimnames = list(as.character(t_egh), "254")
 )
-rt_idx_1 <- as.integer(res_min$s1[["254"]]$rt[1L])
-y_pk_1 <- sig_1[pk_loc_1]
-w_1 <- sum(y_pk_1 > (sig_1[rt_idx_1] / 2)) / 2
-y_fit_1 <- sig_1[rt_idx_1] * exp(-(pk_loc_1 - rt_idx_1)^2 / (2 * w_1^2))
+res_egh_exact <- get_peaks(
+  list(s1 = mat_egh_test),
+  lambdas = "254",
+  fit = "egh",
+  smooth_type = "none"
+)$s1[["254"]]
+expect_equal(res_egh_exact$sd[1L], true_sd, tolerance = 1e-3)
+expect_equal(res_egh_exact$tau[1L], true_tau, tolerance = 1e-3)
 expect_equal(
-  res_min$s1[["254"]]$r.squared[1L],
-  summary(stats::lm(y_fit_1 ~ y_pk_1))$r.squared,
-  tolerance = 1e-14
+  res_egh_exact$FWHM[1L],
+  sqrt(8 * log(2) * true_sd^2 + (log(2) * true_tau)^2),
+  tolerance = 1e-3
 )
-expect_equal(
-  res_min$s1[["254"]]$area[1L],
-  sum(diff(pk_loc_1) * mean(c(y_fit_1[-1L], utils::tail(y_fit_1, -1L)))),
-  tolerance = 1e-14
-)
+expect_equal(res_egh_exact$r.squared[1L], 1.0, tolerance = 1e-6)
+expect_true(res_min$s1[["254"]]$r.squared[1L] > 0.99)

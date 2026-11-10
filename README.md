@@ -126,7 +126,7 @@ General: <https://doi.org/10.3389/fpls.2019.01329>
   | baseline    | 1.3.8      | Liland et al. (2010); Liland and Mevik (2026)                                                                      |
   | BiocManager | 1.30.27    | Morgan and Ramos (2025)                                                                                            |
   | BiocVersion | 3.23.1     | Morgan (2025)                                                                                                      |
-  | cascade     | 0.0.0.9002 | Rutz and Wolfender (2023); Rutz (2026)                                                                             |
+  | cascade     | 0.0.0.9003 | Rutz and Wolfender (2023); Rutz (2026)                                                                             |
   | curl        | 8.1.0      | Ooms (2026)                                                                                                        |
   | data.table  | 1.18.6.1   | Barrett et al. (2026)                                                                                              |
   | gt          | 1.4.0      | Iannone et al. (2026)                                                                                              |

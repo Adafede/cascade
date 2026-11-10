@@ -105,9 +105,11 @@ A \code{plotly} htmlwidget showing the chromatogram and detected peak
 boundaries.
 }
 \description{
-Detects and integrates peaks in a detector chromatogram (CAD, BPI, or PDA),
-links them to MS features, and returns an interactive \code{plotly} visualization
-showing the signal, detected peak maxima, and start/end integration bounds.
+Detects, fits (via Exponential-Gaussian Hybrid or Gaussian nonlinear least
+squares), and trapezoidally integrates peaks in a detector chromatogram (CAD,
+BPI, or PDA), links them to MS features, and returns an interactive \code{plotly}
+visualization showing the signal, detected peak maxima, and start/end
+integration bounds.
 }
 \examples{
 check_peaks_integration(show_example = TRUE)

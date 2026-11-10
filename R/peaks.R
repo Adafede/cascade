@@ -46,6 +46,31 @@ peaks_progress <- function(
   dt
 }
 
+#' Compute trapezoidal numerical integral of chromatogram slice
+#'
+#' @param rt Numeric vector of retention times.
+#' @param int Numeric vector of intensities.
+#'
+#' @return Numeric(1) trapezoidal integral.
+#' @keywords internal
+#' @noRd
+trapz_integral <- function(rt, int) {
+  ok <- !is.na(rt) & !is.na(int)
+  rt <- rt[ok]
+  int <- pmax(0, int[ok])
+  n <- length(int)
+  if (n == 0L) {
+    return(0)
+  }
+  if (n == 1L) {
+    return(int[1L])
+  }
+  ord <- order(rt)
+  rt <- rt[ord]
+  int <- int[ord]
+  sum(diff(rt) * (int[-1L] + int[-n]) / 2)
+}
+
 #' Join detected peaks with chromatogram traces and compute peak area integral
 #'
 #' @param chromatograms `data.table` or `data.frame` of long chromatogram traces
@@ -64,7 +89,7 @@ join_peaks <- function(chromatograms, peaks, min_area) {
   data.table::setkey(chrom_dt, rt_1, rt_2)
 
   ov <- data.table::foverlaps(peaks_dt, chrom_dt)
-  ov[, integral := sum(intensity), by = c("peak_id", "id")]
+  ov[, integral := trapz_integral(rt_1, intensity), by = c("peak_id", "id")]
   res <- unique(
     ov[, list(peak_id, id, peak_max, rt_apex, rt_min, rt_max, integral)]
   )
@@ -87,13 +112,16 @@ normalize_chromato <- function(x, df_xy, intensity_threshold = 0.1) {
   sel <- df_xy$rtime >= x$rt_min[1L] & df_xy$rtime <= x$rt_max[1L]
   rt <- df_xy$rtime[sel]
   int <- df_xy$intensity[sel]
+  rt_bounds <- if (length(rt) > 0L) c(min(rt), max(rt)) else numeric(0L)
   if (length(int) > 0L) {
     min_i <- min(int)
     max_i <- max(int)
     int <- (int - min_i) / (max_i - min_i)
   }
   keep <- !is.na(int) & int >= intensity_threshold
-  data.table::data.table(rtime = rt[keep], intensity = int[keep])
+  out <- data.table::data.table(rtime = rt[keep], intensity = int[keep])
+  data.table::setattr(out, "rt_bounds", rt_bounds)
+  out
 }
 
 #' Prepare mzmine feature table for retention time overlap joining
@@ -147,9 +175,17 @@ prepare_features <- function(df, min_intensity, name) {
 prepare_peaks <- function(x) {
   rt <- x$rtime
   if (length(rt) > 0L) {
-    min_rt <- min(rt)
-    max_rt <- max(rt)
-    rt <- (rt - min_rt) / (max_rt - min_rt)
+    bounds <- attr(x, "rt_bounds")
+    if (length(bounds) == 2L && bounds[2L] > bounds[1L]) {
+      min_rt <- bounds[1L]
+      max_rt <- bounds[2L]
+    } else {
+      min_rt <- min(rt)
+      max_rt <- max(rt)
+    }
+    if (max_rt > min_rt) {
+      rt <- (rt - min_rt) / (max_rt - min_rt)
+    }
   }
   list(intensity = x$intensity, rtime = rt)
 }
@@ -314,7 +350,7 @@ preprocess_peaks <- function(
 #' @return List of normalized `data.table`s (`intensity`, `rtime`).
 #' @keywords internal
 #' @noRd
-transform_ms <- function(x, min_intensity = 0.1) {
+transform_ms <- function(x, min_intensity = 0.1, preserve_window = FALSE) {
   custom_min <- function(v) if (length(v) > 0L) min(v) else Inf
   custom_max <- function(v) if (length(v) > 0L) max(v) else Inf
 
@@ -325,11 +361,24 @@ transform_ms <- function(x, min_intensity = 0.1) {
     keep <- !is.na(int)
     int <- int[keep]
     rt <- rt[keep]
+    if (length(int) == 0L || custom_max(int) == custom_min(int)) {
+      return(data.table::data.table(
+        intensity = numeric(0L),
+        rtime = numeric(0L)
+      ))
+    }
+    if (preserve_window && custom_max(rt) > custom_min(rt)) {
+      rt <- (rt - custom_min(rt)) / (custom_max(rt) - custom_min(rt))
+    }
     int <- (int - custom_min(int)) / (custom_max(int) - custom_min(int))
     keep2 <- !is.na(int) & int >= min_intensity
     int <- int[keep2]
     rt <- rt[keep2]
-    rt <- (rt - custom_min(rt)) / (custom_max(rt) - custom_min(rt))
+    if (
+      !preserve_window && length(rt) > 0L && custom_max(rt) > custom_min(rt)
+    ) {
+      rt <- (rt - custom_min(rt)) / (custom_max(rt) - custom_min(rt))
+    }
     ord <- order(rt)
     data.table::data.table(intensity = int[ord], rtime = rt[ord])
   })
@@ -372,7 +421,7 @@ extract_ms_progress <- function(xs, ms_data, rts, mzs, nrows = NULL) {
         list(intensity = numeric(0L), rtime = numeric(0L)),
         simplify = FALSE
       )
-      return(transform_ms(raw_xics))
+      return(transform_ms(raw_xics, preserve_window = TRUE))
     }
 
     scan_idx <- (l_rt + 1L):r_rt
@@ -387,6 +436,7 @@ extract_ms_progress <- function(xs, ms_data, rts, mzs, nrows = NULL) {
       if (length(m) == 0L) {
         next
       }
+      int_mat[, s] <- 0
       v <- sp_int[[j]]
       r_mz <- findInterval(mz2, m)
       l_mz <- findInterval(mz1, m, left.open = TRUE)
@@ -406,7 +456,7 @@ extract_ms_progress <- function(xs, ms_data, rts, mzs, nrows = NULL) {
     raw_xics <- lapply(seq_len(n_feat), function(f_idx) {
       list(intensity = int_mat[f_idx, ], rtime = rt_slice)
     })
-    transform_ms(raw_xics)
+    transform_ms(raw_xics, preserve_window = TRUE)
   })
 }
 
@@ -509,15 +559,35 @@ compare_peaks <- function(x, list_ms_peaks, peaks_prelist) {
     }
     if (length(x_rt) != length(y_rt) || !all(x_rt == y_rt)) {
       tol <- min(mean(diff(x_rt)), mean(diff(y_rt)))
-      idx <- closest_idx(x = x_rt, table = y_rt, tolerance = tol)
-      not_na <- !is.na(idx)
-      aligned_int <- rep(NA_real_, length(y_int))
-      if (any(not_na)) {
-        aligned_int[idx[not_na]] <- x_int[not_na]
+      x_min <- min(x_rt)
+      x_max <- max(x_rt)
+      y_min <- min(y_rt)
+      y_max <- max(y_rt)
+      if (abs(x_min - y_min) <= tol && abs(x_max - y_max) <= tol) {
+        aligned_int <- stats::approx(x_rt, x_int, xout = y_rt, rule = 2)$y
+        r_val <- stats::cor(aligned_int, y_int, use = "pairwise.complete.obs")
+      } else {
+        grid_rt <- sort(unique(c(x_rt, y_rt)))
+        x_eval <- stats::approx(
+          x_rt,
+          x_int,
+          xout = grid_rt,
+          yleft = 0,
+          yright = 0
+        )$y
+        y_eval <- stats::approx(
+          y_rt,
+          y_int,
+          xout = grid_rt,
+          yleft = 0,
+          yright = 0
+        )$y
+        r_val <- stats::cor(x_eval, y_eval, use = "pairwise.complete.obs")
       }
+      if (is.na(r_val)) 0 else r_val
     } else {
-      aligned_int <- x_int
+      r_val <- stats::cor(x_int, y_int, use = "pairwise.complete.obs")
+      if (is.na(r_val)) 0 else r_val
     }
-    stats::cor(aligned_int, y_int, use = "pairwise.complete.obs")
   })
 }

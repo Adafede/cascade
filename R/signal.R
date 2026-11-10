@@ -76,6 +76,10 @@ second_der <- function(x, y) {
 
 #' Fast Fourier transform low-pass filter
 #'
+#' Applies a conjugate-symmetric 4th-order Butterworth low-pass filter in the
+#' frequency domain using reflection padding to prevent boundary wrap-around
+#' artifacts and Gibbs ringing around sharp chromatographic peaks.
+#'
 #' @param x Numeric vector of signal intensities.
 #' @param components Numeric(1) fraction of low-frequency components to retain
 #'   (default `0.01`).
@@ -84,17 +88,47 @@ second_der <- function(x, y) {
 #' @keywords internal
 #' @noRd
 filter_fft <- function(x, components = 0.01) {
+  x <- as.numeric(x)
   x[is.na(x)] <- 0
-  temp <- stats::fft(x)
-  n <- length(temp)
-  keep <- max(2L, round(n * components))
-  if (keep <= n - keep) {
-    temp[keep:(n - keep)] <- 0
+  n <- length(x)
+  if (n <= 2L || components >= 0.5) {
+    return(x)
   }
-  Re(stats::fft(temp, inverse = TRUE)) / n
+  x_pad <- c(x, rev(x))
+  n_pad <- length(x_pad)
+  temp <- stats::fft(x_pad)
+  cutoff <- max(2, n_pad * components)
+  freq_idx <- pmin(seq_len(n_pad) - 1L, n_pad - seq_len(n_pad) + 1L)
+  butterworth <- 1 / (1 + (freq_idx / cutoff)^8)
+  out <- Re(stats::fft(temp * butterworth, inverse = TRUE)) / n_pad
+  out[seq_len(n)]
+}
+
+#' Zero-phase symmetric centered running mean
+#'
+#' @param x Numeric vector.
+#' @param k Integer(1) window width.
+#'
+#' @return Numeric vector of symmetrically smoothed values of length
+#'   `length(x)`.
+#' @keywords internal
+#' @noRd
+runmean_symmetric <- function(x, k) {
+  k <- as.integer(k)
+  if (k <= 1L || length(x) == 0L) {
+    return(as.vector(x))
+  }
+  if (k %% 2L == 1L) {
+    return(runmean_center(x, k))
+  }
+  0.5 * (runmean_center(x, k) + rev(runmean_center(rev(x), k)))
 }
 
 #' Signal sharpening via second and fourth derivatives
+#'
+#' Enhances chromatographic peak resolution via zero-phase symmetric smoothing
+#' and time-aligned centered second and fourth finite differences on the
+#' interior grid `3:(n - 2)`.
 #'
 #' @param time Numeric vector of retention times.
 #' @param intensity Numeric vector of signal intensities.
@@ -105,8 +139,8 @@ filter_fft <- function(x, components = 0.01) {
 #' @param Smoothing_width Integer(1) running-mean window width (default `8`).
 #' @param Baseline_adjust Numeric(1) additive baseline offset (default `0`).
 #'
-#' @return Numeric vector of sharpened intensities
-#'   (trimmed by 4 leading points).
+#' @return Numeric vector of sharpened intensities on the interior grid
+#'   `3:(length(time) - 2)`.
 #' @keywords internal
 #' @noRd
 signal_sharpening <- function(
@@ -118,18 +152,77 @@ signal_sharpening <- function(
   Smoothing_width = 8, # nolint: object_name_linter.
   Baseline_adjust = 0 # nolint: object_name_linter.
 ) {
-  smooth_1 <- runmean_center(intensity, k = Smoothing_width) + Baseline_adjust
-  smooth_2 <- runmean_center(smooth_1, k = Smoothing_width)
+  n <- length(intensity)
+  if (n < 5L) {
+    return(numeric(0L))
+  }
+  smooth_1 <- runmean_symmetric(intensity, k = Smoothing_width) +
+    Baseline_adjust
+  smooth_2 <- runmean_symmetric(smooth_1, k = Smoothing_width)
   deriv_2 <- second_der(x = time, y = smooth_2)
-  smooth_3 <- runmean_center(deriv_2, k = Smoothing_width)
-  deriv_4 <- second_der(x = time[3:length(time)], y = smooth_3)
-  smooth_4 <- runmean_center(deriv_4, k = Smoothing_width)
+  smooth_3 <- runmean_symmetric(deriv_2, k = Smoothing_width)
+  deriv_4 <- second_der(x = time[2:(n - 1L)], y = smooth_3)
+  smooth_4 <- runmean_symmetric(deriv_4, k = Smoothing_width)
 
-  sharpened <- smooth_1[5:length(smooth_1)] -
-    (sigma / k2 * smooth_3[3:length(smooth_3)]) +
+  sharpened <- smooth_1[3:(n - 2L)] -
+    (sigma / k2 * smooth_3[2:(n - 3L)]) +
     (sigma / k4 * smooth_4)
   sharpened[is.na(sharpened)] <- 0
   sharpened
+}
+
+#' Estimate optimal retention time shift between two chromatograms via FFT
+#' cross-correlation
+#'
+#' @param ref Reference chromatogram `data.frame` (`rtime`, `intensity`).
+#' @param target Target chromatogram `data.frame` (`rtime`, `intensity`) to
+#'   align to `ref`.
+#' @param max_shift Numeric(1) maximum allowed absolute shift in minutes
+#'   (default `0.5`).
+#' @param grid_step Numeric(1) interpolation step in minutes (default `0.002`).
+#'
+#' @return Numeric(1) optimal retention time shift `delta` such that
+#'   `target$rtime + delta` aligns with `ref$rtime`.
+#' @keywords internal
+#' @noRd
+estimate_rt_shift <- function(
+  ref,
+  target,
+  max_shift = 0.5,
+  grid_step = 0.002
+) {
+  t_min <- max(min(ref$rtime, na.rm = TRUE), min(target$rtime, na.rm = TRUE))
+  t_max <- min(max(ref$rtime, na.rm = TRUE), max(target$rtime, na.rm = TRUE))
+  if (!is.finite(t_min) || !is.finite(t_max) || (t_max - t_min) <= grid_step) {
+    return(0)
+  }
+  grid <- seq(t_min, t_max, by = grid_step)
+  ng <- length(grid)
+  if (ng < 4L) {
+    return(0)
+  }
+  y_ref <- stats::approx(ref$rtime, ref$intensity, xout = grid, rule = 2)$y
+  y_tgt <- stats::approx(
+    target$rtime,
+    target$intensity,
+    xout = grid,
+    rule = 2
+  )$y
+  y_ref <- y_ref - mean(y_ref, na.rm = TRUE)
+  y_tgt <- y_tgt - mean(y_tgt, na.rm = TRUE)
+  if (stats::sd(y_ref) == 0 || stats::sd(y_tgt) == 0) {
+    return(0)
+  }
+  n_pad <- 2L * ng
+  f_ref <- stats::fft(c(y_ref, rep(0, ng)))
+  f_tgt <- stats::fft(c(y_tgt, rep(0, ng)))
+  xc <- Re(stats::fft(f_ref * Conj(f_tgt), inverse = TRUE)) / n_pad
+  max_lag <- min(ng - 1L, max(1L, as.integer(round(max_shift / grid_step))))
+  pos_lags <- seq.int(0L, max_lag)
+  neg_lags <- seq.int(-max_lag, -1L)
+  lags <- c(neg_lags, pos_lags)
+  xc_vals <- c(xc[n_pad + neg_lags + 1L], xc[pos_lags + 1L])
+  lags[which.max(xc_vals)] * grid_step
 }
 
 #' Improve chromatogram signal via FFT filtering, resampling, and sharpening
@@ -194,9 +287,9 @@ improve_signal <- function(
     Smoothing_width = smoothing_width
   )
 
-  trim_start <- 5L
+  n_t <- length(time)
   data.frame(
-    rtime = time[trim_start:length(time)],
+    rtime = time[3:(n_t - 2L)],
     intensity = intensity_sharpened
   )
 }
@@ -426,7 +519,9 @@ preprocess_chromatograms <- function(
     lapply(chromatograms_baselined, data.table::as.data.table),
     idcol = "id"
   )
-  chromatograms_baselined_long[, intensity := intensity - min(intensity)]
+  chromatograms_baselined_long[,
+    intensity := pmax(0, intensity - max(0, min(intensity, na.rm = TRUE)))
+  ]
   chromatograms_baselined_long[, `:=`(rt_1 = rtime, rt_2 = rtime)]
 
   list(

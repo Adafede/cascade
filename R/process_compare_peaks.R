@@ -1,10 +1,11 @@
 #' Compare MS extracted ion chromatograms against detector peaks
 #'
 #' Extracts MS1 ion chromatograms (XICs) for all features falling within
-#' detected chromatographic peaks (e.g., CAD, PDA, or BPI), computes Pearson
-#' correlation similarity scores between each feature's XIC profile and the
-#' corresponding detector peak profile, and exports both peak-informed and
-#' non-informed feature tables as TSV files.
+#' detected and trapezoidally integrated chromatographic peaks (e.g., CAD, PDA,
+#' or BPI), computes window-preserving interpolated Pearson correlation
+#' similarity scores between each feature's XIC profile and the corresponding
+#' detector peak profile, and exports both peak-informed and non-informed
+#' feature tables as TSV files.
 #'
 #' @export
 #'

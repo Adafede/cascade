@@ -51,8 +51,9 @@ A named list with two elements:
 }
 \description{
 Integrates peak-informed features across positive and/or negative modes with
-TIMA structural annotations and LOTUS taxonomic/literature metadata to
-produce both an interactive HTML table (with 2D chemical structure
+TIMA structural annotations and LOTUS taxonomic/literature metadata, applies
+confidence-ordered 1D non-maximum suppression across retention-time windows,
+and produces both an interactive HTML table (with 2D chemical structure
 depictions via CDK Depict) and a tab-separated summary table.
 }
 \examples{

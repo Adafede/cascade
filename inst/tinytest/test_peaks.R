@@ -30,16 +30,16 @@ peaks_dt <- data.table::data.table(
   rt_min = c(1, 5),
   rt_max = c(3, 7)
 )
-# Peak 1 integral = 40, Peak 2 integral = 120, total = 160 -> fractions 0.25
-# and 0.75
+# Peak 1 trapezoidal integral = 30, Peak 2 trapezoidal integral = 90,
+# total = 120 -> fractions 0.25 and 0.75
 jp_exact <- join_peaks(chrom_dt, peaks_dt, min_area = 0.25)
 expect_identical(nrow(jp_exact), 2L)
-expect_identical(jp_exact$integral, c(40, 120))
+expect_equal(jp_exact$integral, c(30, 90), tolerance = 1e-12)
 
 jp_above <- join_peaks(chrom_dt, peaks_dt, min_area = 0.2501)
 expect_identical(nrow(jp_above), 1L)
 expect_identical(jp_above$peak_id, 2L)
-expect_identical(jp_above$integral, 120)
+expect_equal(jp_above$integral, 90, tolerance = 1e-12)
 
 # --- normalize_chromato boundary tests ---
 df_xy <- data.frame(
@@ -225,13 +225,18 @@ ext_res <- extract_ms_progress(
 )
 expect_identical(nrow(ext_res[[1L]][[1L]]), 0L)
 # Feature 1 in Peak 2: raw intensities (NA, 10, 30, 50) at rt (10, 20, 30, 40)
-# -> norm int (0, 0.5, 1) -> keep >= 0.1 gives (0.5, 1) at rt (0, 1)
+# -> window rt (20, 30, 40) scaled to (0, 0.5, 1); norm int (0, 0.5, 1) ->
+# keep >= 0.1 gives (0.5, 1) at window-preserved rt (0.5, 1)
 expect_equal(ext_res[[2L]][[1L]]$intensity, c(0.5, 1.0), tolerance = 1e-12)
-expect_equal(ext_res[[2L]][[1L]]$rtime, c(0, 1), tolerance = 1e-12)
+expect_equal(ext_res[[2L]][[1L]]$rtime, c(0.5, 1), tolerance = 1e-12)
 # Feature 2 in Peak 2: raw summed intensities (NA, 150, 200, 400) -> norm int
-# (0, 50/250=0.2, 1.0) -> keep >= 0.1 gives (0.2, 1.0)
+# (0, 50/250=0.2, 1.0) -> keep >= 0.1 gives (0.2, 1.0) at rt (0.5, 1)
 expect_equal(ext_res[[2L]][[2L]]$intensity, c(0.2, 1.0), tolerance = 1e-12)
-expect_equal(ext_res[[2L]][[2L]]$rtime, c(0, 1), tolerance = 1e-12)
+expect_equal(ext_res[[2L]][[2L]]$rtime, c(0.5, 1), tolerance = 1e-12)
+
+trapz_integral <- utils::getFromNamespace("trapz_integral", "cascade")
+expect_identical(trapz_integral(numeric(0L), numeric(0L)), 0)
+expect_identical(trapz_integral(1.5, 25), 25)
 
 # --- closest_idx all branches ---
 expect_identical(closest_idx(numeric(0L), c(1, 2), 0.5), integer(0L))

@@ -80,9 +80,11 @@ plot_peak_detection <- function(df1, df2, fun) {
 
 #' Check chromatographic peak detection and integration bounds
 #'
-#' Detects and integrates peaks in a detector chromatogram (CAD, BPI, or PDA),
-#' links them to MS features, and returns an interactive `plotly` visualization
-#' showing the signal, detected peak maxima, and start/end integration bounds.
+#' Detects, fits (via Exponential-Gaussian Hybrid or Gaussian nonlinear least
+#' squares), and trapezoidally integrates peaks in a detector chromatogram (CAD,
+#' BPI, or PDA), links them to MS features, and returns an interactive `plotly`
+#' visualization showing the signal, detected peak maxima, and start/end
+#' integration bounds.
 #'
 #' @export
 #'

@@ -38,9 +38,13 @@ check_chromatograms_alignment(
 
 \item{time_max}{Maximum retention time in minutes. Default is \code{32.5}.}
 
-\item{cad_shift}{CAD retention time shift in minutes. Default is \code{0.05}.}
+\item{cad_shift}{CAD retention time shift in minutes, or \code{"auto"} / \code{NULL}
+to estimate the optimal shift via FFT cross-correlation against the MS BPI
+trace. Default is \code{0.05}.}
 
-\item{pda_shift}{PDA retention time shift in minutes. Default is \code{0.1}.}
+\item{pda_shift}{PDA retention time shift in minutes, or \code{"auto"} / \code{NULL}
+to estimate the optimal shift via FFT cross-correlation against the MS BPI
+trace. Default is \code{0.1}.}
 
 \item{fourier_components}{Fraction of Fourier components to retain. Default
 is \code{0.01}.}

@@ -12,6 +12,7 @@ BiocVersion
 Bioinformatics
 Biotechnol
 Bjørn
+Butterworth
 CDK
 CMD
 CRC
@@ -26,7 +27,9 @@ DDA
 Da
 Dervieux
 Dowle
+EGH
 ELSD
+FWHM
 FingerId
 Friedrich
 Grolemund
@@ -38,11 +41,13 @@ ISDB
 Iannone
 JJ
 Jeroen
+Jorgenson
 Kessner
 Kirill
 Knitr
 Kopsia
 Kristian
+Lan
 Leisch
 Lennart
 Lifecycle
@@ -105,6 +110,7 @@ Yihui
 Zhang
 acetonitrile
 al
+centroided
 chemotaxonomic
 chromatogram
 chromatograms
@@ -114,6 +120,7 @@ contextualizations
 csv
 deduplicates
 der
+eluting
 emi
 erosol
 et
@@ -138,8 +145,10 @@ rmarkdown
 spectrometry
 stereoisomers
 taxonomically
+th
 tidyverse
 tinytest
+trapezoidally
 treemap
 treemaps
 tsv

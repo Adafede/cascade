@@ -44,7 +44,11 @@ This vignette describes some basic functions.
 
 ## Check the raw data and alignment
 
-First, check if the raw data can be aligned to your expectations:
+Signal preprocessing applies reflection-padded 4th-order Butterworth FFT
+low-pass filtering and zero-phase symmetric 2nd/4th-derivative peak sharpening.
+First, check if the raw data can be aligned to your expectations (you can also
+pass `cad_shift = "auto"` and `pda_shift = "auto"` to estimate inter-detector
+retention-time shifts automatically via FFT cross-correlation):
 
 ```{r}
 #| label: check-alignment-default
@@ -101,7 +105,8 @@ check_chromatograms_alignment(
 
 ## Check the peak integration
 
-Another critical parameter is the peak integration. Below are some
+Another critical parameter is the peak detection, Exponential-Gaussian Hybrid
+(EGH) curve fitting, and trapezoidal peak area integration. Below are some
 illustrations:
 
 ```{r}

@@ -135,8 +135,8 @@ withr::with_dir(test_dir, {
   ))
   expect_inherits(res_comp$features_informed, "data.table")
   expect_inherits(res_comp$features_not_informed, "data.table")
-  expect_equal(nrow(res_comp$features_informed), 3860L)
-  expect_equal(nrow(res_comp$features_not_informed), 893L)
+  expect_equal(nrow(res_comp$features_informed), 4132L)
+  expect_equal(nrow(res_comp$features_not_informed), 650L)
   expect_true(
     file.exists(
       "data/interim/peaks/210619_AR_06_V_03_2_01_featuresInformed_cad.tsv"

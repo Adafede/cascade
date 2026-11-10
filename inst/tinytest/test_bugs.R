@@ -91,8 +91,8 @@ expect_equal(
   c(3, 7),
   tolerance = 1e-12
 )
-expect_equal(
-  filter_fft_fn(c(1, 5, -1, -5), components = 0.01),
-  c(0.5, 2.5, -0.5, -2.5),
-  tolerance = 1e-12
-)
+# Zero-mean alternating signal filtered at low cutoff retains zero mean and
+# strictly real conjugate symmetry
+alt_out <- filter_fft_fn(c(1, 5, -1, -5), components = 0.01)
+expect_equal(mean(alt_out), 0, tolerance = 1e-12)
+expect_true(sum(alt_out^2) < sum(c(1, 5, -1, -5)^2))

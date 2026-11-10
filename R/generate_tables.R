@@ -1,8 +1,9 @@
 #' Generate interactive HTML and TSV summary tables of annotated peaks
 #'
 #' Integrates peak-informed features across positive and/or negative modes with
-#' TIMA structural annotations and LOTUS taxonomic/literature metadata to
-#' produce both an interactive HTML table (with 2D chemical structure
+#' TIMA structural annotations and LOTUS taxonomic/literature metadata, applies
+#' confidence-ordered 1D non-maximum suppression across retention-time windows,
+#' and produces both an interactive HTML table (with 2D chemical structure
 #' depictions via CDK Depict) and a tab-separated summary table.
 #'
 #' @export
@@ -154,9 +155,30 @@ generate_tables <- function(
     by = "peak_rt_min"
   ]
   overlapped <- unique(overlapped, by = c("newrt", "newarea"))
-  data.table::setorder(overlapped, newrt, na.last = TRUE)
-  overlapped[, diff := newrt - data.table::shift(newrt, n = 1L, type = "lag")]
-  overlapped <- overlapped[!is.na(diff) & diff > 0.05]
+  if (nrow(overlapped) > 0L) {
+    sf_num <- suppressWarnings(as.numeric(overlapped$score_final))
+    ord_score <- order(
+      -sf_num,
+      -overlapped$newarea,
+      overlapped$newrt,
+      na.last = TRUE
+    )
+    overlapped <- overlapped[ord_score]
+    keep_rows <- logical(nrow(overlapped))
+    kept_rts <- numeric(0L)
+    for (i in seq_len(nrow(overlapped))) {
+      rt_i <- overlapped$newrt[i]
+      if (is.na(rt_i)) {
+        next
+      }
+      if (length(kept_rts) == 0L || all(abs(rt_i - kept_rts) > 0.05)) {
+        keep_rows[i] <- TRUE
+        kept_rts <- c(kept_rts, rt_i)
+      }
+    }
+    overlapped <- overlapped[keep_rows]
+    data.table::setorder(overlapped, newrt, na.last = TRUE)
+  }
   overlapped[, peak_id := seq_len(.N)]
 
   table_medium <- overlapped[, list(

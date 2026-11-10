@@ -97,12 +97,14 @@ expect_identical(
   filter_fft(x_fft, components = 0.2),
   filter_fft(x_zero_na, components = 0.2)
 )
-# Independent reference calculation
-n_fft <- length(x_zero_na)
-keep_fft <- round(n_fft * 0.3)
-ref_freq <- stats::fft(x_zero_na)
-ref_freq[keep_fft:(n_fft - keep_fft)] <- 0
-ref_fft <- Re(stats::fft(ref_freq, inverse = TRUE)) / n_fft
+# Independent reference calculation (reflection-padded 4th-order Butterworth)
+x_pad <- c(x_zero_na, rev(x_zero_na))
+n_pad <- length(x_pad)
+cutoff_fft <- max(2, n_pad * 0.3)
+freq_idx <- pmin(seq_len(n_pad) - 1L, n_pad - seq_len(n_pad) + 1L)
+bw_w <- 1 / (1 + (freq_idx / cutoff_fft)^8)
+ref_fft <- (Re(stats::fft(stats::fft(x_pad) * bw_w, inverse = TRUE)) /
+  n_pad)[seq_along(x_zero_na)]
 expect_equal(
   filter_fft(x_zero_na, components = 0.3),
   ref_fft,
@@ -110,6 +112,16 @@ expect_equal(
 )
 
 # --- signal_sharpening ---
+runmean_symmetric <- utils::getFromNamespace("runmean_symmetric", "cascade")
+estimate_rt_shift <- utils::getFromNamespace("estimate_rt_shift", "cascade")
+expect_identical(runmean_symmetric(numeric(0L), 4L), numeric(0L))
+expect_identical(runmean_symmetric(c(1, 2, 3), 1L), c(1, 2, 3))
+expect_identical(
+  runmean_symmetric(c(3, 6, 9, 12, 15), 3L),
+  runmean_center(c(3, 6, 9, 12, 15), 3L)
+)
+expect_identical(signal_sharpening(1:4, 1:4), numeric(0L))
+
 t_sharp <- seq(0, 10, length.out = 101L)
 y_const <- rep(5, length(t_sharp))
 # On constant signal, all derivatives are 0, so output == 5 + Baseline_adjust
@@ -118,7 +130,8 @@ expect_equal(
   rep(7.5, length(t_sharp) - 4L),
   tolerance = 1e-12
 )
-# With sigma = 0, sharpening equals first-pass smoothed signal trimmed by 4
+# With sigma = 0, sharpening equals first-pass symmetric smoothed signal on
+# interior indices 3:(n - 2)
 y_gauss <- exp(-((t_sharp - 5)^2) / 0.5)
 s0 <- signal_sharpening(t_sharp, y_gauss, sigma = 0, Smoothing_width = 4L)
 s_pos <- signal_sharpening(
@@ -132,10 +145,46 @@ s_pos <- signal_sharpening(
 expect_identical(length(s0), length(t_sharp) - 4L)
 expect_equal(
   s0,
-  runmean_center(y_gauss, k = 4L)[5:length(t_sharp)],
+  runmean_symmetric(y_gauss, k = 4L)[3:(length(t_sharp) - 2L)],
   tolerance = 1e-12
 )
 expect_true(max(s_pos) > max(s0))
+# Symmetry preservation: symmetric Gaussian centered at midpoint index 51 (in
+# 1..101 -> index 49 in 3..99) remains strictly symmetric
+expect_equal(s_pos[49L - (1:20)], s_pos[49L + (1:20)], tolerance = 1e-12)
+
+# --- estimate_rt_shift ---
+t_shift_grid <- seq(0, 5, by = 0.01)
+y_shift_ref <- exp(-((t_shift_grid - 2.5)^2) / 0.02)
+df_shift_ref <- data.frame(rtime = t_shift_grid, intensity = y_shift_ref)
+df_shift_tgt <- data.frame(
+  rtime = t_shift_grid - 0.06,
+  intensity = y_shift_ref * 0.5
+)
+expect_equal(
+  estimate_rt_shift(
+    df_shift_ref,
+    df_shift_tgt,
+    max_shift = 0.2,
+    grid_step = 0.01
+  ),
+  0.06,
+  tolerance = 1e-12
+)
+expect_identical(
+  estimate_rt_shift(
+    data.frame(rtime = c(1, 2), intensity = c(5, 5)),
+    data.frame(rtime = c(1, 2), intensity = c(5, 5))
+  ),
+  0
+)
+expect_identical(
+  estimate_rt_shift(
+    data.frame(rtime = c(1, 2), intensity = c(1, 2)),
+    data.frame(rtime = c(5, 6), intensity = c(1, 2))
+  ),
+  0
+)
 
 # --- improve_signal and improve_signals_progress ---
 df_pos <- data.frame(
@@ -186,8 +235,8 @@ imp_neg <- improve_signal(
   time_max = 1.5,
   intensity_floor = 6.0
 )
-# Expected time grid: seq(0, 1.5, by = 1/60)[5:91]
-expected_time <- seq(0, 1.5, by = 1 / 60)[5:91]
+# Expected time grid: interior points seq(0, 1.5, by = 1/60)[3:89]
+expected_time <- seq(0, 1.5, by = 1 / 60)[3:89]
 expect_equal(imp_pos$rtime, expected_time, tolerance = 1e-12)
 expect_equal(imp_neg$rtime, expected_time, tolerance = 1e-12)
 # When min_intensity > 0, shift_amount is 0 regardless of intensity_floor
