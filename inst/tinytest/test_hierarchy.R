@@ -14,6 +14,7 @@ hierarchies_grouped_progress <- utils::getFromNamespace(
 )
 prepare_plot <- utils::getFromNamespace("prepare_plot", "cascade")
 prepare_plot_2 <- utils::getFromNamespace("prepare_plot_2", "cascade")
+plot_results_2 <- utils::getFromNamespace("plot_results_2", "cascade")
 plot_histograms_taxo <- utils::getFromNamespace(
   "plot_histograms_taxo",
   "cascade"

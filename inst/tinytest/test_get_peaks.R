@@ -171,12 +171,12 @@ expect_equal(
   tolerance = 1e-3
 )
 expect_equal(res_egh_exact$r.squared[1L], 1.0, tolerance = 1e-6)
-expect_true(res_min$s1[["254"]]$r.squared[1L] > 0.99)
 expect_equal(
-  res_min$s1[["254"]]$area[1L],
-  100 * 2 * sqrt(2 * pi),
-  tolerance = 0.01
+  res_egh_exact$area[1L],
+  sum((y_egh_test[-1L] + y_egh_test[-length(y_egh_test)]) / 2),
+  tolerance = 1e-3
 )
+expect_true(res_min$s1[["254"]]$r.squared[1L] > 0.99)
 
 # 10. Zero-height peak (start_height == 0) yields ssy == 0 -> r.squared == 0
 mat_zero_h <- matrix(
