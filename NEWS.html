@@ -76,6 +76,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -286,6 +315,10 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#cascade" id="toc-cascade" class="nav-link active" data-scroll-target="#cascade">cascade</a></li>
+  <li><a href="#cascade-0.0.0.9003" id="toc-cascade-0.0.0.9003" class="nav-link" data-scroll-target="#cascade-0.0.0.9003">cascade 0.0.0.9003</a>
+  <ul class="collapse">
+  <li><a href="#mathematical-algorithmic-improvements" id="toc-mathematical-algorithmic-improvements" class="nav-link" data-scroll-target="#mathematical-algorithmic-improvements">Mathematical &amp; Algorithmic Improvements</a></li>
+  </ul></li>
   <li><a href="#cascade-0.0.0.9002" id="toc-cascade-0.0.0.9002" class="nav-link" data-scroll-target="#cascade-0.0.0.9002">cascade 0.0.0.9002</a>
   <ul class="collapse">
   <li><a href="#architecture-performance-overhaul" id="toc-architecture-performance-overhaul" class="nav-link" data-scroll-target="#architecture-performance-overhaul">Architecture &amp; Performance Overhaul</a></li>
@@ -306,6 +339,21 @@ ul.task-list li input[type="checkbox"] {
 <script async="" src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
 <section id="cascade" class="level1">
 <h1>cascade</h1>
+</section>
+<section id="cascade-0.0.0.9003" class="level1">
+<h1>cascade 0.0.0.9003</h1>
+<section id="mathematical-algorithmic-improvements" class="level2">
+<h2 class="anchored" data-anchor-id="mathematical-algorithmic-improvements">Mathematical &amp; Algorithmic Improvements</h2>
+<ul>
+<li><strong>Conjugate-symmetric Butterworth FFT low-pass filtering (<code>filter_fft()</code>)</strong>: Replaced the asymmetric rectangular frequency-domain cutoff with a reflection-padded, conjugate-symmetric 4th-order Butterworth low-pass filter, reducing Gibbs phenomenon ringing and eliminating periodic boundary wrap-around artifacts.</li>
+<li><strong>Zero-phase derivative peak sharpening (<code>signal_sharpening()</code>, <code>runmean_symmetric()</code>, <code>improve_signal()</code>)</strong>: Replaced the one-sided even-window moving average and offset finite-difference index slicing with zero-phase forward-backward smoothing and time-aligned centered 2nd and 4th derivatives on the interior grid <code>3:(n - 2)</code>, eliminating peak asymmetry distortion and retention time shift.</li>
+<li><strong>Automated cross-detector retention time shift estimation (<code>estimate_rt_shift()</code>, <code>check_chromatograms_alignment()</code>)</strong>: Added sub-scan lag estimation via FFT cross-correlation (<code>cad_shift = "auto"</code> / <code>NULL</code> and <code>pda_shift = "auto"</code> / <code>NULL</code>).</li>
+<li><strong>Lan &amp; Jorgenson EGH and Gaussian nonlinear least-squares peak fitting (<code>get_peaks()</code>)</strong>: Implemented sub-grid half-height crossing interpolation, analytical Exponential-Gaussian Hybrid (EGH) parameter initialization (<span class="math inline">\(\sigma\)</span>, <span class="math inline">\(\tau\)</span>), bounded nonlinear least-squares refinement (<code>stats::nlminb()</code>), exact EGH <span class="math inline">\(\text{FWHM}\)</span> calculation, and trapezoidal area integration.</li>
+<li><strong>Trapezoidal peak integration and baseline clamping (<code>join_peaks()</code>, <code>trapz_integral()</code>, <code>preprocess_chromatograms()</code>)</strong>: Replaced raw intensity summation with trapezoidal numerical quadrature over retention time and clamped negative baseline excursions to prevent global baseline inflation.</li>
+<li><strong>Window-preserving interpolated XIC-to-peak correlation (<code>normalize_chromato()</code>, <code>prepare_peaks()</code>, <code>transform_ms()</code>, <code>extract_ms_progress()</code>, <code>compare_peaks()</code>)</strong>: Preserved physical peak retention-time window coordinates, recorded silent centroided MS1 scans as zero intensity rather than <code>NA</code>, and replaced nearest-neighbor snapping with continuous linear interpolation across the shared peak window.</li>
+<li><strong>Confidence-ordered 1D non-maximum suppression (<code>generate_tables()</code>)</strong>: Replaced sequential lag-difference filtering (which dropped the earliest-eluting peak and suffered from chaining) with greedy 1D non-maximum suppression ordered by descending annotation confidence (<code>score_final</code>) and peak area within a <code>0.05</code> min retention-time radius.</li>
+</ul>
+</section>
 </section>
 <section id="cascade-0.0.0.9002" class="level1">
 <h1>cascade 0.0.0.9002</h1>

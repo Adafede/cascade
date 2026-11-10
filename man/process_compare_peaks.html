@@ -343,7 +343,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="unnumbered anchored" data-anchor-id="compare-ms-extracted-ion-chromatograms-against-detector-peaks">Compare MS extracted ion chromatograms against detector peaks</h2>
 <section id="description" class="level3">
 <h3 class="anchored" data-anchor-id="description">Description</h3>
-<p>Extracts MS1 ion chromatograms (XICs) for all features falling within detected chromatographic peaks (e.g., CAD, PDA, or BPI), computes Pearson correlation similarity scores between each feature’s XIC profile and the corresponding detector peak profile, and exports both peak-informed and non-informed feature tables as TSV files.</p>
+<p>Extracts MS1 ion chromatograms (XICs) for all features falling within detected and trapezoidally integrated chromatographic peaks (e.g., CAD, PDA, or BPI), computes window-preserving interpolated Pearson correlation similarity scores between each feature’s XIC profile and the corresponding detector peak profile, and exports both peak-informed and non-informed feature tables as TSV files.</p>
 </section>
 <section id="usage" class="level3">
 <h3 class="anchored" data-anchor-id="usage">Usage</h3>
