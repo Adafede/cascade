@@ -10,7 +10,8 @@
 ^README\.qmd$
 ^TESTING\.md$
 ^[.]?air[.]toml$
-^[.]agent-scratch
+^[.]agent-scratch$
+^\.agent-work$
 ^[.]agent[.]md$
 ^[.]agentignore$
 ^[.]cursor[.]md$
@@ -67,6 +68,6 @@
 ^tests/testthat/_snaps/
 ^vignettes/\.quarto$
 ^vignettes/articles$
-^vignettes/articles/*_files$
+^vignettes/articles/.*_files$
 ^vignettes/articles/\.quarto$
 _\.new\.png$

@@ -48,6 +48,7 @@ vignettes/*_files/
 .vscode
 
 # Repo specific
+.agent-work/
 params/params/**
 # Ignore research materials in data/, but keep .rda package datasets
 data/interim/
