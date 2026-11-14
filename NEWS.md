@@ -2,6 +2,50 @@
 
 # cascade 0.0.0.9003
 
+## Bug Fixes & Stability
+
+- **Signal preprocessing and grid alignment (`R/signal.R`, `R/peaks.R`)**:
+  - Updated `runmean_center()` to ignore `NA` values across rolling windows and
+    handle interior `NA`s without zeroing surrounding signal.
+  - Restricted `improve_signal()` interpolation grids to finite input bounds,
+    returning an empty table when fewer than five points are present.
+  - Resolved `.mzML` detectors by name in `extract_chromatogram()` before index
+    fallback and added explicit validation in `check_peaks_integration()`,
+    `process_compare_peaks()`, and `generate_pseudochromatograms()`.
+  - Normalized retention-time `shift` handling so workflow callers apply `shift`
+    once during peak preparation rather than double-shifting traces.
+  - Added zero-variance and zero-range guards in `compare_peaks()`,
+    `join_peaks()`, `normalize_chromato()`, and
+    `normalize_chromatograms_list()`, and removed dead `closest_idx()`.
+- **Workflows, tables, and caches (`R/annotations.R`, `R/generate_tables.R`,
+  `R/generate_pseudochromatograms.R`, `R/load.R`,
+  `R/prepare_tima_annotations.R`, `R/plot_tima.R`)**:
+  - Forwarded `mode` to `load_annotations()` in `generate_pseudochromatograms()`
+    and copied bundled example data before mutating columns.
+  - Preserved negative-mode feature columns in `generate_tables()`, required at
+    least one input file when `show_example = FALSE`, read LOTUS gzipped tables
+    as character to avoid `melt()` coercion warnings, filtered `NA`/empty DOIs,
+    and added literal matching (`fixed = TRUE`) in `prepare_comparison()`.
+  - Fixed unnamed `annotations` labels (`"1_pred"` instead of `"NA_pred"`),
+    `NULL` validation, `data.frame` inputs, and multi-sample binding in
+    `prepare_tima_annotations()` and `plot_tima()`.
+  - Included file size and modification time in `fread_gz()` cache keys, keyed
+    non-LOTUS Zenodo downloads separately, and guarded `.onAttach()` citation
+    lookup during source loading.
+- **Wikidata SPARQL & example scripts (`R/query_wikidata.R`, `R/generate_ids.R`,
+  `inst/scripts/`)**:
+  - Fixed TSV quote parsing and `\"` unescaping, stripped leading `?` headers on
+    0-row TSV responses, avoided duplicate SMILES URL-encoding via shared
+    `encode_smiles()`, and added QID guards in `generate_ids()`.
+  - Fixed misspelled filenames in `inst/scripts/`, removed commented dead code,
+    directed outputs to `tempdir()`, and guarded live network calls in
+    non-interactive runs.
+- **Offline test isolation & static checks (`inst/tinytest/`, `.github/`)**:
+  - Isolated all unit and workflow tests offline with temporary cache/working
+    directories and mocked curl fixtures.
+  - Added repository `.lintr`, enabled `spelling` errors and `codecov`
+    enforcement, and repaired GitHub Actions workflows and package metadata.
+
 ## Mathematical & Algorithmic Improvements
 
 - **Conjugate-symmetric Butterworth FFT low-pass filtering (`filter_fft()`)**:

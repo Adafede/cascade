@@ -10,7 +10,6 @@ comments:
     repo: adafede/cascade
   hypothesis:
     showHighlights: always
-creative_commons: CC BY
 date: today
 format:
   html:
@@ -21,7 +20,7 @@ knitr:
     collapse: true
     comment: "#>"
 lang: en
-license: CC BY
+license: AGPL-3.0-or-later
 opengraph:
   image:
     src: https://github.com/adafede/cascade/blob/main/man/figures/logo.svg
@@ -53,13 +52,17 @@ untargeted **A**nnotation with **S**emi-quantitative **C**harged **A**erosol
   annotations, as obtained by
   [TIMA](https://taxonomicallyinformedannotation.github.io/tima/)
 
-All coming steps admit you already installed `cascade`:
+Install from source on GitHub or via r-universe:
 
 ```{r}
 #| label: install
 #| eval: false
 #| include: true
 
+# From GitHub
+pak::pak("adafede/cascade")
+
+# Or prebuilt binaries via r-universe
 install.packages(
   "cascade",
   repos = c(

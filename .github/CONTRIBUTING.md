@@ -1,67 +1,72 @@
 # Contributing to cascade
 
-This outlines how to propose a change to cascade. For a detailed discussion on
-contributing to this and other tidyverse packages, please see the [development
-contributing guide](https://rstd.io/tidy-contrib) and our [code review
-principles](https://code-review.tidyverse.org/).
+This guide explains how to report issues and propose changes to `cascade`.
 
-## Fixing typos
+## Reporting bugs and proposing changes
 
-You can fix typos, spelling mistakes, or grammatical errors in the documentation
-directly using the GitHub web interface, as long as the changes are made in the
-*source* file. This generally means you'll need to edit [roxygen2
-comments](https://roxygen2.r-lib.org/articles/roxygen2.html) in an `.R`, not a
-`.Rd` file. You can find the `.R` file that generates the `.Rd` by reading the
-comment in the first line.
+Before starting work on a large change, please open an issue at
+<https://github.com/adafede/cascade/issues> to describe the problem or design
+goal. For bug reports, include a minimal reproducible example (using
+`show_example = TRUE` when the issue reproduces with bundled data, or small
+synthetic inputs when it depends on custom files) along with `sessionInfo()`.
 
-## Bigger changes
+## Setting up a development environment
 
-If you want to make a bigger change, it's a good idea to first file an issue and
-make sure someone from the team agrees that it's needed. If you've found a bug,
-please file an issue that illustrates the bug with a minimal
-[reprex](https://www.tidyverse.org/help/#reprex) (this will also help you write
-a unit test, if needed). See our guide on [how to create a great
-issue](https://code-review.tidyverse.org/issues/) for more advice.
+1. Fork and clone the repository:
 
-### Pull request process
+   ```bash
+   git clone https://github.com/<your-username>/cascade.git
+   cd cascade
+   ```
 
-- Fork the package and clone onto your computer. If you haven't done this
-  before, we recommend using
-  `usethis::create_from_github("adafede/cascade", fork = TRUE)`.
+2. Install package dependencies in R:
 
-- Install all development dependencies with `devtools::install_dev_deps()`, and
-  then make sure the package passes R CMD check by running `devtools::check()`.
-  If R CMD check doesn't pass cleanly, it's a good idea to ask for help before
-  continuing.
+   ```r
+   pak::local_install_dev_deps(".")
+   ```
 
-- Create a Git branch for your pull request (PR). We recommend using
-  `usethis::pr_init("brief-description-of-change")`.
+   On Linux and macOS, `mzR` requires NetCDF development libraries (`netcdf` via
+   Homebrew on macOS; `libnetcdf-dev` on Debian/Ubuntu).
 
-- Make your changes, commit to git, and then create a PR by running
-  `usethis::pr_push()`, and following the prompts in your browser. The title of
-  your PR should briefly describe the change. The body of your PR should contain
-  `Fixes #issue-number`.
+## Running checks locally
 
-- For user-facing changes, add a bullet to the top of `NEWS.md` (i.e. just below
-  the first header). Follow the style described in
-  <https://style.tidyverse.org/news.html>.
+- Run the full offline test suite against your working tree without installing:
 
-### Code style
+  ```r
+  pkgload::load_all(".", export_all = FALSE, helpers = FALSE, quiet = TRUE)
+  res <- tinytest::run_test_dir("inst/tinytest")
+  stopifnot(all(as.logical(res)))
+  ```
 
-- New code should follow the tidyverse [style
-  guide](https://style.tidyverse.org). You can use the
-  [styler](https://CRAN.R-project.org/package=styler) package to apply these
-  styles, but please don't restyle code that has nothing to do with your PR.
+- Run formatting, lint, and spelling checks:
 
-- We use [roxygen2](https://cran.r-project.org/package=roxygen2), with [Markdown
-  syntax](https://cran.r-project.org/web/packages/roxygen2/vignettes/rd-formatting.html),
-  for documentation.
+  ```bash
+  air format . --check
+  jarl check .
+  panache format --check .
+  panache lint .
+  ```
 
-- We use [tinytest](https://cran.r-project.org/package=tinytest) for unit tests.
-  Contributions with test cases included are easier to accept.
+  ```r
+  pkgload::load_all(".", export_all = FALSE, helpers = FALSE, quiet = TRUE)
+  stopifnot(length(lintr::lint_package()) == 0L)
+  stopifnot(nrow(spelling::spell_check_package()) == 0L)
+  ```
+
+  See [TESTING.md](../TESTING.md) for single-file test execution and
+  `R CMD check` instructions.
+
+## Documentation and style
+
+- Edit roxygen2 comments in `R/*.R` rather than editing `man/*.Rd` or
+  `NAMESPACE` by hand, then regenerate help pages with `roxygen2::roxygenise()`.
+- Format R code with `air format .` and keep lines within 80 characters.
+- Document user-facing changes in `NEWS.md`.
+- Write unit and regression tests in `inst/tinytest/` using `tinytest`. Keep
+  tests offline and isolated inside `local({ ... })` with temporary
+  cache/working directories.
 
 ## Code of Conduct
 
-Please note that the cascade project is released with a [Contributor Code of
-Conduct](CODE_OF_CONDUCT.md). By contributing to this project you agree to abide
-by its terms.
+All contributors are expected to follow the [Code of
+Conduct](CODE_OF_CONDUCT.md).

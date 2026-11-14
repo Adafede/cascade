@@ -1,27 +1,20 @@
 ---
 format:
   gfm: default
-  html: default
-bibliography: grateful-refs.bib
 ---
 
-<!-- README.md is generated from README.qmd. Please edit that file -->
+<!-- README.md is generated from README.qmd. Please edit README.qmd and render with quarto. -->
 
-# CASCADE <img src='https://raw.githubusercontent.com/adafede/cascade/main/man/figures/logo.svg' align="right" height="139" />
+# CASCADE <img src="https://raw.githubusercontent.com/adafede/cascade/main/man/figures/logo.svg" align="right" height="139" />
 
 <!-- badges: start -->
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![No Maintenance
-Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/cascade)](https://CRAN.R-project.org/package=cascade)
 [![R-CMD-check](https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/adafede/cascade/graph/badge.svg)](https://app.codecov.io/gh/adafede/cascade)
 [![r-universe
 badge](https://adafede.r-universe.dev/cascade/badges/version?&color=blue&style=classic)](https://adafede.r-universe.dev/cascade)
-<!-- [![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://hub.docker.com/r/adafede/cascade/) -->
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14515158.svg)](https://doi.org/10.5281/zenodo.14515158)
 <!-- badges: end -->
 
@@ -29,38 +22,49 @@ badge](https://adafede.r-universe.dev/cascade/badges/version?&color=blue&style=c
 **C**harged **A**erosol **D**etection for pertinent characterization of natural
 **E**xtracts.
 
-⚠️ This repository is not maintained and will not be except for extreme
-interest. It has just been opened for the sake of transparency.
+`cascade` is an R package for analyzing natural-product extracts by linking
+untargeted LC-HRMS/MS feature tables and taxonomically informed metabolite
+annotations with semi-quantitative universal detectors (CAD, PDA, ELSD). It
+provides Fourier low-pass filtering, derivative-based peak sharpening,
+exponential-Gaussian hybrid (EGH) peak fitting, trapezoidal integration, MS1
+extracted ion chromatogram correlation, LOTUS/Wikidata chemotaxonomic summaries,
+and interactive plots.
 
-The initial work is available at <https://doi.org/10.1021/acs.jafc.3c03099>,
-with some improvements made since then. The workflow is illustrated below.
+The original method is described at <https://doi.org/10.1021/acs.jafc.3c03099>.
 
 ![Workflow](https://raw.githubusercontent.com/adafede/cascade/main/man/figures/cascade-workflow.svg)
-\
 
-## Requirements
+## Input Requirements
 
-Here is what you *minimally* need:
+To process your own extracts you need:
 
-- A file
-  ([.mzML](https://en.wikipedia.org/wiki/Mass_spectrometry_data_format#mzML))
-  containing [DDA
-  MS](https://en.wikipedia.org/w/index.php?title=Data-dependent_acquisition)
-  data with an additional detector
-  ([PDA](https://en.wikipedia.org/wiki/UV_detectors),
+- An [.mzML](https://en.wikipedia.org/wiki/Mass_spectrometry_data_format#mzML)
+  file containing MS1 data along with at least one auxiliary chromatographic
+  detector trace ([PDA](https://en.wikipedia.org/wiki/UV_detectors),
   [ELSD](https://en.wikipedia.org/wiki/Evaporative_light_scattering_detector),
-  [CAD](https://en.wikipedia.org/wiki/Charged_aerosol_detector))
-  - In case you don't know how to obtain it, see:
-    [wiki/How-to-create-a-compliant-mzML-file](https://github.com/Adafede/cascade/wiki/How-to-create-a-compliant-mzML-file)
-- A file ([.csv](https://en.wikipedia.org/wiki/Comma-separated_values))
-  containing features, as obtained by [mzmine](https://mzio.io)
-- A file ([.tsv](https://en.wikipedia.org/wiki/Tab-separated_values)) containing
-  annotations, as obtained by
-  [TIMA](https://taxonomicallyinformedannotation.github.io/tima/)
+  or [CAD](https://en.wikipedia.org/wiki/Charged_aerosol_detector)). See
+  [wiki/How-to-create-a-compliant-mzML-file](https://github.com/adafede/cascade/wiki/How-to-create-a-compliant-mzML-file).
+- A [.csv](https://en.wikipedia.org/wiki/Comma-separated_values) feature table
+  exported from [mzmine](https://mzio.io).
+- A [.tsv](https://en.wikipedia.org/wiki/Tab-separated_values) annotation table
+  from [TIMA](https://taxonomicallyinformedannotation.github.io/tima/).
 
 ## Installation
 
-As the package is not (yet) available on CRAN, you will need to install with:
+`cascade` is not on CRAN. Requires R (>= 4.5.0) and NetCDF system libraries for
+`mzR` (`brew install netcdf` on macOS; `libnetcdf-dev` on Debian/Ubuntu).
+
+Install from source on GitHub:
+
+```r
+# Using pak
+pak::pak("adafede/cascade")
+
+# Or using remotes
+remotes::install_github("adafede/cascade")
+```
+
+Or install prebuilt binaries when available via r-universe:
 
 ```r
 install.packages(
@@ -73,75 +77,71 @@ install.packages(
 )
 ```
 
-Once installed, you are ready to go through our
-[documentation](https://adafede.github.io/cascade/articles/), with the major
-steps detailed.
+Because the package bundles roughly 45 MB of `bzip2`-compressed example datasets
+under `data/`, initial source installation takes several minutes.
 
-## Main Citations
+## Quickstart
 
-### CASCADE
+All bundled examples use *Swertia chirayita* LC-CAD-HRMS/MS data and run offline
+with `show_example = TRUE`:
 
-<https://doi.org/10.1021/acs.jafc.3c03099>
+```r
+library(cascade)
 
-According to which steps you used, please give credit to the authors of the
-tools/resources used.
+# Inspect detector retention-time alignment and peak integration
+check_chromatograms_alignment(show_example = TRUE)
+check_peaks_integration(show_example = TRUE)
 
-### mzmine
+# Integrate detector peaks and correlate with MS1 extracted ion chromatograms
+peaks <- process_compare_peaks(show_example = TRUE)
 
-General: <https://doi.org/10.1038/s41587-023-01690-2>
+# Build interactive pseudochromatograms and treemaps from TIMA annotations
+plots <- generate_pseudochromatograms(show_example = TRUE)
 
-### SIRIUS
+# Visualize standalone TIMA annotation outputs
+prepare_tima_annotations(show_example = TRUE) |>
+  plot_tima()
+```
 
-General: <https://doi.org/10.1038/s41592-019-0344-8>
+Further step-by-step examples are available in the
+[articles](https://adafede.github.io/cascade/articles/).
 
-- *CSI:FingerId*: <https://doi.org/10.1073/pnas.1509788112>
-- *ZODIAC*: <https://doi.org/10.1038/s42256-020-00234-6>
-- *CANOPUS*: <https://doi.org/10.1038/s41587-020-0740-8>
-- *COSMIC*: <https://doi.org/10.1038/s41587-021-01045-9>
+## Scope and Limitations
 
-### LOTUS
+- **Network-dependent functions**: `generate_ids()` queries the live Wikidata
+  SPARQL endpoint (`query.wikidata.org`, falling back to QLever), and
+  `generate_tables()` downloads the LOTUS snapshot archive from Zenodo on first
+  run unless already cached under `tools::R_user_dir("cascade", "cache")`.
+- **Detector assumptions**: `process_compare_peaks()` correlates MS1 XICs
+  against a chosen trace (`"CAD"`, `"PDA"`, or `"ELSD"`); trace quality and
+  retention-time offset (`cad_shift`, `pda_shift`, or `"auto"`) affect
+  feature-to-peak matching.
+- **Bundled data coverage**: Built-in examples illustrate *Swertia chirayita*
+  positive- and negative-mode extracts; external files must follow mzmine CSV
+  and TIMA TSV column schemas.
 
-General: <https://doi.org/10.7554/eLife.70780>
+## Citations and Dependencies
 
-⚠️ Do not forget to cite which version you used:
-<https://doi.org/10.5281/zenodo.5794106>
+To cite `cascade` in publications, run `citation("cascade")`:
 
-### ISDB
+- CASCADE: <https://doi.org/10.1021/acs.jafc.3c03099>
 
-General: <https://doi.org/10.1021/acs.analchem.5b04804>
+Depending on the steps in your workflow, please also cite the upstream tools and
+resources used:
 
-⚠️ Do not forget to cite which version you used:
-<https://doi.org/10.5281/zenodo.5607185>
-
-### TIMA
-
-General: <https://doi.org/10.3389/fpls.2019.01329>
-
-⚠️ Do not forget to cite which version you used:
-<https://doi.org/10.5281/zenodo.5797920>
-
-### Others
-
+- mzmine: <https://doi.org/10.1038/s41587-023-01690-2>
+- SIRIUS (<https://doi.org/10.1038/s41592-019-0344-8>), CSI:FingerId
+  (<https://doi.org/10.1073/pnas.1509788112>), ZODIAC
+  (<https://doi.org/10.1038/s42256-020-00234-6>), CANOPUS
+  (<https://doi.org/10.1038/s41587-020-0740-8>), COSMIC
+  (<https://doi.org/10.1038/s41587-021-01045-9>)
+- LOTUS (<https://doi.org/10.7554/eLife.70780>); note the snapshot DOI you used:
+  <https://doi.org/10.5281/zenodo.5794106>
+- ISDB (<https://doi.org/10.1021/acs.analchem.5b04804>); note the version DOI
+  you used: <https://doi.org/10.5281/zenodo.5607185>
+- TIMA (<https://doi.org/10.3389/fpls.2019.01329>); note the version DOI you
+  used: <https://doi.org/10.5281/zenodo.5797920>
 - NPClassifier: <https://doi.org/10.1021/acs.jnatprod.1c00399>
 
-## Additional software credits
-
-```{r}
-#| label: grateful
-#| echo: false
-#| message: false
-
-# Check if DESCRIPTION is in current dir
-# Else `altdoc` will not find the dependencies
-desc_path <- if (file.exists("DESCRIPTION")) {
-  "."
-} else {
-  ".."
-}
-grateful::cite_packages(
-  output = "table",
-  out.dir = getwd(),
-  path = desc_path
-) |>
-  knitr::kable()
-```
+Core R package dependencies declared in `DESCRIPTION`: `baseline`, `curl`,
+`data.table`, `ggplot2`, `gt`, `mzR`, and `plotly`.

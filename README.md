@@ -1,21 +1,16 @@
-<!-- README.md is generated from README.qmd. Please edit that file -->
+<!-- README.md is generated from README.qmd. Please edit README.qmd and render with quarto. -->
 
-# CASCADE <img src='https://raw.githubusercontent.com/adafede/cascade/main/man/figures/logo.svg' align="right" height="139" />
+# CASCADE <img src="https://raw.githubusercontent.com/adafede/cascade/main/man/figures/logo.svg" align="right" height="139" />
 
 <!-- badges: start -->
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![No Maintenance
-Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/cascade.png)](https://CRAN.R-project.org/package=cascade)
 [![R-CMD-check](https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/adafede/cascade/graph/badge.svg)](https://app.codecov.io/gh/adafede/cascade)
 [![r-universe
 badge](https://adafede.r-universe.dev/cascade/badges/version?&color=blue&style=classic.png)](https://adafede.r-universe.dev/cascade)
-<!-- [![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://hub.docker.com/r/adafede/cascade/) -->
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14515158.svg)](https://doi.org/10.5281/zenodo.14515158)
 <!-- badges: end -->
 
@@ -23,38 +18,49 @@ badge](https://adafede.r-universe.dev/cascade/badges/version?&color=blue&style=c
 **C**harged **A**erosol **D**etection for pertinent characterization of natural
 **E**xtracts.
 
-⚠️ This repository is not maintained and will not be except for extreme
-interest. It has just been opened for the sake of transparency.
+`cascade` is an R package for analyzing natural-product extracts by linking
+untargeted LC-HRMS/MS feature tables and taxonomically informed metabolite
+annotations with semi-quantitative universal detectors (CAD, PDA, ELSD). It
+provides Fourier low-pass filtering, derivative-based peak sharpening,
+exponential-Gaussian hybrid (EGH) peak fitting, trapezoidal integration, MS1
+extracted ion chromatogram correlation, LOTUS/Wikidata chemotaxonomic summaries,
+and interactive plots.
 
-The initial work is available at <https://doi.org/10.1021/acs.jafc.3c03099>,
-with some improvements made since then. The workflow is illustrated below.
+The original method is described at <https://doi.org/10.1021/acs.jafc.3c03099>.
 
 ![Workflow](https://raw.githubusercontent.com/adafede/cascade/main/man/figures/cascade-workflow.svg)
-\
 
-## Requirements
+## Input Requirements
 
-Here is what you *minimally* need:
+To process your own extracts you need:
 
-- A file
-  ([.mzML](https://en.wikipedia.org/wiki/Mass_spectrometry_data_format#mzML))
-  containing [DDA
-  MS](https://en.wikipedia.org/w/index.php?title=Data-dependent_acquisition)
-  data with an additional detector
-  ([PDA](https://en.wikipedia.org/wiki/UV_detectors),
+- An [.mzML](https://en.wikipedia.org/wiki/Mass_spectrometry_data_format#mzML)
+  file containing MS1 data along with at least one auxiliary chromatographic
+  detector trace ([PDA](https://en.wikipedia.org/wiki/UV_detectors),
   [ELSD](https://en.wikipedia.org/wiki/Evaporative_light_scattering_detector),
-  [CAD](https://en.wikipedia.org/wiki/Charged_aerosol_detector))
-  - In case you don't know how to obtain it, see:
-    [wiki/How-to-create-a-compliant-mzML-file](https://github.com/Adafede/cascade/wiki/How-to-create-a-compliant-mzML-file)
-- A file ([.csv](https://en.wikipedia.org/wiki/Comma-separated_values))
-  containing features, as obtained by [mzmine](https://mzio.io)
-- A file ([.tsv](https://en.wikipedia.org/wiki/Tab-separated_values)) containing
-  annotations, as obtained by
-  [TIMA](https://taxonomicallyinformedannotation.github.io/tima/)
+  or [CAD](https://en.wikipedia.org/wiki/Charged_aerosol_detector)). See
+  [wiki/How-to-create-a-compliant-mzML-file](https://github.com/adafede/cascade/wiki/How-to-create-a-compliant-mzML-file).
+- A [.csv](https://en.wikipedia.org/wiki/Comma-separated_values) feature table
+  exported from [mzmine](https://mzio.io).
+- A [.tsv](https://en.wikipedia.org/wiki/Tab-separated_values) annotation table
+  from [TIMA](https://taxonomicallyinformedannotation.github.io/tima/).
 
 ## Installation
 
-As the package is not (yet) available on CRAN, you will need to install with:
+`cascade` is not on CRAN. Requires R (\>= 4.5.0) and NetCDF system libraries for
+`mzR` (`brew install netcdf` on macOS; `libnetcdf-dev` on Debian/Ubuntu).
+
+Install from source on GitHub:
+
+```r
+# Using pak
+pak::pak("adafede/cascade")
+
+# Or using remotes
+remotes::install_github("adafede/cascade")
+```
+
+Or install prebuilt binaries when available via r-universe:
 
 ```r
 install.packages(
@@ -67,290 +73,71 @@ install.packages(
 )
 ```
 
-Once installed, you are ready to go through our
-[documentation](https://adafede.github.io/cascade/articles/), with the major
-steps detailed.
+Because the package bundles roughly 45 MB of `bzip2`-compressed example datasets
+under `data/`, initial source installation takes several minutes.
 
-## Main Citations
+## Quickstart
 
-### CASCADE
+All bundled examples use *Swertia chirayita* LC-CAD-HRMS/MS data and run offline
+with `show_example = TRUE`:
 
-<https://doi.org/10.1021/acs.jafc.3c03099>
+```r
+library(cascade)
 
-According to which steps you used, please give credit to the authors of the
-tools/resources used.
+# Inspect detector retention-time alignment and peak integration
+check_chromatograms_alignment(show_example = TRUE)
+check_peaks_integration(show_example = TRUE)
 
-### mzmine
+# Integrate detector peaks and correlate with MS1 extracted ion chromatograms
+peaks <- process_compare_peaks(show_example = TRUE)
 
-General: <https://doi.org/10.1038/s41587-023-01690-2>
+# Build interactive pseudochromatograms and treemaps from TIMA annotations
+plots <- generate_pseudochromatograms(show_example = TRUE)
 
-### SIRIUS
+# Visualize standalone TIMA annotation outputs
+prepare_tima_annotations(show_example = TRUE) |>
+  plot_tima()
+```
 
-General: <https://doi.org/10.1038/s41592-019-0344-8>
+Further step-by-step examples are available in the
+[articles](https://adafede.github.io/cascade/articles/).
 
-- *CSI:FingerId*: <https://doi.org/10.1073/pnas.1509788112>
-- *ZODIAC*: <https://doi.org/10.1038/s42256-020-00234-6>
-- *CANOPUS*: <https://doi.org/10.1038/s41587-020-0740-8>
-- *COSMIC*: <https://doi.org/10.1038/s41587-021-01045-9>
+## Scope and Limitations
 
-### LOTUS
+- **Network-dependent functions**: `generate_ids()` queries the live Wikidata
+  SPARQL endpoint (`query.wikidata.org`, falling back to QLever), and
+  `generate_tables()` downloads the LOTUS snapshot archive from Zenodo on first
+  run unless already cached under `tools::R_user_dir("cascade", "cache")`.
+- **Detector assumptions**: `process_compare_peaks()` correlates MS1 XICs
+  against a chosen trace (`"CAD"`, `"PDA"`, or `"ELSD"`); trace quality and
+  retention-time offset (`cad_shift`, `pda_shift`, or `"auto"`) affect
+  feature-to-peak matching.
+- **Bundled data coverage**: Built-in examples illustrate *Swertia chirayita*
+  positive- and negative-mode extracts; external files must follow mzmine CSV
+  and TIMA TSV column schemas.
 
-General: <https://doi.org/10.7554/eLife.70780>
+## Citations and Dependencies
 
-⚠️ Do not forget to cite which version you used:
-<https://doi.org/10.5281/zenodo.5794106>
+To cite `cascade` in publications, run `citation("cascade")`:
 
-### ISDB
+- CASCADE: <https://doi.org/10.1021/acs.jafc.3c03099>
 
-General: <https://doi.org/10.1021/acs.analchem.5b04804>
+Depending on the steps in your workflow, please also cite the upstream tools and
+resources used:
 
-⚠️ Do not forget to cite which version you used:
-<https://doi.org/10.5281/zenodo.5607185>
-
-### TIMA
-
-General: <https://doi.org/10.3389/fpls.2019.01329>
-
-⚠️ Do not forget to cite which version you used:
-<https://doi.org/10.5281/zenodo.5797920>
-
-### Others
-
+- mzmine: <https://doi.org/10.1038/s41587-023-01690-2>
+- SIRIUS (<https://doi.org/10.1038/s41592-019-0344-8>), CSI:FingerId
+  (<https://doi.org/10.1073/pnas.1509788112>), ZODIAC
+  (<https://doi.org/10.1038/s42256-020-00234-6>), CANOPUS
+  (<https://doi.org/10.1038/s41587-020-0740-8>), COSMIC
+  (<https://doi.org/10.1038/s41587-021-01045-9>)
+- LOTUS (<https://doi.org/10.7554/eLife.70780>); note the snapshot DOI you used:
+  <https://doi.org/10.5281/zenodo.5794106>
+- ISDB (<https://doi.org/10.1021/acs.analchem.5b04804>); note the version DOI
+  you used: <https://doi.org/10.5281/zenodo.5607185>
+- TIMA (<https://doi.org/10.3389/fpls.2019.01329>); note the version DOI you
+  used: <https://doi.org/10.5281/zenodo.5797920>
 - NPClassifier: <https://doi.org/10.1021/acs.jnatprod.1c00399>
 
-## Additional software credits
-
-  | Package     | Version    | Citation                                                                                                           |
-  | :---        | :---       | :---                                                                                                               |
-  | base        | 4.6.2      | R Core Team (2026a)                                                                                                |
-  | baseline    | 1.3.8      | Liland et al. (2010); Liland and Mevik (2026)                                                                      |
-  | BiocManager | 1.30.27    | Morgan and Ramos (2025)                                                                                            |
-  | BiocVersion | 3.23.1     | Morgan (2025)                                                                                                      |
-  | cascade     | 0.0.0.9003 | Rutz and Wolfender (2023); Rutz (2026)                                                                             |
-  | curl        | 8.1.0      | Ooms (2026)                                                                                                        |
-  | data.table  | 1.18.6.1   | Barrett et al. (2026)                                                                                              |
-  | gt          | 1.4.0      | Iannone et al. (2026)                                                                                              |
-  | knitr       | 1.52       | Xie (2014); Xie (2015); Xie (2026)                                                                                 |
-  | mzR         | 2.45.3     | Pedrioli et al. (2004); Keller et al. (2005); Kessner et al. (2008); Martens et al. (2010); Chambers et al. (2012) |
-  | plotly      | 4.12.1     | Sievert (2020)                                                                                                     |
-  | rmarkdown   | 2.32       | Xie et al. (2018); Xie et al. (2020); Allaire et al. (2026)                                                        |
-  | tidyverse   | 2.0.0      | Wickham et al. (2019)                                                                                              |
-  | tinytest    | 1.4.3      | <span class="nocase">van der Loo</span> (2020)                                                                     |
-  | tools       | 4.6.2      | R Core Team (2026b)                                                                                                |
-  | withr       | 3.0.3      | Hester et al. (2026)                                                                                               |
-
-<div id="refs" class="references csl-bib-body hanging-indent">
-
-<div id="ref-rmarkdown2026" class="csl-entry">
-
-Allaire, JJ, Yihui Xie, Christophe Dervieux, et al. 2026.
-*<span class="nocase">rmarkdown</span>: Dynamic Documents for r*.
-<https://github.com/rstudio/rmarkdown>.
-
-</div>
-
-<div id="ref-datatable" class="csl-entry">
-
-Barrett, Tyson, Matt Dowle, Arun Srinivasan, et al. 2026.
-*<span class="nocase">data.table</span>: Extension of
-“<span class="nocase">data.frame</span>”*.
-<https://doi.org/10.32614/CRAN.package.data.table>.
-
-</div>
-
-<div id="ref-mzR2012" class="csl-entry">
-
-Chambers, Matthew C., Maclean, et al. 2012. “<span class="nocase">A
-cross-platform toolkit for mass spectrometry and proteomics</span>.”
-*Nat Biotech* 30 (10): 918–20. <https://doi.org/10.1038/nbt.2377>.
-
-</div>
-
-<div id="ref-withr" class="csl-entry">
-
-Hester, Jim, Lionel Henry, Kirill Müller, Kevin Ushey, Hadley Wickham,
-and Winston Chang. 2026. *<span class="nocase">withr</span>: Run Code
-“With” Temporarily Modified Global State*.
-<https://doi.org/10.32614/CRAN.package.withr>.
-
-</div>
-
-<div id="ref-gt" class="csl-entry">
-
-Iannone, Richard, Joe Cheng, Barret Schloerke, et al. 2026.
-*<span class="nocase">gt</span>: Easily Create Presentation-Ready
-Display Tables*. <https://doi.org/10.32614/CRAN.package.gt>.
-
-</div>
-
-<div id="ref-mzR2005" class="csl-entry">
-
-Keller, Andrew, Jimmy Eng, Ning Zhang, Xiao-jun Li, and Ruedi Aebersold.
-2005. “A Uniform Proteomics MS/MS Analysis Platform Utilizing Open XML
-File Formats.” *Mol Syst Biol*.
-
-</div>
-
-<div id="ref-mzR2008" class="csl-entry">
-
-Kessner, Darren, Matt Chambers, Robert Burke, David Agus, and Parag
-Mallick. 2008. “ProteoWizard: Open Source Software for Rapid Proteomics
-Tools Development.” *Bioinformatics* 24 (21): 2534–36.
-<https://doi.org/10.1093/bioinformatics/btn323>.
-
-</div>
-
-<div id="ref-baseline2010" class="csl-entry">
-
-Liland, Kristian Hovde, Trygve Almøy, and Bjørn-Helge Mevik. 2010.
-“Optimal Choice of Baseline Correction for Multivariate Calibration of
-Spectra.” *Applied Spectroscopy* 64: 1007–16.
-<https://doi.org/10.1366/000370210792434350>.
-
-</div>
-
-<div id="ref-baseline2026" class="csl-entry">
-
-Liland, Kristian Hovde, and Bjørn-Helge Mevik. 2026.
-*<span class="nocase">baseline</span>: Baseline Correction of Spectra*.
-<https://doi.org/10.32614/CRAN.package.baseline>.
-
-</div>
-
-<div id="ref-mzR2010" class="csl-entry">
-
-Martens, Lennart, Matthew Chambers, Marc Sturm, et al. 2010. “MzML - a
-Community Standard for Mass Spectrometry Data.” *Mol Cell Proteomics*,
-ahead of print. <https://doi.org/10.1074/mcp.R110.000133>.
-
-</div>
-
-<div id="ref-BiocVersion" class="csl-entry">
-
-Morgan, Martin. 2025. *BiocVersion: Set the Appropriate Version of
-Bioconductor Packages*.
-
-</div>
-
-<div id="ref-BiocManager" class="csl-entry">
-
-Morgan, Martin, and Marcel Ramos. 2025. *BiocManager: Access the
-Bioconductor Project Package Repository*.
-<https://doi.org/10.32614/CRAN.package.BiocManager>.
-
-</div>
-
-<div id="ref-curl" class="csl-entry">
-
-Ooms, Jeroen. 2026. *<span class="nocase">curl</span>: A Modern and
-Flexible Web Client for r*.
-<https://doi.org/10.32614/CRAN.package.curl>.
-
-</div>
-
-<div id="ref-mzR2004" class="csl-entry">
-
-Pedrioli, Patrick G A, Jimmy K Eng, Robert Hubley, et al. 2004. “A
-Common Open Representation of Mass Spectrometry Data and Its Application
-to Proteomics Research.” *Nat Biotechnol* 22 (11): 1459–66.
-<https://doi.org/10.1038/nbt1031>.
-
-</div>
-
-<div id="ref-base" class="csl-entry">
-
-R Core Team. 2026a. *R: A Language and Environment for Statistical
-Computing*. R Foundation for Statistical Computing.
-<https://doi.org/10.32614/R.manuals>.
-
-</div>
-
-<div id="ref-tools" class="csl-entry">
-
-R Core Team. 2026b. *R: A Language and Environment for Statistical
-Computing*. R Foundation for Statistical Computing.
-<https://doi.org/10.32614/R.manuals>.
-
-</div>
-
-<div id="ref-cascade2026" class="csl-entry">
-
-Rutz, Adriano. 2026. *<span class="nocase">cascade</span>:
-Contextualizing Untargeted Annotation with Semi-Quantitative Charged
-Aerosol Detection for Pertinent Characterization of Natural Extracts*.
-
-</div>
-
-<div id="ref-cascade2023" class="csl-entry">
-
-Rutz, Adriano, and Jean-Luc Wolfender. 2023. “Automated Composition
-Assessment of Natural Extracts: Untargeted Mass Spectrometry-Based
-Metabolite Profiling Integrating Semiquantitative Detection.” *Journal
-of Agricultural and Food Chemistry* 71 (46).
-<https://doi.org/10.1021/acs.jafc.3c03099>.
-
-</div>
-
-<div id="ref-plotly" class="csl-entry">
-
-Sievert, Carson. 2020. *Interactive Web-Based Data Visualization with r,
-Plotly, and Shiny*. Chapman; Hall/CRC. <https://plotly-r.com>.
-
-</div>
-
-<div id="ref-tinytest" class="csl-entry">
-
-<span class="nocase">van der Loo, MPJ</span>. 2020. “A Method for
-Deriving Information from Running r Code.” *The R Journal* 13: 42–52.
-<https://journal.r-project.org/articles/RJ-2021-056/>.
-
-</div>
-
-<div id="ref-tidyverse" class="csl-entry">
-
-Wickham, Hadley, Mara Averick, Jennifer Bryan, et al. 2019. “Welcome to
-the <span class="nocase">tidyverse</span>.” *Journal of Open Source
-Software* 4 (43): 1686. <https://doi.org/10.21105/joss.01686>.
-
-</div>
-
-<div id="ref-knitr2014" class="csl-entry">
-
-Xie, Yihui. 2014. “<span class="nocase">knitr</span>: A Comprehensive
-Tool for Reproducible Research in R.” In *Implementing Reproducible
-Computational Research*, edited by Victoria Stodden, Friedrich Leisch,
-and Roger D. Peng. Chapman; Hall/CRC.
-
-</div>
-
-<div id="ref-knitr2015" class="csl-entry">
-
-Xie, Yihui. 2015. *Dynamic Documents with R and Knitr*. 2nd ed. Chapman;
-Hall/CRC. <https://yihui.org/knitr/>.
-
-</div>
-
-<div id="ref-knitr2026" class="csl-entry">
-
-Xie, Yihui. 2026. *<span class="nocase">knitr</span>: A General-Purpose
-Package for Dynamic Report Generation in R*. <https://yihui.org/knitr/>.
-
-</div>
-
-<div id="ref-rmarkdown2018" class="csl-entry">
-
-Xie, Yihui, J. J. Allaire, and Garrett Grolemund. 2018. *R Markdown: The
-Definitive Guide*. Chapman; Hall/CRC.
-<https://pkg.yihui.org/rmarkdown-book/>.
-
-</div>
-
-<div id="ref-rmarkdown2020" class="csl-entry">
-
-Xie, Yihui, Christophe Dervieux, and Emily Riederer. 2020. *R Markdown
-Cookbook*. Chapman; Hall/CRC.
-<https://pkg.yihui.org/rmarkdown-cookbook/>.
-
-</div>
-
-</div>
+Core R package dependencies declared in `DESCRIPTION`: `baseline`, `curl`,
+`data.table`, `ggplot2`, `gt`, `mzR`, and `plotly`.

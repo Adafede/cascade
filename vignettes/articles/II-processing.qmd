@@ -10,7 +10,6 @@ comments:
     repo: adafede/cascade
   hypothesis:
     showHighlights: always
-creative_commons: CC BY
 date: today
 format:
   html:
@@ -21,7 +20,7 @@ knitr:
     collapse: true
     comment: "#>"
 lang: en
-license: CC BY
+license: AGPL-3.0-or-later
 opengraph:
   image:
     src: https://github.com/adafede/cascade/blob/main/man/figures/logo.svg
@@ -65,11 +64,11 @@ Then, you should be able to run
 process_compare_peaks(show_example = TRUE)
 ```
 
-And this basically it! 🚀
+And that completes the peak matching step.
 
 ## Pseudo chromatograms
 
-If you know want to add some cosmetics, and you already have a
+If you now want to add some cosmetics, and you already have a
 [TIMA](https://taxonomicallyinformedannotation.github.io/tima) annotation table,
 you can then run:
 
@@ -171,7 +170,7 @@ non-maximum suppression across retention time:
 tables_list <- generate_tables(show_example = TRUE)
 ```
 
-This will export the table as CSV and/or HTML. A small preview of the HTML table
+This will export the table as TSV and/or HTML. A small preview of the HTML table
 is presented below:
 
 ```{r}
@@ -186,3 +185,10 @@ tables_list$pretty_table
 For some other available helper functions, we now recommend you to read the
 [next
 vignette](https://adafede.github.io/cascade/vignettes/articles/III-bonus.html).
+
+```{r}
+#| label: cleanup
+#| include: false
+
+setwd(old_wd)
+```

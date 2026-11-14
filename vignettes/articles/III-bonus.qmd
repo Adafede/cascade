@@ -10,14 +10,13 @@ comments:
     repo: adafede/cascade
   hypothesis:
     showHighlights: always
-creative_commons: CC BY
 date: today
 format:
   html:
     smooth-scroll: true
 google-scholar: true
 lang: en
-license: CC BY
+license: AGPL-3.0-or-later
 knitr:
   opts_chunk:
     collapse: true
@@ -98,6 +97,13 @@ bonus_plots_list$plots$special
 
 We hope you enjoyed using **CASCADE** and are pleased to hear from you!
 
-For any remark or suggestion, please [fill an
+For any remark or suggestion, please [file an
 issue](https://github.com/adafede/cascade/issues) or feel free to contact us
 directly.
+
+```{r}
+#| label: cleanup
+#| include: false
+
+setwd(old_wd)
+```

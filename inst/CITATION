@@ -39,7 +39,7 @@ bibentry(
   language = "en",
   keywords = "metabolite annotation, charged aerosol detector, semi-quantitative, natural products, computational metabolomics, specialized metabolome, EDAM:topic_3172, EDAM:topic_0154, EDAM:operation_3803",
   doi = "10.1021/acs.jafc.3c03099",
-  issn = "1664-462X",
+  issn = "0021-8561",
   pmc = "PMC10683005",
   pmid = "37949451",
   qid = "Q123938369",

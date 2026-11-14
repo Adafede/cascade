@@ -10,7 +10,6 @@ comments:
     repo: adafede/cascade
   hypothesis:
     showHighlights: always
-creative_commons: CC BY
 date: today
 format:
   html:
@@ -21,7 +20,7 @@ knitr:
     collapse: true
     comment: "#>"
 lang: en
-license: CC BY
+license: AGPL-3.0-or-later
 opengraph:
   image:
     src: https://github.com/adafede/cascade/blob/main/man/figures/logo.svg

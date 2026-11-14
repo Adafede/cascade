@@ -33,7 +33,6 @@ preferred-citation:
     orcid: https://orcid.org/0000-0003-0443-9902
   year: '2026'
   notes: R package, version 0.0.0.9003
-repository: https://bioconductor.org/
 repository-code: https://github.com/adafede/cascade
 url: https://adafede.github.io/cascade
 contact:
@@ -99,7 +98,7 @@ references:
   - EDAM:topic_0154
   - EDAM:operation_3803
   doi: 10.1021/acs.jafc.3c03099
-  issn: 1664-462X
+  issn: 0021-8561
 - type: software
   title: 'R: A Language and Environment for Statistical Computing'
   notes: Depends

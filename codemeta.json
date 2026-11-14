@@ -7,7 +7,7 @@
   "relatedLink": "https://adafede.github.io/cascade",
   "codeRepository": "https://github.com/adafede/cascade",
   "issueTracker": "https://github.com/adafede/cascade/issues",
-  "license": "https://spdx.org/licenses/AGPL-3.0",
+  "license": "https://spdx.org/licenses/AGPL-3.0-or-later",
   "version": "0.0.0.9003",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
@@ -275,7 +275,7 @@
     }
   ],
   "releaseNotes": "https://github.com/adafede/cascade/blob/main/NEWS.md",
-  "readme": "https://github.com/Adafede/cascade/blob/main/README.md",
+  "readme": "https://github.com/adafede/cascade/blob/main/README.md",
   "contIntegration": ["https://github.com/adafede/cascade/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/adafede/cascade"],
   "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html#experimental"
 }
