@@ -2,7 +2,7 @@
 # CITATION.cff file created with {cffr} R package
 # See also: https://docs.ropensci.org/cffr/
 # ------------------------------------------------
-
+ 
 cff-version: 1.2.0
 message: 'To cite package "cascade" in publications use:'
 type: software
@@ -33,8 +33,9 @@ preferred-citation:
     orcid: https://orcid.org/0000-0003-0443-9902
   year: '2026'
   notes: R package, version 0.0.0.9003
+repository: https://bioconductor.org/
 repository-code: https://github.com/adafede/cascade
-url: https://adafede.github.io/cascade
+url: https://adafede.github.io/cascade/
 contact:
 - family-names: Rutz
   given-names: Adriano
@@ -114,8 +115,7 @@ references:
   doi: 10.32614/R.manuals
   version: '>= 4.5.0'
 - type: software
-  title: baseline
-  abstract: 'baseline: Baseline Correction of Spectra'
+  title: 'baseline: Baseline Correction of Spectra'
   notes: Imports
   url: https://github.com/khliland/baseline/
   repository: https://CRAN.R-project.org/package=baseline
@@ -130,8 +130,7 @@ references:
   doi: 10.32614/CRAN.package.baseline
   version: '>= 1.3.7'
 - type: software
-  title: curl
-  abstract: 'curl: A Modern and Flexible Web Client for R'
+  title: 'curl: A Modern and Flexible Web Client for R'
   notes: Imports
   url: https://jeroen.r-universe.dev/curl
   repository: https://CRAN.R-project.org/package=curl
@@ -144,8 +143,7 @@ references:
   doi: 10.32614/CRAN.package.curl
   version: '>= 7.1.0'
 - type: software
-  title: data.table
-  abstract: 'data.table: Extension of `data.frame`'
+  title: 'data.table: Extension of `data.frame`'
   notes: Imports
   url: https://r-datatable.com
   repository: https://CRAN.R-project.org/package=data.table
@@ -182,8 +180,7 @@ references:
   doi: 10.32614/CRAN.package.data.table
   version: '>= 1.18.4'
 - type: software
-  title: ggplot2
-  abstract: 'ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics'
+  title: 'ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics'
   notes: Imports
   url: https://ggplot2.tidyverse.org
   repository: https://CRAN.R-project.org/package=ggplot2
@@ -223,8 +220,7 @@ references:
   doi: 10.32614/CRAN.package.ggplot2
   version: '>= 4.0.3'
 - type: software
-  title: gt
-  abstract: 'gt: Easily Create Presentation-Ready Display Tables'
+  title: 'gt: Easily Create Presentation-Ready Display Tables'
   notes: Imports
   url: https://gt.rstudio.com
   repository: https://CRAN.R-project.org/package=gt
@@ -268,8 +264,7 @@ references:
   doi: 10.32614/CRAN.package.gt
   version: '>= 1.3.0'
 - type: software
-  title: mzR
-  abstract: 'mzR: parser for netCDF, mzXML and mzML and mzIdentML files (mass spectrometry
+  title: 'mzR: parser for netCDF, mzXML and mzML and mzIdentML files (mass spectrometry
     data)'
   notes: Imports
   url: https://github.com/sneumann/mzR/
@@ -288,11 +283,11 @@ references:
     given-names: Johannes
     email: Johannes.Rainer@eurac.edu
     orcid: https://orcid.org/0000-0002-6977-7147
-  version: '>= 2.44.0'
   year: '2026'
+  doi: 10.18129/B9.bioc.mzR
+  version: '>= 2.44.0'
 - type: software
-  title: plotly
-  abstract: 'plotly: Create Interactive Web Graphics via ''plotly.js'''
+  title: 'plotly: Create Interactive Web Graphics via ''plotly.js'''
   notes: Imports
   url: https://plotly-r.com
   repository: https://CRAN.R-project.org/package=plotly
@@ -324,8 +319,7 @@ references:
   doi: 10.32614/CRAN.package.plotly
   version: '>= 4.12.1'
 - type: software
-  title: stats
-  abstract: 'R: A Language and Environment for Statistical Computing'
+  title: 'R: A Language and Environment for Statistical Computing'
   notes: Imports
   authors:
   - name: R Core Team
@@ -337,21 +331,7 @@ references:
   year: '2026'
   doi: 10.32614/R.manuals
 - type: software
-  title: utils
-  abstract: 'R: A Language and Environment for Statistical Computing'
-  notes: Imports
-  authors:
-  - name: R Core Team
-    website: https://ror.org/02zz1nj61
-  institution:
-    name: R Foundation for Statistical Computing
-    website: https://ror.org/05qewa988
-    address: Vienna, Austria
-  year: '2026'
-  doi: 10.32614/R.manuals
-- type: software
-  title: knitr
-  abstract: 'knitr: A General-Purpose Package for Dynamic Report Generation in R'
+  title: 'knitr: A General-Purpose Package for Dynamic Report Generation in R'
   notes: Suggests
   url: https://yihui.org/knitr/
   repository: https://CRAN.R-project.org/package=knitr
@@ -364,8 +344,7 @@ references:
   doi: 10.32614/CRAN.package.knitr
   version: '>= 1.51'
 - type: software
-  title: quarto
-  abstract: 'quarto: R Interface to ''Quarto'' Markdown Publishing System'
+  title: 'quarto: R Interface to ''Quarto'' Markdown Publishing System'
   notes: Suggests
   url: https://quarto-dev.github.io/quarto-r/
   repository: https://CRAN.R-project.org/package=quarto
@@ -378,12 +357,11 @@ references:
     given-names: Christophe
     email: cderv@posit.co
     orcid: https://orcid.org/0000-0003-4474-2498
-  year: '2026'
+  year: '2025'
   doi: 10.32614/CRAN.package.quarto
   version: '>= 1.5.1'
 - type: software
-  title: spelling
-  abstract: 'spelling: Tools for Spell Checking in R'
+  title: 'spelling: Tools for Spell Checking in R'
   notes: Suggests
   url: https://ropensci.r-universe.dev/spelling
   repository: https://CRAN.R-project.org/package=spelling
@@ -395,11 +373,10 @@ references:
   - family-names: Hester
     given-names: Jim
     email: james.hester@rstudio.com
-  year: '2026'
+  year: '2025'
   doi: 10.32614/CRAN.package.spelling
 - type: software
-  title: svglite
-  abstract: 'svglite: An ''SVG'' Graphics Device'
+  title: 'svglite: An ''SVG'' Graphics Device'
   notes: Suggests
   url: https://svglite.r-lib.org
   repository: https://CRAN.R-project.org/package=svglite
@@ -423,12 +400,11 @@ references:
   - family-names: Lise
     given-names: Vaudor
     email: lise.vaudor@ens-lyon.fr
-  year: '2026'
+  year: '2025'
   doi: 10.32614/CRAN.package.svglite
   version: '>= 2.2.2'
 - type: software
-  title: tinytest
-  abstract: 'tinytest: Lightweight and Feature Complete Unit Testing Framework'
+  title: 'tinytest: Lightweight and Feature Complete Unit Testing Framework'
   notes: Suggests
   url: https://github.com/markvanderloo/tinytest
   repository: https://CRAN.R-project.org/package=tinytest
@@ -442,8 +418,7 @@ references:
   doi: 10.32614/CRAN.package.tinytest
   version: '>= 1.4.3'
 - type: software
-  title: withr
-  abstract: 'withr: Run Code ''With'' Temporarily Modified Global State'
+  title: 'withr: Run Code ''With'' Temporarily Modified Global State'
   notes: Suggests
   url: https://withr.r-lib.org
   repository: https://CRAN.R-project.org/package=withr
@@ -467,3 +442,4 @@ references:
   year: '2026'
   doi: 10.32614/CRAN.package.withr
   version: '>= 2.5.0'
+
