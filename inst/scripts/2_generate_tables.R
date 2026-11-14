@@ -1,22 +1,19 @@
 start <- Sys.time()
 
-message("This program generates tables")
-message("Authors: \n", "AR")
-message("Contributors: \n", "...")
-
-cascade::generate_tables(show_example = TRUE)
-# cascade::generate_tables(
-#   annotations = "data/interim/annotations/tima/241026_103144_extract/extract_results.tsv",
-#   file_negative = NULL,
-#   file_positive = "data/interim/peaks/210619_AR_06_V_03_2_01_featuresInformed_cad.tsv",
-#   min_confidence = 0.4,
-#   show_example = FALSE,
-#   export_csv = TRUE,
-#   export_html = TRUE,
-#   export_dir = "data/processed",
-#   export_name = "cascade_table"
-# )
+out_dir <- file.path(tempdir(), "cascade_tables")
+if (interactive() || identical(Sys.getenv("CASCADE_RUN_LIVE"), "true")) {
+  local({
+    old_wd <- setwd(tempdir())
+    on.exit(setwd(old_wd), add = TRUE)
+    message("Generating summary tables (writing to ", out_dir, ").")
+    cascade::generate_tables(show_example = TRUE, export_dir = out_dir)
+  })
+} else {
+  message(
+    "Skipping live LOTUS download for generate_tables(); ",
+    "run interactively or set CASCADE_RUN_LIVE=true."
+  )
+}
 
 end <- Sys.time()
-
 message("Script finished in ", format(end - start))
