@@ -310,7 +310,7 @@ tm_null_tables <- treemaps_progress(
 )
 expect_inherits(tm_null_tables$Swertia, "plotly")
 
-# --- 7. prepare_hierarchy (>10 pathways -> "Other" & "Other other", and empty input) ---
+# --- 7. prepare_hierarchy (>10 pathways -> "Other", empty input) ---
 many_pathways_dt <- data.table::data.table(
   feature_id = 1:12,
   smiles_2D = paste0("C", 1:12),
@@ -339,7 +339,7 @@ expect_true(666 %in% pp_other$group)
 expect_true(all(nzchar(as.character(pp_other$color))))
 
 # prepare_plot with >10 non-"Other" parents and >5 subgroups under "Other"
-# exercises NA_character_ palette overflow guards -> replaced by #0000xx quickfix
+# exercises NA_character_ palette overflow guards (#0000xx quickfix)
 pp_overflow_dt <- data.table::data.table(
   parents = c(paste0("P", 1:11), rep("Other", 6L)),
   ids = c(paste0("I", 1:11), paste0("O", 1:6)),
@@ -355,7 +355,7 @@ expect_true(any(grepl("^#0000", as.character(pp_overflow$color))))
 ph_empty <- prepare_hierarchy(many_pathways_dt[0L], type = "analysis")
 expect_identical(nrow(ph_empty), 0L)
 
-# plot_results_2 with empty 0-row tables exercises dedup_peaks & strip_posneg 0-row guards
+# plot_results_2 with empty 0-row tables exercises dedup/strip 0-row guards
 empty_pk_dt <- data.table::data.table(
   feature_id = integer(0),
   smiles_2D = character(0),

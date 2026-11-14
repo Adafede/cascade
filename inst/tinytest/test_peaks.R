@@ -335,13 +335,13 @@ expect_true(cp_diff[[2L]] > 0.5 && cp_diff[[2L]] < 1.0)
 expect_identical(cp_diff[[3L]], 0)
 expect_identical(cp_diff[[4L]], 0)
 
-# closest_idx branch where table advances (next_t_d < cur_d and next_t_d <= next_x_d)
+# closest_idx branch where table advances (next_t_d < cur_d <= next_x_d)
 expect_identical(
   closest_idx(c(5.0), c(1.0, 5.0), tolerance = 0.2),
   2L
 )
 
-# extract_ms_progress with plain numeric vector in mzs[[x]] (is.null(dim(mz_mat)))
+# extract_ms_progress with plain numeric vector (is.null(dim(mz_mat)))
 ext_vec_mz <- extract_ms_progress(
   xs = 2L,
   ms_data = ms_synth,

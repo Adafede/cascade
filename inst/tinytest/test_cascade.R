@@ -1,25 +1,75 @@
 library(tinytest)
 library(cascade)
 
-orig_lotus <- normalizePath(
-  "data/source/libraries/lotus.csv.gz",
-  mustWork = FALSE
-)
-test_dir <- tempfile("cascade_test_")
-dir.create(test_dir, recursive = TRUE, showWarnings = FALSE)
-if (file.exists(orig_lotus)) {
+local({
+  test_dir <- tempfile("cascade_test_")
   dir.create(
     file.path(test_dir, "data/source/libraries"),
     recursive = TRUE,
     showWarnings = FALSE
   )
-  file.symlink(
-    orig_lotus,
-    file.path(test_dir, "data/source/libraries/lotus.csv.gz")
-  )
-}
+  on.exit(unlink(test_dir, recursive = TRUE), add = TRUE)
 
-withr::with_dir(test_dir, {
+  withr::local_envvar(
+    c(R_USER_CACHE_DIR = file.path(test_dir, "user_cache"))
+  )
+  withr::local_dir(test_dir)
+
+  # Create deterministic offline LOTUS fixture covering generate_tables() and
+  # generate_ids() columns so tests never download 86 MB from Zenodo.
+  lotus_gz <- gzfile("data/source/libraries/lotus.csv.gz", open = "wb")
+  writeLines(
+    c(
+      paste(
+        "structure_inchikey",
+        "structure_smiles_2D",
+        "structure_exact_mass",
+        "structure_xlogp",
+        "structure_taxonomy_npclassifier_01pathway",
+        "structure_taxonomy_npclassifier_02superclass",
+        "structure_taxonomy_npclassifier_03class",
+        "organism_taxonomy_01domain",
+        "organism_taxonomy_02kingdom",
+        "organism_taxonomy_03phylum",
+        "organism_taxonomy_04class",
+        "organism_taxonomy_05order",
+        "organism_taxonomy_06family",
+        "organism_taxonomy_07tribe",
+        "organism_taxonomy_08genus",
+        "organism_taxonomy_09species",
+        "organism_taxonomy_10varietas",
+        "reference_doi",
+        sep = ","
+      ),
+      paste(
+        "KOHAOVSIVQWVAQ-UHFFFAOYSA-N,C=C,300.1,1.5",
+        "Terpenoids,Monoterpenoids,Secoiridoids",
+        "Eukaryota,Plantae,Streptophyta,Magnoliopsida",
+        "Gentianales,Gentianaceae,Gentianeae,Swertia",
+        "Swertia chirayita,NA,10.1021/test.lotus1",
+        sep = ","
+      ),
+      paste(
+        "JZRWCGZRTZMZEH-UHFFFAOYSA-N,CC=O,320.2,2.0",
+        "Terpenoids,Monoterpenoids,Secoiridoids",
+        "Eukaryota,Plantae,Streptophyta,Magnoliopsida",
+        "Gentianales,Gentianaceae,Gentianeae,Swertia",
+        "Swertia perennis,NA,10.1021/test.lotus2",
+        sep = ","
+      ),
+      paste(
+        "VFRROHXSMXFLSN-UHFFFAOYSA-N,O=C1OCC2C1C(O)OC=C2,374.1,0.5",
+        "Terpenoids,Monoterpenoids,Secoiridoids",
+        "Eukaryota,Plantae,Streptophyta,Magnoliopsida",
+        "Gentianales,Gentianaceae,Gentianeae,Swertia",
+        "Swertia chirayita,NA,10.1021/test.lotus3",
+        sep = ","
+      )
+    ),
+    lotus_gz
+  )
+  close(lotus_gz)
+
   message("Testing internal mathematical and alignment helpers...")
   runmean_fn <- utils::getFromNamespace("runmean_center", "cascade")
   closest_fn <- utils::getFromNamespace("closest_idx", "cascade")
@@ -59,13 +109,11 @@ withr::with_dir(test_dir, {
   expect_equal(resp_val[1L], 0)
   expect_true(all(resp_val[2:3] > 0))
 
-  # Verify filter_fft NA handling and exact frequency cutoff
   sig_na <- c(1, NA, 3, 4, 5, 6, 7, 8, 9, 10)
   fft_res <- fft_fn(sig_na, components = 0.2)
   expect_equal(length(fft_res), length(sig_na))
   expect_true(all(is.finite(fft_res)))
 
-  # Verify make_confident NA vs low-score behavior
   conf_in <- data.table::data.table(
     score_final = c(0.8, 0.2, NA_real_),
     best_candidate_1 = c("Alkaloids", "Terpenoids", "Shikimates"),
@@ -86,7 +134,6 @@ withr::with_dir(test_dir, {
     c("Simple indole", "notConfident notConfident notConfident", NA_character_)
   )
 
-  # Verify order-preserving data.table joins
   dt_a <- data.table::data.table(k = c("b", "a", "c"), v1 = c(2L, 1L, 3L))
   dt_b <- data.table::data.table(k = c("a", "b"), v2 = c(10L, 20L))
   lj_res <- lj_fn(dt_a, dt_b, by = "k")
@@ -154,7 +201,9 @@ withr::with_dir(test_dir, {
     correct_acn = TRUE
   )
   expect_true(is.list(res_pseudo))
-  expect_true(all(c("plots_1", "plots_2", "treemaps") %in% names(res_pseudo)))
+  expect_true(all(
+    c("plots_1", "plots_2", "treemaps") %in% names(res_pseudo)
+  ))
   expect_equal(length(res_pseudo$plots_1), 8L)
   expect_equal(length(res_pseudo$plots_2), 2L)
   expect_inherits(res_pseudo$plots_1$histograms_taxo_maj, "ggplot")
@@ -172,9 +221,12 @@ withr::with_dir(test_dir, {
     predicted_classes = TRUE
   )
   expect_inherits(tima_pred[[1L]], "data.table")
+  expect_identical(names(tima_pred), "annotations_pred")
 
   tima_plots <- plot_tima(tima_tabs)
-  expect_true(all(c("histogram", "treemap", "sunburst") %in% names(tima_plots)))
+  expect_true(all(
+    c("histogram", "treemap", "sunburst") %in% names(tima_plots)
+  ))
   expect_inherits(tima_plots$histogram, "ggplot")
   expect_inherits(tima_plots$treemap, "plotly")
   expect_inherits(tima_plots$sunburst, "plotly")
@@ -184,7 +236,7 @@ withr::with_dir(test_dir, {
   expect_error(query_wikidata("SELECT * WHERE {}", timeout = -5))
   expect_error(query_wikidata("SELECT * WHERE {}", remove_url = "yes"))
 
-  message("Testing generate_tables...")
+  message("Testing generate_tables offline with LOTUS fixture...")
   res_tables <- generate_tables(show_example = TRUE)
   expect_true(all(c("pretty_table", "csv_table") %in% names(res_tables)))
   expect_inherits(res_tables$pretty_table, "gt_tbl")
@@ -193,17 +245,69 @@ withr::with_dir(test_dir, {
   expect_true(file.exists("data/processed/cascade_table.tsv"))
   expect_true(file.exists("data/processed/cascade_table.html"))
 
-  message("Testing generate_ids...")
-  res_ids <- tryCatch(
-    generate_ids(taxa = "Swertia", show_title = TRUE),
-    error = function(e) {
-      message("Skipping live Wikidata test due to network error: ", e$message)
-      NULL
+  message("Testing generate_ids offline with mocked SPARQL...")
+  local({
+    curl_ns <- asNamespace("curl")
+    orig_dl <- get("curl_download", envir = curl_ns)
+    unlockBinding("curl_download", curl_ns)
+    on.exit(
+      {
+        if (bindingIsLocked("curl_download", curl_ns)) {
+          unlockBinding("curl_download", curl_ns)
+        }
+        assign("curl_download", orig_dl, envir = curl_ns)
+        lockBinding("curl_download", curl_ns)
+      },
+      add = TRUE
+    )
+    state <- new.env(parent = emptyenv())
+    state$calls <- 0L
+    make_mock_dl <- function(st) {
+      force(st)
+      function(url, destfile, quiet = TRUE, mode = "wb", handle = NULL) {
+        st$calls <- st$calls + 1L
+        if (st$calls == 1L) {
+          writeLines(
+            c("taxon", "http://www.wikidata.org/entity/Q158572"),
+            destfile
+          )
+        } else {
+          writeLines(
+            c(
+              paste(
+                "structure",
+                "structureLabel",
+                "structure_id",
+                "structureSmiles",
+                "taxaLabels",
+                "taxa",
+                "referencesLabels",
+                "references_ids",
+                "references",
+                sep = ","
+              ),
+              paste(
+                "Q415869,Swertiamarin,VFRROHXSMXFLSN-UHFFFAOYSA-N",
+                "O=C1OCC2C1C(O)OC=C2,Swertia chirayita,Q10758325",
+                "Ref1,10.1021/test.lotus3,QR1",
+                sep = ","
+              )
+            ),
+            destfile
+          )
+        }
+        invisible(destfile)
+      }
     }
-  )
-  if (!is.null(res_ids)) {
+    assign("curl_download", make_mock_dl(state), envir = curl_ns)
+
+    res_ids <- generate_ids(taxa = "Swertia", show_title = TRUE)
     expect_true(all(
       c("plots", "treemaps", "sunbursts", "tables") %in% names(res_ids)
     ))
-  }
+    expect_inherits(res_ids$plots$Swertia, "ggplot")
+    expect_inherits(res_ids$treemaps$Swertia, "plotly")
+    expect_inherits(res_ids$sunbursts$Swertia, "plotly")
+    expect_true("Swertiamarin" %in% res_ids$tables$Swertia$structureLabel)
+  })
 })

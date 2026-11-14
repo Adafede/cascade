@@ -54,7 +54,7 @@ p_raw_time <- check_chromatograms(
 )
 expect_inherits(p_raw_time, "plotly")
 
-# check_chromatograms_alignment with auto shift, neg-only, no-BPI, and file paths
+# check_chromatograms_alignment (auto shift, neg-only, no-BPI, file paths)
 local({
   ca_ns <- asNamespace("cascade")
   orig_load_chrom <- get("load_chromatograms", envir = ca_ns)
@@ -81,9 +81,13 @@ local({
       intensity = 2 + 90 * exp(-((t_g - 1.2)^2) / 0.01)
     )
   )
+  make_const_fn <- function(val) {
+    force(val)
+    function(...) val
+  }
   assign(
     "load_chromatograms",
-    function(...) mock_chroms,
+    make_const_fn(mock_chroms),
     envir = ca_ns
   )
 
@@ -417,7 +421,7 @@ local({
   })
 })
 
-# --- 5. check_peaks_integration(chromatogram = "original") and process_compare_peaks(0 peaks) ---
+# --- 5. check_peaks_integration(original) & process_compare_peaks(0 peaks) ---
 local({
   ca_ns <- asNamespace("cascade")
   orig_load_chrom <- get("load_chromatograms", envir = ca_ns)
@@ -433,9 +437,13 @@ local({
     },
     add = TRUE
   )
+  make_ex_wrapper <- function(fn) {
+    force(fn)
+    function(...) fn(show_example = TRUE)
+  }
   assign(
     "load_chromatograms",
-    function(...) orig_load_chrom(show_example = TRUE),
+    make_ex_wrapper(orig_load_chrom),
     envir = ca_ns
   )
   assign(

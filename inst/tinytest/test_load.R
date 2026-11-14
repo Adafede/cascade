@@ -20,11 +20,15 @@ parse_ms_spectra <- utils::getFromNamespace("parse_ms_spectra", "cascade")
 load_name <- utils::getFromNamespace("load_name", "cascade")
 cascade_env <- utils::getFromNamespace(".cascade_env", "cascade")
 
-work_dir <- tempfile("cascade_load_test_")
-dir.create(work_dir, recursive = TRUE, showWarnings = FALSE)
-
-withr::with_dir(work_dir, {
+local({
+  work_dir <- tempfile("cascade_load_test_")
+  dir.create(work_dir, recursive = TRUE, showWarnings = FALSE)
   on.exit(unlink(work_dir, recursive = TRUE), add = TRUE)
+
+  withr::local_envvar(
+    c(R_USER_CACHE_DIR = file.path(work_dir, "r_user_cache"))
+  )
+  withr::local_dir(work_dir)
   # --- 1. check_export_dir ---
   nested_dir <- file.path(work_dir, "a", "b", "c")
   expect_false(dir.exists(nested_dir))
@@ -79,13 +83,17 @@ withr::with_dir(work_dir, {
   expect_identical(get_zenodo_file(path = session_dest), session_dest)
   expect_true(file.exists(session_dest))
   expect_identical(readLines(session_dest), "dummy_content")
-  # Pre-existing 0-byte file forces file.symlink() to return FALSE -> file.copy()
-  session_dest_0 <- file.path(work_dir, "sub_session", "zero_session.csv.gz")
+  # Pre-existing 0-byte file forces file.symlink() to fail -> file.copy()
+  session_dest_0 <- file.path(
+    work_dir,
+    "sub_session",
+    "zero_session.csv.gz"
+  )
   file.create(session_dest_0)
   expect_identical(get_zenodo_file(path = session_dest_0), session_dest_0)
   expect_identical(readLines(session_dest_0), "dummy_content")
 
-  # 3c. User cache directory hit (tools::R_user_dir("cascade", which = "cache"))
+  # 3c. User cache directory hit (isolated via R_USER_CACHE_DIR)
   cascade_env[["zenodo_lotus_path"]] <- NULL
   user_cache_dir <- tools::R_user_dir("cascade", which = "cache")
   dir.create(user_cache_dir, recursive = TRUE, showWarnings = FALSE)
@@ -98,7 +106,7 @@ withr::with_dir(work_dir, {
   expect_identical(get_zenodo_file(path = uc_dest), uc_dest)
   expect_true(file.exists(uc_dest))
   expect_identical(readLines(uc_dest), "user_cached_content")
-  # Pre-existing 0-byte file forces file.symlink() to return FALSE -> file.copy()
+  # Pre-existing 0-byte file forces file.symlink() to fail -> file.copy()
   cascade_env[["zenodo_lotus_path"]] <- NULL
   uc_dest_0 <- file.path(work_dir, "sub_uc2", unique_name)
   dir.create(dirname(uc_dest_0), recursive = TRUE, showWarnings = FALSE)
@@ -113,8 +121,15 @@ withr::with_dir(work_dir, {
   orig_dl <- get("curl_download", envir = curl_ns)
   unlockBinding("curl_fetch_memory", curl_ns)
   unlockBinding("curl_download", curl_ns)
+  # Restore and re-lock curl bindings immediately
   on.exit(
     {
+      if (bindingIsLocked("curl_fetch_memory", curl_ns)) {
+        unlockBinding("curl_fetch_memory", curl_ns)
+      }
+      if (bindingIsLocked("curl_download", curl_ns)) {
+        unlockBinding("curl_download", curl_ns)
+      }
       assign("curl_fetch_memory", orig_fetch, envir = curl_ns)
       assign("curl_download", orig_dl, envir = curl_ns)
       lockBinding("curl_fetch_memory", curl_ns)
@@ -190,9 +205,11 @@ withr::with_dir(work_dir, {
     )
   )
 
-  # Restore curl bindings immediately
+  # Restore and re-lock curl bindings immediately
   assign("curl_fetch_memory", orig_fetch, envir = curl_ns)
   assign("curl_download", orig_dl, envir = curl_ns)
+  lockBinding("curl_fetch_memory", curl_ns)
+  lockBinding("curl_download", curl_ns)
   cascade_env[["zenodo_lotus_path"]] <- orig_session_lotus
 
   # --- 4. load_annotations ---
@@ -261,7 +278,10 @@ withr::with_dir(work_dir, {
   # Fallback when file is non-existent and show_example = FALSE (calls
   # fread_gz(file))
   expect_error(
-    load_features_informed(file = "/nonexistent/inf.tsv", show_example = FALSE)
+    load_features_informed(
+      file = "/nonexistent/inf.tsv",
+      show_example = FALSE
+    )
   )
   expect_error(
     load_features_not_informed(
@@ -374,7 +394,10 @@ withr::with_dir(work_dir, {
   expect_equal(chrom_from_file$cad$intensity, c(10, 20), tolerance = 1e-12)
 
   # Negative polarity example chromatograms
-  chrom_neg <- load_chromatograms(show_example = TRUE, example_polarity = "neg")
+  chrom_neg <- load_chromatograms(
+    show_example = TRUE,
+    example_polarity = "neg"
+  )
   expect_identical(names(chrom_neg), c("bpi", "pda", "cad"))
   expect_true(nrow(chrom_neg$cad) > 0L)
 })

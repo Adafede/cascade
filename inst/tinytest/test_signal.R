@@ -103,8 +103,9 @@ n_pad <- length(x_pad)
 cutoff_fft <- max(2, n_pad * 0.3)
 freq_idx <- pmin(seq_len(n_pad) - 1L, n_pad - seq_len(n_pad) + 1L)
 bw_w <- 1 / (1 + (freq_idx / cutoff_fft)^8)
-ref_fft <- (Re(stats::fft(stats::fft(x_pad) * bw_w, inverse = TRUE)) /
-  n_pad)[seq_along(x_zero_na)]
+ref_fft <- (Re(stats::fft(stats::fft(x_pad) * bw_w, inverse = TRUE)) / n_pad)[
+  seq_along(x_zero_na)
+]
 expect_equal(
   filter_fft(x_zero_na, components = 0.3),
   ref_fft,
@@ -149,7 +150,7 @@ expect_equal(
   tolerance = 1e-12
 )
 expect_true(max(s_pos) > max(s0))
-# Positive 4th-derivative term at Gaussian apex increases apex height above 2nd-derivative-only
+# Positive 4th-deriv term at Gaussian apex boosts height over 2nd-deriv only
 s_no_d4 <- signal_sharpening(
   t_sharp,
   y_gauss,
