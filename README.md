@@ -26,8 +26,8 @@ badge](https://adafede.r-universe.dev/cascade/badges/version?&color=blue&style=c
 ⚠️ This repository is not maintained and will not be except for extreme
 interest. It has just been opened for the sake of transparency.
 
-The initial work is available at <https://doi.org/10.1021/acs.jafc.3c03099>, with
-some improvements made since then. The workflow is illustrated below.
+The initial work is available at <https://doi.org/10.1021/acs.jafc.3c03099>,
+with some improvements made since then. The workflow is illustrated below.
 
 ![Workflow](https://raw.githubusercontent.com/adafede/cascade/main/man/figures/cascade-workflow.svg)
 \

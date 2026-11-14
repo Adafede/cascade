@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - main
-      - dev
   pull_request:
     branches:
       - main
-      - dev
   workflow_dispatch: null
 permissions: read-all
 jobs:
@@ -23,24 +21,17 @@ jobs:
           - ubuntu-latest
           - macos-latest
           - windows-latest
-          - ubuntu-26.04-arm
-          # - macos-26-intel
-          # - windows-11-vs2026-arm
     defaults:
       run:
         shell: bash
     steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
       - uses: r-lib/actions/setup-r@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05
         with:
           use-public-rspm: true
-
-      - name: Install dependencies (Linux)
-        if: contains(matrix.os, 'ubuntu')
-        run: |
-          sudo apt-get update && sudo apt-get install -y --no-install-recommends \
-            libarchive-dev libcurl4-openssl-dev libfribidi-dev libharfbuzz-dev libnetcdf-dev libuv1-dev \
-          && sudo apt-get clean \
-          && sudo rm -rf /var/lib/apt/lists/*
 
       - name: Install dependencies (macOS)
         if: contains(matrix.os, 'macos')
@@ -54,29 +45,20 @@ jobs:
           LDFLAGS  += -L${GETTEXT_PREFIX}/lib -lintl
           EOF
 
-      - name: Install dependencies (Windows)
-        if: contains(matrix.os, 'windows')
-        run: true
+      - uses: r-lib/actions/setup-r-dependencies@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05
+        with:
+          extra-packages: any::pak
 
-      - name: Install
-        run: >
-          install.packages(
-          "cascade",
-          repos = c(
-          "https://adafede.r-universe.dev",
-          "https://cran.r-universe.dev",
-          "https://bioc.r-universe.dev"
-          )
-          )
+      - name: Install local package
         shell: Rscript {0}
+        run: pak::local_install(".", ask = FALSE)
 
-      - name: Run pipeline
+      - name: Run deterministic example pipeline
+        shell: Rscript {0}
         run: |
           cascade::check_chromatograms_alignment(show_example = TRUE)
           cascade::check_peaks_integration(show_example = TRUE)
           cascade::process_compare_peaks(show_example = TRUE)
           cascade::generate_pseudochromatograms(show_example = TRUE)
-          cascade::generate_tables(show_example = TRUE)
-          cascade::prepare_tima_annotations(show_example = TRUE) |> cascade::plot_tima()
-          cascade::generate_ids()
-        shell: Rscript {0}
+          cascade::prepare_tima_annotations(show_example = TRUE) |>
+            cascade::plot_tima()

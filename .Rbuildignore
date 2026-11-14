@@ -11,7 +11,6 @@
 ^TESTING\.md$
 ^[.]?air[.]toml$
 ^[.]agent-scratch$
-^\.agent-work$
 ^[.]agent[.]md$
 ^[.]agentignore$
 ^[.]cursor[.]md$
@@ -22,6 +21,7 @@
 ^\.Rdata$
 ^\.Rhistory$
 ^\.Rproj\.user$
+^\.agent-work$
 ^\.agents$
 ^\.claude$
 ^\.claudeignore$

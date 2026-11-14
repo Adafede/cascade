@@ -1,9 +1,8 @@
-# Workflow derived from https://github.com/posit-dev/setup-air/tree/main/examples
-
 on:
   push:
-    branches: [main, master]
+    branches: [main]
   pull_request:
+    branches: [main]
 
 name: format-check.yaml
 
@@ -18,8 +17,51 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Install
+      - name: Install Air
         uses: posit-dev/setup-air@fd20dd239848b9d807848a7ab92265cf197de694
 
-      - name: Check
+      - name: Check Air formatting
         run: air format . --check
+
+      - name: Check Jarl lints
+        uses: etiennebacher/setup-jarl@v0.1.1
+
+      - name: Check Panache formatting and lints
+        run: |
+          pipx install panache-cli
+          export PATH="$HOME/.local/bin:$PATH"
+          panache format --check .
+          panache lint .
+
+  r-lint:
+    name: r-lint
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - uses: r-lib/actions/setup-r@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05
+        with:
+          extra-packages: any::lintr, any::pkgload
+
+      - name: Run lintr
+        shell: Rscript {0}
+        run: |
+          pkgload::load_all(
+            ".",
+            export_all = FALSE,
+            helpers = FALSE,
+            quiet = TRUE
+          )
+          lints <- lintr::lint_package()
+          print(lints)
+          if (length(lints) > 0L) {
+            quit(status = 1L)
+          }

@@ -56,13 +56,6 @@ plots <- cascade::prepare_tima_annotations(
   show_example = TRUE
 ) |>
   cascade::plot_tima()
-# cascade::prepare_tima_annotations(
-#   annotations = list(
-#     "yourExperiment1"="PathToYourTimaOutput1",
-#     "yourExperiment2"="PathToYourTimaOutput2"
-#     )
-# ) |>
-#   cascade::plot_tima()
 ```
 
 ```{r}
