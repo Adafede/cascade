@@ -317,6 +317,7 @@ window.Quarto = {
   <li><a href="#cascade" id="toc-cascade" class="nav-link active" data-scroll-target="#cascade">cascade</a></li>
   <li><a href="#cascade-0.0.0.9003" id="toc-cascade-0.0.0.9003" class="nav-link" data-scroll-target="#cascade-0.0.0.9003">cascade 0.0.0.9003</a>
   <ul class="collapse">
+  <li><a href="#bug-fixes-stability" id="toc-bug-fixes-stability" class="nav-link" data-scroll-target="#bug-fixes-stability">Bug Fixes &amp; Stability</a></li>
   <li><a href="#mathematical-algorithmic-improvements" id="toc-mathematical-algorithmic-improvements" class="nav-link" data-scroll-target="#mathematical-algorithmic-improvements">Mathematical &amp; Algorithmic Improvements</a></li>
   </ul></li>
   <li><a href="#cascade-0.0.0.9002" id="toc-cascade-0.0.0.9002" class="nav-link" data-scroll-target="#cascade-0.0.0.9002">cascade 0.0.0.9002</a>
@@ -342,6 +343,36 @@ window.Quarto = {
 </section>
 <section id="cascade-0.0.0.9003" class="level1">
 <h1>cascade 0.0.0.9003</h1>
+<section id="bug-fixes-stability" class="level2">
+<h2 class="anchored" data-anchor-id="bug-fixes-stability">Bug Fixes &amp; Stability</h2>
+<ul>
+<li><strong>Signal preprocessing and grid alignment (<code>R/signal.R</code>, <code>R/peaks.R</code>)</strong>:
+<ul>
+<li>Updated <code>runmean_center()</code> to ignore <code>NA</code> values across rolling windows and handle interior <code>NA</code>s without zeroing surrounding signal.</li>
+<li>Restricted <code>improve_signal()</code> interpolation grids to finite input bounds, returning an empty table when fewer than five points are present.</li>
+<li>Resolved <code>.mzML</code> detectors by name in <code>extract_chromatogram()</code> before index fallback and added explicit validation in <code>check_peaks_integration()</code>, <code>process_compare_peaks()</code>, and <code>generate_pseudochromatograms()</code>.</li>
+<li>Normalized retention-time <code>shift</code> handling so workflow callers apply <code>shift</code> once during peak preparation rather than double-shifting traces.</li>
+<li>Added zero-variance and zero-range guards in <code>compare_peaks()</code>, <code>join_peaks()</code>, <code>normalize_chromato()</code>, and <code>normalize_chromatograms_list()</code>, and removed dead <code>closest_idx()</code>.</li>
+</ul></li>
+<li><strong>Workflows, tables, and caches (<code>R/annotations.R</code>, <code>R/generate_tables.R</code>, <code>R/generate_pseudochromatograms.R</code>, <code>R/load.R</code>, <code>R/prepare_tima_annotations.R</code>, <code>R/plot_tima.R</code>)</strong>:
+<ul>
+<li>Forwarded <code>mode</code> to <code>load_annotations()</code> in <code>generate_pseudochromatograms()</code> and copied bundled example data before mutating columns.</li>
+<li>Preserved negative-mode feature columns in <code>generate_tables()</code>, required at least one input file when <code>show_example = FALSE</code>, read LOTUS gzipped tables as character to avoid <code>melt()</code> coercion warnings, filtered <code>NA</code>/empty DOIs, and added literal matching (<code>fixed = TRUE</code>) in <code>prepare_comparison()</code>.</li>
+<li>Fixed unnamed <code>annotations</code> labels (<code>"1_pred"</code> instead of <code>"NA_pred"</code>), <code>NULL</code> validation, <code>data.frame</code> inputs, and multi-sample binding in <code>prepare_tima_annotations()</code> and <code>plot_tima()</code>.</li>
+<li>Included file size and modification time in <code>fread_gz()</code> cache keys, keyed non-LOTUS Zenodo downloads separately, and guarded <code>.onAttach()</code> citation lookup during source loading.</li>
+</ul></li>
+<li><strong>Wikidata SPARQL &amp; example scripts (<code>R/query_wikidata.R</code>, <code>R/generate_ids.R</code>, <code>inst/scripts/</code>)</strong>:
+<ul>
+<li>Fixed TSV quote parsing and <code>\"</code> unescaping, stripped leading <code>?</code> headers on 0-row TSV responses, avoided duplicate SMILES URL-encoding via shared <code>encode_smiles()</code>, and added QID guards in <code>generate_ids()</code>.</li>
+<li>Fixed misspelled filenames in <code>inst/scripts/</code>, removed commented dead code, directed outputs to <code>tempdir()</code>, and guarded live network calls in non-interactive runs.</li>
+</ul></li>
+<li><strong>Offline test isolation &amp; static checks (<code>inst/tinytest/</code>, <code>.github/</code>)</strong>:
+<ul>
+<li>Isolated all unit and workflow tests offline with temporary cache/working directories and mocked curl fixtures.</li>
+<li>Added repository <code>.lintr</code>, enabled <code>spelling</code> errors and <code>codecov</code> enforcement, and repaired GitHub Actions workflows and package metadata.</li>
+</ul></li>
+</ul>
+</section>
 <section id="mathematical-algorithmic-improvements" class="level2">
 <h2 class="anchored" data-anchor-id="mathematical-algorithmic-improvements">Mathematical &amp; Algorithmic Improvements</h2>
 <ul>
