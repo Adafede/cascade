@@ -2,82 +2,82 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://adafede.github.io/cascade/LICENSE.html</loc>
-    <lastmod>2026-11-14T09:48:40.772Z</lastmod>
+    <lastmod>2026-11-14T10:03:43.932Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/cascade_datasets.html</loc>
-    <lastmod>2026-11-14T09:48:40.909Z</lastmod>
+    <lastmod>2026-11-14T10:03:44.084Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/check_chromatograms_alignment.html</loc>
-    <lastmod>2026-11-14T09:48:40.989Z</lastmod>
+    <lastmod>2026-11-14T10:03:44.171Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/process_compare_peaks.html</loc>
-    <lastmod>2026-11-14T09:48:48.313Z</lastmod>
+    <lastmod>2026-11-14T10:03:50.483Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/generate_ids.html</loc>
-    <lastmod>2026-11-14T09:48:43.215Z</lastmod>
+    <lastmod>2026-11-14T10:03:46.095Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/taxon_name_to_qid.html</loc>
-    <lastmod>2026-11-14T09:48:50.222Z</lastmod>
+    <lastmod>2026-11-14T10:03:52.196Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/NEWS.html</loc>
-    <lastmod>2026-11-14T09:48:40.762Z</lastmod>
+    <lastmod>2026-11-14T10:03:43.920Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/CITATION.html</loc>
-    <lastmod>2026-11-14T09:48:40.840Z</lastmod>
+    <lastmod>2026-11-14T10:03:44.007Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/vignettes/articles/III-bonus.html</loc>
-    <lastmod>2026-11-14T09:48:51.171Z</lastmod>
+    <lastmod>2026-11-14T10:03:53.039Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/vignettes/articles/II-processing.html</loc>
-    <lastmod>2026-11-14T09:48:51.171Z</lastmod>
+    <lastmod>2026-11-14T10:03:53.039Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/vignettes/cascade.html</loc>
-    <lastmod>2026-11-14T09:48:51.171Z</lastmod>
+    <lastmod>2026-11-14T10:03:53.039Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/vignettes/articles/I-basics.html</loc>
-    <lastmod>2026-11-14T09:48:51.171Z</lastmod>
+    <lastmod>2026-11-14T10:03:53.039Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/vignettes/articles/IV-tima.html</loc>
-    <lastmod>2026-11-14T09:48:51.171Z</lastmod>
+    <lastmod>2026-11-14T10:03:53.039Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/index.html</loc>
-    <lastmod>2026-11-14T09:48:40.788Z</lastmod>
+    <lastmod>2026-11-14T10:03:43.950Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/plot_tima.html</loc>
-    <lastmod>2026-11-14T09:48:46.326Z</lastmod>
+    <lastmod>2026-11-14T10:03:48.815Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/query_wikidata.html</loc>
-    <lastmod>2026-11-14T09:48:49.252Z</lastmod>
+    <lastmod>2026-11-14T10:03:51.335Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/generate_pseudochromatograms.html</loc>
-    <lastmod>2026-11-14T09:48:44.419Z</lastmod>
+    <lastmod>2026-11-14T10:03:47.262Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/check_peaks_integration.html</loc>
-    <lastmod>2026-11-14T09:48:42.254Z</lastmod>
+    <lastmod>2026-11-14T10:03:45.104Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/prepare_tima_annotations.html</loc>
-    <lastmod>2026-11-14T09:48:47.274Z</lastmod>
+    <lastmod>2026-11-14T10:03:49.599Z</lastmod>
   </url>
   <url>
     <loc>https://adafede.github.io/cascade/man/generate_tables.html</loc>
-    <lastmod>2026-11-14T09:48:45.376Z</lastmod>
+    <lastmod>2026-11-14T10:03:48.029Z</lastmod>
   </url>
 </urlset>
