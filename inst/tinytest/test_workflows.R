@@ -130,7 +130,9 @@ local({
 
 # Package startup message (.onAttach)
 on_attach <- utils::getFromNamespace(".onAttach", "cascade")
-expect_silent(suppressPackageStartupMessages(on_attach("lib", "cascade")))
+expect_silent(
+  suppressPackageStartupMessages(on_attach("/nonexistent/lib", "cascade"))
+)
 
 # --- 2. prepare_tima_annotations with unnamed annotations vector ---
 local({
@@ -170,6 +172,35 @@ local({
   )
   expect_identical(names(tima_unnamed), "1")
   expect_identical(nrow(tima_unnamed[["1"]]), 1L)
+
+  # Unnamed + predicted_classes = TRUE must yield "1_pred", not NA
+  tima_pred <- prepare_tima_annotations(
+    annotations = ann_tmp,
+    predicted_classes = TRUE,
+    show_example = FALSE
+  )
+  expect_identical(names(tima_pred), "1_pred")
+
+  # Missing annotations with show_example = FALSE must error cleanly
+  expect_error(
+    prepare_tima_annotations(annotations = NULL, show_example = FALSE),
+    pattern = "'annotations' must be provided"
+  )
+
+  # plot_tima() combines multiple tables and rejects empty input
+  expect_error(
+    plot_tima(list()),
+    pattern = "at least one annotation table"
+  )
+  multi_tables <- c(tima_unnamed, tima_pred)
+  pt_multi <- plot_tima(multi_tables)
+  expect_inherits(pt_multi$histogram, "ggplot")
+  expect_inherits(pt_multi$treemap, "plotly")
+  expect_inherits(pt_multi$sunburst, "plotly")
+  expect_identical(
+    length(unique(pt_multi$histogram$data$sample)),
+    2L
+  )
 })
 
 # --- 3. generate_tables with file_negative, empty lotus match, export=FALSE ---
@@ -203,7 +234,22 @@ local({
           sep = ","
         ),
         paste(
-          "NONMATCHINGIK-UHFFFAOYSA-N",
+          "IK1-UHFFFAOYSA-N",
+          "Eukaryota",
+          "Plantae",
+          "Streptophyta",
+          "Magnoliopsida",
+          "Gentianales",
+          "Gentianaceae",
+          "Gentianeae",
+          "Swertia",
+          "Swertia chirayita",
+          "NA",
+          "NA",
+          sep = ","
+        ),
+        paste(
+          "IK1-UHFFFAOYSA-N",
           "Eukaryota",
           "Plantae",
           "Streptophyta",
@@ -310,7 +356,34 @@ local({
     expect_inherits(gt_res$csv_table, "data.table")
     expect_identical(nrow(gt_res$csv_table), 2L)
     expect_identical(gt_res$csv_table$`Annotation Score`, c("0.85", ">1.00"))
+    expect_identical(
+      gt_res$csv_table$`Reference(s)`[
+        gt_res$csv_table[["InChIKey no stereo"]] == "IK1"
+      ],
+      "10.1000/test"
+    )
     expect_false(dir.exists("data/processed"))
+
+    # Negative-only generate_tables retains neg rows & error when both NULL
+    gt_neg_only <- generate_tables(
+      annotations = ann_tsv,
+      file_positive = NULL,
+      file_negative = neg_tsv,
+      show_example = FALSE,
+      export_csv = FALSE,
+      export_html = FALSE
+    )
+    expect_identical(nrow(gt_neg_only$csv_table), 1L)
+    expect_identical(as.integer(gt_neg_only$csv_table[["Feature ID"]]), 1L)
+    expect_error(
+      generate_tables(
+        annotations = ann_tsv,
+        file_positive = NULL,
+        file_negative = NULL,
+        show_example = FALSE
+      ),
+      pattern = "At least one of"
+    )
   })
 })
 
@@ -418,6 +491,68 @@ local({
     expect_inherits(res_ids$tables$Swertia, "gt_tbl")
     expect_inherits(res_ids$tables$Gentiana, "gt_tbl")
     expect_identical(nrow(res_ids$tables$Swertia[["_data"]]), 3L)
+
+    # Empty QID errors clearly; multiple QIDs emit message and pick first
+    assign(
+      "curl_download",
+      function(url, destfile, quiet = TRUE, mode = "wb", handle = NULL) {
+        writeLines("taxon", destfile)
+        invisible(destfile)
+      },
+      envir = curl_ns
+    )
+    expect_error(
+      generate_ids(taxa = "UnknownTaxon"),
+      pattern = "Could not resolve Wikidata QID"
+    )
+
+    state$m_call <- 0L
+    assign(
+      "curl_download",
+      function(url, destfile, quiet = TRUE, mode = "wb", handle = NULL) {
+        state$m_call <- state$m_call + 1L
+        if (state$m_call == 1L) {
+          writeLines(
+            c(
+              "taxon",
+              "http://www.wikidata.org/entity/Q158572",
+              "http://www.wikidata.org/entity/Q999999"
+            ),
+            destfile
+          )
+        } else {
+          writeLines(
+            c(
+              paste(
+                "structure",
+                "structureLabel",
+                "structure_id",
+                "structureSmiles",
+                "taxaLabels",
+                "taxa",
+                "referencesLabels",
+                "references_ids",
+                "references",
+                sep = ","
+              ),
+              "Q1,Comp1,IK1,C=C,Swertia sp1,QT1,Ref1,10.1/1,QR1"
+            ),
+            destfile
+          )
+        }
+        invisible(destfile)
+      },
+      envir = curl_ns
+    )
+    expect_message(
+      res_multi_qid <- generate_ids(
+        taxa = "Swertia",
+        no_stereo = FALSE,
+        filter_ms_conditions = FALSE
+      ),
+      pattern = "Multiple Wikidata QIDs found"
+    )
+    expect_identical(nrow(res_multi_qid$tables$Swertia), 1L)
   })
 })
 
@@ -555,3 +690,14 @@ local({
     pattern = "not found in file"
   )
 })
+
+# Negative-mode generate_pseudochromatograms retains neg annotations
+pseudo_neg <- generate_pseudochromatograms(
+  show_example = TRUE,
+  mode = "neg"
+)
+expect_true(all(c("plots_1", "plots_2", "treemaps") %in% names(pseudo_neg)))
+expect_true(length(pseudo_neg$treemaps) == 3L)
+expect_true(
+  length(pseudo_neg$treemaps$peaks_maj$x$attrs[[1L]]$labels) > 1L
+)

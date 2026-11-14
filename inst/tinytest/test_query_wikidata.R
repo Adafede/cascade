@@ -153,6 +153,56 @@ local({
   expect_identical(res_tsv_fb$taxon, c("Q158572", "Q999"))
   expect_identical(res_tsv_fb$label, c("Swertia", "Gentiana"))
 
+  # 0-row TSV response still strips leading '?' and escaped quotes unescape
+  state$call_idx <- 0L
+  assign(
+    "curl_download",
+    function(url, destfile, quiet = TRUE, mode = "wb", handle = NULL) {
+      state$call_idx <- state$call_idx + 1L
+      if (state$call_idx == 1L) {
+        writeLines("<html>Error</html>", destfile)
+      } else {
+        writeLines("?taxon\t?label", destfile)
+      }
+      invisible(destfile)
+    },
+    envir = curl_ns
+  )
+  res_tsv_empty <- query_wikidata(
+    "SELECT ?taxon ?label WHERE {}",
+    fallback = FALSE
+  )
+  expect_identical(nrow(res_tsv_empty), 0L)
+  expect_identical(names(res_tsv_empty), c("taxon", "label"))
+
+  state$call_idx <- 0L
+  assign(
+    "curl_download",
+    function(url, destfile, quiet = TRUE, mode = "wb", handle = NULL) {
+      state$call_idx <- state$call_idx + 1L
+      if (state$call_idx == 1L) {
+        writeLines("<html>Error</html>", destfile)
+      } else {
+        writeLines(
+          c(
+            "?taxon\t?label",
+            "<http://www.wikidata.org/entity/Q1>\t\"Quoted \\\"Name\\\"\"@en"
+          ),
+          destfile
+        )
+      }
+      invisible(destfile)
+    },
+    envir = curl_ns
+  )
+  expect_silent(
+    res_tsv_quote <- query_wikidata(
+      "SELECT ?taxon ?label WHERE {}",
+      fallback = FALSE
+    )
+  )
+  expect_identical(res_tsv_quote$label, 'Quoted "Name"')
+
   # 2d. Primary endpoint fails -> warns and succeeds on QLever fallback endpoint
   assign(
     "curl_download",
@@ -282,13 +332,15 @@ local({
   expect_true(grepl("<= 2020 ", qp_url$Test, fixed = TRUE))
   expect_true(grepl("LIMIT 10$", qp_url$Test))
 
-  # 5c. Failing query_url throws informative error
-  expect_error(
-    queries_progress(
-      list(Test = "Q1"),
-      query_url = "/nonexistent/path/to/query.sparql"
-    ),
-    pattern = "Failed to fetch SPARQL query from"
+  # 5c. Failing query_url throws informative error without readLines warnings
+  expect_silent(
+    expect_error(
+      queries_progress(
+        list(Test = "Q1"),
+        query_url = "/nonexistent/path/to/query.sparql"
+      ),
+      pattern = "Failed to fetch SPARQL query from"
+    )
   )
 
   # 5d. Legacy 4-part query construction
@@ -313,15 +365,15 @@ sc_mock <- data.table::data.table(
   chemical_class = c("Secoiridoids", "Simple indole")
 )
 wiki_nonempty <- data.table::data.table(
-  structure = c("Q1", "Q2"),
-  structureLabel = c("CompA", "CompB"),
-  structure_id = c("IK1", "IK2"),
-  structureSmiles = c("C=C", NA_character_),
-  taxaLabels = c("Swertia chirayita", "Swertia perennis"),
-  taxa = c("Q10", "Q11"),
-  referencesLabels = c("Ref1", "Ref2"),
-  references_ids = c("10.1/1", "10.1/2"),
-  references = c("Q100", "Q101")
+  structure = c("Q1", "Q2", "Q3"),
+  structureLabel = c("CompA", "CompB", "CompC"),
+  structure_id = c("IK1", "IK2", "IK1"),
+  structureSmiles = c("C=C", NA_character_, "CC#N"),
+  taxaLabels = c("Swertia chirayita", "Swertia perennis", "Swertia alpina"),
+  taxa = c("Q10", "Q11", "Q12"),
+  referencesLabels = c("Ref1", "Ref2", "Ref3"),
+  references_ids = c("10.1/1", "10.1/2", "10.1/3"),
+  references = c("Q100", "Q101", "Q102")
 )
 wiki_empty <- data.table::data.table()
 
@@ -329,7 +381,7 @@ tp_res <- tables_progress(
   list(nonempty = wiki_nonempty, empty = wiki_empty),
   structures_classified = sc_mock
 )
-expect_identical(nrow(tp_res$nonempty), 2L)
+expect_identical(nrow(tp_res$nonempty), 3L)
 expect_false(any(
   c("references_ids", "structure_id", "structureSmiles") %in%
     names(tp_res$nonempty)
@@ -339,7 +391,10 @@ expect_identical(
   c("structureLabel", "structure", "structureImage")
 )
 expect_true(anyNA(tp_res$nonempty$structureImage))
-expect_true(any(tp_res$nonempty$structureImage == utils::URLencode("C=C")))
+expect_true(any(
+  tp_res$nonempty$structureImage == utils::URLencode("C=C", reserved = TRUE)
+))
+expect_true(any(tp_res$nonempty$structureImage == "CC%23N"))
 
 # Empty table branch returns 1-row NA template
 expect_identical(nrow(tp_res$empty), 1L)

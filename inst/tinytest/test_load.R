@@ -58,10 +58,25 @@ local({
   dt_gz2 <- fread_gz(gz_path)
   expect_identical(dt_gz2, dt_gz1)
   # Evict cached decompressed file and verify transparent re-extraction
-  cache_key <- paste0("gz_", normalizePath(gz_path, mustWork = FALSE))
+  gz_info <- file.info(gz_path)
+  cache_key <- paste0(
+    "gz_",
+    normalizePath(gz_path, mustWork = FALSE),
+    "_",
+    gz_info$size,
+    "_",
+    as.numeric(gz_info$mtime)
+  )
   unlink(cascade_env[[cache_key]])
   dt_gz3 <- fread_gz(gz_path)
   expect_identical(dt_gz3, dt_gz1)
+
+  # Modifying file invalidates mtime+size cache key
+  gz_con2 <- gzfile(gz_path, open = "wb")
+  writeLines(c("id,val", "5,50.5", "6,60.5", "7,70.5"), gz_con2)
+  close(gz_con2)
+  dt_gz_updated <- fread_gz(gz_path)
+  expect_identical(dt_gz_updated$id, c(5L, 6L, 7L))
 
   # --- 3. get_zenodo_file branches ---
   orig_session_lotus <- cascade_env[["zenodo_lotus_path"]]
@@ -205,6 +220,24 @@ local({
     )
   )
 
+  # Non-LOTUS (doi, pattern) must not reuse "zenodo_lotus_path" session cache
+  other_dest <- file.path(work_dir, "dl", "other_record.csv.gz")
+  expect_identical(
+    get_zenodo_file(
+      doi = "10.5281/zenodo.9999999",
+      pattern = "frozen_metadata.csv.gz",
+      path = other_dest
+    ),
+    other_dest
+  )
+  other_key <- "zenodo_10.5281/zenodo.9999999_frozen_metadata.csv.gz"
+  expect_identical(
+    cascade_env[[other_key]],
+    normalizePath(other_dest, mustWork = FALSE)
+  )
+  expect_true(file.exists(other_dest))
+  cascade_env[[other_key]] <- NULL
+
   # Restore and re-lock curl bindings immediately
   assign("curl_fetch_memory", orig_fetch, envir = curl_ns)
   assign("curl_download", orig_dl, envir = curl_ns)
@@ -228,6 +261,11 @@ local({
   )
   expect_identical(dt_ann$other_col, "keep$u00A7")
   expect_identical(dt_ann$mode, "neg")
+
+  # show_example = TRUE sets requested mode on a copy without mutating data
+  dt_ex_neg <- load_annotations(show_example = TRUE, mode = "neg")
+  expect_identical(unique(dt_ex_neg$mode), "neg")
+  expect_true(all(cascade_annotations$mode == "pos"))
 
   # --- 5. load_name ---
   expect_identical(

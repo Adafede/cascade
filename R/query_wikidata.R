@@ -189,20 +189,24 @@ query_wikidata <- function(
     dt <- data.table::fread(
       tmp,
       sep = sep,
+      quote = if (sep == "\t") "" else "\"",
       header = TRUE,
       encoding = "UTF-8",
       showProgress = FALSE,
       data.table = TRUE
     )
 
-    if (sep == "\t" && nrow(dt) > 0L) {
-      for (j in which(vapply(dt, is.character, logical(1L)))) {
-        v <- dt[[j]]
-        v <- sub("^<(.+)>$", "\\1", v)
-        v <- sub('^"(.*)"(@[a-zA-Z0-9-]+|\\^\\^<[^>]+>)?$', "\\1", v)
-        data.table::set(dt, j = j, value = v)
-      }
+    if (sep == "\t") {
       data.table::setnames(dt, sub("^\\?", "", names(dt)))
+      if (nrow(dt) > 0L) {
+        for (j in which(vapply(dt, is.character, logical(1L)))) {
+          v <- dt[[j]]
+          v <- sub("^<(.+)>$", "\\1", v)
+          v <- sub('^"(.*)"(@[a-zA-Z0-9-]+|\\^\\^<[^>]+>)?$', "\\1", v)
+          v <- gsub('\\"', '"', v, fixed = TRUE)
+          data.table::set(dt, j = j, value = v)
+        }
+      }
     }
 
     if (remove_url && nrow(dt) > 0L) {
@@ -320,7 +324,10 @@ queries_progress <- function(
 
   if (!is.null(query_url)) {
     query_template <- tryCatch(
-      paste0(readLines(query_url, warn = FALSE), collapse = "\n"),
+      paste0(
+        suppressWarnings(readLines(query_url, warn = FALSE)),
+        collapse = "\n"
+      ),
       error = function(e) {
         stop(
           "Failed to fetch SPARQL query from: ",
@@ -391,13 +398,10 @@ tables_progress <- function(xs, structures_classified) {
     if (nrow(dt) > 0L) {
       joined <- dt_left_join(dt, sc_dt)
       joined[,
-        structureImage := vapply(
+        structureImage := encode_smiles(
           structureSmiles,
-          function(s) {
-            if (is.na(s)) NA_character_ else utils::URLencode(as.character(s))
-          },
-          character(1L),
-          USE.NAMES = FALSE
+          empty = NA_character_,
+          reserved = TRUE
         )
       ]
 

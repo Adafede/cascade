@@ -107,7 +107,11 @@ generate_pseudochromatograms <- function(
   target_mode <- match.arg(mode, c("pos", "neg"))
 
   message("loading annotations")
-  annotation_table <- load_annotations(annotations, show_example = show_example)
+  annotation_table <- load_annotations(
+    annotations,
+    show_example = show_example,
+    mode = target_mode
+  )
 
   message("loading chromatograms")
   chromatograms_all <- load_chromatograms(

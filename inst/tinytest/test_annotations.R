@@ -420,4 +420,19 @@ local({
   )
   expect_identical(nrow(comp_empty$peaks_maj_precor_taxo), 0L)
   expect_identical(nrow(comp_empty$peaks_maj_precor_taxo_cor), 0L)
+
+  # Literal matching prevents regex failure on bracketed organism names
+  cand_bracket <- data.table::copy(cand_conf)
+  cand_bracket[, best_candidate_organism := "[Candida] glabrata"]
+  cand_bracket[, species := "[Candida] glabrata"]
+  comp_bracket <- prepare_comparison(
+    features_informed = tmp_inf,
+    features_not_informed = tmp_ninf,
+    candidates_confident = cand_bracket,
+    min_similarity_prefilter = 0.6,
+    min_similarity_filter = 0.8,
+    mode = "pos",
+    correct_acn = FALSE
+  )
+  expect_true(all(comp_bracket$peaks_maj_precor_taxo$taxo == 1))
 })

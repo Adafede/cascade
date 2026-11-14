@@ -54,6 +54,13 @@ generate_tables <- function(
   export_dir = "data/processed",
   export_name = "cascade_table"
 ) {
+  if (!show_example && is.null(file_positive) && is.null(file_negative)) {
+    stop(
+      "At least one of 'file_positive' or 'file_negative' must be provided.",
+      call. = FALSE
+    )
+  }
+
   message("loading informed features")
   tables_peaks_pos <- NULL
   tables_peaks_neg <- NULL
@@ -73,17 +80,13 @@ generate_tables <- function(
     neg_dt <- data.table::as.data.table(
       load_features_informed(file_negative, show_example = show_example)
     )
-    tables_peaks_neg <- unique(neg_dt[, list(
-      peak_rt_min,
-      peak_rt_apex,
-      peak_rt_max,
-      peak_area
-    )])
+    tables_peaks_neg <- unique(neg_dt)
   }
 
   message("loading annotations")
+  ann_mode <- if (is.null(file_positive) && !show_example) "neg" else "pos"
   annotation_table <- keep_best_candidates(
-    load_annotations(annotations, show_example = show_example)
+    load_annotations(annotations, show_example = show_example, mode = ann_mode)
   )
   annotation_table[, feature_id := as.numeric(feature_id)]
   annotation_table <- make_confident(annotation_table, score = min_confidence)
@@ -111,16 +114,20 @@ generate_tables <- function(
     "organism_taxonomy_10varietas",
     "reference_doi"
   )
-  lotus <- unique(fread_gz(file = lotus_path, select = lotus_cols))
+  lotus <- unique(fread_gz(
+    file = lotus_path,
+    select = lotus_cols,
+    colClasses = "character"
+  ))
 
-  table_peaks <- if (!is.null(tables_peaks_neg)) {
-    data.table::rbindlist(
-      list(tables_peaks_pos, tables_peaks_neg),
-      use.names = TRUE,
-      fill = TRUE
-    )
+  peak_parts <- Filter(
+    Negate(is.null),
+    list(tables_peaks_pos, tables_peaks_neg)
+  )
+  table_peaks <- if (length(peak_parts) > 1L) {
+    data.table::rbindlist(peak_parts, use.names = TRUE, fill = TRUE)
   } else {
-    data.table::copy(tables_peaks_pos)
+    data.table::copy(peak_parts[[1L]])
   }
 
   data.table::setkey(table_peaks, peak_rt_min, peak_rt_max)
@@ -181,10 +188,17 @@ generate_tables <- function(
   }
   overlapped[, peak_id := seq_len(.N)]
 
+  total_area <- sum(overlapped$newarea, na.rm = TRUE)
+  pct_area <- if (is.finite(total_area) && total_area > 0) {
+    round(100 * overlapped$newarea / total_area, digits = 2)
+  } else {
+    rep(0, nrow(overlapped))
+  }
+
   table_medium <- overlapped[, list(
     peak_id = peak_id,
     peak_rt = round(newrt, digits = 2),
-    peak_area = round(100 * newarea / sum(newarea), digits = 2),
+    peak_area = pct_area,
     feature_id = feature_id,
     feature_rt = round(feature_rt, digits = 2),
     feature_mz = round(feature_mz, digits = 4),
@@ -226,19 +240,17 @@ generate_tables <- function(
 
   tf_join <- dt_left_join(table_medium, lotus_long)
   tf_join[,
-    reference := paste(reference, collapse = "; "),
+    reference := {
+      refs <- unique(
+        reference[!is.na(reference) & nzchar(reference) & reference != "NA"]
+      )
+      if (length(refs) == 0L) NA_character_ else paste(refs, collapse = "; ")
+    },
     by = c("peak_id", "inchikey_connectivity_layer")
   ]
   tf_join[,
-    Structure := vapply(
-      smiles_no_stereo,
-      function(s) if (is.na(s)) "NA" else utils::URLencode(as.character(s)),
-      character(1L),
-      USE.NAMES = FALSE
-    )
+    Structure := encode_smiles(smiles_no_stereo, empty = "", reserved = TRUE)
   ]
-  tf_join[reference == "NA", reference := NA_character_]
-  tf_join[Structure == "NA", Structure := ""]
   tf_join[,
     annotation_score := ifelse(
       score_final > 1,

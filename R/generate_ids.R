@@ -117,7 +117,30 @@ generate_ids <- function(
   structures_classified <- unique(structures_classified)
 
   message("Converting taxa to QIDs")
-  qids <- stats::setNames(lapply(taxa, taxon_name_to_qid), taxa)
+  qids <- stats::setNames(
+    lapply(taxa, function(tx) {
+      q <- taxon_name_to_qid(tx)
+      if (length(q) == 0L || all(is.na(q)) || !nzchar(q[1L])) {
+        stop(
+          "Could not resolve Wikidata QID for taxon: '",
+          tx,
+          "'.",
+          call. = FALSE
+        )
+      }
+      if (length(q) > 1L) {
+        message(
+          "Multiple Wikidata QIDs found for '",
+          tx,
+          "'; using first: ",
+          q[1L]
+        )
+        q <- q[1L]
+      }
+      q
+    }),
+    taxa
+  )
 
   message("Building queries")
   queries <- queries_progress(

@@ -24,8 +24,24 @@
 #' tables <- prepare_tima_annotations(show_example = TRUE)
 #' plot_tima(tables)
 plot_tima <- function(tables) {
-  hierarchies <- lapply(tables, prepare_hierarchy, type = "literature")
-  names(hierarchies)[1L] <- "comparison"
+  if (length(tables) == 0L) {
+    stop(
+      "'tables' must contain at least one annotation table.",
+      call. = FALSE
+    )
+  }
+  combined <- if (length(tables) > 1L) {
+    list(
+      comparison = data.table::rbindlist(
+        tables,
+        use.names = TRUE,
+        fill = TRUE
+      )
+    )
+  } else {
+    list(comparison = tables[[1L]])
+  }
+  hierarchies <- lapply(combined, prepare_hierarchy, type = "literature")
 
   prepared_plots <- lapply(hierarchies, prepare_plot)
   histograms <- lapply(prepared_plots, plot_histograms_litt, label = "")

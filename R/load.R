@@ -22,10 +22,25 @@ check_export_dir <- function(dir) {
 #' @noRd
 fread_gz <- function(file, ...) {
   if (grepl("\\.gz$", file, ignore.case = TRUE)) {
-    cache_key <- paste0("gz_", normalizePath(file, mustWork = FALSE))
+    info <- file.info(file)
+    cache_key <- paste0(
+      "gz_",
+      normalizePath(file, mustWork = FALSE),
+      "_",
+      info$size,
+      "_",
+      as.numeric(info$mtime)
+    )
     cached_tmp <- .cascade_env[[cache_key]]
     if (is.null(cached_tmp) || !file.exists(cached_tmp)) {
       cached_tmp <- tempfile(pattern = "cascade_gz_", fileext = ".csv")
+      ok <- FALSE
+      on.exit(
+        if (!ok && file.exists(cached_tmp)) {
+          unlink(cached_tmp)
+        },
+        add = TRUE
+      )
       con_in <- gzfile(file, open = "rb")
       on.exit(close(con_in), add = TRUE)
       con_out <- file(cached_tmp, open = "wb")
@@ -40,6 +55,7 @@ fread_gz <- function(file, ...) {
       close(con_out)
       close(con_in)
       on.exit(NULL, add = FALSE)
+      ok <- TRUE
       .cascade_env[[cache_key]] <- cached_tmp
     }
     return(data.table::fread(file = cached_tmp, showProgress = FALSE, ...))
@@ -67,8 +83,17 @@ get_zenodo_file <- function(
     return(invisible(path))
   }
 
+  cache_key <- if (
+    identical(doi, "10.5281/zenodo.5794106") &&
+      identical(pattern, "frozen_metadata.csv.gz")
+  ) {
+    "zenodo_lotus_path"
+  } else {
+    paste0("zenodo_", doi, "_", pattern)
+  }
+
   # Check session cache so repeated calls across tempdirs reuse the file
-  session_cached <- .cascade_env[["zenodo_lotus_path"]]
+  session_cached <- .cascade_env[[cache_key]]
   if (
     !is.null(session_cached) &&
       file.exists(session_cached) &&
@@ -85,7 +110,7 @@ get_zenodo_file <- function(
   cache_dir <- tools::R_user_dir("cascade", which = "cache")
   cache_file <- file.path(cache_dir, basename(path))
   if (file.exists(cache_file) && file.size(cache_file) > 0) {
-    .cascade_env[["zenodo_lotus_path"]] <- normalizePath(cache_file)
+    .cascade_env[[cache_key]] <- normalizePath(cache_file)
     check_export_dir(dirname(path))
     if (!suppressWarnings(file.symlink(cache_file, path))) {
       file.copy(cache_file, path, overwrite = TRUE)
@@ -142,7 +167,7 @@ get_zenodo_file <- function(
     quiet = TRUE,
     handle = dl_handle
   )
-  .cascade_env[["zenodo_lotus_path"]] <- normalizePath(path, mustWork = FALSE)
+  .cascade_env[[cache_key]] <- normalizePath(path, mustWork = FALSE)
   invisible(path)
 }
 
@@ -155,14 +180,20 @@ get_zenodo_file <- function(
 #' @return A `data.table` of structural annotations.
 #' @keywords internal
 #' @noRd
-load_annotations <- function(file = NULL, show_example = FALSE, mode = "pos") {
+load_annotations <- function(
+  file = NULL,
+  show_example = FALSE,
+  mode = c("pos", "neg")
+) {
+  mode <- match.arg(mode)
   if (show_example) {
     utils::data(
       "cascade_annotations",
       package = "cascade",
       envir = environment()
     )
-    dt <- data.table::as.data.table(cascade_annotations)
+    dt <- data.table::copy(data.table::as.data.table(cascade_annotations))
+    data.table::set(dt, j = "mode", value = mode)
     return(dt)
   }
 

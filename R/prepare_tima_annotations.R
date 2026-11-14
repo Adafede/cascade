@@ -60,24 +60,39 @@ prepare_tima_annotations <- function(
   ),
   show_example = FALSE
 ) {
+  if (!show_example && is.null(annotations)) {
+    stop(
+      "'annotations' must be provided when 'show_example = FALSE'.",
+      call. = FALSE
+    )
+  }
   if (is.null(annotations)) {
     annotations <- c("annotations" = tempfile())
   }
-  if (predicted_classes) {
-    names(annotations) <- paste(names(annotations), "pred", sep = "_")
-  }
-
   nms <- names(annotations)
   if (is.null(nms)) {
     nms <- as.character(seq_along(annotations))
+  } else {
+    missing_nm <- !nzchar(nms) | is.na(nms)
+    if (any(missing_nm)) {
+      nms[missing_nm] <- as.character(which(missing_nm))
+    }
   }
+  if (predicted_classes) {
+    nms <- paste(nms, "pred", sep = "_")
+  }
+  names(annotations) <- nms
 
   stats::setNames(
     Map(
       function(x, name) {
-        dt <- data.table::copy(data.table::as.data.table(
-          load_annotations(x, show_example = show_example)
-        ))
+        dt <- if (is.data.frame(x)) {
+          data.table::copy(data.table::as.data.table(x))
+        } else {
+          data.table::copy(data.table::as.data.table(
+            load_annotations(x, show_example = show_example)
+          ))
+        }
         for (col in names(dt)) {
           val <- dt[[col]]
           if (!is.character(val)) {

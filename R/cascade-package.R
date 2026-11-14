@@ -26,5 +26,11 @@ NULL
 
 .onAttach <- function(libname, pkgname) {
   packageStartupMessage("Welcome to ", pkgname)
-  packageStartupMessage(format(utils::citation(pkgname)))
+  cit <- tryCatch(
+    suppressWarnings(utils::citation(package = pkgname, lib.loc = libname)),
+    error = function(e) NULL
+  )
+  if (!is.null(cit)) {
+    packageStartupMessage(format(cit))
+  }
 }

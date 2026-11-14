@@ -14,6 +14,33 @@ y_as_na <- function(x, y) {
   x
 }
 
+#' URL-encode unique SMILES strings once and map back
+#'
+#' @param x Character vector of SMILES strings.
+#' @param empty Character(1) placeholder returned for missing/empty inputs.
+#' @param reserved Logical(1) passed to [utils::URLencode()].
+#'
+#' @return Character vector of URL-encoded SMILES strings.
+#' @keywords internal
+#' @noRd
+encode_smiles <- function(x, empty = NA_character_, reserved = TRUE) {
+  x_chr <- as.character(x)
+  out <- rep(empty, length(x_chr))
+  valid <- !is.na(x_chr) & nzchar(x_chr) & x_chr != "NA"
+  if (any(valid)) {
+    uniq_s <- unique(x_chr[valid])
+    enc_s <- vapply(
+      uniq_s,
+      utils::URLencode,
+      character(1L),
+      reserved = reserved,
+      USE.NAMES = FALSE
+    )
+    out[valid] <- enc_s[match(x_chr[valid], uniq_s)]
+  }
+  out
+}
+
 #' Order-preserving left join on data.tables (tidytable-compatible)
 #'
 #' @param x,y `data.table` or `data.frame` objects to join.
@@ -607,6 +634,7 @@ prepare_comparison <- function(
         grepl,
         pattern = bco[valid_pair],
         x = sp[valid_pair],
+        MoreArgs = list(fixed = TRUE),
         USE.NAMES = FALSE
       ))
     }
