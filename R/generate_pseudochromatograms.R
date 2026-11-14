@@ -103,7 +103,8 @@ generate_pseudochromatograms <- function(
   acn_time = 30.5,
   dvol = 0.5
 ) {
-  target_mode <- mode
+  detector <- match.arg(detector, c("cad", "bpi", "pda"))
+  target_mode <- match.arg(mode, c("pos", "neg"))
 
   message("loading annotations")
   annotation_table <- load_annotations(annotations, show_example = show_example)
@@ -114,23 +115,28 @@ generate_pseudochromatograms <- function(
     show_example = show_example,
     headers = headers
   )
+  if (
+    !(detector %in% names(chromatograms_all)) ||
+      is.null(chromatograms_all[[detector]])
+  ) {
+    stop(
+      "Detector '",
+      detector,
+      "' chromatogram not found in file.",
+      call. = FALSE
+    )
+  }
 
   message("loading name")
   name <- load_name(file, show_example = show_example)
 
   message("preprocessing chromatograms")
-  selected_header <- switch(
-    detector,
-    "bpi" = headers["bpi"],
-    "cad" = headers["cad"],
-    "pda" = headers["pda"]
-  )
-  chrom_sub <- chromatograms_all[names(selected_header)]
+  chrom_sub <- chromatograms_all[detector]
   chromatograms_list <- preprocess_chromatograms(
     detector = detector,
     name = name,
     list = chrom_sub,
-    shift = shift,
+    shift = 0,
     fourier_components = fourier_components,
     time_min = time_min,
     time_max = time_max,

@@ -495,6 +495,16 @@ local({
   )
   expect_inherits(p_orig, "plotly")
 
+  # Verify "improved" with non-zero shift runs without double-shifting
+  p_imp <- check_peaks_integration(
+    file = "s1.mzML",
+    features = feat_tmp,
+    chromatogram = "improved",
+    shift = 0.5,
+    show_example = FALSE
+  )
+  expect_inherits(p_imp, "plotly")
+
   res_empty_comp <- process_compare_peaks(
     file = "s1.mzML",
     features = feat_tmp,
@@ -503,4 +513,45 @@ local({
   )
   expect_identical(nrow(res_empty_comp$features_informed), 0L)
   expect_identical(nrow(res_empty_comp$features_not_informed), 1L)
+
+  res_imp_comp <- process_compare_peaks(
+    file = "s1.mzML",
+    features = feat_tmp,
+    type = "improved",
+    shift = 0.5,
+    export_dir = exp_dir,
+    show_example = FALSE
+  )
+  expect_true(is.list(res_imp_comp))
+
+  # Missing detector must error clearly instead of crashing downstream
+  make_ex_subset <- function(fn, dets) {
+    force(fn)
+    force(dets)
+    function(...) fn(show_example = TRUE)[dets]
+  }
+  assign(
+    "load_chromatograms",
+    make_ex_subset(orig_load_chrom, c("bpi", "cad")),
+    envir = ca_ns
+  )
+  expect_error(
+    check_peaks_integration(
+      file = "s1.mzML",
+      features = feat_tmp,
+      detector = "pda",
+      show_example = FALSE
+    ),
+    pattern = "not found in file"
+  )
+  expect_error(
+    process_compare_peaks(
+      file = "s1.mzML",
+      features = feat_tmp,
+      detector = "pda",
+      export_dir = exp_dir,
+      show_example = FALSE
+    ),
+    pattern = "not found in file"
+  )
 })

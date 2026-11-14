@@ -67,6 +67,9 @@ process_compare_peaks <- function(
   time_min = 0.5,
   time_max = 32.5
 ) {
+  detector <- match.arg(detector, c("cad", "bpi", "pda"))
+  type <- match.arg(type, c("baselined", "improved", "original"))
+
   message("loading MS data")
   ms_data <- load_ms_data(file, show_example = show_example)
 
@@ -76,6 +79,17 @@ process_compare_peaks <- function(
     show_example = show_example,
     headers = headers
   )
+  if (
+    !(detector %in% names(chromatograms_all)) ||
+      is.null(chromatograms_all[[detector]])
+  ) {
+    stop(
+      "Detector '",
+      detector,
+      "' chromatogram not found in file.",
+      call. = FALSE
+    )
+  }
 
   message("loading name")
   name <- load_name(file, show_example = show_example)
@@ -93,18 +107,12 @@ process_compare_peaks <- function(
   )
 
   message("preprocessing chromatograms")
-  selected_header <- switch(
-    detector,
-    "bpi" = headers["bpi"],
-    "cad" = headers["cad"],
-    "pda" = headers["pda"]
-  )
-  chrom_sub <- chromatograms_all[names(selected_header)]
+  chrom_sub <- chromatograms_all[detector]
   chromatograms_list <- preprocess_chromatograms(
     detector = detector,
     name = name,
     list = chrom_sub,
-    shift = shift,
+    shift = 0,
     fourier_components = fourier_components,
     time_min = time_min,
     time_max = time_max,
@@ -118,7 +126,10 @@ process_compare_peaks <- function(
     "improved" = chromatograms_list$chromatograms_improved_long,
     "baselined" = chromatograms_list$chromatograms_baselined_long
   )))
-  df_long_sel[, intensity := intensity / max(intensity)]
+  max_int <- max(df_long_sel$intensity, na.rm = TRUE)
+  if (is.finite(max_int) && max_int > 0) {
+    df_long_sel[, intensity := intensity / max_int]
+  }
 
   df_xy_sel <- switch(
     type,

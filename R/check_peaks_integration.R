@@ -170,12 +170,29 @@ check_peaks_integration <- function(
   intensity_threshold = 0.1,
   improve_signal = TRUE
 ) {
+  detector <- match.arg(detector, c("cad", "bpi", "pda"))
+  chromatogram <- match.arg(
+    chromatogram,
+    c("baselined", "improved", "original")
+  )
+
   message("loading chromatograms")
   chromatograms_all <- load_chromatograms(
     file,
     show_example = show_example,
     headers = headers
   )
+  if (
+    !(detector %in% names(chromatograms_all)) ||
+      is.null(chromatograms_all[[detector]])
+  ) {
+    stop(
+      "Detector '",
+      detector,
+      "' chromatogram not found in file.",
+      call. = FALSE
+    )
+  }
 
   message("loading name")
   name <- load_name(file, show_example = show_example)
@@ -191,18 +208,12 @@ check_peaks_integration <- function(
   )
 
   message("Preprocessing chromatograms")
-  selected_header <- switch(
-    detector,
-    "bpi" = headers["bpi"],
-    "cad" = headers["cad"],
-    "pda" = headers["pda"]
-  )
-  chrom_sub <- chromatograms_all[names(selected_header)]
+  chrom_sub <- chromatograms_all[detector]
   chromatograms_list <- preprocess_chromatograms(
     detector = detector,
     name = name,
     list = chrom_sub,
-    shift = shift,
+    shift = 0,
     fourier_components = fourier_components,
     time_min = time_min,
     time_max = time_max,
@@ -223,7 +234,10 @@ check_peaks_integration <- function(
     "improved" = chromatograms_list$chromatograms_improved_long,
     "baselined" = chromatograms_list$chromatograms_baselined_long
   )))
-  df_long_sel[, intensity := intensity / max(intensity)]
+  max_int <- max(df_long_sel$intensity, na.rm = TRUE)
+  if (is.finite(max_int) && max_int > 0) {
+    df_long_sel[, intensity := intensity / max_int]
+  }
 
   df_xy_sel <- switch(
     chromatogram,
@@ -251,7 +265,10 @@ check_peaks_integration <- function(
       chromatograms_list$chromatograms_original_long
     ))
     orig_dt <- orig_dt[seq_len(nrow(orig_dt)) %% 10L == 1L]
-    orig_dt[, intensity := intensity / max(intensity)]
+    max_orig <- max(orig_dt$intensity, na.rm = TRUE)
+    if (is.finite(max_orig) && max_orig > 0) {
+      orig_dt[, intensity := intensity / max_orig]
+    }
     orig_dt
   } else {
     df_long_sel
@@ -263,10 +280,16 @@ check_peaks_integration <- function(
     fill = TRUE
   )
   if (nrow(peaks_normalized) > 0L) {
-    peaks_normalized[, `:=`(
-      intensity = intensity_max / max(intensity_max),
-      peak_max = peak_max / max(peak_max)
-    )]
+    max_imax <- max(peaks_normalized$intensity_max, na.rm = TRUE)
+    max_pmax <- max(peaks_normalized$peak_max, na.rm = TRUE)
+    if (is.finite(max_imax) && max_imax > 0) {
+      peaks_normalized[, intensity := intensity_max / max_imax]
+    } else {
+      peaks_normalized[, intensity := intensity_max]
+    }
+    if (is.finite(max_pmax) && max_pmax > 0) {
+      peaks_normalized[, peak_max := peak_max / max_pmax]
+    }
   }
 
   approx_f <- stats::approxfun(

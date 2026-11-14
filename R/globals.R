@@ -1,6 +1,5 @@
 utils::globalVariables(
   c(
-    ".GRP",
     ".N",
     ".tmp_n",
     "acn",

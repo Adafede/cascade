@@ -7,7 +7,7 @@
 #' @keywords internal
 #' @noRd
 runmean_center <- function(x, k) {
-  x <- as.vector(x)
+  x <- as.numeric(x)
   n <- length(x)
   k <- as.integer(k)
   if (k <= 1L || n == 0L) {
@@ -16,27 +16,22 @@ runmean_center <- function(x, k) {
   if (k > n) {
     k <- n
   }
-  k2 <- k %/% 2L
-  k1 <- k - k2 - 1L
-  y <- c(
-    rep(0, k1),
-    cumsum(c(sum(x[seq_len(k)]), diff(x, k))) / k,
-    rep(0, k2)
-  )
+  ok <- !is.na(x)
+  csum <- c(0, cumsum(ifelse(ok, x, 0)))
+  ccnt <- c(0L, cumsum(as.integer(ok)))
+  idx <- seq_len(n)
   if (k == 2L) {
-    y[2:n] <- y[1:(n - 1L)]
-    y[1L] <- mean(x[1L], na.rm = TRUE)
-    return(y)
+    left <- pmax.int(1L, idx - 1L)
+    right <- idx
+  } else {
+    k2 <- k %/% 2L
+    k1 <- k - k2 - 1L
+    left <- pmax.int(1L, idx - k1)
+    right <- pmin.int(n, idx + k2)
   }
-  if (k1 > 0L) {
-    for (i in seq_len(k1)) {
-      y[i] <- mean(x[seq_len(i + k2)], na.rm = TRUE)
-    }
-  }
-  for (i in (n - k2 + 1L):n) {
-    y[i] <- mean(x[(i - k1):n], na.rm = TRUE)
-  }
-  y
+  win_sum <- csum[right + 1L] - csum[left]
+  win_cnt <- ccnt[right + 1L] - ccnt[left]
+  ifelse(win_cnt > 0L, win_sum / win_cnt, NA_real_)
 }
 
 #' First derivative
@@ -254,7 +249,20 @@ improve_signal <- function(
   sigma = 0.05,
   smoothing_width = 8
 ) {
-  min_intensity <- min(df$intensity, na.rm = TRUE)
+  valid <- is.finite(df$rtime) & is.finite(df$intensity)
+  if (sum(valid) < 2L) {
+    return(data.frame(rtime = numeric(0L), intensity = numeric(0L)))
+  }
+  rtime_valid <- df$rtime[valid]
+  int_valid <- df$intensity[valid]
+  rt_lo <- min(rtime_valid)
+  rt_hi <- max(rtime_valid)
+  t_upper <- min(rt_hi, time_max)
+  if (t_upper < time_min) {
+    return(data.frame(rtime = numeric(0L), intensity = numeric(0L)))
+  }
+
+  min_intensity <- min(int_valid)
   shift_amount <- if (min_intensity <= 0) {
     abs(min_intensity) + intensity_floor
   } else {
@@ -262,20 +270,26 @@ improve_signal <- function(
   }
 
   intensity_fourier <- filter_fft(
-    x = df$intensity + shift_amount,
+    x = int_valid + shift_amount,
     components = fourier_components
   )
 
   f <- stats::approxfun(
-    x = df$rtime,
-    y = intensity_fourier
+    x = rtime_valid,
+    y = intensity_fourier,
+    rule = 2
   )
 
   time <- seq(
     from = time_min,
-    to = min(max(df$rtime), time_max),
+    to = t_upper,
     by = 1 / (frequency * 60 * resample)
   )
+  time <- time[time >= rt_lo & time <= rt_hi]
+  n_t <- length(time)
+  if (n_t < 5L) {
+    return(data.frame(rtime = numeric(0L), intensity = numeric(0L)))
+  }
 
   intensity <- f(time)
 
@@ -288,7 +302,6 @@ improve_signal <- function(
     Smoothing_width = smoothing_width
   )
 
-  n_t <- length(time)
   data.frame(
     rtime = time[3:(n_t - 2L)],
     intensity = intensity_sharpened
@@ -345,6 +358,9 @@ improve_signals_progress <- function(
 #' @keywords internal
 #' @noRd
 baseline_chromatogram <- function(df, method = "peakDetection", ...) {
+  if (nrow(df) == 0L) {
+    return(df)
+  }
   df2 <- df
   intensity <- df$intensity
   intensity[is.na(intensity)] <- 0
@@ -377,12 +393,17 @@ normalize_chromatograms_list <- function(
 ) {
   rtime <- list$rtime + shift
   intensity <- list$intensity
-  if (normalize_intensity) {
-    intensity <- intensity / max(intensity)
+  if (normalize_intensity && length(intensity) > 0L) {
+    max_i <- max(intensity, na.rm = TRUE)
+    if (is.finite(max_i) && max_i > 0) {
+      intensity <- intensity / max_i
+    }
   }
-  if (normalize_time) {
-    time_2 <- max(rtime)
-    rtime <- rtime / time_2
+  if (normalize_time && length(rtime) > 0L) {
+    time_2 <- max(rtime, na.rm = TRUE)
+    if (is.finite(time_2) && time_2 > 0) {
+      rtime <- rtime / time_2
+    }
     return(data.frame(rtime = rtime, intensity = intensity, time_2 = time_2))
   }
   data.frame(rtime = rtime, intensity = intensity)
@@ -410,21 +431,41 @@ change_intensity_name <- function(
 
 #' Extract a specific detector chromatogram from a list
 #'
-#' @param list Named list of detector chromatogram data frames.
-#' @param type Character(1) detector key (`"bpi"`, `"cad"`, or `"pda"`).
-#' @param headers Named character vector mapping detector types to header IDs.
+#' @param list Named (or positional) list of detector chromatogram data frames.
+#' @param type Character(1) detector key (`"cad"`, `"bpi"`, or `"pda"`).
+#' @param headers Optional named character vector mapping detector types to
+#'   header IDs.
 #'
 #' @return A `data.frame` with columns `rtime` and `intensity`.
 #' @keywords internal
 #' @noRd
-extract_chromatogram <- function(list, type, headers) {
-  stopifnot(
-    "type must be one of 'bpi, 'cad',or 'pda'" = type %in%
-      c("bpi", "cad", "pda")
-  )
-  name <- as.character(headers[[type]])
-  idx <- which(headers == name)[1L]
-  change_intensity_name(list[[idx]])
+extract_chromatogram <- function(
+  list,
+  type = c("cad", "bpi", "pda"),
+  headers = NULL
+) {
+  type <- match.arg(type)
+  nms <- names(list)
+  chrom <- NULL
+  if (!is.null(nms) && any(nzchar(nms))) {
+    if (type %in% nms) {
+      chrom <- list[[type]]
+    } else if (!is.null(headers) && type %in% names(headers)) {
+      hdr_id <- as.character(headers[[type]])
+      if (hdr_id %in% nms) {
+        chrom <- list[[hdr_id]]
+      }
+    }
+  } else if (!is.null(headers) && type %in% names(headers)) {
+    idx <- match(type, names(headers))
+    if (!is.na(idx) && idx <= length(list)) {
+      chrom <- list[[idx]]
+    }
+  }
+  if (is.null(chrom)) {
+    stop("Detector '", type, "' chromatogram not found.", call. = FALSE)
+  }
+  change_intensity_name(chrom)
 }
 
 #' Preprocess original, improved, and baselined chromatograms
@@ -491,24 +532,6 @@ preprocess_chromatograms <- function(
     })
   }
 
-  names(chromatograms_original) <- name
-  names(chromatograms_improved) <- name
-
-  chromatograms_original_long <- data.table::rbindlist(
-    lapply(chromatograms_original, data.table::as.data.table),
-    idcol = "id"
-  )
-  chromatograms_original_long[, rtime := rtime + shift]
-  chromatograms_original_long[, intensity := intensity - min(intensity)]
-  chromatograms_original_long[, `:=`(rt_1 = rtime, rt_2 = rtime)]
-
-  chromatograms_improved_long <- data.table::rbindlist(
-    lapply(chromatograms_improved, data.table::as.data.table),
-    idcol = "id"
-  )
-  chromatograms_improved_long[, rtime := rtime + shift]
-  chromatograms_improved_long[, `:=`(rt_1 = rtime, rt_2 = rtime)]
-
   message("baselining chromatograms")
   chromatograms_baselined <- lapply(
     chromatograms_improved,
@@ -516,14 +539,65 @@ preprocess_chromatograms <- function(
     method = baseline_method
   )
 
+  if (shift != 0) {
+    shift_df <- function(x) {
+      if (nrow(x) > 0L) {
+        x$rtime <- x$rtime + shift
+      }
+      x
+    }
+    chromatograms_original <- lapply(chromatograms_original, shift_df)
+    chromatograms_improved <- lapply(chromatograms_improved, shift_df)
+    chromatograms_baselined <- lapply(chromatograms_baselined, shift_df)
+  }
+
+  names(chromatograms_original) <- name
+  names(chromatograms_improved) <- name
+  names(chromatograms_baselined) <- name
+
+  chromatograms_original_long <- data.table::rbindlist(
+    lapply(chromatograms_original, data.table::as.data.table),
+    idcol = "id"
+  )
+  if (nrow(chromatograms_original_long) > 0L) {
+    chromatograms_original_long[,
+      intensity := {
+        m <- min(intensity, na.rm = TRUE)
+        if (is.finite(m)) intensity - m else intensity
+      },
+      by = "id"
+    ]
+    chromatograms_original_long[, `:=`(rt_1 = rtime, rt_2 = rtime)]
+  } else {
+    chromatograms_original_long[, `:=`(rt_1 = numeric(0L), rt_2 = numeric(0L))]
+  }
+
+  chromatograms_improved_long <- data.table::rbindlist(
+    lapply(chromatograms_improved, data.table::as.data.table),
+    idcol = "id"
+  )
+  if (nrow(chromatograms_improved_long) > 0L) {
+    chromatograms_improved_long[, `:=`(rt_1 = rtime, rt_2 = rtime)]
+  } else {
+    chromatograms_improved_long[, `:=`(rt_1 = numeric(0L), rt_2 = numeric(0L))]
+  }
+
   chromatograms_baselined_long <- data.table::rbindlist(
     lapply(chromatograms_baselined, data.table::as.data.table),
     idcol = "id"
   )
-  chromatograms_baselined_long[,
-    intensity := pmax(0, intensity - max(0, min(intensity, na.rm = TRUE)))
-  ]
-  chromatograms_baselined_long[, `:=`(rt_1 = rtime, rt_2 = rtime)]
+  if (nrow(chromatograms_baselined_long) > 0L) {
+    chromatograms_baselined_long[,
+      intensity := {
+        m <- min(intensity, na.rm = TRUE)
+        if (is.finite(m)) pmax(0, intensity - max(0, m)) else intensity
+      },
+      by = "id"
+    ]
+    chromatograms_baselined_long[, `:=`(rt_1 = rtime, rt_2 = rtime)]
+  } else {
+    chromatograms_baselined_long[, `:=`(rt_1 = numeric(0L), rt_2 = numeric(0L))]
+  }
 
   list(
     chromatograms_original = chromatograms_original,

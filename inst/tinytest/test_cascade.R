@@ -72,20 +72,12 @@ local({
 
   message("Testing internal mathematical and alignment helpers...")
   runmean_fn <- utils::getFromNamespace("runmean_center", "cascade")
-  closest_fn <- utils::getFromNamespace("closest_idx", "cascade")
   reorder_fn <- utils::getFromNamespace("fct_reorder2_base", "cascade")
 
   x_vec <- sin(seq(0, 2 * pi, length.out = 25L))
   rm_val <- runmean_fn(x_vec, 5L)
   expect_equal(length(rm_val), length(x_vec))
   expect_true(all(is.finite(rm_val)))
-
-  idx_val <- closest_fn(
-    c(0.1, 0.5, 0.9),
-    c(0.0, 0.25, 0.5, 0.75, 1.0),
-    tolerance = 0.2
-  )
-  expect_equal(idx_val, c(1L, 3L, 5L))
 
   f_ord <- reorder_fn(
     c("a", "b", "a", "b"),

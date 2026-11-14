@@ -12,7 +12,6 @@ preprocess_peaks <- utils::getFromNamespace("preprocess_peaks", "cascade")
 transform_ms <- utils::getFromNamespace("transform_ms", "cascade")
 extract_ms_progress <- utils::getFromNamespace("extract_ms_progress", "cascade")
 extract_ms_peak <- utils::getFromNamespace("extract_ms_peak", "cascade")
-closest_idx <- utils::getFromNamespace("closest_idx", "cascade")
 compare_peaks <- utils::getFromNamespace("compare_peaks", "cascade")
 
 # --- join_peaks boundary tests ---
@@ -260,34 +259,31 @@ trapz_integral <- utils::getFromNamespace("trapz_integral", "cascade")
 expect_identical(trapz_integral(numeric(0L), numeric(0L)), 0)
 expect_identical(trapz_integral(1.5, 25), 25)
 
-# --- closest_idx all branches ---
-expect_identical(closest_idx(numeric(0L), c(1, 2), 0.5), integer(0L))
-expect_identical(
-  closest_idx(c(1, 2), numeric(0L), 0.5),
-  c(NA_integer_, NA_integer_)
+# Flat slice in normalize_chromato and zero-integral join_peaks
+nc_flat <- normalize_chromato(
+  data.frame(rt_min = 0, rt_max = 10),
+  data.frame(rtime = c(1, 2, 3), intensity = c(5, 5, 5)),
+  intensity_threshold = 0
 )
-# Queries remaining after table exhausted (it > nt)
-expect_identical(
-  closest_idx(c(1.0, 5.0, 9.0), c(1.0), tolerance = 0.2),
-  c(1L, NA_integer_, NA_integer_)
+expect_identical(nc_flat$intensity, c(0, 0, 0))
+
+jp_zero <- join_peaks(
+  data.table::data.table(
+    id = "s1",
+    rt_1 = c(1, 2, 3),
+    rt_2 = c(1, 2, 3),
+    intensity = c(0, 0, 0)
+  ),
+  data.table::data.table(
+    peak_id = 1L,
+    peak_max = 0,
+    rt_apex = 2,
+    rt_min = 1,
+    rt_max = 3
+  ),
+  min_area = 0
 )
-# Duplicate match to same table element: second x is closer so first is
-# overwritten with NA
-expect_identical(
-  closest_idx(c(0.9, 0.99), c(1.0, 5.0), tolerance = 0.2),
-  c(NA_integer_, 1L)
-)
-# Duplicate match to same table element: first x is closer than second x
-expect_identical(
-  closest_idx(c(1.01, 1.15), c(1.0, 5.0), tolerance = 0.2),
-  c(1L, NA_integer_)
-)
-# Exact tolerance boundary (including IEEE 754 positive rounding 0.3 - 0.1 >
-# 0.2)
-expect_identical(
-  closest_idx(c(0.3, 0.35), c(0.1), tolerance = 0.2),
-  c(1L, NA_integer_)
-)
+expect_identical(nrow(jp_zero), 0L)
 
 # --- compare_peaks all branches ---
 # 1. Empty ms_pks
@@ -295,7 +291,7 @@ expect_identical(
   compare_peaks(1L, list(list()), list()),
   list(0)
 )
-# 2. Identical retention time vectors (direct correlation without closest_idx)
+# 2. Identical retention time vectors
 p_pre_same <- list(
   list_chromato_peaks = list(
     list(rtime = c(0, 0.5, 1), intensity = c(1, 2, 3))
@@ -323,23 +319,17 @@ ms_diff <- list(
     # Mismatched window bounds (abs(x_min - y_min) > tol) triggers union grid
     # with zero-padding outside [y_min, y_max]
     list(rtime = c(0.45, 0.50, 0.55), intensity = c(0.5, 1.0, 0.5)),
-    # Zero variance -> cor is NA -> returns 0
+    # Zero variance -> returns 0 cleanly without stats::cor warning
     list(rtime = c(0.0, 0.25, 0.5, 0.75, 1.0), intensity = c(1, 1, 1, 1, 1)),
     # <= 1 point -> returns 0
     list(rtime = 0.5, intensity = 1.0)
   )
 )
-cp_diff <- compare_peaks(1L, ms_diff, p_pre_diff)
+expect_silent(cp_diff <- compare_peaks(1L, ms_diff, p_pre_diff))
 expect_equal(cp_diff[[1L]], 1.0, tolerance = 1e-12)
 expect_true(cp_diff[[2L]] > 0.5 && cp_diff[[2L]] < 1.0)
 expect_identical(cp_diff[[3L]], 0)
 expect_identical(cp_diff[[4L]], 0)
-
-# closest_idx branch where table advances (next_t_d < cur_d <= next_x_d)
-expect_identical(
-  closest_idx(c(5.0), c(1.0, 5.0), tolerance = 0.2),
-  2L
-)
 
 # extract_ms_progress with plain numeric vector (is.null(dim(mz_mat)))
 ext_vec_mz <- extract_ms_progress(

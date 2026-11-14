@@ -93,7 +93,17 @@ join_peaks <- function(chromatograms, peaks, min_area) {
   res <- unique(
     ov[, list(peak_id, id, peak_max, rt_apex, rt_min, rt_max, integral)]
   )
-  res[, keep_area := (integral / sum(integral)) >= min_area, by = "id"]
+  res[,
+    keep_area := {
+      total_int <- sum(integral, na.rm = TRUE)
+      if (!is.finite(total_int) || total_int <= 0) {
+        FALSE
+      } else {
+        (integral / total_int) >= min_area
+      }
+    },
+    by = "id"
+  ]
   res <- res[which(keep_area)][, keep_area := NULL]
   res
 }
@@ -114,9 +124,13 @@ normalize_chromato <- function(x, df_xy, intensity_threshold = 0.1) {
   int <- df_xy$intensity[sel]
   rt_bounds <- if (length(rt) > 0L) c(min(rt), max(rt)) else numeric(0L)
   if (length(int) > 0L) {
-    min_i <- min(int)
-    max_i <- max(int)
-    int <- (int - min_i) / (max_i - min_i)
+    min_i <- min(int, na.rm = TRUE)
+    max_i <- max(int, na.rm = TRUE)
+    if (!is.finite(min_i) || !is.finite(max_i) || max_i <= min_i) {
+      int <- rep(0, length(int))
+    } else {
+      int <- (int - min_i) / (max_i - min_i)
+    }
   }
   keep <- !is.na(int) & int >= intensity_threshold
   out <- data.table::data.table(rtime = rt[keep], intensity = int[keep])
@@ -470,64 +484,6 @@ extract_ms_peak <- function(x) {
   })
 }
 
-#' Exact base-R implementation of closest-duplicate matching
-#'
-#' Matches `MsCoreUtils::closest(..., duplicates = "closest")`.
-#'
-#' @param x Sorted numeric query vector.
-#' @param table Sorted numeric target vector.
-#' @param tolerance Numeric(1) maximum allowed absolute difference.
-#'
-#' @return Integer vector of matching indices in `table` (or `NA_integer_`).
-#' @keywords internal
-#' @noRd
-closest_idx <- function(x, table, tolerance) {
-  nx <- length(x)
-  nt <- length(table)
-  if (!nx || !nt) {
-    return(rep.int(NA_integer_, nx))
-  }
-  tol <- tolerance + sqrt(.Machine$double.eps)
-  out <- rep.int(NA_integer_, nx)
-  ix <- 1L
-  it <- 1L
-  last_ix <- 0L
-  last_it <- 0L
-  while (ix <= nx) {
-    if (it > nt) {
-      out[ix] <- NA_integer_
-      ix <- ix + 1L
-      next
-    }
-    cur_d <- abs(x[ix] - table[it])
-    next_x_d <- if (ix < nx) abs(x[ix + 1L] - table[it]) else Inf
-    next_t_d <- if (it < nt) abs(x[ix] - table[it + 1L]) else Inf
-    if (cur_d <= tol) {
-      out[ix] <- it
-      if (it == last_it) {
-        if (next_x_d < next_t_d || cur_d < next_t_d) {
-          out[last_ix] <- NA_integer_
-        }
-        last_ix <- ix
-      } else {
-        last_ix <- ix
-        last_it <- it
-      }
-    } else {
-      out[ix] <- NA_integer_
-    }
-    if (next_x_d >= cur_d && next_t_d >= cur_d) {
-      ix <- ix + 1L
-      it <- it + 1L
-    } else if (next_x_d < next_t_d) {
-      ix <- ix + 1L
-    } else {
-      it <- it + 1L
-    }
-  }
-  out
-}
-
 #' Compare CAD peak shape with MS feature XIC peak shapes
 #'
 #' @param x Integer(1) peak index.
@@ -547,6 +503,20 @@ compare_peaks <- function(x, list_ms_peaks, peaks_prelist) {
   x_rt <- chrom_pk$rtime
   x_int <- chrom_pk$intensity
 
+  safe_cor <- function(a, b) {
+    ok <- is.finite(a) & is.finite(b)
+    if (sum(ok) < 2L) {
+      return(0)
+    }
+    a_ok <- a[ok]
+    b_ok <- b[ok]
+    if (stats::sd(a_ok) == 0 || stats::sd(b_ok) == 0) {
+      return(0)
+    }
+    r_val <- stats::cor(a_ok, b_ok)
+    if (is.na(r_val)) 0 else r_val
+  }
+
   lapply(seq_along(ms_pks), function(z) {
     y_pk <- ms_pks[[z]]
     y_rt <- y_pk$rtime
@@ -562,28 +532,25 @@ compare_peaks <- function(x, list_ms_peaks, peaks_prelist) {
       y_max <- max(y_rt)
       if (abs(x_min - y_min) <= tol && abs(x_max - y_max) <= tol) {
         aligned_int <- stats::approx(x_rt, x_int, xout = y_rt, rule = 2)$y
-        r_val <- stats::cor(aligned_int, y_int, use = "pairwise.complete.obs")
-      } else {
-        grid_rt <- sort(unique(c(x_rt, y_rt)))
-        x_eval <- stats::approx(
-          x_rt,
-          x_int,
-          xout = grid_rt,
-          yleft = 0,
-          yright = 0
-        )$y
-        y_eval <- stats::approx(
-          y_rt,
-          y_int,
-          xout = grid_rt,
-          yleft = 0,
-          yright = 0
-        )$y
-        r_val <- stats::cor(x_eval, y_eval, use = "pairwise.complete.obs")
+        return(safe_cor(aligned_int, y_int))
       }
-    } else {
-      r_val <- stats::cor(x_int, y_int, use = "pairwise.complete.obs")
+      grid_rt <- sort(unique(c(x_rt, y_rt)))
+      x_eval <- stats::approx(
+        x_rt,
+        x_int,
+        xout = grid_rt,
+        yleft = 0,
+        yright = 0
+      )$y
+      y_eval <- stats::approx(
+        y_rt,
+        y_int,
+        xout = grid_rt,
+        yleft = 0,
+        yright = 0
+      )$y
+      return(safe_cor(x_eval, y_eval))
     }
-    if (is.na(r_val)) 0 else r_val
+    safe_cor(x_int, y_int)
   })
 }

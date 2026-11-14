@@ -360,8 +360,58 @@ expect_identical(
 )
 expect_error(
   extract_chromatogram(chrom_bundle, "uv", hdrs),
-  pattern = "type must be one of"
+  pattern = "should be one of"
 )
+
+# 2-detector bundle missing pda: CAD still resolves by name, PDA errors clearly
+two_det <- chrom_bundle[c("bpi", "cad")]
+expect_identical(
+  extract_chromatogram(two_det, "cad", hdrs),
+  data.frame(rtime = c(1, 2), intensity = c(30, 40))
+)
+expect_error(
+  extract_chromatogram(two_det, "pda", hdrs),
+  pattern = "not found"
+)
+
+# Interior NAs in runmean_center must not poison adjacent values
+rm_na <- runmean_center(c(10, NA_real_, 30, 40, 50), k = 3L)
+expect_false(anyNA(rm_na))
+expect_equal(rm_na[2L], 20, tolerance = 1e-12)
+rm_all_na <- runmean_center(c(NA_real_, NA_real_, NA_real_), k = 3L)
+expect_true(all(is.na(rm_all_na)))
+
+# improve_signal with solvent delay (min(rtime) > time_min) and short grid
+delay_df <- data.frame(
+  rtime = seq(1.5, 4.0, length.out = 200L),
+  intensity = 10 +
+    100 *
+      exp(
+        -((seq(1.5, 4.0, length.out = 200L) - 2.5)^2) /
+          0.05
+      )
+)
+imp_delay <- improve_signal(
+  delay_df,
+  frequency = 1,
+  resample = 1,
+  time_min = 0.5,
+  time_max = 4.0,
+  fourier_components = 0.1
+)
+expect_true(nrow(imp_delay) > 0L)
+expect_true(all(is.finite(imp_delay$intensity)))
+expect_true(max(imp_delay$intensity) > 0)
+expect_true(all(imp_delay$rtime >= 1.5))
+
+imp_short <- improve_signal(
+  data.frame(rtime = c(0.1, 0.12), intensity = c(10, 20)),
+  frequency = 1,
+  resample = 1,
+  time_min = 0.0,
+  time_max = 0.15
+)
+expect_identical(nrow(imp_short), 0L)
 
 # --- preprocess_chromatograms ---
 raw_list <- list(
@@ -393,9 +443,21 @@ expect_identical(
 )
 expect_identical(names(prep_no_imp$chromatograms_original), "sample_A")
 expect_true(all(
-  prep_no_imp$chromatograms_improved$sample_A$rtime >= 0.2 &
-    prep_no_imp$chromatograms_improved$sample_A$rtime <= 1.8
+  prep_no_imp$chromatograms_improved$sample_A$rtime >= 0.7 &
+    prep_no_imp$chromatograms_improved$sample_A$rtime <= 2.3
 ))
+expect_identical(
+  prep_no_imp$chromatograms_original$sample_A$rtime,
+  prep_no_imp$chromatograms_original_long$rtime
+)
+expect_identical(
+  prep_no_imp$chromatograms_improved$sample_A$rtime,
+  prep_no_imp$chromatograms_improved_long$rtime
+)
+expect_identical(
+  prep_no_imp$chromatograms_baselined$sample_A$rtime,
+  prep_no_imp$chromatograms_baselined_long$rtime
+)
 expect_equal(
   prep_no_imp$chromatograms_original_long$rtime,
   raw_list[[1L]]$rtime + 0.5,
