@@ -130,119 +130,114 @@ local({
   expect_identical(readLines(uc_dest_0), "user_cached_content")
 
   # 3d. Zenodo API download & error paths (isolated via mocked curl bindings)
-  cascade_env[["zenodo_lotus_path"]] <- NULL
-  curl_ns <- asNamespace("curl")
-  orig_fetch <- get("curl_fetch_memory", envir = curl_ns)
-  orig_dl <- get("curl_download", envir = curl_ns)
-  unlockBinding("curl_fetch_memory", curl_ns)
-  unlockBinding("curl_download", curl_ns)
-  # Restore and re-lock curl bindings immediately
-  on.exit(
-    {
-      if (bindingIsLocked("curl_fetch_memory", curl_ns)) {
-        unlockBinding("curl_fetch_memory", curl_ns)
-      }
-      if (bindingIsLocked("curl_download", curl_ns)) {
-        unlockBinding("curl_download", curl_ns)
-      }
-      assign("curl_fetch_memory", orig_fetch, envir = curl_ns)
-      assign("curl_download", orig_dl, envir = curl_ns)
-      lockBinding("curl_fetch_memory", curl_ns)
-      lockBinding("curl_download", curl_ns)
-    },
-    add = TRUE
-  )
-
-  # HTTP 500 error branch
-  assign(
-    "curl_fetch_memory",
-    function(url, handle = NULL) {
-      list(status_code = 500L, content = charToRaw("Internal Server Error"))
-    },
-    envir = curl_ns
-  )
-  expect_error(
-    get_zenodo_file(path = file.path(work_dir, "err500.csv.gz")),
-    pattern = "Zenodo API request failed \\(HTTP 500\\)"
-  )
-
-  # Pattern not found in Zenodo record JSON branch
-  assign(
-    "curl_fetch_memory",
-    function(url, handle = NULL) {
-      list(
-        status_code = 200L,
-        content = charToRaw(paste0(
-          '{"files": [{"links": {"self": ',
-          '"https://zenodo.org/api/records/123/files/other.txt"}}]}'
-        ))
-      )
-    },
-    envir = curl_ns
-  )
-  expect_error(
-    get_zenodo_file(
-      pattern = "frozen_metadata.csv.gz",
-      path = file.path(work_dir, "notfound.csv.gz")
-    ),
-    pattern = "Could not find file matching 'frozen_metadata.csv.gz'"
-  )
-
-  # Successful Zenodo JSON match + curl_download
-  assign(
-    "curl_fetch_memory",
-    function(url, handle = NULL) {
-      list(
-        status_code = 200L,
-        content = charToRaw(paste0(
-          '{"links": "https://zenodo.org/api/records/5794106/',
-          'files/230101_frozen_metadata.csv.gz/content"}'
-        ))
-      )
-    },
-    envir = curl_ns
-  )
-  assign(
-    "curl_download",
-    function(url, destfile, quiet = TRUE, mode = "wb", handle = NULL) {
-      writeLines(paste("downloaded_from", url), destfile)
-      invisible(destfile)
-    },
-    envir = curl_ns
-  )
-  dl_dest <- file.path(work_dir, "dl", "zenodo_dl.csv.gz")
-  expect_identical(get_zenodo_file(path = dl_dest), dl_dest)
-  expect_identical(
-    readLines(dl_dest),
-    paste0(
-      "downloaded_from https://zenodo.org/api/records/5794106/",
-      "files/230101_frozen_metadata.csv.gz/content"
+  local({
+    cascade_env[["zenodo_lotus_path"]] <- NULL
+    curl_ns <- asNamespace("curl")
+    orig_fetch <- get("curl_fetch_memory", envir = curl_ns)
+    orig_dl <- get("curl_download", envir = curl_ns)
+    unlockBinding("curl_fetch_memory", curl_ns)
+    unlockBinding("curl_download", curl_ns)
+    on.exit(
+      {
+        if (bindingIsLocked("curl_fetch_memory", curl_ns)) {
+          unlockBinding("curl_fetch_memory", curl_ns)
+        }
+        if (bindingIsLocked("curl_download", curl_ns)) {
+          unlockBinding("curl_download", curl_ns)
+        }
+        assign("curl_fetch_memory", orig_fetch, envir = curl_ns)
+        assign("curl_download", orig_dl, envir = curl_ns)
+        lockBinding("curl_fetch_memory", curl_ns)
+        lockBinding("curl_download", curl_ns)
+      },
+      add = TRUE
     )
-  )
 
-  # Non-LOTUS (doi, pattern) must not reuse "zenodo_lotus_path" session cache
-  other_dest <- file.path(work_dir, "dl", "other_record.csv.gz")
-  expect_identical(
-    get_zenodo_file(
-      doi = "10.5281/zenodo.9999999",
-      pattern = "frozen_metadata.csv.gz",
-      path = other_dest
-    ),
-    other_dest
-  )
-  other_key <- "zenodo_10.5281/zenodo.9999999_frozen_metadata.csv.gz"
-  expect_identical(
-    cascade_env[[other_key]],
-    normalizePath(other_dest, mustWork = FALSE)
-  )
-  expect_true(file.exists(other_dest))
-  cascade_env[[other_key]] <- NULL
+    # HTTP 500 error branch
+    assign(
+      "curl_fetch_memory",
+      function(url, handle = NULL) {
+        list(status_code = 500L, content = charToRaw("Internal Server Error"))
+      },
+      envir = curl_ns
+    )
+    expect_error(
+      get_zenodo_file(path = file.path(work_dir, "err500.csv.gz")),
+      pattern = "Zenodo API request failed \\(HTTP 500\\)"
+    )
 
-  # Restore and re-lock curl bindings immediately
-  assign("curl_fetch_memory", orig_fetch, envir = curl_ns)
-  assign("curl_download", orig_dl, envir = curl_ns)
-  lockBinding("curl_fetch_memory", curl_ns)
-  lockBinding("curl_download", curl_ns)
+    # Pattern not found in Zenodo record JSON branch
+    assign(
+      "curl_fetch_memory",
+      function(url, handle = NULL) {
+        list(
+          status_code = 200L,
+          content = charToRaw(paste0(
+            '{"files": [{"links": {"self": ',
+            '"https://zenodo.org/api/records/123/files/other.txt"}}]}'
+          ))
+        )
+      },
+      envir = curl_ns
+    )
+    expect_error(
+      get_zenodo_file(
+        pattern = "frozen_metadata.csv.gz",
+        path = file.path(work_dir, "notfound.csv.gz")
+      ),
+      pattern = "Could not find file matching 'frozen_metadata.csv.gz'"
+    )
+
+    # Successful Zenodo JSON match + curl_download
+    assign(
+      "curl_fetch_memory",
+      function(url, handle = NULL) {
+        list(
+          status_code = 200L,
+          content = charToRaw(paste0(
+            '{"links": "https://zenodo.org/api/records/5794106/',
+            'files/230101_frozen_metadata.csv.gz/content"}'
+          ))
+        )
+      },
+      envir = curl_ns
+    )
+    assign(
+      "curl_download",
+      function(url, destfile, quiet = TRUE, mode = "wb", handle = NULL) {
+        writeLines(paste("downloaded_from", url), destfile)
+        invisible(destfile)
+      },
+      envir = curl_ns
+    )
+    dl_dest <- file.path(work_dir, "dl", "zenodo_dl.csv.gz")
+    expect_identical(get_zenodo_file(path = dl_dest), dl_dest)
+    expect_identical(
+      readLines(dl_dest),
+      paste0(
+        "downloaded_from https://zenodo.org/api/records/5794106/",
+        "files/230101_frozen_metadata.csv.gz/content"
+      )
+    )
+
+    # Non-LOTUS (doi, pattern) must not reuse "zenodo_lotus_path" session cache
+    other_dest <- file.path(work_dir, "dl", "other_record.csv.gz")
+    expect_identical(
+      get_zenodo_file(
+        doi = "10.5281/zenodo.9999999",
+        pattern = "frozen_metadata.csv.gz",
+        path = other_dest
+      ),
+      other_dest
+    )
+    other_key <- "zenodo_10.5281/zenodo.9999999_frozen_metadata.csv.gz"
+    expect_identical(
+      cascade_env[[other_key]],
+      normalizePath(other_dest, mustWork = FALSE)
+    )
+    expect_true(file.exists(other_dest))
+    cascade_env[[other_key]] <- NULL
+  })
   cascade_env[["zenodo_lotus_path"]] <- orig_session_lotus
 
   # --- 4. load_annotations ---
