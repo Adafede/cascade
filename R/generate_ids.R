@@ -56,27 +56,6 @@ generate_ids <- function(
   show_title = FALSE,
   format_tables = FALSE
 ) {
-  query_part_1 <- paste0(
-    "SELECT DISTINCT ?structure ?structureLabel ?structure_id ",
-    "?structureSmiles ?taxaLabels ?taxa ?referencesLabels ",
-    "?references_ids ?references WHERE {\n  ?taxa (wdt:P171*) wd:"
-  )
-  query_part_2 <- paste0(
-    ";\n  wdt:P225 ?taxaLabels. \n  ?structure wdt:P235 ?structure_id;\n",
-    "  wdt:P233 ?structureSmiles;\n  p:P703 ?statement.\n",
-    "  ?statement ps:P703 ?taxa;\n  prov:wasDerivedFrom ?ref.\n",
-    "  ?ref pr:P248 ?references.\n",
-    "  SERVICE <https://query-scholarly.wikidata.org/sparql> { \n",
-    " ?references wdt:P1476 ?referencesLabels;\n",
-    "  wdt:P356 ?references_ids;\n  wdt:P577 ?art_date.\n  }\n",
-    " FILTER(((YEAR(?art_date)) >= "
-  )
-  query_part_3 <- " ) && ((YEAR(?art_date)) <= "
-  query_part_4 <- paste0(
-    " ))\n  SERVICE wikibase:label { ",
-    "bd:serviceParam wikibase:language \"[AUTO_LANGUAGE], mul, en\". }\n}"
-  )
-
   lotus_path <- "data/source/libraries/lotus.csv.gz"
   message("Getting last LOTUS version")
   get_zenodo_file(
@@ -147,11 +126,7 @@ generate_ids <- function(
     xs = qids,
     start = start,
     end = end,
-    limit = limit,
-    query_part_1 = query_part_1,
-    query_part_2 = query_part_2,
-    query_part_3 = query_part_3,
-    query_part_4 = query_part_4
+    limit = limit
   )
 
   message("Querying Wikidata")
@@ -199,24 +174,9 @@ generate_ids <- function(
       use.names = TRUE,
       fill = TRUE
     )
-    has_multiword <- all(grepl("\\W+", comparison))
-    spec_dt[, `:=`(
-      best_candidate_1 = chemical_pathway,
-      best_candidate_2 = chemical_superclass,
-      best_candidate_3 = chemical_class,
-      organism = if (has_multiword) taxaLabels else gsub(" .*", "", taxaLabels)
-    )]
-    spec_dt[, `:=`(sample = organism, species = organism)]
-    drop_cols <- intersect(
-      c("taxa", "taxaLabels", "references", "referencesLabels"),
-      names(spec_dt)
-    )
-    if (length(drop_cols) > 0L) {
-      spec_dt[, (drop_cols) := NULL]
-    }
-    hierarchies[["special"]] <- prepare_hierarchy(
-      dataframe = unique(spec_dt),
-      type = "literature"
+    hierarchies[["special"]] <- prepare_literature_hierarchy(
+      spec_dt,
+      full_species_name = all(grepl("\\W+", comparison))
     )
   }
 
@@ -227,35 +187,24 @@ generate_ids <- function(
     !grepl("_grouped", names(hierarchies))
   ]
 
+  plot_tables <- if (show_title) tables else NULL
+
   message("Generating treemaps")
-  treemaps <- if (show_title) {
-    treemaps_progress(
-      xs = non_grouped_names,
-      hierarchies = hierarchies,
-      tables = tables
-    )
-  } else {
-    treemaps_progress_no_title(
-      xs = non_grouped_names,
-      hierarchies = hierarchies
-    )
-  }
+  treemaps <- treemaps_progress(
+    xs = non_grouped_names,
+    hierarchies = hierarchies,
+    tables = plot_tables,
+    show_title = show_title
+  )
 
   message("Generating sunbursts")
-  sunbursts <- if (show_title) {
-    treemaps_progress(
-      xs = non_grouped_names,
-      type = "sunburst",
-      hierarchies = hierarchies,
-      tables = tables
-    )
-  } else {
-    treemaps_progress_no_title(
-      xs = non_grouped_names,
-      type = "sunburst",
-      hierarchies = hierarchies
-    )
-  }
+  sunbursts <- treemaps_progress(
+    xs = non_grouped_names,
+    type = "sunburst",
+    hierarchies = hierarchies,
+    tables = plot_tables,
+    show_title = show_title
+  )
 
   message("Filtering treemaps")
   treemaps <- treemaps[!grepl("ae$", names(treemaps))]

@@ -91,6 +91,19 @@ get_zenodo_file <- function(
     paste0("zenodo_", doi, "_", pattern)
   }
 
+  materialize_cached_file <- function(src, dest) {
+    check_export_dir(dirname(dest))
+    if (!suppressWarnings(file.symlink(src, dest))) {
+      file.copy(src, dest, overwrite = TRUE)
+    }
+    invisible(dest)
+  }
+  new_timeout_handle <- function() {
+    h <- curl::new_handle()
+    curl::handle_setopt(h, timeout = as.integer(timeout_s), followlocation = 1L)
+    h
+  }
+
   # Check session cache so repeated calls across tempdirs reuse the file
   session_cached <- .cascade_env[[cache_key]]
   if (
@@ -98,11 +111,7 @@ get_zenodo_file <- function(
       file.exists(session_cached) &&
       file.size(session_cached) > 0
   ) {
-    check_export_dir(dirname(path))
-    if (!suppressWarnings(file.symlink(session_cached, path))) {
-      file.copy(session_cached, path, overwrite = TRUE)
-    }
-    return(invisible(path))
+    return(materialize_cached_file(session_cached, path))
   }
 
   # Also check user cache directory
@@ -110,19 +119,13 @@ get_zenodo_file <- function(
   cache_file <- file.path(cache_dir, basename(path))
   if (file.exists(cache_file) && file.size(cache_file) > 0) {
     .cascade_env[[cache_key]] <- normalizePath(cache_file)
-    check_export_dir(dirname(path))
-    if (!suppressWarnings(file.symlink(cache_file, path))) {
-      file.copy(cache_file, path, overwrite = TRUE)
-    }
-    return(invisible(path))
+    return(materialize_cached_file(cache_file, path))
   }
 
   record_id <- sub("^.*zenodo\\.", "", doi)
   api_url <- paste0("https://zenodo.org/api/records/", record_id)
 
-  h <- curl::new_handle()
-  curl::handle_setopt(h, timeout = as.integer(timeout_s), followlocation = 1L)
-  resp <- curl::curl_fetch_memory(api_url, handle = h)
+  resp <- curl::curl_fetch_memory(api_url, handle = new_timeout_handle())
   if (resp$status_code >= 400L) {
     stop(
       sprintf(
@@ -154,17 +157,11 @@ get_zenodo_file <- function(
   }
 
   check_export_dir(dirname(path))
-  dl_handle <- curl::new_handle()
-  curl::handle_setopt(
-    dl_handle,
-    timeout = as.integer(timeout_s),
-    followlocation = 1L
-  )
   curl::curl_download(
     url = m[1L],
     destfile = path,
     quiet = TRUE,
-    handle = dl_handle
+    handle = new_timeout_handle()
   )
   .cascade_env[[cache_key]] <- normalizePath(path, mustWork = FALSE)
   invisible(path)
@@ -291,6 +288,33 @@ load_features <- function(file = NULL, show_example = FALSE) {
   fread_gz(file)
 }
 
+#' @keywords internal
+#' @noRd
+load_example_features_table <- function(
+  file = NULL,
+  show_example = FALSE,
+  default_filename,
+  dataset_name
+) {
+  if (!is.null(file) && file.exists(file)) {
+    return(fread_gz(file))
+  }
+  if (show_example) {
+    default_tsv <- file.path("data/interim/peaks", default_filename)
+    if (file.exists(default_tsv) && file.size(default_tsv) > 0) {
+      return(fread_gz(default_tsv))
+    }
+    env <- new.env(parent = emptyenv())
+    utils::data(list = dataset_name, package = "cascade", envir = env)
+    return(data.table::as.data.table(get(
+      dataset_name,
+      envir = env,
+      inherits = FALSE
+    )))
+  }
+  fread_gz(file)
+}
+
 #' Load informed features
 #'
 #' @param file Character(1) path to an informed feature TSV/CSV file.
@@ -300,25 +324,12 @@ load_features <- function(file = NULL, show_example = FALSE) {
 #' @keywords internal
 #' @noRd
 load_features_informed <- function(file = NULL, show_example = FALSE) {
-  if (!is.null(file) && file.exists(file)) {
-    return(fread_gz(file))
-  }
-  if (show_example) {
-    default_tsv <- file.path(
-      "data/interim/peaks",
-      "210619_AR_06_V_03_2_01_featuresInformed_cad.tsv"
-    )
-    if (file.exists(default_tsv) && file.size(default_tsv) > 0) {
-      return(fread_gz(default_tsv))
-    }
-    utils::data(
-      "cascade_features_informed",
-      package = "cascade",
-      envir = environment()
-    )
-    return(data.table::as.data.table(cascade_features_informed))
-  }
-  fread_gz(file)
+  load_example_features_table(
+    file = file,
+    show_example = show_example,
+    default_filename = "210619_AR_06_V_03_2_01_featuresInformed_cad.tsv",
+    dataset_name = "cascade_features_informed"
+  )
 }
 
 #' Load non-informed features
@@ -330,25 +341,12 @@ load_features_informed <- function(file = NULL, show_example = FALSE) {
 #' @keywords internal
 #' @noRd
 load_features_not_informed <- function(file = NULL, show_example = FALSE) {
-  if (!is.null(file) && file.exists(file)) {
-    return(fread_gz(file))
-  }
-  if (show_example) {
-    default_tsv <- file.path(
-      "data/interim/peaks",
-      "210619_AR_06_V_03_2_01_featuresNotInformed_cad.tsv"
-    )
-    if (file.exists(default_tsv) && file.size(default_tsv) > 0) {
-      return(fread_gz(default_tsv))
-    }
-    utils::data(
-      "cascade_features_not_informed",
-      package = "cascade",
-      envir = environment()
-    )
-    return(data.table::as.data.table(cascade_features_not_informed))
-  }
-  fread_gz(file)
+  load_example_features_table(
+    file = file,
+    show_example = show_example,
+    default_filename = "210619_AR_06_V_03_2_01_featuresNotInformed_cad.tsv",
+    dataset_name = "cascade_features_not_informed"
+  )
 }
 
 #' Load MS1 spectral data

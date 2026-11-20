@@ -176,23 +176,12 @@ check_peaks_integration <- function(
     c("baselined", "improved", "original")
   )
 
-  message("loading chromatograms")
-  chromatograms_all <- load_chromatograms(
-    file,
-    show_example = show_example,
-    headers = headers
+  chrom_sub <- load_detector_chromatogram(
+    file = file,
+    detector = detector,
+    headers = headers,
+    show_example = show_example
   )
-  if (
-    !(detector %in% names(chromatograms_all)) ||
-      is.null(chromatograms_all[[detector]])
-  ) {
-    stop(
-      "Detector '",
-      detector,
-      "' chromatogram not found in file.",
-      call. = FALSE
-    )
-  }
 
   message("loading name")
   name <- load_name(file, show_example = show_example)
@@ -208,7 +197,6 @@ check_peaks_integration <- function(
   )
 
   message("Preprocessing chromatograms")
-  chrom_sub <- chromatograms_all[detector]
   chromatograms_list <- preprocess_chromatograms(
     detector = detector,
     name = name,
@@ -228,23 +216,9 @@ check_peaks_integration <- function(
     improve_signal = improve_signal
   )
 
-  df_long_sel <- data.table::copy(data.table::as.data.table(switch(
-    chromatogram,
-    "original" = chromatograms_list$chromatograms_original_long,
-    "improved" = chromatograms_list$chromatograms_improved_long,
-    "baselined" = chromatograms_list$chromatograms_baselined_long
-  )))
-  max_int <- max(df_long_sel$intensity, na.rm = TRUE)
-  if (is.finite(max_int) && max_int > 0) {
-    df_long_sel[, intensity := intensity / max_int]
-  }
-
-  df_xy_sel <- switch(
-    chromatogram,
-    "original" = chromatograms_list$chromatograms_original[[1L]],
-    "improved" = chromatograms_list$chromatograms_improved[[1L]],
-    "baselined" = chromatograms_list$chromatograms_baselined[[1L]]
-  )
+  stage <- select_chromatogram_stage(chromatograms_list, chromatogram)
+  df_long_sel <- stage$df_long
+  df_xy_sel <- stage$df_xy
 
   peaks <- preprocess_peaks(
     df_features = df_features,

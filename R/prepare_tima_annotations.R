@@ -93,18 +93,7 @@ prepare_tima_annotations <- function(
             load_annotations(x, show_example = show_example)
           ))
         }
-        for (col in names(dt)) {
-          val <- dt[[col]]
-          if (!is.character(val)) {
-            val <- as.character(val)
-          }
-          pos <- regexpr("|", val, fixed = TRUE)
-          hit <- which(pos > 0L)
-          if (length(hit) > 0L) {
-            val[hit] <- substr(val[hit], 1L, pos[hit] - 1L)
-          }
-          data.table::set(dt, j = col, value = val)
-        }
+        strip_pipe_alternatives(dt)
 
         if (!predicted_classes) {
           s_init <- suppressWarnings(as.numeric(dt$score_initial))

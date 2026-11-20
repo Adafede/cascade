@@ -281,99 +281,60 @@ check_chromatograms_alignment <- function(
 
   chromatograms_list <- list()
   detectors <- c("bpi", "cad", "pda")
+  polarity_files <- list(pos = file_positive, neg = file_negative)
 
-  if (!is.null(file_positive) || show_example) {
-    chromatograms_positive <- if (show_example) {
-      load_chromatograms(
-        show_example = TRUE,
-        headers = headers,
-        example_polarity = "pos"
-      )
-    } else {
-      load_chromatograms(file_positive, headers = headers)
-    }
-
-    for (det in detectors) {
-      if (chromatogram_selected(det)) {
-        chrom_df <- extract_chromatogram(
-          chromatograms_positive,
-          type = det,
-          headers = headers
+  for (pol in names(polarity_files)) {
+    fpath <- polarity_files[[pol]]
+    if (!is.null(fpath) || show_example) {
+      chrom_data <- if (show_example) {
+        load_chromatograms(
+          show_example = TRUE,
+          headers = headers,
+          example_polarity = pol
         )
-        res <- process_chromatogram(chrom_df)
-        chromatograms_list[[paste0(
-          "chromatogram_",
-          det,
-          "_pos_improved"
-        )]] <- res$improved
-        chromatograms_list[[paste0(
-          "chromatogram_",
-          det,
-          "_pos_baselined"
-        )]] <- res$baselined
+      } else {
+        load_chromatograms(fpath, headers = headers)
+      }
+
+      for (det in detectors) {
+        if (chromatogram_selected(det)) {
+          chrom_df <- extract_chromatogram(
+            chrom_data,
+            type = det,
+            headers = headers
+          )
+          res <- process_chromatogram(chrom_df)
+          prefix <- paste0("chromatogram_", det, "_", pol, "_")
+          chromatograms_list[[paste0(prefix, "improved")]] <- res$improved
+          chromatograms_list[[paste0(prefix, "baselined")]] <- res$baselined
+        }
       }
     }
   }
 
-  if (!is.null(file_negative) || show_example) {
-    chromatograms_negative <- if (show_example) {
-      load_chromatograms(
-        show_example = TRUE,
-        headers = headers,
-        example_polarity = "neg"
-      )
-    } else {
-      load_chromatograms(file_negative, headers = headers)
+  pick_trace <- function(det) {
+    trace <- chromatograms_list[[paste0("chromatogram_", det, "_pos_", type)]]
+    if (is.null(trace)) {
+      trace <- chromatograms_list[[paste0("chromatogram_", det, "_neg_", type)]]
     }
-
-    for (det in detectors) {
-      if (chromatogram_selected(det)) {
-        chrom_df <- extract_chromatogram(
-          chromatograms_negative,
-          type = det,
-          headers = headers
-        )
-        res <- process_chromatogram(chrom_df)
-        chromatograms_list[[paste0(
-          "chromatogram_",
-          det,
-          "_neg_improved"
-        )]] <- res$improved
-        chromatograms_list[[paste0(
-          "chromatogram_",
-          det,
-          "_neg_baselined"
-        )]] <- res$baselined
+    trace
+  }
+  resolve_shift <- function(shift_val, det) {
+    if (is.null(shift_val) || identical(shift_val, "auto")) {
+      tgt <- pick_trace(det)
+      if (!is.null(ref_bpi) && !is.null(tgt)) {
+        estimate_rt_shift(ref_bpi, tgt)
+      } else {
+        0
       }
+    } else {
+      shift_val
     }
   }
 
-  ref_bpi <- chromatograms_list[[paste0("chromatogram_bpi_pos_", type)]]
-  if (is.null(ref_bpi)) {
-    ref_bpi <- chromatograms_list[[paste0("chromatogram_bpi_neg_", type)]]
-  }
-  if (is.null(cad_shift) || identical(cad_shift, "auto")) {
-    tgt_cad <- chromatograms_list[[paste0("chromatogram_cad_pos_", type)]]
-    if (is.null(tgt_cad)) {
-      tgt_cad <- chromatograms_list[[paste0("chromatogram_cad_neg_", type)]]
-    }
-    cad_shift <- if (!is.null(ref_bpi) && !is.null(tgt_cad)) {
-      estimate_rt_shift(ref_bpi, tgt_cad)
-    } else {
-      0
-    }
-  }
-  if (is.null(pda_shift) || identical(pda_shift, "auto")) {
-    tgt_pda <- chromatograms_list[[paste0("chromatogram_pda_pos_", type)]]
-    if (is.null(tgt_pda)) {
-      tgt_pda <- chromatograms_list[[paste0("chromatogram_pda_neg_", type)]]
-    }
-    pda_shift <- if (!is.null(ref_bpi) && !is.null(tgt_pda)) {
-      estimate_rt_shift(ref_bpi, tgt_pda)
-    } else {
-      0
-    }
-  }
+  ref_bpi <- pick_trace("bpi")
+  cad_shift <- resolve_shift(cad_shift, "cad")
+  pda_shift <- resolve_shift(pda_shift, "pda")
 
   check_chromatograms(
     chromatograms = chromatograms,

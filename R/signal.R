@@ -555,49 +555,39 @@ preprocess_chromatograms <- function(
   names(chromatograms_improved) <- name
   names(chromatograms_baselined) <- name
 
-  chromatograms_original_long <- data.table::rbindlist(
-    lapply(chromatograms_original, data.table::as.data.table),
-    idcol = "id"
-  )
-  if (nrow(chromatograms_original_long) > 0L) {
-    chromatograms_original_long[,
-      intensity := {
-        m <- min(intensity, na.rm = TRUE)
-        if (is.finite(m)) intensity - m else intensity
-      },
-      by = "id"
-    ]
-    chromatograms_original_long[, `:=`(rt_1 = rtime, rt_2 = rtime)]
-  } else {
-    chromatograms_original_long[, `:=`(rt_1 = numeric(0L), rt_2 = numeric(0L))]
+  to_long_chrom <- function(chrom_list, adjust_fn = NULL) {
+    dt <- data.table::rbindlist(
+      lapply(chrom_list, data.table::as.data.table),
+      idcol = "id"
+    )
+    if (nrow(dt) > 0L) {
+      if (!is.null(adjust_fn)) {
+        dt[, intensity := adjust_fn(intensity), by = "id"]
+      }
+      dt[, `:=`(rt_1 = rtime, rt_2 = rtime)]
+    } else {
+      dt[, `:=`(rt_1 = numeric(0L), rt_2 = numeric(0L))]
+    }
+    dt
   }
 
-  chromatograms_improved_long <- data.table::rbindlist(
-    lapply(chromatograms_improved, data.table::as.data.table),
-    idcol = "id"
+  chromatograms_original_long <- to_long_chrom(
+    chromatograms_original,
+    function(v) {
+      m <- min(v, na.rm = TRUE)
+      if (is.finite(m)) v - m else v
+    }
   )
-  if (nrow(chromatograms_improved_long) > 0L) {
-    chromatograms_improved_long[, `:=`(rt_1 = rtime, rt_2 = rtime)]
-  } else {
-    chromatograms_improved_long[, `:=`(rt_1 = numeric(0L), rt_2 = numeric(0L))]
-  }
 
-  chromatograms_baselined_long <- data.table::rbindlist(
-    lapply(chromatograms_baselined, data.table::as.data.table),
-    idcol = "id"
+  chromatograms_improved_long <- to_long_chrom(chromatograms_improved)
+
+  chromatograms_baselined_long <- to_long_chrom(
+    chromatograms_baselined,
+    function(v) {
+      m <- min(v, na.rm = TRUE)
+      if (is.finite(m)) pmax(0, v - max(0, m)) else v
+    }
   )
-  if (nrow(chromatograms_baselined_long) > 0L) {
-    chromatograms_baselined_long[,
-      intensity := {
-        m <- min(intensity, na.rm = TRUE)
-        if (is.finite(m)) pmax(0, intensity - max(0, m)) else intensity
-      },
-      by = "id"
-    ]
-    chromatograms_baselined_long[, `:=`(rt_1 = rtime, rt_2 = rtime)]
-  } else {
-    chromatograms_baselined_long[, `:=`(rt_1 = numeric(0L), rt_2 = numeric(0L))]
-  }
 
   list(
     chromatograms_original = chromatograms_original,
@@ -607,4 +597,54 @@ preprocess_chromatograms <- function(
     chromatograms_baselined = chromatograms_baselined,
     chromatograms_baselined_long = chromatograms_baselined_long
   )
+}
+
+#' @keywords internal
+#' @noRd
+load_detector_chromatogram <- function(
+  file,
+  detector,
+  headers,
+  show_example = FALSE
+) {
+  message("loading chromatograms")
+  chromatograms_all <- load_chromatograms(
+    file,
+    show_example = show_example,
+    headers = headers
+  )
+  if (
+    !(detector %in% names(chromatograms_all)) ||
+      is.null(chromatograms_all[[detector]])
+  ) {
+    stop(
+      "Detector '",
+      detector,
+      "' chromatogram not found in file.",
+      call. = FALSE
+    )
+  }
+  chromatograms_all[detector]
+}
+
+#' @keywords internal
+#' @noRd
+select_chromatogram_stage <- function(chromatograms_list, stage) {
+  df_long <- data.table::copy(data.table::as.data.table(switch(
+    stage,
+    "original" = chromatograms_list$chromatograms_original_long,
+    "improved" = chromatograms_list$chromatograms_improved_long,
+    "baselined" = chromatograms_list$chromatograms_baselined_long
+  )))
+  max_int <- max(df_long$intensity, na.rm = TRUE)
+  if (is.finite(max_int) && max_int > 0) {
+    df_long[, intensity := intensity / max_int]
+  }
+  df_xy <- switch(
+    stage,
+    "original" = chromatograms_list$chromatograms_original[[1L]],
+    "improved" = chromatograms_list$chromatograms_improved[[1L]],
+    "baselined" = chromatograms_list$chromatograms_baselined[[1L]]
+  )
+  list(df_long = df_long, df_xy = df_xy)
 }

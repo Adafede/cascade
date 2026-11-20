@@ -63,36 +63,31 @@ query_wikidata <- function(
     headers <- NULL
   }
 
-  if (
-    !is.character(sparql_query) ||
-      length(sparql_query) != 1L ||
-      is.na(sparql_query)
-  ) {
-    stop(
-      "`sparql_query` must be a single non-missing character string.",
-      call. = FALSE
-    )
+  assert_scalar_chr <- function(val, nm) {
+    if (!is.character(val) || length(val) != 1L || is.na(val)) {
+      stop(
+        "`",
+        nm,
+        "` must be a single non-missing character string.",
+        call. = FALSE
+      )
+    }
   }
-  if (
-    !is.logical(remove_url) || length(remove_url) != 1L || is.na(remove_url)
-  ) {
-    stop(
-      "`remove_url` must be a single non-missing logical value.",
-      call. = FALSE
-    )
+  assert_scalar_lgl <- function(val, nm) {
+    if (!is.logical(val) || length(val) != 1L || is.na(val)) {
+      stop(
+        "`",
+        nm,
+        "` must be a single non-missing logical value.",
+        call. = FALSE
+      )
+    }
   }
-  if (!is.character(endpoint) || length(endpoint) != 1L || is.na(endpoint)) {
-    stop(
-      "`endpoint` must be a single non-missing character string.",
-      call. = FALSE
-    )
-  }
-  if (!is.character(agent) || length(agent) != 1L || is.na(agent)) {
-    stop(
-      "`agent` must be a single non-missing character string.",
-      call. = FALSE
-    )
-  }
+
+  assert_scalar_chr(sparql_query, "sparql_query")
+  assert_scalar_lgl(remove_url, "remove_url")
+  assert_scalar_chr(endpoint, "endpoint")
+  assert_scalar_chr(agent, "agent")
   valid_headers <- is.null(headers) ||
     (is.character(headers) && length(headers) == 1L && !is.na(headers))
   if (!valid_headers) {
@@ -112,18 +107,8 @@ query_wikidata <- function(
       call. = FALSE
     )
   }
-  if (!is.logical(fallback) || length(fallback) != 1L || is.na(fallback)) {
-    stop(
-      "`fallback` must be a single non-missing logical value.",
-      call. = FALSE
-    )
-  }
-  if (!is.logical(post) || length(post) != 1L || is.na(post)) {
-    stop(
-      "`post` must be a single non-missing logical value.",
-      call. = FALSE
-    )
-  }
+  assert_scalar_lgl(fallback, "fallback")
+  assert_scalar_lgl(post, "post")
 
   build_url <- function(ep) {
     sep <- if (grepl("?", ep, fixed = TRUE)) "&" else "?"
@@ -367,7 +352,7 @@ queries_progress <- function(
     q <- gsub("Q158572", taxon_qid, query_template, fixed = TRUE)
     q <- gsub(" 0 ", paste0(" ", start, " "), q, fixed = TRUE)
     q <- gsub(" 9999 ", paste0(" ", end, " "), q, fixed = TRUE)
-    gsub("1000000", limit, q, fixed = TRUE)
+    gsub("LIMIT 1000000", paste0("LIMIT ", limit), q, fixed = TRUE)
   })
 }
 

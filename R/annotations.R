@@ -52,7 +52,13 @@ encode_smiles <- function(x, empty = NA_character_, reserved = TRUE) {
 #'   order.
 #' @keywords internal
 #' @noRd
-dt_left_join <- function(x, y, by = NULL, suffix = c(".x", ".y")) {
+prepare_join_inputs <- function(
+  x,
+  y,
+  by = NULL,
+  suffix = c(".x", ".y"),
+  rename_coll = TRUE
+) {
   x <- data.table::copy(data.table::as.data.table(x))
   y <- data.table::copy(data.table::as.data.table(y))
   if (is.null(by)) {
@@ -63,15 +69,28 @@ dt_left_join <- function(x, y, by = NULL, suffix = c(".x", ".y")) {
   } else {
     by_x <- by_y <- unname(by)
   }
+  x_names <- names(x)
   y_non <- setdiff(names(y), by_y)
-  coll <- intersect(setdiff(names(x), by_x), y_non)
+  coll <- intersect(setdiff(x_names, by_x), y_non)
   if (length(coll) > 0L) {
-    data.table::setnames(x, coll, paste0(coll, suffix[1L]))
-    data.table::setnames(y, coll, paste0(coll, suffix[2L]))
+    if (rename_coll) {
+      data.table::setnames(x, coll, paste0(coll, suffix[1L]))
+      data.table::setnames(y, coll, paste0(coll, suffix[2L]))
+    } else {
+      x_names[match(coll, x_names)] <- paste0(coll, suffix[1L])
+      y_non[match(coll, y_non)] <- paste0(coll, suffix[2L])
+    }
   }
-  data.table::setnames(y, by_y, by_x)
-  out <- y[x, on = by_x, allow.cartesian = TRUE]
-  data.table::setcolorder(out, c(names(x), setdiff(names(y), by_x)))
+  list(x = x, y = y, by_x = by_x, by_y = by_y, x_names = x_names, y_non = y_non)
+}
+
+#' @keywords internal
+#' @noRd
+dt_left_join <- function(x, y, by = NULL, suffix = c(".x", ".y")) {
+  ji <- prepare_join_inputs(x, y, by, suffix)
+  data.table::setnames(ji$y, ji$by_y, ji$by_x)
+  out <- ji$y[ji$x, on = ji$by_x, allow.cartesian = TRUE]
+  data.table::setcolorder(out, c(names(ji$x), setdiff(names(ji$y), ji$by_x)))
   out
 }
 
@@ -87,24 +106,9 @@ dt_left_join <- function(x, y, by = NULL, suffix = c(".x", ".y")) {
 #' @keywords internal
 #' @noRd
 dt_inner_join <- function(x, y, by = NULL, suffix = c(".x", ".y")) {
-  x <- data.table::copy(data.table::as.data.table(x))
-  y <- data.table::copy(data.table::as.data.table(y))
-  if (is.null(by)) {
-    by_x <- by_y <- intersect(names(x), names(y))
-  } else if (!is.null(names(by))) {
-    by_x <- ifelse(names(by) == "", unname(by), names(by))
-    by_y <- unname(by)
-  } else {
-    by_x <- by_y <- unname(by)
-  }
-  y_non <- setdiff(names(y), by_y)
-  coll <- intersect(setdiff(names(x), by_x), y_non)
-  if (length(coll) > 0L) {
-    data.table::setnames(x, coll, paste0(coll, suffix[1L]))
-    data.table::setnames(y, coll, paste0(coll, suffix[2L]))
-  }
-  on_vec <- stats::setNames(by_y, by_x)
-  x[y, on = on_vec, allow.cartesian = TRUE, nomatch = 0L]
+  ji <- prepare_join_inputs(x, y, by, suffix)
+  on_vec <- stats::setNames(ji$by_y, ji$by_x)
+  ji$x[ji$y, on = on_vec, allow.cartesian = TRUE, nomatch = 0L]
 }
 
 #' Order-preserving full join on data.tables (tidytable-compatible)
@@ -119,28 +123,12 @@ dt_inner_join <- function(x, y, by = NULL, suffix = c(".x", ".y")) {
 #' @keywords internal
 #' @noRd
 dt_full_join <- function(x, y, by = NULL, suffix = c(".x", ".y")) {
-  x <- data.table::copy(data.table::as.data.table(x))
-  y <- data.table::copy(data.table::as.data.table(y))
-  if (is.null(by)) {
-    by_x <- by_y <- intersect(names(x), names(y))
-  } else if (!is.null(names(by))) {
-    by_x <- ifelse(names(by) == "", unname(by), names(by))
-    by_y <- unname(by)
-  } else {
-    by_x <- by_y <- unname(by)
-  }
-  x_names <- names(x)
-  y_non <- setdiff(names(y), by_y)
-  coll <- intersect(setdiff(x_names, by_x), y_non)
-  if (length(coll) > 0L) {
-    x_names[match(coll, x_names)] <- paste0(coll, suffix[1L])
-    y_non[match(coll, y_non)] <- paste0(coll, suffix[2L])
-  }
+  ji <- prepare_join_inputs(x, y, by, suffix, rename_coll = FALSE)
   out <- merge(
-    x = x,
-    y = y,
-    by.x = by_x,
-    by.y = by_y,
+    x = ji$x,
+    y = ji$y,
+    by.x = ji$by_x,
+    by.y = ji$by_y,
     suffixes = suffix,
     all.x = TRUE,
     all.y = TRUE,
@@ -148,7 +136,7 @@ dt_full_join <- function(x, y, by = NULL, suffix = c(".x", ".y")) {
     sort = FALSE
   )
   data.table::setkey(out, NULL)
-  data.table::setcolorder(out, c(x_names, y_non))
+  data.table::setcolorder(out, c(ji$x_names, ji$y_non))
   out
 }
 
@@ -223,16 +211,9 @@ molinfo <- function(x) {
   )
 }
 
-#' Keep best structural candidates from TIMA annotation table
-#'
-#' @param df Data frame or `data.table` of annotations.
-#'
-#' @return A `data.table` containing the top candidate per feature with
-#'   standardized chemical class columns.
 #' @keywords internal
 #' @noRd
-keep_best_candidates <- function(df) {
-  dt <- data.table::copy(data.table::as.data.table(df))
+strip_pipe_alternatives <- function(dt) {
   for (col in names(dt)) {
     val <- dt[[col]]
     if (!is.character(val)) {
@@ -245,6 +226,20 @@ keep_best_candidates <- function(df) {
     }
     data.table::set(dt, j = col, value = val)
   }
+  invisible(dt)
+}
+
+#' Keep best structural candidates from TIMA annotation table
+#'
+#' @param df Data frame or `data.table` of annotations.
+#'
+#' @return A `data.table` containing the top candidate per feature with
+#'   standardized chemical class columns.
+#' @keywords internal
+#' @noRd
+keep_best_candidates <- function(df) {
+  dt <- data.table::copy(data.table::as.data.table(df))
+  strip_pipe_alternatives(dt)
 
   if (nrow(dt) > 0L && anyDuplicated(dt$feature_id) > 0L) {
     rk <- if ("rank_final" %in% names(dt)) {
@@ -608,19 +603,23 @@ prepare_comparison <- function(
     }
   }
 
+  combine_excluded <- function(kept_dt) {
+    data.table::rbindlist(
+      list(
+        add_id_cols(peaks_maj[!kept_dt, on = names(peaks_maj)]),
+        peaks_min
+      ),
+      use.names = TRUE,
+      fill = TRUE
+    )
+  }
+
   message("keeping peaks similarities above desired (pre-)threshold only")
   peaks_maj_precor <- peaks_maj[
     !is.na(comparison_score) & comparison_score >= min_similarity_prefilter
   ]
 
-  peaks_min_precor <- data.table::rbindlist(
-    list(
-      add_id_cols(peaks_maj[!peaks_maj_precor, on = names(peaks_maj)]),
-      peaks_min
-    ),
-    use.names = TRUE,
-    fill = TRUE
-  )
+  peaks_min_precor <- combine_excluded(peaks_maj_precor)
 
   message("keeping multiple features only if none was reported in the species")
   peaks_maj_precor_taxo <- data.table::copy(peaks_maj_precor)
@@ -673,14 +672,7 @@ prepare_comparison <- function(
     )]
   }
 
-  peaks_min_precor_taxo <- data.table::rbindlist(
-    list(
-      add_id_cols(peaks_maj[!peaks_maj_precor_taxo, on = names(peaks_maj)]),
-      peaks_min
-    ),
-    use.names = TRUE,
-    fill = TRUE
-  )
+  peaks_min_precor_taxo <- combine_excluded(peaks_maj_precor_taxo)
 
   message(
     "keeping peaks similarities with score above ",
@@ -690,14 +682,7 @@ prepare_comparison <- function(
     !is.na(comparison_score) & comparison_score >= min_similarity_filter
   ]
 
-  peaks_min_precor_taxo_cor <- data.table::rbindlist(
-    list(
-      add_id_cols(peaks_maj[!peaks_maj_precor_taxo_cor, on = names(peaks_maj)]),
-      peaks_min
-    ),
-    use.names = TRUE,
-    fill = TRUE
-  )
+  peaks_min_precor_taxo_cor <- combine_excluded(peaks_maj_precor_taxo_cor)
 
   list(
     peaks_all = peaks_all,

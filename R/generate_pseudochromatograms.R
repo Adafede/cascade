@@ -113,29 +113,17 @@ generate_pseudochromatograms <- function(
     mode = target_mode
   )
 
-  message("loading chromatograms")
-  chromatograms_all <- load_chromatograms(
-    file,
-    show_example = show_example,
-    headers = headers
+  chrom_sub <- load_detector_chromatogram(
+    file = file,
+    detector = detector,
+    headers = headers,
+    show_example = show_example
   )
-  if (
-    !(detector %in% names(chromatograms_all)) ||
-      is.null(chromatograms_all[[detector]])
-  ) {
-    stop(
-      "Detector '",
-      detector,
-      "' chromatogram not found in file.",
-      call. = FALSE
-    )
-  }
 
   message("loading name")
   name <- load_name(file, show_example = show_example)
 
   message("preprocessing chromatograms")
-  chrom_sub <- chromatograms_all[detector]
   chromatograms_list <- preprocess_chromatograms(
     detector = detector,
     name = name,
@@ -228,17 +216,8 @@ generate_pseudochromatograms <- function(
     maj_spec[, (drop_tax_cols) := NULL]
   }
 
-  min_spec <- data.table::copy(
-    compared_peaks_list$peaks_min_precor_taxo_cor[mode == target_mode]
-  )
-  min_spec[, `:=`(
-    id = "peaks_min",
-    sample = "peaks_min",
-    species = "peaks_min"
-  )]
-
   spec_combined <- unique(data.table::rbindlist(
-    list(maj_spec, min_spec),
+    list(maj_spec, min_dt),
     use.names = TRUE,
     fill = TRUE
   ))

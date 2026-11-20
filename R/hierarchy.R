@@ -39,6 +39,150 @@ dense_rank_base <- function(x) {
   match(x, sort(unique(x)))
 }
 
+#' @keywords internal
+#' @noRd
+strip_trailing_na <- function(dt, na_literal = FALSE) {
+  for (col in names(dt)) {
+    val <- gsub("-NA$", "", dt[[col]])
+    if (na_literal) {
+      val[val == "NA"] <- NA_character_
+    }
+    data.table::set(dt, j = col, value = val)
+  }
+  dt
+}
+
+#' @keywords internal
+#' @noRd
+empty_final_table <- function(with_join = FALSE) {
+  dt <- data.table::data.table(
+    parents = character(0),
+    ids = character(0),
+    labels = character(0),
+    sample = character(0),
+    species = character(0),
+    values = numeric(0)
+  )
+  if (with_join) {
+    dt[, join := character(0)]
+  }
+  dt
+}
+
+#' @keywords internal
+#' @noRd
+empty_literature_hierarchy <- function() {
+  data.table::data.table(
+    parents = NA_character_,
+    ids = NA_character_,
+    labels = NA_character_,
+    sample = NA_character_,
+    species = NA_character_,
+    values = 0
+  )
+}
+
+#' @keywords internal
+#' @noRd
+prepare_literature_hierarchy <- function(dt, full_species_name = TRUE) {
+  dt[, `:=`(
+    best_candidate_1 = chemical_pathway,
+    best_candidate_2 = chemical_superclass,
+    best_candidate_3 = chemical_class,
+    organism = if (full_species_name) {
+      taxaLabels
+    } else {
+      gsub(" .*", "", taxaLabels)
+    }
+  )]
+  dt[, `:=`(sample = organism, species = organism)]
+  drop_cols <- intersect(
+    c("taxa", "taxaLabels", "references", "referencesLabels"),
+    names(dt)
+  )
+  if (length(drop_cols) > 0L) {
+    dt[, (drop_cols) := NULL]
+  }
+  prepare_hierarchy(dataframe = unique(dt), type = "literature")
+}
+
+#' @keywords internal
+#' @noRd
+lookup_microshade <- function(group, subgroup, is_other) {
+  colors <- rep(NA_character_, length(subgroup))
+  grey_pal <- microshades_grey[[1L]]
+  ok_sg_grey <- !is.na(subgroup) & subgroup >= 1L & subgroup <= length(grey_pal)
+  grey_idx <- which(is_other & ok_sg_grey)
+  if (length(grey_idx) > 0L) {
+    colors[grey_idx] <- unlist(grey_pal[subgroup[grey_idx]], use.names = FALSE)
+  }
+  valid_grp <- !is_other &
+    !is.na(group) &
+    group >= 1L &
+    group <= length(microshades) &
+    !is.na(subgroup) &
+    subgroup >= 1L
+  if (any(valid_grp)) {
+    g_idx <- which(valid_grp)
+    ok <- g_idx[subgroup[g_idx] <= lengths(microshades)[group[g_idx]]]
+    if (length(ok) > 0L) {
+      colors[ok] <- vapply(
+        ok,
+        function(i) microshades[[group[i]]][[subgroup[i]]],
+        character(1L)
+      )
+    }
+  }
+  colors
+}
+
+#' @keywords internal
+#' @noRd
+theme_pseudochromatogram <- function(time_min, time_max) {
+  list(
+    ggplot2::theme_bw(),
+    ggplot2::theme(
+      legend.title = ggplot2::element_text(face = "bold"),
+      panel.grid.major = ggplot2::element_blank(),
+      panel.grid.minor = ggplot2::element_blank(),
+      axis.line = ggplot2::element_line(colour = "black"),
+      axis.text.y = ggplot2::element_text(face = "italic")
+    ),
+    ggplot2::ylab("Intensity"),
+    ggplot2::xlab("Retention time [min]"),
+    ggplot2::xlim(max(time_min), min(time_max))
+  )
+}
+
+#' @keywords internal
+#' @noRd
+add_hierarchy_trace <- function(
+  p = NULL,
+  data,
+  type = "treemap",
+  domain = NULL
+) {
+  args <- list(
+    data = data,
+    ids = ~ids,
+    labels = ~labels,
+    parents = ~parents,
+    values = ~values,
+    maxdepth = 3,
+    type = type,
+    branchvalues = "total",
+    textinfo = "label+percent value+percent parent+percent root"
+  )
+  if (!is.null(domain)) {
+    args$domain <- domain
+  }
+  if (is.null(p)) {
+    do.call(plotly::plot_ly, args)
+  } else {
+    do.call(plotly::add_trace, c(list(p = p), args))
+  }
+}
+
 #' Prepare chemical class hierarchy for sunburst/treemap and histogram plots
 #'
 #' @param dataframe Data frame or `data.table` of features/compounds.
@@ -180,13 +324,7 @@ prepare_hierarchy <- function(
     chemical_pathway,
     parents = gsub("-.*", "", ids)
   )])
-  for (col in names(children_1)) {
-    data.table::set(
-      children_1,
-      j = col,
-      value = gsub("-NA$", "", children_1[[col]])
-    )
-  }
+  children_1 <- strip_trailing_na(children_1)
   children_1 <- unique(children_1[!is.na(labels)])
 
   children_2_pre <- unique(dataframe2[, list(
@@ -205,11 +343,7 @@ prepare_hierarchy <- function(
     ),
     chemical_pathway
   )])
-  for (col in names(children_2_pre)) {
-    val <- gsub("-NA$", "", children_2_pre[[col]])
-    val[val == "NA"] <- NA_character_
-    data.table::set(children_2_pre, j = col, value = val)
-  }
+  children_2_pre <- strip_trailing_na(children_2_pre, na_literal = TRUE)
 
   c2_joined <- dt_full_join(
     children_2_pre,
@@ -524,13 +658,7 @@ prepare_hierarchy <- function(
     labels = best_candidate_3,
     new_labels = best_candidate_3
   )]
-  for (col in names(missing_children_1)) {
-    data.table::set(
-      missing_children_1,
-      j = col,
-      value = gsub("-NA$", "", missing_children_1[[col]])
-    )
-  }
+  missing_children_1 <- strip_trailing_na(missing_children_1)
 
   mc2_base <- unique(genealogy_new_med_3[
     grepl("^Other", parents),
@@ -544,13 +672,7 @@ prepare_hierarchy <- function(
     labels = best_candidate_3,
     new_labels = best_candidate_3
   )])
-  for (col in names(missing_children_2)) {
-    data.table::set(
-      missing_children_2,
-      j = col,
-      value = gsub("-NA$", "", missing_children_2[[col]])
-    )
-  }
+  missing_children_2 <- strip_trailing_na(missing_children_2)
   missing_children_2 <- missing_children_2[!is.na(labels)]
 
   missing_children <- data.table::rbindlist(
@@ -654,15 +776,7 @@ prepare_hierarchy <- function(
     data.table::setkey(final_table_4_1, NULL)
     final_table_4_1[, join := gsub("-.*", "", parents)]
   } else {
-    final_table_4_1 <- data.table::data.table(
-      parents = character(0),
-      ids = character(0),
-      labels = character(0),
-      sample = character(0),
-      species = character(0),
-      values = numeric(0),
-      join = character(0)
-    )
+    final_table_4_1 <- empty_final_table(with_join = TRUE)
   }
 
   final_table_4 <- final_table_4_1[, list(
@@ -699,14 +813,7 @@ prepare_hierarchy <- function(
     ]
     data.table::setkey(final_table_3_2, NULL)
   } else {
-    final_table_3_2 <- data.table::data.table(
-      parents = character(0),
-      ids = character(0),
-      labels = character(0),
-      sample = character(0),
-      species = character(0),
-      values = numeric(0)
-    )
+    final_table_3_2 <- empty_final_table()
   }
 
   ft3_3_sub <- table_1_1_new[
@@ -721,14 +828,7 @@ prepare_hierarchy <- function(
     ]
     data.table::setkey(final_table_3_3, NULL)
   } else {
-    final_table_3_3 <- data.table::data.table(
-      parents = character(0),
-      ids = character(0),
-      labels = character(0),
-      sample = character(0),
-      species = character(0),
-      values = numeric(0)
-    )
+    final_table_3_3 <- empty_final_table()
   }
 
   final_table_3 <- unique(data.table::rbindlist(
@@ -800,37 +900,9 @@ hierarchies_progress <- function(xs, comparison = NULL) {
   lapply(xs, function(x) {
     dt <- data.table::copy(data.table::as.data.table(x))
     if (nrow(dt) != 0L) {
-      dt[, `:=`(
-        best_candidate_1 = chemical_pathway,
-        best_candidate_2 = chemical_superclass,
-        best_candidate_3 = chemical_class,
-        organism = if (has_multiword_comp) {
-          taxaLabels
-        } else {
-          gsub(" .*", "", taxaLabels)
-        }
-      )]
-      dt[, `:=`(sample = organism, species = organism)]
-      drop_cols <- intersect(
-        c("taxa", "taxaLabels", "references", "referencesLabels"),
-        names(dt)
-      )
-      if (length(drop_cols) > 0L) {
-        dt[, (drop_cols) := NULL]
-      }
-      prepare_hierarchy(
-        dataframe = unique(dt),
-        type = "literature"
-      )
+      prepare_literature_hierarchy(dt, full_species_name = has_multiword_comp)
     } else {
-      data.table::data.table(
-        parents = NA_character_,
-        ids = NA_character_,
-        labels = NA_character_,
-        sample = NA_character_,
-        species = NA_character_,
-        values = 0
-      )
+      empty_literature_hierarchy()
     }
   })
 }
@@ -848,36 +920,12 @@ hierarchies_grouped_progress <- function(xs) {
     if (nrow(dt) != 0L) {
       non_var_taxa <- unique(dt[!grepl("var. ", taxaLabels), list(taxa)])
       if (nrow(non_var_taxa) != 1L) {
-        dt[, `:=`(
-          best_candidate_1 = chemical_pathway,
-          best_candidate_2 = chemical_superclass,
-          best_candidate_3 = chemical_class,
-          organism = taxaLabels
-        )]
-        dt[, `:=`(sample = organism, species = organism)]
-        drop_cols <- intersect(
-          c("taxa", "taxaLabels", "references", "referencesLabels"),
-          names(dt)
-        )
-        if (length(drop_cols) > 0L) {
-          dt[, (drop_cols) := NULL]
-        }
-        prepare_hierarchy(
-          dataframe = unique(dt),
-          type = "literature"
-        )
+        prepare_literature_hierarchy(dt)
       } else {
         NULL
       }
     } else {
-      data.table::data.table(
-        parents = NA_character_,
-        ids = NA_character_,
-        labels = NA_character_,
-        sample = NA_character_,
-        species = NA_character_,
-        values = 0
-      )
+      empty_literature_hierarchy()
     }
   })
 }
@@ -926,30 +974,7 @@ prepare_plot <- function(dataframe, organism = "species") {
   }
 
   is_other <- grepl("Other", samples$parents, fixed = TRUE)
-  colors <- character(nrow(samples))
-  for (i in seq_len(nrow(samples))) {
-    sg <- samples$subgroup[i]
-    if (is_other[i]) {
-      pal <- microshades_grey[[1L]]
-      colors[i] <- if (!is.na(sg) && sg >= 1L && sg <= length(pal)) {
-        pal[[sg]]
-      } else {
-        NA_character_
-      }
-    } else {
-      grp <- samples$group[i]
-      if (!is.na(grp) && grp >= 1L && grp <= length(microshades)) {
-        pal <- microshades[[grp]]
-        colors[i] <- if (!is.na(sg) && sg >= 1L && sg <= length(pal)) {
-          pal[[sg]]
-        } else {
-          NA_character_
-        }
-      } else {
-        colors[i] <- NA_character_
-      }
-    }
-  }
+  colors <- lookup_microshade(samples$group, samples$subgroup, is_other)
   samples[, `:=`(
     color = colors,
     relative = values / tot
@@ -1037,15 +1062,7 @@ prepare_plot_2 <- function(dataframe) {
   ]
 
   is_other <- grepl("Other", dt$best_candidate_1, fixed = TRUE)
-  colors <- character(nrow(dt))
-  for (i in seq_len(nrow(dt))) {
-    sg <- dt$subgroup[i]
-    if (is_other[i]) {
-      colors[i] <- microshades_grey[[1L]][[sg]]
-    } else {
-      colors[i] <- microshades[[dt$group[i]]][[sg]]
-    }
-  }
+  colors <- lookup_microshade(dt$group, dt$subgroup, is_other)
   dt[, `:=`(
     color = colors,
     name = paste(best_candidate_1, best_candidate_2, sep = " - ")
@@ -1185,17 +1202,7 @@ plot_histograms_confident <- function(
       guide = ggplot2::guide_legend(ncol = 1)
     ) +
     ggplot2::labs(fill = "Chemical Pathway - Superclass") +
-    ggplot2::theme_bw() +
-    ggplot2::theme(
-      legend.title = ggplot2::element_text(face = "bold"),
-      panel.grid.major = ggplot2::element_blank(),
-      panel.grid.minor = ggplot2::element_blank(),
-      axis.line = ggplot2::element_line(colour = "black"),
-      axis.text.y = ggplot2::element_text(face = "italic")
-    ) +
-    ggplot2::ylab("Intensity") +
-    ggplot2::xlab("Retention time [min]") +
-    ggplot2::xlim(max(time_min), min(time_max))
+    theme_pseudochromatogram(time_min, time_max)
 }
 
 #' Plot pseudochromatogram colored by closest taxonomic occurrence
@@ -1256,17 +1263,7 @@ plot_histograms_taxo <- function(
       values = as.character(levels(dt$color_2))
     ) +
     ggplot2::labs(fill = "Already reported in") +
-    ggplot2::theme_bw() +
-    ggplot2::theme(
-      legend.title = ggplot2::element_text(face = "bold"),
-      panel.grid.major = ggplot2::element_blank(),
-      panel.grid.minor = ggplot2::element_blank(),
-      axis.line = ggplot2::element_line(colour = "black"),
-      axis.text.y = ggplot2::element_text(face = "italic")
-    ) +
-    ggplot2::ylab("Intensity") +
-    ggplot2::xlab("Retention time [min]") +
-    ggplot2::xlim(max(time_min), min(time_max))
+    theme_pseudochromatogram(time_min, time_max)
 }
 
 #' Plot horizontal stacked bar chart of chemical classes across samples/taxa
@@ -1452,17 +1449,7 @@ plot_results_2 <- function(list) {
   }
 
   quick_sb <- function(df) {
-    plotly::plot_ly(
-      data = df,
-      ids = ~ids,
-      labels = ~labels,
-      parents = ~parents,
-      values = ~values,
-      maxdepth = 3,
-      type = "sunburst",
-      branchvalues = "total",
-      textinfo = "label+percent value+percent parent+percent root"
-    )
+    add_hierarchy_trace(data = df, type = "sunburst")
   }
 
   message("preparing hierarchies...")
@@ -1556,28 +1543,14 @@ treemaps_progress <- function(
         labels != "notClassified sub"
       ]
       p <- plotly::plot_ly() |>
-        plotly::add_trace(
+        add_hierarchy_trace(
           data = d1,
-          ids = ~ids,
-          labels = ~labels,
-          parents = ~parents,
-          values = ~values,
-          maxdepth = 3,
           type = type,
-          branchvalues = "total",
-          textinfo = "label+percent value+percent parent+percent root",
           domain = list(row = 0, column = 0)
         ) |>
-        plotly::add_trace(
+        add_hierarchy_trace(
           data = d2,
-          ids = ~ids,
-          labels = ~labels,
-          parents = ~parents,
-          values = ~values,
-          maxdepth = 3,
           type = type,
-          branchvalues = "total",
-          textinfo = "label+percent value+percent parent+percent root",
           domain = list(row = 0, column = 1)
         ) |>
         plotly::layout(
@@ -1605,16 +1578,9 @@ treemaps_progress <- function(
       }
       p
     } else {
-      p <- plotly::plot_ly(
+      p <- add_hierarchy_trace(
         data = h_dt[labels != "notClassified sub"],
-        ids = ~ids,
-        labels = ~labels,
-        parents = ~parents,
-        values = ~values,
-        maxdepth = 3,
-        type = type,
-        branchvalues = "total",
-        textinfo = "label+percent value+percent parent+percent root"
+        type = type
       ) |>
         plotly::layout(
           colorway = microshades_colors,

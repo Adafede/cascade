@@ -73,23 +73,12 @@ process_compare_peaks <- function(
   message("loading MS data")
   ms_data <- load_ms_data(file, show_example = show_example)
 
-  message("loading chromatograms")
-  chromatograms_all <- load_chromatograms(
-    file,
-    show_example = show_example,
-    headers = headers
+  chrom_sub <- load_detector_chromatogram(
+    file = file,
+    detector = detector,
+    headers = headers,
+    show_example = show_example
   )
-  if (
-    !(detector %in% names(chromatograms_all)) ||
-      is.null(chromatograms_all[[detector]])
-  ) {
-    stop(
-      "Detector '",
-      detector,
-      "' chromatogram not found in file.",
-      call. = FALSE
-    )
-  }
 
   message("loading name")
   name <- load_name(file, show_example = show_example)
@@ -107,7 +96,6 @@ process_compare_peaks <- function(
   )
 
   message("preprocessing chromatograms")
-  chrom_sub <- chromatograms_all[detector]
   chromatograms_list <- preprocess_chromatograms(
     detector = detector,
     name = name,
@@ -120,23 +108,9 @@ process_compare_peaks <- function(
     resample = resample
   )
 
-  df_long_sel <- data.table::copy(data.table::as.data.table(switch(
-    type,
-    "original" = chromatograms_list$chromatograms_original_long,
-    "improved" = chromatograms_list$chromatograms_improved_long,
-    "baselined" = chromatograms_list$chromatograms_baselined_long
-  )))
-  max_int <- max(df_long_sel$intensity, na.rm = TRUE)
-  if (is.finite(max_int) && max_int > 0) {
-    df_long_sel[, intensity := intensity / max_int]
-  }
-
-  df_xy_sel <- switch(
-    type,
-    "original" = chromatograms_list$chromatograms_original[[1L]],
-    "improved" = chromatograms_list$chromatograms_improved[[1L]],
-    "baselined" = chromatograms_list$chromatograms_baselined[[1L]]
-  )
+  stage <- select_chromatogram_stage(chromatograms_list, type)
+  df_long_sel <- stage$df_long
+  df_xy_sel <- stage$df_xy
 
   message("preprocessing peaks")
   peaks_prelist <- preprocess_peaks(
@@ -199,37 +173,31 @@ process_compare_peaks <- function(
   }
 
   message("final aesthetics")
-  df_features_with_peaks_scored <- unique(df_features_with_peaks[, list(
-    sample = id,
-    peak_id = peak_id,
-    peak_rt_min = rt_min,
-    peak_rt_apex = rt_apex,
-    peak_rt_max = rt_max,
-    peak_area = integral,
-    feature_id = feature_id,
-    feature_rt = rt,
-    feature_mz = mz,
-    feature_area = area,
-    comparison_score = comparison_score
-  )])
+  format_scored_features <- function(dt) {
+    unique(dt[, list(
+      sample = id,
+      peak_id = peak_id,
+      peak_rt_min = rt_min,
+      peak_rt_apex = rt_apex,
+      peak_rt_max = rt_max,
+      peak_area = integral,
+      feature_id = feature_id,
+      feature_rt = rt,
+      feature_mz = mz,
+      feature_area = area,
+      comparison_score = comparison_score
+    )])
+  }
+
+  df_features_with_peaks_scored <- format_scored_features(
+    df_features_with_peaks
+  )
 
   without_dt <- data.table::copy(data.table::as.data.table(
     peaks_prelist$df_features_without_peaks
   ))
   without_dt[, comparison_score := NA_real_]
-  df_feat_without_peaks_scored <- unique(without_dt[, list(
-    sample = id,
-    peak_id = peak_id,
-    peak_rt_min = rt_min,
-    peak_rt_apex = rt_apex,
-    peak_rt_max = rt_max,
-    peak_area = integral,
-    feature_id = feature_id,
-    feature_rt = rt,
-    feature_mz = mz,
-    feature_area = area,
-    comparison_score = comparison_score
-  )])
+  df_feat_without_peaks_scored <- format_scored_features(without_dt)
 
   message("checking export directory")
   check_export_dir(export_dir)
