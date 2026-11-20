@@ -167,9 +167,8 @@ generate_ids <- function(
 
   if (!is.null(comparison)) {
     message("Generating special comparison")
-    special_list <- lapply(comparison, function(comp_nm) tables[[comp_nm]])
     spec_dt <- data.table::rbindlist(
-      special_list,
+      tables[comparison],
       use.names = TRUE,
       fill = TRUE
     )

@@ -983,7 +983,7 @@ prepare_plot <- function(dataframe, organism = "species") {
   if (any(na_col)) {
     quickfix <- samples[na_col]
     quickfix[, subsub := .GRP, by = c("group", "subgroup")]
-    quickfix[, color := paste0("#00", sprintf("%04d", subsub))]
+    quickfix[, color := sprintf("#00%04d", subsub)]
     quickfix[, subsub := NULL]
     samples <- data.table::rbindlist(list(samples[!na_col], quickfix))
   }
@@ -1106,23 +1106,14 @@ prepare_plot_2 <- function(dataframe) {
       )
     )
   )
-  color_2_val <- ifelse(
-    name_2_val == "Species",
-    microshades[[9L]][[1L]],
-    ifelse(
-      name_2_val == "Genus",
-      microshades[[9L]][[2L]],
-      ifelse(
-        name_2_val == "Family",
-        microshades[[9L]][[3L]],
-        ifelse(
-          name_2_val == "Kingdom",
-          microshades[[9L]][[4L]],
-          microshades_grey[[1L]][[2L]]
-        )
-      )
-    )
+  tier_colors <- c(
+    Species = microshades[[9L]][[1L]],
+    Genus = microshades[[9L]][[2L]],
+    Family = microshades[[9L]][[3L]],
+    Kingdom = microshades[[9L]][[4L]],
+    Other = microshades_grey[[1L]][[2L]]
   )
+  color_2_val <- unname(tier_colors[name_2_val])
 
   dataframe_prep[, `:=`(
     name_2 = name_2_val,

@@ -168,15 +168,17 @@ generate_tables <- function(
     )
     overlapped <- overlapped[ord_score]
     keep_rows <- logical(nrow(overlapped))
-    kept_rts <- numeric(0L)
+    kept_rts <- numeric(nrow(overlapped))
+    n_kept <- 0L
     for (i in seq_len(nrow(overlapped))) {
       rt_i <- overlapped$newrt[i]
       if (is.na(rt_i)) {
         next
       }
-      if (length(kept_rts) == 0L || all(abs(rt_i - kept_rts) > 0.05)) {
+      if (n_kept == 0L || all(abs(rt_i - kept_rts[seq_len(n_kept)]) > 0.05)) {
         keep_rows[i] <- TRUE
-        kept_rts <- c(kept_rts, rt_i)
+        n_kept <- n_kept + 1L
+        kept_rts[n_kept] <- rt_i
       }
     }
     overlapped <- overlapped[keep_rows]

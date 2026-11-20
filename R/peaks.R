@@ -361,8 +361,7 @@ preprocess_peaks <- function(
 #' @keywords internal
 #' @noRd
 transform_ms <- function(x, min_intensity = 0.1, preserve_window = FALSE) {
-  lapply(seq_along(x), function(z) {
-    el <- x[[z]]
+  lapply(x, function(el) {
     int <- el$intensity
     rt <- el$rtime
     keep <- !is.na(int)
@@ -485,8 +484,8 @@ extract_ms_progress <- function(xs, ms_data, rts, mzs) {
 #' @keywords internal
 #' @noRd
 extract_ms_peak <- function(x) {
-  lapply(seq_along(x), function(z) {
-    list(intensity = x[[z]]$intensity, rtime = x[[z]]$rtime)
+  lapply(x, function(el) {
+    list(intensity = el$intensity, rtime = el$rtime)
   })
 }
 

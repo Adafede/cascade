@@ -361,7 +361,6 @@ baseline_chromatogram <- function(df, method = "peakDetection", ...) {
   if (nrow(df) == 0L) {
     return(df)
   }
-  df2 <- df
   intensity <- df$intensity
   intensity[is.na(intensity)] <- 0
   intensity_baseline <- baseline::baseline(
@@ -369,8 +368,8 @@ baseline_chromatogram <- function(df, method = "peakDetection", ...) {
     method = method,
     ...
   )
-  df2$intensity <- as.numeric(t(intensity_baseline@corrected))
-  df2
+  df$intensity <- as.numeric(t(intensity_baseline@corrected))
+  df
 }
 
 #' Normalize chromatogram retention time and intensity
