@@ -31,34 +31,27 @@ plot_tima <- function(tables) {
     )
   }
   combined <- if (length(tables) > 1L) {
-    list(
-      comparison = data.table::rbindlist(
-        tables,
-        use.names = TRUE,
-        fill = TRUE
-      )
-    )
+    data.table::rbindlist(tables, use.names = TRUE, fill = TRUE)
   } else {
-    list(comparison = tables[[1L]])
+    tables[[1L]]
   }
-  hierarchies <- lapply(combined, prepare_hierarchy, type = "literature")
-
-  prepared_plots <- lapply(hierarchies, prepare_plot)
-  histograms <- lapply(prepared_plots, plot_histograms_litt, label = "")
+  hier <- prepare_hierarchy(combined, type = "literature")
+  histogram <- plot_histograms_litt(prepare_plot(hier), label = "")
+  hierarchies <- list(comparison = hier)
 
   treemaps <- treemaps_progress_no_title(
-    xs = names(hierarchies),
+    xs = "comparison",
     hierarchies = hierarchies
   )
 
   sunbursts <- treemaps_progress_no_title(
-    xs = names(hierarchies),
+    xs = "comparison",
     type = "sunburst",
     hierarchies = hierarchies
   )
 
   list(
-    histogram = histograms[[1L]],
+    histogram = histogram,
     treemap = treemaps[[1L]],
     sunburst = sunbursts[[1L]]
   )
