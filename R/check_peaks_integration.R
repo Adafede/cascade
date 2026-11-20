@@ -189,14 +189,12 @@ check_peaks_integration <- function(
   message("loading feature table")
   feature_table <- load_features(features, show_example = show_example)
 
-  message("preparing features")
   df_features <- prepare_features(
     feature_table,
     min_intensity = min_intensity,
     name = name
   )
 
-  message("Preprocessing chromatograms")
   chromatograms_list <- preprocess_chromatograms(
     detector = detector,
     name = name,

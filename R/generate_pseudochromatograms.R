@@ -123,7 +123,6 @@ generate_pseudochromatograms <- function(
   message("loading name")
   name <- load_name(file, show_example = show_example)
 
-  message("preprocessing chromatograms")
   chromatograms_list <- preprocess_chromatograms(
     detector = detector,
     name = name,

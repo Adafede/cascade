@@ -86,14 +86,12 @@ process_compare_peaks <- function(
   message("loading feature table")
   feature_table <- load_features(features, show_example = show_example)
 
-  message("preparing features")
   df_features <- prepare_features(
     feature_table,
     min_intensity = min_intensity,
     name = name
   )
 
-  message("preprocessing chromatograms")
   chromatograms_list <- preprocess_chromatograms(
     detector = detector,
     name = name,
@@ -110,7 +108,6 @@ process_compare_peaks <- function(
   df_long_sel <- stage$df_long
   df_xy_sel <- stage$df_xy
 
-  message("preprocessing peaks")
   peaks_prelist <- preprocess_peaks(
     detector = detector,
     df_features = df_features,

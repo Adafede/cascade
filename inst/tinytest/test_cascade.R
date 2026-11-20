@@ -70,7 +70,6 @@ local({
   )
   close(lotus_gz)
 
-  message("Testing internal mathematical and alignment helpers...")
   runmean_fn <- utils::getFromNamespace("runmean_center", "cascade")
   reorder_fn <- utils::getFromNamespace("fct_reorder2_base", "cascade")
 
@@ -149,7 +148,6 @@ local({
   )
   expect_inherits(format_gt_fn(sample_gt_df, title = "Swertia"), "gt_tbl")
 
-  message("Testing check_chromatograms_alignment...")
   p_align <- check_chromatograms_alignment(show_example = TRUE)
   expect_inherits(p_align, "plotly")
   expect_inherits(p_align, "htmlwidget")
@@ -162,11 +160,9 @@ local({
   )
   expect_inherits(p_align_raw, "plotly")
 
-  message("Testing check_peaks_integration...")
   p_peaks <- check_peaks_integration(show_example = TRUE)
   expect_inherits(p_peaks, "plotly")
 
-  message("Testing process_compare_peaks...")
   res_comp <- process_compare_peaks(show_example = TRUE)
   expect_true(is.list(res_comp))
   expect_true(all(
@@ -187,7 +183,6 @@ local({
     )
   )
 
-  message("Testing generate_pseudochromatograms...")
   res_pseudo <- generate_pseudochromatograms(
     show_example = TRUE,
     correct_acn = TRUE
@@ -202,7 +197,6 @@ local({
   expect_inherits(res_pseudo$plots_2$sunburst_signal_based_duo, "plotly")
   expect_inherits(res_pseudo$treemaps$peaks_maj, "plotly")
 
-  message("Testing prepare_tima_annotations and plot_tima...")
   tima_tabs <- prepare_tima_annotations(show_example = TRUE)
   expect_true(is.list(tima_tabs))
   expect_inherits(tima_tabs[[1L]], "data.table")
@@ -223,12 +217,10 @@ local({
   expect_inherits(tima_plots$treemap, "plotly")
   expect_inherits(tima_plots$sunburst, "plotly")
 
-  message("Testing query_wikidata input validation...")
   expect_error(query_wikidata(123))
   expect_error(query_wikidata("SELECT * WHERE {}", timeout = -5))
   expect_error(query_wikidata("SELECT * WHERE {}", remove_url = "yes"))
 
-  message("Testing generate_tables offline with LOTUS fixture...")
   res_tables <- generate_tables(show_example = TRUE)
   expect_true(all(c("pretty_table", "csv_table") %in% names(res_tables)))
   expect_inherits(res_tables$pretty_table, "gt_tbl")
@@ -237,7 +229,6 @@ local({
   expect_true(file.exists("data/processed/cascade_table.tsv"))
   expect_true(file.exists("data/processed/cascade_table.html"))
 
-  message("Testing generate_ids offline with mocked SPARQL...")
   local({
     curl_ns <- asNamespace("curl")
     orig_dl <- get("curl_download", envir = curl_ns)
