@@ -18,7 +18,7 @@
 ## usethis namespace: end
 NULL
 
-.datatable.aware <- TRUE # nolint: object_name_linter.
+.datatable.aware <- TRUE
 
 .cascade_env <- new.env(parent = emptyenv())
 

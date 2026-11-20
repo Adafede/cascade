@@ -144,8 +144,8 @@ signal_sharpening <- function(
   k2 = 250,
   k4 = 1250000,
   sigma = 0.05,
-  Smoothing_width = 8, # nolint: object_name_linter.
-  Baseline_adjust = 0 # nolint: object_name_linter.
+  Smoothing_width = 8,
+  Baseline_adjust = 0
 ) {
   n <- length(intensity)
   if (n < 5L) {
