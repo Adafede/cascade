@@ -55,7 +55,6 @@ fread_gz <- function(file, ...) {
       close(con_out)
       close(con_in)
       on.exit(NULL, add = FALSE)
-      ok <- TRUE
       .cascade_env[[cache_key]] <- cached_tmp
     }
     return(data.table::fread(file = cached_tmp, showProgress = FALSE, ...))

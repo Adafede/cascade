@@ -404,12 +404,11 @@ transform_ms <- function(x, min_intensity = 0.1, preserve_window = FALSE) {
 #' @param ms_data Spectral data object (`list(rt, mz, intensity)` or `MSnExp`).
 #' @param rts List of retention time window matrices (`rtmin`, `rtmax`).
 #' @param mzs List of lists of m/z window matrices (`mzmin`, `mzmax`).
-#' @param nrows Optional integer(1) unused compatibility parameter.
 #'
 #' @return List of normalized feature XIC `data.table` lists per peak.
 #' @keywords internal
 #' @noRd
-extract_ms_progress <- function(xs, ms_data, rts, mzs, nrows = NULL) {
+extract_ms_progress <- function(xs, ms_data, rts, mzs) {
   spectra <- parse_ms_spectra(ms_data)
   sp_rt <- spectra$rt
   sp_mz <- spectra$mz

@@ -125,12 +125,6 @@ prepare_tima_annotations <- function(
             spec_peaks >= min_peaks &
             dt$candidate_library %in% libraries
           dt <- dt[keep_idx]
-        } else {
-          dt[, `:=`(
-            candidate_structure_tax_npc_01pat = feature_pred_tax_npc_01pat_val,
-            candidate_structure_tax_npc_02sup = feature_pred_tax_npc_02sup_val,
-            candidate_structure_tax_npc_03cla = feature_pred_tax_npc_03cla_val
-          )]
         }
 
         s_bio <- suppressWarnings(as.numeric(dt$score_biological))
@@ -146,10 +140,7 @@ prepare_tima_annotations <- function(
             s_fin >= min_score_final
         ]
 
-        table <- make_confident(
-          keep_best_candidates(dt),
-          score = min_score_final
-        )
+        table <- keep_best_candidates(dt)
 
         if (predicted_classes) {
           table[, `:=`(

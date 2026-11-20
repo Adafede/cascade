@@ -14,9 +14,7 @@
 "_PACKAGE"
 
 ## usethis namespace: start
-#' @importFrom data.table := .I .N .SD as.data.table data.table fifelse fread
-#' @importFrom data.table fwrite rbindlist set setcolorder setkey setnames
-#' @importFrom data.table setorder uniqueN
+#' @importFrom data.table := .N
 ## usethis namespace: end
 NULL
 

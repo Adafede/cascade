@@ -156,8 +156,7 @@ process_compare_peaks <- function(
     xs = seq_len(n_groups),
     ms_data = ms_data,
     rts = peaks_prelist$list_rtr,
-    mzs = peaks_prelist$list_mzr,
-    nrows = lapply(peaks_prelist$list_df_features_with_peaks_long, nrow)
+    mzs = peaks_prelist$list_mzr
   )
 
   message("extracting ms peaks")

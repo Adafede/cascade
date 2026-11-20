@@ -153,8 +153,7 @@ prepare_hierarchy <- function(
   same_23 <- !is.na(dataframe2$best_candidate_3) &
     !is.na(dataframe2$best_candidate_2) &
     dataframe2$best_candidate_3 == dataframe2$best_candidate_2
-  dataframe2[, safety := ifelse(same_23, "Y", "N")]
-  dataframe2[safety == "Y", best_candidate_3 := paste(best_candidate_3, "sub")]
+  dataframe2[same_23, best_candidate_3 := paste(best_candidate_3, "sub")]
 
   clean_other <- function(x) {
     x <- gsub("notAnnotated", "Other", x, fixed = TRUE)
@@ -242,10 +241,6 @@ prepare_hierarchy <- function(
   df2_ids[ids == "NA", ids := NA_character_]
 
   table_joined <- dt_full_join(df2_ids, genealogy)
-  table_joined[
-    is.na(best_candidate_3) & !is.na(best_candidate_2),
-    best_candidate_3 := paste0(best_candidate_1, "-", best_candidate_2)
-  ]
 
   if (type == "analysis") {
     table_sub <- unique(table_joined[, list(
