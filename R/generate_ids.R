@@ -65,7 +65,7 @@ generate_ids <- function(
   )
 
   message("Loading LOTUS classified structures")
-  lotus_raw <- fread_gz(
+  structures_classified <- fread_gz(
     file = lotus_path,
     select = c(
       "structure_inchikey",
@@ -77,7 +77,6 @@ generate_ids <- function(
       "structure_taxonomy_npclassifier_03class"
     )
   )
-  structures_classified <- data.table::copy(lotus_raw)
   data.table::setnames(
     structures_classified,
     old = c(

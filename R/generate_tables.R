@@ -67,19 +67,15 @@ generate_tables <- function(
 
   if (!is.null(file_positive) || show_example) {
     message("... positive mode")
-    tables_peaks_pos <- data.table::as.data.table(
-      if (show_example) {
-        load_features_informed(show_example = TRUE)
-      } else {
-        load_features_informed(file_positive)
-      }
-    )
+    tables_peaks_pos <- if (show_example) {
+      load_features_informed(show_example = TRUE)
+    } else {
+      load_features_informed(file_positive)
+    }
   }
   if (!is.null(file_negative)) {
     message("... negative mode")
-    neg_dt <- data.table::as.data.table(
-      load_features_informed(file_negative, show_example = show_example)
-    )
+    neg_dt <- load_features_informed(file_negative, show_example = show_example)
     tables_peaks_neg <- unique(neg_dt)
   }
 
@@ -211,10 +207,9 @@ generate_tables <- function(
     inchikey_connectivity_layer = inchikey_connectivity_layer
   )]
 
-  lotus_sub <- data.table::copy(lotus)
-  lotus_sub[, inchikey_connectivity_layer := sub("-.*", "", structure_inchikey)]
+  lotus[, inchikey_connectivity_layer := sub("-.*", "", structure_inchikey)]
   target_iks <- unique(table_medium$inchikey_connectivity_layer)
-  lotus_sub <- lotus_sub[inchikey_connectivity_layer %in% target_iks]
+  lotus_sub <- lotus[inchikey_connectivity_layer %in% target_iks]
 
   tax_cols <- lotus_cols[2:11]
   if (nrow(lotus_sub) > 0L) {

@@ -251,7 +251,7 @@ prepare_hierarchy <- function(
     dt_in[, chemical_pathway := best_candidate_1]
 
     is_not_conf <- grepl("notConfident", dt_in$best_candidate_2)
-    df_not_conf <- data.table::copy(dt_in[is_not_conf])
+    df_not_conf <- dt_in[is_not_conf]
     if (nrow(df_not_conf) > 0L) {
       df_not_conf[, `:=`(
         smiles_2D = NA_character_,
@@ -395,7 +395,7 @@ prepare_hierarchy <- function(
       n
     )])
     table_sub[, values := .N, by = c("parents", "ids", "labels", "sample")]
-    table_1 <- unique(table_sub[, list(
+    table_1_1 <- unique(table_sub[, list(
       chemical_pathway,
       parents,
       ids,
@@ -406,14 +406,13 @@ prepare_hierarchy <- function(
       species,
       n
     )])
-    table_1_1 <- data.table::copy(table_1)
     table_1_1[,
       values_2 := sum(values),
       by = c("chemical_pathway", "parents", "ids", "sample")
     ]
   } else {
     table_joined[, values := .N, by = c("parents", "ids", "labels", "organism")]
-    table_1 <- unique(table_joined[, list(
+    table_1_1 <- unique(table_joined[, list(
       chemical_pathway,
       parents,
       ids,
@@ -423,7 +422,6 @@ prepare_hierarchy <- function(
       sample,
       n
     )])
-    table_1_1 <- data.table::copy(table_1)
     table_1_1[,
       values_2 := sum(values),
       by = c("chemical_pathway", "parents", "ids", "organism")
@@ -571,11 +569,11 @@ prepare_hierarchy <- function(
     fill = TRUE
   ))
 
-  table_next <- data.table::copy(genealogy[
+  table_next <- genealogy[
     !labels %in% genealogy_new_med$labels &
       parents %in% top_medium_table$ids &
       parents != ""
-  ])
+  ]
   if (nrow(table_next) > 0L) {
     table_next[,
       new_labels := trimws(paste(
@@ -681,16 +679,15 @@ prepare_hierarchy <- function(
     fill = TRUE
   )
 
-  g3_char <- data.table::copy(genealogy_new_med_3)
-  g3_char[, chemical_pathway := as.character(chemical_pathway)]
+  genealogy_new_med_3[, chemical_pathway := as.character(chemical_pathway)]
   genealogy_new_med_4 <- unique(data.table::rbindlist(
-    list(g3_char, missing_children),
+    list(genealogy_new_med_3, missing_children),
     use.names = TRUE,
     fill = TRUE
   )[, list(chemical_pathway, parents, ids, labels, new_labels)])
   genealogy_new_med_4[, link := gsub("-.*", "", ids)]
 
-  df2_sp <- data.table::copy(dataframe2[!is.na(species)])
+  df2_sp <- dataframe2[!is.na(species)]
   df2_sp[, `:=`(
     best_candidate_3 = as.character(best_candidate_3),
     chemical_pathway = as.character(chemical_pathway)
@@ -745,7 +742,7 @@ prepare_hierarchy <- function(
   }
 
   table_1_new[, labels := as.character(labels)]
-  additional_row <- data.table::copy(table_1_new[labels == "Other other"])
+  additional_row <- table_1_new[labels == "Other other"]
   if (nrow(additional_row) > 0L) {
     additional_row[, `:=`(
       parents = "Other-Other other",
@@ -955,7 +952,7 @@ prepare_plot <- function(dataframe, organism = "species") {
   data.table::setorder(presamples, -valuez, -values, na.last = TRUE)
   presamples[, group := as.integer(factor(parents, levels = unique(parents)))]
   presamples[,
-    subgroup := dense_rank_base(as.integer(factor(ids, levels = unique(ids)))),
+    subgroup := as.integer(factor(ids, levels = unique(ids))),
     by = "group"
   ]
   presamples[, tot := sum(values), by = "sample"]
@@ -963,9 +960,9 @@ prepare_plot <- function(dataframe, organism = "species") {
   tempval <- unique(presamples[parents == "Other", group])
   if (length(tempval) != 0L) {
     tv <- tempval[1L]
-    samples_0 <- data.table::copy(presamples[group == tv])
+    samples_0 <- presamples[group == tv]
     samples_0[, group := 666]
-    samples_1 <- data.table::copy(presamples[group > tv])
+    samples_1 <- presamples[group > tv]
     samples_1[, group := group - 1]
     samples_2 <- presamples[group < tv]
     samples <- data.table::rbindlist(list(samples_0, samples_1, samples_2))
@@ -984,7 +981,7 @@ prepare_plot <- function(dataframe, organism = "species") {
 
   na_col <- is.na(samples$color)
   if (any(na_col)) {
-    quickfix <- data.table::copy(samples[na_col])
+    quickfix <- samples[na_col]
     quickfix[, subsub := .GRP, by = c("group", "subgroup")]
     quickfix[, color := paste0("#00", sprintf("%04d", subsub))]
     quickfix[, subsub := NULL]
@@ -1054,10 +1051,10 @@ prepare_plot_2 <- function(dataframe) {
     ))
   ]
   dt[,
-    subgroup := dense_rank_base(as.integer(factor(
+    subgroup := as.integer(factor(
       best_candidate_2,
       levels = unique(best_candidate_2)
-    ))),
+    )),
     by = "group"
   ]
 
@@ -1129,27 +1126,24 @@ prepare_plot_2 <- function(dataframe) {
 
   dataframe_prep[, `:=`(
     name_2 = name_2_val,
-    color_2 = color_2_val
+    color_2 = color_2_val,
+    color = fct_reorder2_base(color, sum, group, desc = TRUE),
+    name = fct_reorder2_base(name, sum, group, desc = TRUE)
   )]
-
-  if (nrow(dataframe_prep) > 0L) {
-    dataframe_prep[, `:=`(
-      color = fct_reorder2_base(color, sum, group, desc = TRUE),
-      name = fct_reorder2_base(name, sum, group, desc = TRUE),
-      color_2 = fct_reorder2_base(
-        color_2,
-        score_biological,
-        score_biological,
-        desc = TRUE
-      ),
-      name_2 = fct_reorder2_base(
-        name_2,
-        score_biological,
-        score_biological,
-        desc = TRUE
-      )
-    )]
-  }
+  dataframe_prep[, `:=`(
+    color_2 = fct_reorder2_base(
+      color_2,
+      score_biological,
+      score_biological,
+      desc = TRUE
+    ),
+    name_2 = fct_reorder2_base(
+      name_2,
+      score_biological,
+      score_biological,
+      desc = TRUE
+    )
+  )]
 
   dataframe_prep
 }

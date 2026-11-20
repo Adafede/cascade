@@ -277,7 +277,7 @@ preprocess_peaks <- function(
     fit = fit
   )
 
-  peaks_long <- data.table::as.data.table(peaks)
+  peaks_long <- peaks
   peaks_long[, id := as.character(seq_len(.N))]
   data.table::setcolorder(peaks_long, c("id", setdiff(names(peaks_long), "id")))
 
@@ -321,10 +321,6 @@ preprocess_peaks <- function(
     ))
   }
 
-  if (nrow(df_features_with_peaks) == 0L) {
-    message("splitting by peak")
-  }
-
   message("normalizing chromato")
   list_chromato_with_peak <- lapply(
     list_feat_with_pks_long,
@@ -365,9 +361,6 @@ preprocess_peaks <- function(
 #' @keywords internal
 #' @noRd
 transform_ms <- function(x, min_intensity = 0.1, preserve_window = FALSE) {
-  custom_min <- function(v) if (length(v) > 0L) min(v) else Inf
-  custom_max <- function(v) if (length(v) > 0L) max(v) else Inf
-
   lapply(seq_along(x), function(z) {
     el <- x[[z]]
     int <- el$intensity
@@ -375,23 +368,37 @@ transform_ms <- function(x, min_intensity = 0.1, preserve_window = FALSE) {
     keep <- !is.na(int)
     int <- int[keep]
     rt <- rt[keep]
-    if (length(int) == 0L || custom_max(int) == custom_min(int)) {
+    if (length(int) == 0L) {
       return(data.table::data.table(
         intensity = numeric(0L),
         rtime = numeric(0L)
       ))
     }
-    if (preserve_window && custom_max(rt) > custom_min(rt)) {
-      rt <- (rt - custom_min(rt)) / (custom_max(rt) - custom_min(rt))
+    min_int <- min(int)
+    max_int <- max(int)
+    if (max_int == min_int) {
+      return(data.table::data.table(
+        intensity = numeric(0L),
+        rtime = numeric(0L)
+      ))
     }
-    int <- (int - custom_min(int)) / (custom_max(int) - custom_min(int))
+    if (preserve_window) {
+      min_rt <- min(rt)
+      max_rt <- max(rt)
+      if (max_rt > min_rt) {
+        rt <- (rt - min_rt) / (max_rt - min_rt)
+      }
+    }
+    int <- (int - min_int) / (max_int - min_int)
     keep2 <- !is.na(int) & int >= min_intensity
     int <- int[keep2]
     rt <- rt[keep2]
-    if (
-      !preserve_window && length(rt) > 0L && custom_max(rt) > custom_min(rt)
-    ) {
-      rt <- (rt - custom_min(rt)) / (custom_max(rt) - custom_min(rt))
+    if (!preserve_window && length(rt) > 0L) {
+      min_rt <- min(rt)
+      max_rt <- max(rt)
+      if (max_rt > min_rt) {
+        rt <- (rt - min_rt) / (max_rt - min_rt)
+      }
     }
     ord <- order(rt)
     data.table::data.table(intensity = int[ord], rtime = rt[ord])

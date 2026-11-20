@@ -546,9 +546,8 @@ prepare_comparison <- function(
   cand_dt[, feature_id := as.numeric(feature_id)]
 
   join_candidates <- function(df) {
-    dt <- data.table::copy(data.table::as.data.table(df))
-    dt[, feature_id := as.numeric(feature_id)]
-    out <- dt_left_join(dt, cand_dt)
+    df[, feature_id := as.numeric(feature_id)]
+    out <- dt_left_join(df, cand_dt)
     out[, rt := as.numeric(rt)]
     out
   }
@@ -583,30 +582,11 @@ prepare_comparison <- function(
     peak_rt_apex = rt,
     peak_area = default_peak_area
   )]
-  for (col in c(
-    "peak_id",
-    "peak_rt_min",
-    "peak_rt_max",
-    "feature_rt",
-    "feature_mz",
-    "feature_area",
-    "comparison_score",
-    "integral",
-    "intensity"
-  )) {
-    if (col %in% names(peaks_min)) {
-      data.table::set(
-        peaks_min,
-        j = col,
-        value = suppressWarnings(as.numeric(peaks_min[[col]]))
-      )
-    }
-  }
 
   combine_excluded <- function(kept_dt) {
     data.table::rbindlist(
       list(
-        add_id_cols(peaks_maj[!kept_dt, on = names(peaks_maj)]),
+        peaks_maj[!kept_dt, on = names(peaks_maj)],
         peaks_min
       ),
       use.names = TRUE,

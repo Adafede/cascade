@@ -188,9 +188,7 @@ generate_pseudochromatograms <- function(
     detector = detector
   )
 
-  min_dt <- data.table::copy(
-    compared_peaks_list$peaks_min_precor_taxo_cor[mode == target_mode]
-  )
+  min_dt <- compared_peaks_list$peaks_min_precor_taxo_cor[mode == target_mode]
   min_dt[, `:=`(id = "peaks_min", sample = "peaks_min", species = "peaks_min")]
   min_dt_clean <- no_other(make_other(unique(min_dt)))
   min_dt_clean[, intensity := 1]
@@ -200,9 +198,7 @@ generate_pseudochromatograms <- function(
     detector = "ms"
   )
 
-  maj_spec <- data.table::copy(
-    compared_peaks_list$peaks_maj_precor_taxo_cor[mode == target_mode]
-  )
+  maj_spec <- compared_peaks_list$peaks_maj_precor_taxo_cor[mode == target_mode]
   maj_spec[, `:=`(
     id = "peaks_maj",
     sample = "peaks_maj",
@@ -232,7 +228,7 @@ generate_pseudochromatograms <- function(
   hierarchies$special <- h_special
 
   treemaps <- treemaps_progress_no_title(
-    xs = names(hierarchies)[!grepl("_grouped", names(hierarchies))],
+    xs = names(hierarchies),
     hierarchies = hierarchies
   )
 

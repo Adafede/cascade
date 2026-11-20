@@ -89,9 +89,7 @@ prepare_tima_annotations <- function(
         dt <- if (is.data.frame(x)) {
           data.table::copy(data.table::as.data.table(x))
         } else {
-          data.table::copy(data.table::as.data.table(
-            load_annotations(x, show_example = show_example)
-          ))
+          load_annotations(x, show_example = show_example)
         }
         strip_pipe_alternatives(dt)
 

@@ -26,8 +26,7 @@ add_chromato_line <- function(
     normalize_time = normalize_time
   )
   if (polarity == "neg") {
-    norm_df <- data.table::copy(data.table::as.data.table(norm_df))
-    norm_df[, intensity := -1 * intensity]
+    norm_df$intensity <- -1 * norm_df$intensity
   }
   plotly::add_lines(
     plot,

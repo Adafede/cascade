@@ -84,9 +84,7 @@ process_compare_peaks <- function(
   name <- load_name(file, show_example = show_example)
 
   message("loading feature table")
-  feature_table <- data.table::as.data.table(
-    load_features(features, show_example = show_example)
-  )
+  feature_table <- load_features(features, show_example = show_example)
 
   message("preparing features")
   df_features <- prepare_features(
@@ -151,18 +149,15 @@ process_compare_peaks <- function(
   message("selecting features with peaks")
   list_df_features_with_scores <- Map(
     function(df, score) {
-      dt <- data.table::copy(data.table::as.data.table(df))
-      dt[, comparison_score := unlist(score, use.names = FALSE)]
-      dt
+      df[, comparison_score := unlist(score, use.names = FALSE)]
+      df
     },
     peaks_prelist$list_df_features_with_peaks_long,
     list_comparison_score
   )
 
   if (length(list_df_features_with_scores) == 0L) {
-    df_features_with_peaks <- data.table::copy(data.table::as.data.table(
-      peaks_prelist$df_features_without_peaks[0L, ]
-    ))
+    df_features_with_peaks <- peaks_prelist$df_features_without_peaks[0L, ]
     df_features_with_peaks[, comparison_score := numeric(0)]
   } else {
     df_features_with_peaks <- data.table::rbindlist(
@@ -193,9 +188,7 @@ process_compare_peaks <- function(
     df_features_with_peaks
   )
 
-  without_dt <- data.table::copy(data.table::as.data.table(
-    peaks_prelist$df_features_without_peaks
-  ))
+  without_dt <- peaks_prelist$df_features_without_peaks
   without_dt[, comparison_score := NA_real_]
   df_feat_without_peaks_scored <- format_scored_features(without_dt)
 

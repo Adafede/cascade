@@ -630,12 +630,12 @@ load_detector_chromatogram <- function(
 #' @keywords internal
 #' @noRd
 select_chromatogram_stage <- function(chromatograms_list, stage) {
-  df_long <- data.table::copy(data.table::as.data.table(switch(
+  df_long <- data.table::copy(switch(
     stage,
     "original" = chromatograms_list$chromatograms_original_long,
     "improved" = chromatograms_list$chromatograms_improved_long,
     "baselined" = chromatograms_list$chromatograms_baselined_long
-  )))
+  ))
   max_int <- max(df_long$intensity, na.rm = TRUE)
   if (is.finite(max_int) && max_int > 0) {
     df_long[, intensity := intensity / max_int]

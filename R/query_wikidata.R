@@ -56,7 +56,7 @@ query_wikidata <- function(
   if (
     !is.null(headers) &&
       is.numeric(headers) &&
-      (is.logical(timeout) || is.numeric(timeout) || is.integer(timeout))
+      (is.logical(timeout) || is.numeric(timeout))
   ) {
     fallback <- as.logical(timeout)[1L]
     timeout <- headers
@@ -379,7 +379,7 @@ tables_progress <- function(xs, structures_classified) {
   sc_dt <- data.table::as.data.table(structures_classified)
 
   lapply(xs, function(x) {
-    dt <- data.table::copy(data.table::as.data.table(x))
+    dt <- data.table::as.data.table(x)
     if (nrow(dt) > 0L) {
       joined <- dt_left_join(dt, sc_dt)
       joined[,

@@ -235,9 +235,7 @@ check_peaks_integration <- function(
   )
 
   chromatogram_normalized <- if (chromatogram == "original") {
-    orig_dt <- data.table::copy(data.table::as.data.table(
-      chromatograms_list$chromatograms_original_long
-    ))
+    orig_dt <- chromatograms_list$chromatograms_original_long
     orig_dt <- orig_dt[seq_len(nrow(orig_dt)) %% 10L == 1L]
     max_orig <- max(orig_dt$intensity, na.rm = TRUE)
     if (is.finite(max_orig) && max_orig > 0) {
